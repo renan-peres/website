@@ -28,7 +28,7 @@ Plot.plot({
 ```
 
 ```js echo
-const points = FileAttachment("/data/airports.csv").csv({typed: true})
+const points = FileAttachment("../data/airports.csv").csv({typed: true})
   .then((data) => data.map((d) => [d.longitude, d.latitude]));
 ```
 

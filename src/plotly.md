@@ -16,7 +16,7 @@ Plotly.newPlot(container, [{z: elevation, type: "surface"}], {
 ```
 
 ```js echo
-const elevation = FileAttachment("/data/mt_bruno.csv").csv({array: true, typed: true});
+const elevation = FileAttachment("../data/mt_bruno.csv").csv({array: true, typed: true});
 ```
 
 ```js echo
