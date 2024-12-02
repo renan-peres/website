@@ -30,7 +30,7 @@ display(chart);
 
 ```js echo
 import {fromArrayBuffer} from "npm:geotiff@2";
-const tiff = await FileAttachment("/data/sfctmp.tiff").arrayBuffer().then(fromArrayBuffer);
+const tiff = await FileAttachment("../data/sfctmp.tiff").arrayBuffer().then(fromArrayBuffer);
 const image = await tiff.getImage();
 const n = image.getWidth();
 const values = (await image.readRasters())[0];
