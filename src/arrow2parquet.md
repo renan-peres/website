@@ -91,3 +91,23 @@ display(
   </div>`
 );
 ```
+
+```js
+// UI Component
+display(
+  html`<div style="max-width: 1200px; margin: 20px auto;">
+    ${file ? html`
+      ${db && html`
+        <div style="margin-top: 20px;">
+          <h3>Schema:</h3>
+          ${Inputs.table(db.query(`SELECT column_name, column_type FROM (DESCRIBE ${table})`))}
+        </div>
+      `}
+    ` : html`
+      <div style="text-align: center; color: #666; padding: 20px;">
+        Upload a file to begin
+      </div>
+    `}
+  </div>`
+);
+```
