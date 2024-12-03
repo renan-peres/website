@@ -2,8 +2,58 @@
 toc: false
 ---
 
+```js
+function updateDateTime() {
+  const now = new Date();
+  const options = { 
+    weekday: 'long',
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  };
+  if (document.getElementById('datetime')) {
+    document.getElementById('datetime').textContent = now.toLocaleString('en-US', options);
+  }
+}
+
+// Update every second when the page loads
+if (typeof window !== 'undefined') {
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
+}
+```
+
+<!-- <style>
+.datetime-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+#datetime {
+  font-size: 1.5rem;
+  color: var(--theme-foreground-focus);
+  font-family: var(--sans-serif);
+}
+
+</style> -->
+
+<div class="datetime-container">
+  <div id="datetime"></div>
+</div>
+
 <div class="hero">
-  <h1>Websockets</h1>
+  <h1>Renan Peres's Portfolio</h1>
   <h2>Welcome to your new app! Edit&nbsp;<code style="font-size: 90%;">src/index.md</code> to change this page.</h2>
   <a href="https://observablehq.com/framework/getting-started">Get started<span style="display: inline-block; margin-left: 0.25rem;">↗︎</span></a>
 </div>
