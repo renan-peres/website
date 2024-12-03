@@ -2,21 +2,21 @@
 index: true
 ---
 
-# Convert Arrow files to parquet
+# Dataset Profiler and Parquet Converter
 
-A simple app that converts your arrow files to the parquet format, using DuckDB-wasm under the hood.
+A simple app that profile your datasets and converts it to the parquet format, using DuckDB-wasm under the hood.
 
 ```js
 // File input setup
 const file = view(Inputs.file({
-  accept: ".arrow,.csv",
+  accept: ".arrow,.csv, .parquet",
   description: "Upload an Arrow or CSV file"
 }));
 ```
 
 ```js
 // Get table name from file, removing extension
-const table = file?.name.replace(/\.(arrow|csv)$/, "");
+const table = file?.name.replace(/\.(arrow|csv|parquet)$/, "");
 ```
 
 ```js
@@ -26,7 +26,28 @@ const db = file && DuckDBClient.of({[table]: file});
 ```js
 display(
   file
-    ? html`<button
+    ? html`
+      <style>
+        .download-btn {
+          background-color: #2563eb;
+          color: white;
+          padding: 8px 16px;
+          border: none;
+          border-radius: 6px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        }
+        .download-btn:hover {
+          background-color: #1d4ed8;
+        }
+        .download-btn:disabled {
+          background-color: #94a3b8;
+          cursor: not-allowed;
+        }
+      </style>
+      <button
+        class="download-btn"
         onclick=${async function () {
           this.disabled = true;
           download(await toParquet(db, {table}));
@@ -35,7 +56,7 @@ display(
       >
         Download ${table}.parquet
       </button>`
-    : html`<button disabled>…</button>`
+    : html`<button class="download-btn" disabled>…</button>`
 );
 ```
 
@@ -69,7 +90,7 @@ function download(file) {
 
 ```js
 // Define the SQL query
-const SQL_QUERY = `SELECT * FROM ${table} LIMIT 100`;
+const SQL_QUERY = `SELECT * FROM ${table} LIMIT 10`;
 ```
 
 ```js
@@ -79,7 +100,7 @@ display(
     ${file ? html`
       ${db && html`
         <div style="margin-top: 20px;">
-          <h3>Preview (top 100 rows):</h3>
+          <h3>Preview (top 10 rows):</h3>
           ${Inputs.table(db.query(`${SQL_QUERY}`))}
         </div>
       `}
@@ -92,22 +113,18 @@ display(
 );
 ```
 
+
 ```js
-// UI Component
+// Schema component
 display(
   html`<div style="max-width: 1200px; margin: 20px auto;">
     ${file ? html`
       ${db && html`
         <div style="margin-top: 20px;">
-          <h3>Schema:</h3>
-          ${Inputs.table(db.query(`SELECT column_name, column_type FROM (DESCRIBE ${table})`))}
+          <h3>Schema Summary (top 1,000,000):</h3>
+          ${Inputs.table(db.query(`SELECT column_name, column_type, count, approx_unique, min,	max, 	avg,	std,	q25,	q50,	q75, null_percentage FROM (SUMMARIZE (SELECT * FROM ${table} LIMIT 1000000))`))}
         </div>
       `}
-    ` : html`
-      <div style="text-align: center; color: #666; padding: 20px;">
-        Upload a file to begin
-      </div>
-    `}
+    ` : null}
   </div>`
 );
-```
