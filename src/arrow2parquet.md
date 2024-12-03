@@ -7,11 +7,16 @@ index: true
 A simple app that converts your arrow files to the parquet format, using DuckDB-wasm under the hood.
 
 ```js
-const file = view(Inputs.file());
+// File input setup
+const file = view(Inputs.file({
+  accept: ".arrow,.csv",
+  description: "Upload an Arrow or CSV file"
+}));
 ```
 
 ```js
-const table = file?.name.replace(".arrow", "");
+// Get table name from file, removing extension
+const table = file?.name.replace(/\.(arrow|csv)$/, "");
 ```
 
 ```js
@@ -62,4 +67,27 @@ function download(file) {
 }
 ```
 
-<div style="height: 40vh"></div>
+```js
+// Define the SQL query
+const SQL_QUERY = `SELECT * FROM ${table} LIMIT 100`;
+```
+
+```js
+// UI Component
+display(
+  html`<div style="max-width: 1200px; margin: 20px auto;">
+    ${file ? html`
+      ${db && html`
+        <div style="margin-top: 20px;">
+          <h3>Preview (top 100 rows):</h3>
+          ${Inputs.table(db.query(`${SQL_QUERY}`))}
+        </div>
+      `}
+    ` : html`
+      <div style="text-align: center; color: #666; padding: 20px;">
+        Upload a file to begin
+      </div>
+    `}
+  </div>`
+);
+```
