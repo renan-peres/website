@@ -121,8 +121,8 @@ display(
     ${file ? html`
       ${db && html`
         <div style="margin-top: 20px;">
-          <h3>Schema Summary (top 1,000,000):</h3>
-          ${Inputs.table(db.query(`SELECT column_name, column_type, count, approx_unique, min,	max, 	avg,	std,	q25,	q50,	q75, null_percentage FROM (SUMMARIZE (SELECT * FROM ${table} LIMIT 1000000))`))}
+          <h3>Schema Summary:</h3>
+          ${Inputs.table(db.query(`SELECT column_name, column_type, count, approx_unique, min,	max, 	avg,	std FROM (SUMMARIZE (SELECT * FROM ${table} LIMIT 1000000))`))}
         </div>
       `}
     ` : null}

@@ -5,7 +5,7 @@ source: https://observablehq.com/@mbostock/bitcoin-transaction-size
 keywords: live real time data wss streaming stream socket
 ---
 
-# WebSocket: Bitcoin transactions
+# Stock Market Prices
 
 This is a realtime histogram of the size of recent unconfirmed bitcoin transactions. Transactions bigger than 1,000KB are included in the rightmost bin.
 
@@ -140,16 +140,8 @@ const sizes = Generators.observe((notify) => {
 <!-- Fifth cell - Display HTML -->
 <div class="grid grid-cols-3 gap-4">
   <div class="card">
-    <h2>Bitcoin Last Price</h2>
+    <h2>Bitcoin (BTC/USD)</h2>
     <div class="big">${btc?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
-  </div>
-  <div class="card">
-    <h2>Bid Price</h2>
-    <div class="big">${bid?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
-  </div>
-  <div class="card">
-    <h2>Ask Price</h2>
-    <div class="big">${ask?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
   </div>
 </div>
 

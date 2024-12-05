@@ -11,10 +11,30 @@ export default {
       name: "DevBox",
       open: true,
       pages: [
-        {name: "DevBox Playground", path: "/devbox/devbox-payground"},
-        
-        {name: "Pyodide", path: "/devbox/pyodide-autocomplete"},
-        {name: "WebR", path: "/devbox/webr-autocomplete"}
+        {name: "Playground", path: "/devbox/devbox-payground"},
+        {name: "DuckDB", path: "/devbox/duckdb-autocomplete"},
+        {name: "WebR", path: "/devbox/webr-autocomplete"},
+        {name: "Pyodide", path: "/devbox/pyodide-autocomplete"}
+      ]
+    }
+
+    ,{
+      name: "Finance",
+      open: true,
+      pages: [
+        {name: "Stock Prices", path: "/finance/stock-prices"},
+        {name: "Mortgage Rates", path: "/finance/mortgage-rates"},
+        {name: "Portfolio Builder", path: "/finance/portfolio-builder"}
+      ]
+    }
+
+    ,{
+      name: "Data Analysis",
+      open: true,
+      pages: [
+        {name: "Highcharter", path: "/data-analysis/highcharts"},
+        {name: "AG Grid", path: "/data-analysis/ag-grid"},
+        {name: "Tabulator", path: "/data-analysis/tabulator"}
       ]
     }
 
@@ -25,13 +45,6 @@ export default {
         {name: "Parquet Converter", path: "/devbox/duckdb-parquet-converter"}
       ]
     }
-
-    ,{
-      name: "Reports",
-      pages: [
-        {name: "Example Report", path: "/example-report"}
-      ]
-    }
     
   ],
 
@@ -40,14 +53,14 @@ export default {
 
   // The path to the source root.
   root: "src",
-
+  theme: 'dashboard',
   // Some additional configuration options and their defaults:
   // theme: "default", // try "light", "dark", "slate", etc.
   // header: "", // what to show in the header (HTML)
   footer: "", // what to show in the footer (HTML)
   // sidebar: true, // whether to show the sidebar
   // toc: true, // whether to show the table of contents
-  // pager: false, // whether to show previous & next links in the footer
+  pager: false, // whether to show previous & next links in the footer
   // output: "dist", // path to the output root for build
   search: true, // activate search
   // linkify: true, // convert URLs in Markdown to links
