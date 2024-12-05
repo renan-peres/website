@@ -11,27 +11,12 @@ import { html } from "htl";
 ```
 
 ```js
-const defaultIframe = `<iframe 
-  src="https://example.com" 
-  width="100%" 
-  height="400" 
-  frameborder="0"
-></iframe>`;
-```
-
-```js
-viewof testInput = html`<textarea 
-  style="
-    width: 100%;
-    min-height: 100px;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-family: monospace;
-    margin-bottom: 10px;
-  "
-  placeholder="Paste your iframe or HTML code here..."
->${defaultIframe}</textarea>`
+viewof iframeCode = Inputs.textarea({
+  label: "Enter iframe code",
+  value: '<iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe>',
+  rows: 5,
+  width: 600
+})
 ```
 
 ```js echo
@@ -49,7 +34,7 @@ display(
       border-radius: 4px;
       border: 1px solid #ddd;
     ">
-      ${html([testInput])}
+      ${html([iframeCode])}
     </div>
   </div>`
 )
@@ -82,12 +67,10 @@ Try it with these examples:
 ></iframe>
 ```
 
-Note: Some websites may block embedding due to X-Frame-Options headers or Content Security Policy restrictions.
-
 The key changes are:
-1. Added a default iframe constant
-2. Created a proper viewof binding for the textarea input
-3. Used basic HTML textarea instead of Inputs.textarea for better compatibility
-4. Added styling directly to the textarea element
+1. Changed `testInput` to `iframeCode` for clarity
+2. Used Observable's `Inputs.textarea()` instead of raw HTML
+3. Fixed the template literal syntax in the display section
+4. Changed the way we reference the input in the preview section
 
-Now you should see an input area where you can paste iframe code and see it rendered below in real-time.​​​​​​​​​​​​​​​​
+Note: Some websites may block embedding due to X-Frame-Options headers or Content Security Policy restrictions.​​​​​​​​​​​​​​​​
