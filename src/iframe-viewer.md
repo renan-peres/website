@@ -11,7 +11,7 @@ import { html } from "htl";
 ```
 
 ```js
-html`
+const container = html`
 <div style="font-family: system-ui; padding: 20px;">
   <p>Enter your HTML/iFrame code below to see it rendered in real-time.</p>
   <textarea 
@@ -24,6 +24,8 @@ html`
       font-family: monospace;
       border: 1px solid #ccc;
       border-radius: 4px;
+      background: #f8f8f8;
+      color: #333;
     "
   ><iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe></textarea>
   <br />
@@ -42,25 +44,23 @@ html`
     "></div>
   </div>
 </div>
-`
-```
+`;
 
-```js
-{
-  const iframeInput = document.getElementById("iframeInput");
-  const iframePreview = document.getElementById("iframe-preview");
+// Add event listeners
+const iframeInput = container.querySelector("#iframeInput");
+const iframePreview = container.querySelector("#iframe-preview");
 
-  // Function to update preview
-  function updatePreview() {
-    iframePreview.innerHTML = iframeInput.value;
-  }
-
-  // Add event listeners
-  iframeInput.addEventListener("input", updatePreview);
-  
-  // Initial preview
-  updatePreview();
+function updatePreview() {
+  iframePreview.innerHTML = iframeInput.value;
 }
+
+iframeInput.addEventListener("input", updatePreview);
+
+// Initial preview
+updatePreview();
+
+// Return the container element
+container
 ```
 
 Try it with these examples:
@@ -90,11 +90,11 @@ Try it with these examples:
 ></iframe>
 ```
 
-Note: Some websites may block embedding due to X-Frame-Options headers or Content Security Policy restrictions.
-
 The key changes are:
-1. Used a plain HTML structure with a textarea input
-2. Added real-time preview updating
-3. Improved styling and layout
-4. Separated the JavaScript logic into its own code block
-5. Made the preview update automatically as you type​​​​​​​​​​​​​​​​
+1. Combined the HTML creation and JavaScript logic into a single cell
+2. Created the container element first
+3. Added event listeners to the actual elements in the container
+4. Returned the container element at the end of the cell
+5. Added better styling for the textarea
+
+Note: Some websites may block embedding due to X-Frame-Options headers or Content Security Policy restrictions.​​​​​​​​​​​​​​​​
