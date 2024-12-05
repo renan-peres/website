@@ -42,7 +42,9 @@ export default {
       name: "Data Tools",
       open: true,
       pages: [
-        {name: "Parquet Converter", path: "/devbox/duckdb-parquet-converter"}
+        {name: "Parquet Converter", path: "/data-tools/duckdb-parquet-converter"},
+        {name: "Google Sheets", path: "/data-tools/google-sheets"},
+        {name: "XLSX Downloader", path: "/data-tools/xlsx-downloads"}
       ]
     }
     
