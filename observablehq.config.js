@@ -17,6 +17,16 @@ export default {
         {name: "Pyodide", path: "/devbox/pyodide-autocomplete"}
       ]
     }
+    
+        ,{
+          name: "Data Tools",
+          open: true,
+          pages: [
+            {name: "Parquet Converter", path: "/data-tools/duckdb-parquet-converter"},
+            {name: "Google Sheets", path: "/data-tools/google-sheets"},
+            {name: "XLSX Downloader", path: "/data-tools/xlsx-downloads"}
+          ]
+        }
 
     ,{
       name: "Finance",
@@ -35,16 +45,6 @@ export default {
         {name: "Highcharter", path: "/data-analysis/highcharts"},
         {name: "AG Grid", path: "/data-analysis/ag-grid"},
         {name: "Tabulator", path: "/data-analysis/tabulator"}
-      ]
-    }
-
-    ,{
-      name: "Data Tools",
-      open: true,
-      pages: [
-        {name: "Parquet Converter", path: "/data-tools/duckdb-parquet-converter"},
-        {name: "Google Sheets", path: "/data-tools/google-sheets"},
-        {name: "XLSX Downloader", path: "/data-tools/xlsx-downloads"}
       ]
     }
     
