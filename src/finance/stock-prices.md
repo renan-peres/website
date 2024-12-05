@@ -6,8 +6,15 @@ keywords: live real time data wss streaming stream socket
 ---
 
 # Stock Market Prices
+```js
+import {datetime} from "../components/datetime.js";
+```
 
-This is a realtime histogram of the size of recent unconfirmed bitcoin transactions. Transactions bigger than 1,000KB are included in the rightmost bin.
+<div class="datetime-container">
+  <div id="datetime"></div>
+</div>
+
+---
 
 Data: [Blockchain](https://blockchain.info/api/api_websocket)
 and: [Bitcoin Ticker](https://codepen.io/HebleV/pen/JygRjL)
@@ -164,6 +171,8 @@ const sizes = Generators.observe((notify) => {
   </div>
 </div>
 ```
+
+This is a realtime histogram of the size of recent unconfirmed bitcoin transactions. Transactions bigger than 1,000KB are included in the rightmost bin.
 
 ```js
 // Fourth cell - Chart
