@@ -13,22 +13,38 @@ import { html } from "htl";
 ```js
 const view = html`
   <div style="font-family: system-ui; padding: 20px;">
-    <p>Enter your HTML/iFrame code below to see it rendered in real-time.</p>
+    <p>Enter your HTML/iFrame code below and click "Display" to see it rendered.</p>
     <textarea 
       id="iframeInput" 
       style="
         width: 100%;
         min-height: 100px;
-        margin-right: 10px;
+        margin-bottom: 10px;
         padding: 10px;
         font-family: monospace;
         border: 1px solid #ccc;
         border-radius: 4px;
       "
-    ><iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe></textarea>
-    <br />
+      placeholder="Paste your iFrame code here..."
+    ></textarea>
+    <button 
+      id="displayButton"
+      style="
+        padding: 8px 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-bottom: 20px;
+      "
+      onmouseover="this.style.backgroundColor='#45a049'"
+      onmouseout="this.style.backgroundColor='#4CAF50'"
+    >
+      Display iFrame
+    </button>
     <div id="preview-container" style="
-      margin-top: 20px;
       padding: 20px;
       background: #f5f5f5;
       border-radius: 8px;
@@ -39,6 +55,7 @@ const view = html`
         padding: 20px;
         border-radius: 4px;
         border: 1px solid #ddd;
+        min-height: 100px;
       "></div>
     </div>
   </div>
@@ -46,18 +63,17 @@ const view = html`
 
 // Get references to elements
 const iframeInput = view.querySelector("#iframeInput");
+const displayButton = view.querySelector("#displayButton");
 const iframePreview = view.querySelector("#iframe-preview");
 
 // Function to update preview
 function updatePreview() {
-  iframePreview.innerHTML = iframeInput.value;
+  const inputValue = iframeInput.value.trim();
+  iframePreview.innerHTML = inputValue;
 }
 
-// Add event listeners
-iframeInput.addEventListener("input", updatePreview);
-
-// Initial preview
-updatePreview();
+// Add event listener to button
+displayButton.addEventListener("click", updatePreview);
 
 view
 ```
