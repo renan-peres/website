@@ -11,49 +11,55 @@ import { html } from "htl";
 ```
 
 ```js
-viewof inputValue = {
-  const textArea = html`<textarea
-    style="
-      width: 100%;
-      min-height: 100px;
-      margin-right: 10px;
-      padding: 10px;
-      font-family: monospace;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    "
-  ><iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe></textarea>`;
-  
-  return textArea;
-}
-```
-
-```js
-preview = {
-  return html`
-    <div style="font-family: system-ui; padding: 20px;">
-      <p>Enter your HTML/iFrame code below to see it rendered in real-time.</p>
-      ${viewof inputValue}
-      <br />
-      <div style="
-        margin-top: 20px;
+const view = html`
+  <div style="font-family: system-ui; padding: 20px;">
+    <p>Enter your HTML/iFrame code below to see it rendered in real-time.</p>
+    <textarea 
+      id="iframeInput" 
+      style="
+        width: 100%;
+        min-height: 100px;
+        margin-right: 10px;
+        padding: 10px;
+        font-family: monospace;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      "
+    ><iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe></textarea>
+    <br />
+    <div id="preview-container" style="
+      margin-top: 20px;
+      padding: 20px;
+      background: #f5f5f5;
+      border-radius: 8px;
+    ">
+      <h3 style="margin: 0 0 10px 0">Preview:</h3>
+      <div id="iframe-preview" style="
+        background: white;
         padding: 20px;
-        background: #f5f5f5;
-        border-radius: 8px;
-      ">
-        <h3 style="margin: 0 0 10px 0">Preview:</h3>
-        <div style="
-          background: white;
-          padding: 20px;
-          border-radius: 4px;
-          border: 1px solid #ddd;
-        ">
-          ${html([inputValue.value])}
-        </div>
-      </div>
+        border-radius: 4px;
+        border: 1px solid #ddd;
+      "></div>
     </div>
-  `;
+  </div>
+`;
+
+// Get references to elements
+const iframeInput = view.querySelector("#iframeInput");
+const iframePreview = view.querySelector("#iframe-preview");
+
+// Function to update preview
+function updatePreview() {
+  iframePreview.innerHTML = iframeInput.value;
 }
+
+// Add event listeners
+iframeInput.addEventListener("input", updatePreview);
+
+// Initial preview
+updatePreview();
+
+view
 ```
 
 Try it with these examples:
