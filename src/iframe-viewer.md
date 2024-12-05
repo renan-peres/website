@@ -2,91 +2,69 @@
 index: true
 ---
 
-# Webpage Viewer
+# iFrame Tester
 
-This will load external webpages in various device viewports.
+This allows you to test HTML/iFrame code with live preview.
 
 ```js
 import { html } from "htl";
 ```
 
 ```js
-viewof urlInput = Inputs.text({
-  label: "Enter URL",
-  value: "https://example.com",
-  placeholder: "Enter a URL (e.g., https://example.com)"
+viewof testInput = Inputs.textarea({
+  label: "Enter HTML/iFrame code to test",
+  value: '<iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe>',
+  rows: 5,
+  placeholder: "Paste your iframe or HTML code here..."
 })
-```
-
-```js
-viewof deviceType = Inputs.select(
-  ["Desktop", "Tablet", "Mobile"], 
-  {
-    label: "Device Type",
-    value: "Desktop"
-  }
-)
-```
-
-```js
-const deviceDimensions = {
-  Desktop: { width: "100%", height: 600 },
-  Tablet: { width: 768, height: 1024 },
-  Mobile: { width: 375, height: 667 }
-};
 ```
 
 ```js echo
 display(
   html`<div style="
-    width: ${deviceDimensions[deviceType].width === "100%" ? "100%" : deviceDimensions[deviceType].width + "px"};
-    margin: 0 auto;
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    margin-top: 20px;
   ">
+    <h3 style="margin: 0 0 10px 0">Preview:</h3>
     <div style="
-      position: relative;
-      width: 100%;
-      height: ${deviceDimensions[deviceType].height}px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      overflow: hidden;
-      transition: all 0.3s ease;
       background: white;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
     ">
-      <iframe
-        src="${validateUrl(urlInput)}"
-        style="
-          width: 100%;
-          height: 100%;
-          border: none;
-        "
-        sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-      ></iframe>
+      ${html([testInput])}
     </div>
   </div>`
 )
 ```
 
-```js
-function validateUrl(url) {
-  try {
-    new URL(url);
-    return url;
-  } catch {
-    return 'about:blank';
-  }
-}
+Try it with these examples:
+
+1. Basic iFrame:
+```html
+<iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe>
 ```
 
-The example above demonstrates a simple webpage viewer with device viewport simulation. You can:
-1. Enter any URL to view the webpage
-2. Select different device types to see how the page looks on various screens
-3. The viewer automatically adjusts dimensions based on the selected device type
+2. Responsive iFrame:
+```html
+<iframe 
+  src="https://wikipedia.org" 
+  style="width: 100%; height: 500px; border: none; border-radius: 8px;"
+></iframe>
+```
 
-Note that some websites may block iframe embedding due to security policies. Try it with these example URLs:
-- https://example.com
-- https://wikipedia.org
-- https://html5demos.com
+3. YouTube Video Embed:
+```html
+<iframe 
+  width="560" 
+  height="315" 
+  src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+  frameborder="0" 
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+  allowfullscreen
+></iframe>
+```
 
-For a reference implementation and more details, see:
-[Observable Iframe Viewer Example](https://observablehq.com/@tmcw/iframe-viewer)​​​​​​​​​​​​​​​​
+Note: Some websites may block embedding due to X-Frame-Options headers or Content Security Policy restrictions.​​​​​​​​​​​​​​​​
