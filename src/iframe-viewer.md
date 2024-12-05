@@ -11,11 +11,8 @@ import { html } from "htl";
 ```
 
 ```js
-const container = html`
-<div style="font-family: system-ui; padding: 20px;">
-  <p>Enter your HTML/iFrame code below to see it rendered in real-time.</p>
-  <textarea 
-    id="iframeInput" 
+viewof iframeInput = {
+  const form = html`<textarea
     style="
       width: 100%;
       min-height: 100px;
@@ -27,40 +24,36 @@ const container = html`
       background: #f8f8f8;
       color: #333;
     "
-  ><iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe></textarea>
-  <br />
-  <div id="preview-container" style="
+  ><iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe></textarea>`;
+
+  form.oninput = () => {
+    form.value = form.value;
+  };
+  
+  form.value = form.value;
+  return form;
+}
+```
+
+```js echo
+display(
+  html`<div style="
     margin-top: 20px;
     padding: 20px;
     background: #f5f5f5;
     border-radius: 8px;
   ">
     <h3 style="margin: 0 0 10px 0">Preview:</h3>
-    <div id="iframe-preview" style="
+    <div style="
       background: white;
       padding: 20px;
       border-radius: 4px;
       border: 1px solid #ddd;
-    "></div>
-  </div>
-</div>
-`;
-
-// Add event listeners
-const iframeInput = container.querySelector("#iframeInput");
-const iframePreview = container.querySelector("#iframe-preview");
-
-function updatePreview() {
-  iframePreview.innerHTML = iframeInput.value;
-}
-
-iframeInput.addEventListener("input", updatePreview);
-
-// Initial preview
-updatePreview();
-
-// Return the container element
-container
+    ">
+      ${html([iframeInput])}
+    </div>
+  </div>`
+)
 ```
 
 Try it with these examples:
@@ -90,11 +83,12 @@ Try it with these examples:
 ></iframe>
 ```
 
-The key changes are:
-1. Combined the HTML creation and JavaScript logic into a single cell
-2. Created the container element first
-3. Added event listeners to the actual elements in the container
-4. Returned the container element at the end of the cell
-5. Added better styling for the textarea
+Note: Some websites may block embedding due to X-Frame-Options headers or Content Security Policy restrictions.
 
-Note: Some websites may block embedding due to X-Frame-Options headers or Content Security Policy restrictions.​​​​​​​​​​​​​​​​
+The key changes are:
+1. Added a `viewof` binding for the textarea
+2. Set up proper value handling in the input element
+3. Used the input value directly in the preview display
+4. Connected everything using Observable's reactive runtime
+
+Now you should be able to type or paste iFrame code in the textarea and see it rendered in real-time below!​​​​​​​​​​​​​​​​
