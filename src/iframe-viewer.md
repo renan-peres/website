@@ -11,8 +11,11 @@ import { html } from "htl";
 ```
 
 ```js
-viewof iframeInput = {
-  const form = html`<textarea
+html`
+<div style="font-family: system-ui; padding: 20px;">
+  <p>Enter your HTML/iFrame code below to see it rendered in real-time.</p>
+  <textarea 
+    id="iframeInput" 
     style="
       width: 100%;
       min-height: 100px;
@@ -21,39 +24,43 @@ viewof iframeInput = {
       font-family: monospace;
       border: 1px solid #ccc;
       border-radius: 4px;
-      background: #f8f8f8;
-      color: #333;
     "
-  ><iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe></textarea>`;
-
-  form.oninput = () => {
-    form.value = form.value;
-  };
-  
-  form.value = form.value;
-  return form;
-}
-```
-
-```js echo
-display(
-  html`<div style="
+  ><iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe></textarea>
+  <br />
+  <div id="preview-container" style="
     margin-top: 20px;
     padding: 20px;
     background: #f5f5f5;
     border-radius: 8px;
   ">
     <h3 style="margin: 0 0 10px 0">Preview:</h3>
-    <div style="
+    <div id="iframe-preview" style="
       background: white;
       padding: 20px;
       border-radius: 4px;
       border: 1px solid #ddd;
-    ">
-      ${html([iframeInput])}
-    </div>
-  </div>`
-)
+    "></div>
+  </div>
+</div>
+`
+```
+
+```js
+{
+  const iframeInput = document.getElementById("iframeInput");
+  const iframePreview = document.getElementById("iframe-preview");
+
+  // Function to update preview
+  function updatePreview() {
+    iframePreview.innerHTML = iframeInput.value;
+  }
+
+  // Add event listeners
+  iframeInput.addEventListener("input", updatePreview);
+  
+  // Initial preview
+  updatePreview();
+}
 ```
 
 Try it with these examples:
@@ -86,9 +93,8 @@ Try it with these examples:
 Note: Some websites may block embedding due to X-Frame-Options headers or Content Security Policy restrictions.
 
 The key changes are:
-1. Added a `viewof` binding for the textarea
-2. Set up proper value handling in the input element
-3. Used the input value directly in the preview display
-4. Connected everything using Observable's reactive runtime
-
-Now you should be able to type or paste iFrame code in the textarea and see it rendered in real-time below!​​​​​​​​​​​​​​​​
+1. Used a plain HTML structure with a textarea input
+2. Added real-time preview updating
+3. Improved styling and layout
+4. Separated the JavaScript logic into its own code block
+5. Made the preview update automatically as you type​​​​​​​​​​​​​​​​
