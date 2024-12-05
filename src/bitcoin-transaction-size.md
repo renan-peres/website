@@ -1,4 +1,5 @@
 ---
+theme: dashboard
 index: true
 source: https://observablehq.com/@mbostock/bitcoin-transaction-size
 keywords: live real time data wss streaming stream socket

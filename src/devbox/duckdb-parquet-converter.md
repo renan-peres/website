@@ -2,7 +2,7 @@
 index: true
 ---
 
-# Dataset Profiler and Parquet Converter
+# Parquet Converter
 
 A simple app that profile your datasets and converts it to the parquet format, using DuckDB-wasm under the hood.
 

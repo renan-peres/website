@@ -6,25 +6,34 @@ export default {
   // The pages and sections in the sidebar. If you don’t specify this option,
   // all pages will be listed in alphabetical order. Listing pages explicitly
   // lets you organize them into sections and have unlisted pages.
-  // pages: [
-  //   {
-  //     name: "WebAssembly",
-  //     open: false,
-  //     pages: [
-  //       {name: "DuckDB", path: "/wasm/duckdb"},
-  //       {name: "Pyodide", path: "/wasm/pyodide"},
-  //       {name: "WebR", path: "/wasm/webr"}
-  //     ]
-  //   }
+  pages: [
+    {
+      name: "DevBox",
+      open: true,
+      pages: [
+        {name: "DevBox Playground", path: "/devbox/devbox-payground"},
+        
+        {name: "Pyodide", path: "/devbox/pyodide-autocomplete"},
+        {name: "WebR", path: "/devbox/webr-autocomplete"}
+      ]
+    }
 
-    // ,{
-    //   name: "Reports",
-    //   pages: [
-    //     {name: "Example Report", path: "/example-report"}
-    //   ]
-    // }
+    ,{
+      name: "Data Tools",
+      open: true,
+      pages: [
+        {name: "Parquet Converter", path: "/devbox/duckdb-parquet-converter"}
+      ]
+    }
+
+    ,{
+      name: "Reports",
+      pages: [
+        {name: "Example Report", path: "/example-report"}
+      ]
+    }
     
-  // ],
+  ],
 
   // Content to add to the head of the page, e.g. for a favicon:
   head: '<link rel="icon" href="observable.png" type="image/png" sizes="32x32">',
@@ -38,9 +47,9 @@ export default {
   footer: "", // what to show in the footer (HTML)
   // sidebar: true, // whether to show the sidebar
   // toc: true, // whether to show the table of contents
-  // pager: true, // whether to show previous & next links in the footer
+  // pager: false, // whether to show previous & next links in the footer
   // output: "dist", // path to the output root for build
-  // search: true, // activate search
+  search: true, // activate search
   // linkify: true, // convert URLs in Markdown to links
   // typographer: false, // smart quotes and other typographic improvements
   // preserveExtension: false, // drop .html from URLs

@@ -1,9 +1,10 @@
 ---
+theme: dashboard
 index: true
 keywords: Python, wasm
 ---
 
-# Pyodide Playground
+# Pyodide
 
 ```js
 import { loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.mjs";
@@ -92,7 +93,7 @@ html`
   <p>You can execute any Python code with package support. Enter your code below and click Run.</p>
   <textarea 
     id="code" 
-    style="width: 100%; min-height: 100px; margin-right: 10px; padding: 10px; font-family: monospace;"
+    style="width: 100%; min-height: 200px; margin-right: 10px; padding: 10px; font-family: monospace;"
   >import pandas as pd
 import numpy as np
 
@@ -120,7 +121,7 @@ df
   <br />
   <div>Output:</div>
   <div id="output-container"></div>
-  <textarea id="output" style="width: 100%; min-height: 150px; margin-top: 10px; margin-right: 10px; font-family: monospace;" readonly></textarea>
+  <textarea id="output" style="width: 100%; min-height: 200px; margin-top: 10px; margin-right: 10px; font-family: monospace;" readonly></textarea>
 </div>
 `
 ```
