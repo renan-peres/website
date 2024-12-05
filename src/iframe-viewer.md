@@ -11,71 +11,68 @@ import { html } from "htl";
 ```
 
 ```js
-const view = html`
-  <div style="font-family: system-ui; padding: 20px;">
-    <p>Enter your HTML/iFrame code below and click "Display" to see it rendered.</p>
-    <textarea 
-      id="iframeInput" 
-      style="
-        width: 100%;
-        min-height: 100px;
-        margin-bottom: 10px;
-        padding: 10px;
-        font-family: monospace;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      "
-      placeholder="Paste your iFrame code here..."
-    ></textarea>
-    <button 
-      id="displayButton"
-      style="
-        padding: 8px 16px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
-        margin-bottom: 20px;
-      "
-      onmouseover="this.style.backgroundColor='#45a049'"
-      onmouseout="this.style.backgroundColor='#4CAF50'"
-    >
-      Display iFrame
-    </button>
-    <div id="preview-container" style="
+viewof userInput = html`<textarea
+  style="
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-family: monospace;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  "
+  placeholder="Paste your iFrame code here..."
+></textarea>`
+```
+
+```js
+viewof displayButton = html`<button
+  style="
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+  "
+  onclick=${() => displayButton.dispatchEvent(new CustomEvent("input"))}
+>Display iFrame</button>`
+```
+
+```js
+currentDisplay = {
+  let displayed = "";
+  displayButton;  // Create dependency on button clicks
+  displayed = userInput.value;
+  return displayed;
+}
+```
+
+```js
+display = html`
+<div style="font-family: system-ui; padding: 20px;">
+  <p>Enter your HTML/iFrame code below and click "Display" to see it rendered.</p>
+  ${viewof userInput}
+  ${viewof displayButton}
+  <div style="
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 8px;
+  ">
+    <h3 style="margin: 0 0 10px 0">Preview:</h3>
+    <div style="
+      background: white;
       padding: 20px;
-      background: #f5f5f5;
-      border-radius: 8px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      min-height: 100px;
     ">
-      <h3 style="margin: 0 0 10px 0">Preview:</h3>
-      <div id="iframe-preview" style="
-        background: white;
-        padding: 20px;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-        min-height: 100px;
-      "></div>
+      ${html([currentDisplay])}
     </div>
   </div>
-`;
-
-// Get references to elements
-const iframeInput = view.querySelector("#iframeInput");
-const displayButton = view.querySelector("#displayButton");
-const iframePreview = view.querySelector("#iframe-preview");
-
-// Function to update preview
-function updatePreview() {
-  const inputValue = iframeInput.value.trim();
-  iframePreview.innerHTML = inputValue;
-}
-
-// Add event listener to button
-displayButton.addEventListener("click", updatePreview);
-
-view
+</div>`
 ```
 
 Try it with these examples:
