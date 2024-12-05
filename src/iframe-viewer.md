@@ -11,62 +11,36 @@ import { html } from "htl";
 ```
 
 ```js
-function iframeTester() {
-  const container = html`<div style="font-family: system-ui; padding: 20px;">
-    <p>Enter your HTML/iFrame code below and click "Display" to see it rendered.</p>
-    <textarea 
-      id="input"
-      style="
-        width: 100%;
-        min-height: 100px;
-        margin-bottom: 10px;
-        padding: 10px;
-        font-family: monospace;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      "
-      placeholder="Paste your iFrame code here..."
-    ></textarea>
-    <button
-      style="
-        padding: 8px 16px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
-        margin-bottom: 20px;
-      "
-    >Display iFrame</button>
-    <div style="
-      padding: 20px;
-      background: #f5f5f5;
-      border-radius: 8px;
-    ">
-      <h3 style="margin: 0 0 10px 0">Preview:</h3>
-      <div id="preview" style="
-        background: white;
-        padding: 20px;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-        min-height: 100px;
-      "></div>
-    </div>
-  </div>`;
-
-  const input = container.querySelector("#input");
-  const preview = container.querySelector("#preview");
-  const button = container.querySelector("button");
+html`
+<div style="display: flex; flex-direction: column; gap: 20px; padding: 20px;">
+  <textarea
+    id="input"
+    style="width: 100%; height: 100px; padding: 10px; font-family: monospace;"
+    placeholder="Enter your iFrame code here"
+  ><iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe></textarea>
   
-  button.onclick = () => {
-    preview.innerHTML = input.value;
-  };
+  <button 
+    id="displayBtn"
+    style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+  >
+    Display iFrame
+  </button>
+  
+  <div id="preview"></div>
+</div>
+`
+```
 
-  return container;
-}
+```js
+// Get the elements
+const input = document.querySelector("#input");
+const preview = document.querySelector("#preview");
+const displayBtn = document.querySelector("#displayBtn");
 
-iframeTester()
+// Add click handler
+displayBtn.addEventListener("click", () => {
+  preview.innerHTML = input.value;
+});
 ```
 
 Try it with these examples:
