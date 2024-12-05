@@ -11,68 +11,62 @@ import { html } from "htl";
 ```
 
 ```js
-viewof userInput = html`<textarea
-  style="
-    width: 100%;
-    min-height: 100px;
-    margin-bottom: 10px;
-    padding: 10px;
-    font-family: monospace;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  "
-  placeholder="Paste your iFrame code here..."
-></textarea>`
-```
-
-```js
-viewof displayButton = html`<button
-  style="
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-bottom: 20px;
-  "
-  onclick=${() => displayButton.dispatchEvent(new CustomEvent("input"))}
->Display iFrame</button>`
-```
-
-```js
-currentDisplay = {
-  let displayed = "";
-  displayButton;  // Create dependency on button clicks
-  displayed = userInput.value;
-  return displayed;
-}
-```
-
-```js
-display = html`
-<div style="font-family: system-ui; padding: 20px;">
-  <p>Enter your HTML/iFrame code below and click "Display" to see it rendered.</p>
-  ${viewof userInput}
-  ${viewof displayButton}
-  <div style="
-    padding: 20px;
-    background: #f5f5f5;
-    border-radius: 8px;
-  ">
-    <h3 style="margin: 0 0 10px 0">Preview:</h3>
+function iframeTester() {
+  const container = html`<div style="font-family: system-ui; padding: 20px;">
+    <p>Enter your HTML/iFrame code below and click "Display" to see it rendered.</p>
+    <textarea 
+      id="input"
+      style="
+        width: 100%;
+        min-height: 100px;
+        margin-bottom: 10px;
+        padding: 10px;
+        font-family: monospace;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      "
+      placeholder="Paste your iFrame code here..."
+    ></textarea>
+    <button
+      style="
+        padding: 8px 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-bottom: 20px;
+      "
+    >Display iFrame</button>
     <div style="
-      background: white;
       padding: 20px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-      min-height: 100px;
+      background: #f5f5f5;
+      border-radius: 8px;
     ">
-      ${html([currentDisplay])}
+      <h3 style="margin: 0 0 10px 0">Preview:</h3>
+      <div id="preview" style="
+        background: white;
+        padding: 20px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        min-height: 100px;
+      "></div>
     </div>
-  </div>
-</div>`
+  </div>`;
+
+  const input = container.querySelector("#input");
+  const preview = container.querySelector("#preview");
+  const button = container.querySelector("button");
+  
+  button.onclick = () => {
+    preview.innerHTML = input.value;
+  };
+
+  return container;
+}
+
+iframeTester()
 ```
 
 Try it with these examples:
