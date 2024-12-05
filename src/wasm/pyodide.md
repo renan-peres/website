@@ -98,13 +98,19 @@ import numpy as np
 
 # Create sample data
 df = pd.DataFrame({
-    'Name': ['John', 'Anna', 'Peter', 'Linda'],
-    'Age': [28, 22, 35, 32],
-    'Score': np.random.rand(4)*100
+    'Name': np.random.choice(['John', 'Anna', 'Peter', 'Linda', 'James'], 10),
+    'Age': np.random.randint(20, 60, 10),
+    'Score': np.random.rand(10) * 100,
+    'Date': pd.date_range('2024-01-01', periods=10),
+    'Department': np.random.choice(['Sales', 'IT', 'HR', 'Marketing'], 10),
+    'Salary': np.random.randint(30000, 100000, 10),
+    'Active': np.random.choice([True, False], 10)
 })
 
 # Display the DataFrame
-df</textarea>
+df
+
+</textarea>
   <br />
   <br />
   <button id="runButton" style="padding: 5px 10px;">Run</button>

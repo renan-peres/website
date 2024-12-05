@@ -8,19 +8,21 @@ export default {
   // lets you organize them into sections and have unlisted pages.
   // pages: [
   //   {
-  //     name: "Tools",
+  //     name: "WebAssembly",
+  //     open: false,
   //     pages: [
-  //       {name: "Dataset Profiler", path: "/arrow2parquet"},
-  //       {name: "XLSX Downloader", path: "/xlsx-downloads"}
-  //     ]
-  //   },
-
-  //   {
-  //     name: "Reports",
-  //     pages: [
-  //       {name: "Example Report", path: "/example-report"}
+  //       {name: "DuckDB", path: "/wasm/duckdb"},
+  //       {name: "Pyodide", path: "/wasm/pyodide"},
+  //       {name: "WebR", path: "/wasm/webr"}
   //     ]
   //   }
+
+    // ,{
+    //   name: "Reports",
+    //   pages: [
+    //     {name: "Example Report", path: "/example-report"}
+    //   ]
+    // }
     
   // ],
 
