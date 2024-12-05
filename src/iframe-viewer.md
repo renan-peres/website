@@ -11,33 +11,56 @@ import { html } from "htl";
 ```
 
 ```js
-viewof iframeCode = Inputs.textarea({
-  label: "Enter iframe code",
-  value: '<iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe>',
-  rows: 5,
-  width: 600
-})
-```
-
-```js echo
-display(
-  html`<div style="
+html`
+<div style="font-family: system-ui; padding: 20px;">
+  <p>Enter your HTML/iFrame code below to see it rendered in real-time.</p>
+  <textarea 
+    id="iframeInput" 
+    style="
+      width: 100%;
+      min-height: 100px;
+      margin-right: 10px;
+      padding: 10px;
+      font-family: monospace;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    "
+  ><iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe></textarea>
+  <br />
+  <div id="preview-container" style="
+    margin-top: 20px;
     padding: 20px;
     background: #f5f5f5;
     border-radius: 8px;
-    margin-top: 20px;
   ">
     <h3 style="margin: 0 0 10px 0">Preview:</h3>
-    <div style="
+    <div id="iframe-preview" style="
       background: white;
       padding: 20px;
       border-radius: 4px;
       border: 1px solid #ddd;
-    ">
-      ${html([iframeCode])}
-    </div>
-  </div>`
-)
+    "></div>
+  </div>
+</div>
+`
+```
+
+```js
+{
+  const iframeInput = document.getElementById("iframeInput");
+  const iframePreview = document.getElementById("iframe-preview");
+
+  // Function to update preview
+  function updatePreview() {
+    iframePreview.innerHTML = iframeInput.value;
+  }
+
+  // Add event listeners
+  iframeInput.addEventListener("input", updatePreview);
+  
+  // Initial preview
+  updatePreview();
+}
 ```
 
 Try it with these examples:
@@ -67,10 +90,11 @@ Try it with these examples:
 ></iframe>
 ```
 
-The key changes are:
-1. Changed `testInput` to `iframeCode` for clarity
-2. Used Observable's `Inputs.textarea()` instead of raw HTML
-3. Fixed the template literal syntax in the display section
-4. Changed the way we reference the input in the preview section
+Note: Some websites may block embedding due to X-Frame-Options headers or Content Security Policy restrictions.
 
-Note: Some websites may block embedding due to X-Frame-Options headers or Content Security Policy restrictions.​​​​​​​​​​​​​​​​
+The key changes are:
+1. Used a plain HTML structure with a textarea input
+2. Added real-time preview updating
+3. Improved styling and layout
+4. Separated the JavaScript logic into its own code block
+5. Made the preview update automatically as you type​​​​​​​​​​​​​​​​
