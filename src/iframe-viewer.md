@@ -11,12 +11,27 @@ import { html } from "htl";
 ```
 
 ```js
-viewof testInput = Inputs.textarea({
-  label: "Enter HTML/iFrame code to test",
-  value: '<iframe src="https://example.com" width="100%" height="400" frameborder="0"></iframe>',
-  rows: 5,
-  placeholder: "Paste your iframe or HTML code here..."
-})
+const defaultIframe = `<iframe 
+  src="https://example.com" 
+  width="100%" 
+  height="400" 
+  frameborder="0"
+></iframe>`;
+```
+
+```js
+viewof testInput = html`<textarea 
+  style="
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: monospace;
+    margin-bottom: 10px;
+  "
+  placeholder="Paste your iframe or HTML code here..."
+>${defaultIframe}</textarea>`
 ```
 
 ```js echo
@@ -67,4 +82,12 @@ Try it with these examples:
 ></iframe>
 ```
 
-Note: Some websites may block embedding due to X-Frame-Options headers or Content Security Policy restrictions.​​​​​​​​​​​​​​​​
+Note: Some websites may block embedding due to X-Frame-Options headers or Content Security Policy restrictions.
+
+The key changes are:
+1. Added a default iframe constant
+2. Created a proper viewof binding for the textarea input
+3. Used basic HTML textarea instead of Inputs.textarea for better compatibility
+4. Added styling directly to the textarea element
+
+Now you should see an input area where you can paste iframe code and see it rendered below in real-time.​​​​​​​​​​​​​​​​
