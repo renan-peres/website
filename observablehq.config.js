@@ -25,11 +25,11 @@ export default {
       open: true,
       pages: [
         {name: "Stock & Crypto Market", path: "/finance/stock-prices"},
-        {name: "Mortgage Rates", path: "/finance/mortgage-rates"},
         {name: "Macro Indicators", path: "/finance/macro-indicators"},
-        {name: "U.S. Monetary Base", path: "/finance/monetary-base"},
-        {name: "Foreign Exchange Market", path: "/finance/fx-market"},
-        {name: "Portfolio Builder", path: "/finance/portfolio-builde"}
+        // {name: "U.S. Monetary Base", path: "/finance/monetary-base"},
+        // {name: "Foreign Exchange Market", path: "/finance/fx-market"},
+        // {name: "Portfolio Builder", path: "/finance/portfolio-builde"}
+        {name: "Mortgage Rates", path: "/finance/mortgage-rates"}
       ]
     }
 
