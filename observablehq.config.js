@@ -11,10 +11,10 @@ export default {
       name: "DevBox",
       open: true,
       pages: [
-        {name: "Playground", path: "/devbox/devbox-payground"},
-        {name: "DuckDB", path: "/devbox/duckdb-autocomplete"},
-        {name: "WebR", path: "/devbox/webr-autocomplete"},
-        {name: "Pyodide", path: "/devbox/pyodide-autocomplete"}
+        {name: "Playground", path: "/devbox/devbox-playground"},
+        {name: "DuckDB", path: "/devbox/duckdb"},
+        {name: "WebR", path: "/devbox/webr"},
+        {name: "Pyodide", path: "/devbox/pyodide"}
       ]
     }
     
