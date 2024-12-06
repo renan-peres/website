@@ -11,7 +11,7 @@ const data = view(Inputs.table(penguins, {select: false}));
 const datasetname = "penguins";
 ```
 
-```js echo
+```js
 import * as XLSX from "npm:xlsx";
 display(
   Inputs.button(`Download ${datasetname}.xlsx`, {

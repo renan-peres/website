@@ -12,39 +12,34 @@ export default {
       open: true,
       pages: [
         {name: "Playground", path: "/devbox/devbox-playground"},
-        {name: "DuckDB", path: "/devbox/duckdb"},
+        {name: "DuckDB: Parquet Converter", path: "/devbox/duckdb-parquet-converter"},
         {name: "WebR", path: "/devbox/webr"},
-        {name: "Pyodide", path: "/devbox/pyodide"}
+        {name: "Pyodide", path: "/devbox/pyodide"},
+        {name: "Google Sheets Connector", path: "/devbox/google-sheets"},
+        {name: "Excel Downloader", path: "/devbox/excel-downloader"}
       ]
     }
     
-        ,{
-          name: "Data Tools",
-          open: true,
-          pages: [
-            {name: "Parquet Converter", path: "/data-tools/duckdb-parquet-converter"},
-            {name: "Google Sheets", path: "/data-tools/google-sheets"},
-            {name: "XLSX Downloader", path: "/data-tools/xlsx-downloads"}
-          ]
-        }
-
     ,{
       name: "Finance",
       open: true,
       pages: [
-        {name: "Stock Prices", path: "/finance/stock-prices"},
+        {name: "Stock & Crypto Market", path: "/finance/stock-prices"},
         {name: "Mortgage Rates", path: "/finance/mortgage-rates"},
-        {name: "Portfolio Builder", path: "/finance/portfolio-builder"}
+        {name: "Macro Indicators", path: "/finance/macro-indicators"},
+        {name: "U.S. Monetary Base", path: "/finance/monetary-base"},
+        {name: "Foreign Exchange Market", path: "/finance/fx-market"},
+        {name: "Portfolio Builder", path: "/finance/portfolio-builde"}
       ]
     }
 
     ,{
-      name: "Data Analysis",
+      name: "Analytics",
       open: true,
       pages: [
-        {name: "Highcharter", path: "/data-analysis/highcharts"},
-        {name: "AG Grid", path: "/data-analysis/ag-grid"},
-        {name: "Tabulator", path: "/data-analysis/tabulator"}
+        {name: "Highcharter", path: "/analytics/highcharts"},
+        {name: "AG Grid", path: "/analytics/ag-grid"},
+        {name: "Tabulator", path: "/analytics/tabulator"}
       ]
     }
     
