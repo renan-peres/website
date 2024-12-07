@@ -246,6 +246,8 @@ const chart = Plot.plot({
 display(chart);
 ```
 
+---
+
 ## Trading Chart
 
 ```js
