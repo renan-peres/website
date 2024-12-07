@@ -6,7 +6,7 @@ source: https://observablehq.com/@mbostock/bitcoin-transaction-size
 keywords: live real time data wss streaming stream socket
 ---
 
-# Stock & Crypto Prices
+# Stock and Crypto Market
 ```js
 import {datetime} from "../components/datetime.js";
 ```
@@ -15,26 +15,14 @@ import {datetime} from "../components/datetime.js";
   <div id="datetime"></div>
 </div>
 
-- Crypto: [Bitcoin Ticker](https://codepen.io/HebleV/pen/JygRjL) & [BitFinex](https://docs.bitfinex.com/docs/ws-websocket-checksum) | [CoinAPI](https://docs.coinapi.io/market-data/how-to-guides/real-time-trades-stream-using-websocket-with-different-languages) | [Blockchain](https://blockchain.info/api/api_websocket) | [Polygon](https://polygon.io/docs/stocks/getting-started)
+- Crypto: [CoinAPI](https://docs.coinapi.io/market-data/how-to-guides/real-time-trades-stream-using-websocket-with-different-languages) | [Bitcoin Ticker](https://codepen.io/HebleV/pen/JygRjL) & [BitFinex](https://docs.bitfinex.com/docs/ws-websocket-checksum) | [Blockchain](https://blockchain.info/api/api_websocket) | [Polygon](https://polygon.io/docs/stocks/getting-started)
 - Stocks: [TwelveData](https://twelvedata.com/account/api-playground)
 
 ---
 
 ```js
 // First cell - Crypto WebSocket and price observers
-// Bitfinex WebSocket for BTC
-var bitfinexWs = new WebSocket("wss://api.bitfinex.com/ws/2");
-
-bitfinexWs.onopen = function() {
-    bitfinexWs.send(JSON.stringify({
-        "event": "subscribe",
-        "channel": "ticker",
-        "pair": "tBTCUSD",
-        "freq": "F0"
-    }));
-};
-
-// CoinAPI WebSocket for ETH and SOL
+// CoinAPI WebSocket for BTC, ETH, SOL and XRP
 var coinApiWs = new WebSocket('wss://ws.coinapi.io/v1/');
 
 coinApiWs.onopen = function() {
@@ -43,22 +31,28 @@ coinApiWs.onopen = function() {
         "apikey": "86D96303-EA63-4B03-9863-B94D6F809010",
         "subscribe_data_type": ["trade"],
         "subscribe_filter_symbol_id": [
+            "BINANCE_SPOT_BTC_USDT$",
             "BINANCE_SPOT_ETH_USDT$",
-            "BINANCE_SPOT_SOL_USDT$"
+            "BINANCE_SPOT_SOL_USDT$",
+            "BINANCE_SPOT_XRP_USDT$"
         ]
     }));
 };
 
-// Bitcoin price from Bitfinex
+// Bitcoin price from CoinAPI
 const btc = Generators.observe((notify) => {
     const messaged = (msg) => {
-        const response = JSON.parse(msg.data);
-        if (Array.isArray(response) && response[1] && Array.isArray(response[1])) {
-            notify(response[1][6]); // Last price
+        try {
+            const data = JSON.parse(msg.data);
+            if (data.type === "trade" && data.symbol_id.includes("BTC_USDT")) {
+                notify(parseFloat(data.price)); // Trade price
+            }
+        } catch (error) {
+            console.error('Error parsing BTC price:', error);
         }
     };
-    bitfinexWs.addEventListener("message", messaged);
-    return () => bitfinexWs.removeEventListener("message", messaged);
+    coinApiWs.addEventListener("message", messaged);
+    return () => coinApiWs.removeEventListener("message", messaged);
 });
 
 // ETH price from CoinAPI
@@ -93,14 +87,29 @@ const sol = Generators.observe((notify) => {
     return () => coinApiWs.removeEventListener("message", messaged);
 });
 
+// XRP price from CoinAPI
+const xrp = Generators.observe((notify) => {
+    const messaged = (msg) => {
+        try {
+            const data = JSON.parse(msg.data);
+            if (data.type === "trade" && data.symbol_id.includes("XRP_USDT")) {
+                notify(parseFloat(data.price));
+            }
+        } catch (error) {
+            console.error('Error parsing XRP price:', error);
+        }
+    };
+    coinApiWs.addEventListener("message", messaged);
+    return () => coinApiWs.removeEventListener("message", messaged);
+});
+
 // Error handling for CoinAPI
 coinApiWs.onerror = function(error) {
     console.error('CoinAPI WebSocket error:', error);
 };
 
-// Clean up WebSocket connections
+// Clean up WebSocket connection
 invalidation.then(() => {
-    bitfinexWs.close();
     coinApiWs.close();
 });
 ```
@@ -204,10 +213,11 @@ const sizes = Generators.observe((notify) => {
 
 ---
 
-## Crypto
-<div class="grid grid-cols-3 gap-4 mt-4">
+## Crypto (Real-Time Prices)
+
+<div class="grid grid-cols-4 gap-4 mt-4">
     <div class="card">
-        <h2>Bitcoin (BTC/USD)</h2>
+        <h2>Bitcoin (BTC/USDT)</h2>
         <div class="big">${btc?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
     </div>
     <div class="card">
@@ -218,9 +228,145 @@ const sizes = Generators.observe((notify) => {
         <h2>Solana (SOL/USDT)</h2>
         <div class="big">${sol?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
     </div>
+    <div class="card">
+        <h2>Ripple (XRP/USDT)</h2>
+        <div class="big">${xrp?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
+    </div>
 </div>
 
-This is a realtime histogram of the size of recent unconfirmed bitcoin transactions. Transactions bigger than 1,000KB are included in the rightmost bin.
+```js
+// Import Highcharts
+import Highcharts from "npm:highcharts";
+
+// Create selector and container
+const wrapper = html`
+  <div>
+    <select style="margin-bottom: 10px; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+      <option value="BTC">Bitcoin (BTC/USDT)</option>
+      <option value="ETH">Ethereum (ETH/USDT)</option>
+      <option value="SOL">Solana (SOL/USDT)</option>
+      <option value="XRP">Ripple (XRP/USDT)</option>
+    </select>
+    <div id="chart-container"></div>
+  </div>
+`;
+
+const selector = wrapper.querySelector('select');
+const chartContainer = wrapper.querySelector('#chart-container');
+display(wrapper);
+
+// Initialize chart with selected cryptocurrency
+const chart = Highcharts.chart(chartContainer, {
+  chart: {
+    type: 'spline',
+    animation: false,
+    height: 500
+  },
+  title: {
+    text: 'Cryptocurrency Real-time Price'
+  },
+  xAxis: {
+    type: 'datetime',
+    labels: {
+      format: '{value:%H:%M:%S}',
+      rotation: -45
+    },
+    tickPixelInterval: 100
+  },
+  yAxis: {
+    title: {
+      text: 'Price (USD)'
+    },
+    labels: {
+      format: '${value:,.2f}'
+    },
+    gridLineWidth: 1
+  },
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br/>',
+    pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>${point.y:,.2f}'
+  },
+  legend: {
+    enabled: true
+  },
+  series: [{
+    name: 'BTC/USDT',
+    data: [],
+    color: '#F7931A',
+    marker: {
+      enabled: false
+    }
+  }]
+});
+
+// WebSocket connection
+const ws = new WebSocket('wss://ws.coinapi.io/v1/');
+
+ws.onopen = () => {
+  console.log("WebSocket Connected");
+  ws.send(JSON.stringify({
+    "type": "hello",
+    "apikey": "86D96303-EA63-4B03-9863-B94D6F809010",
+    "subscribe_data_type": ["trade"],
+    "subscribe_filter_symbol_id": [
+      "BINANCE_SPOT_BTC_USDT$",
+      "BINANCE_SPOT_ETH_USDT$",
+      "BINANCE_SPOT_SOL_USDT$",
+      "BINANCE_SPOT_XRP_USDT$"
+    ]
+  }));
+};
+
+// Handle dropdown changes
+selector.addEventListener('change', (event) => {
+  const selectedCrypto = event.target.value;
+  const colors = {
+    BTC: '#F7931A',
+    ETH: '#627EEA',
+    SOL: '#00FFA3',
+    XRP: '#23292F'
+  };
+  
+  // Update chart title and series
+  chart.setTitle({ text: `${selectedCrypto}/USDT (Real-time Price)` });
+  chart.series[0].update({
+    name: `${selectedCrypto}/USDT`,
+    data: [],
+    color: colors[selectedCrypto]
+  });
+});
+
+ws.onmessage = (event) => {
+  try {
+    const data = JSON.parse(event.data);
+    if (data.type === "trade") {
+      const selectedCrypto = selector.value;
+      if (data.symbol_id.includes(`${selectedCrypto}_USDT`)) {
+        const time = new Date(data.time_exchange).getTime();
+        const price = parseFloat(data.price);
+        
+        const series = chart.series[0];
+        series.addPoint([time, price], true, series.data.length > 100);
+      }
+    }
+  } catch (error) {
+    console.error('Error processing message:', error);
+  }
+};
+
+ws.onerror = (error) => {
+  console.error('WebSocket error:', error);
+};
+
+// Cleanup
+invalidation.then(() => {
+  if (ws.readyState === WebSocket.OPEN) {
+    ws.close();
+  }
+});
+```
+
+<!-- This is a realtime histogram of the size of recent unconfirmed bitcoin transactions. Transactions bigger than 1,000KB are included in the rightmost bin.
 
 ```js
 // Fourth cell - Chart
@@ -244,21 +390,41 @@ const chart = Plot.plot({
 });
 
 display(chart);
-```
+``` -->
 
 ---
 
 ## Trading Chart
 
 ```js
-html`
-  <div style="width: 100%; height: 600px; position: relative;">
-    <iframe
-      src="https://trading-api-javascript.netlify.app"
-      style="width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0;"
-    ></iframe>
+// Trading Chart Section with Fullscreen Button
+const tradingChartSection = html`
+  <div>
+    <button 
+      style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+      onclick=${(e) => {
+        const iframe = e.target.parentElement.querySelector('iframe');
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+          iframe.msRequestFullscreen();
+        }
+      }}>
+      Fullscreen
+    </button>
+    <div style="width: 100%; height: 600px; position: relative;">
+      <iframe
+        src="https://trading-api-javascript.netlify.app"
+        style="width: 100%; height: 1000px; border: none; position: absolute; top: 0; left: 0;"
+        allow="fullscreen"
+      ></iframe>
+    </div>
   </div>
-`
+`;
+
+display(tradingChartSection);
 ```
 
   <!-- Polygon API -->

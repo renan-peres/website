@@ -24,7 +24,7 @@ export default {
       name: "Finance",
       open: true,
       pages: [
-        {name: "Stock & Crypto Market", path: "/finance/stock-crypto-prices"},
+        {name: "Stock & Crypto Market", path: "/finance/stock-crypto-viewer"},
         {name: "Mortgage Rates", path: "/finance/mortgage-rates"},
         {name: "Macro Indicators", path: "/finance/macro-indicators"},
         {name: "U.S. Monetary Base", path: "/finance/monetary-base"},
