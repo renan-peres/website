@@ -248,6 +248,17 @@ display(chart);
 
 ## Trading Chart
 
+```js
+html`
+  <div style="width: 100%; height: 600px; position: relative;">
+    <iframe
+      src="https://raw.githack.com/renan-peres/observable/refs/heads/main/src/finance/trading-chart.html"
+      style="width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0;"
+    ></iframe>
+  </div>
+`
+```
+
   <!-- Polygon API -->
   
   <!-- ```js
