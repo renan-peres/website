@@ -235,106 +235,404 @@ const sizes = Generators.observe((notify) => {
 </div>
 
 ```js
-// Import Highcharts
+// Import Highcharts and modules
 import Highcharts from "npm:highcharts";
+await import("npm:highcharts/modules/stock");
 
-// Create selector and container
-const wrapper = html`
-  <div>
-    <select style="margin-bottom: 10px; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-      <option value="BTC">Bitcoin (BTC/USDT)</option>
-      <option value="ETH">Ethereum (ETH/USDT)</option>
-      <option value="SOL">Solana (SOL/USDT)</option>
-      <option value="XRP">Ripple (XRP/USDT)</option>
-    </select>
-    <div id="chart-container"></div>
+// Create responsive dashboard container
+// Only showing the modified container part - rest of the code remains exactly the same
+
+const dashboard = html`
+  <div style="background-color: #ffffff; padding: 20px;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <div style="
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 1fr 1fr;
+      /* Increased breakpoint and using min-width instead of max-width */
+      @media screen and (max-width: 1024px) {
+        grid-template-columns: 1fr;
+      }
+    ">
+      <!-- Real-time chart container -->
+      <div style="
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+      ">
+        <select style="
+          margin-bottom: 10px;
+          padding: 8px;
+          border-radius: 4px;
+          border: 1px solid #cccccc;
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+        ">
+          <option value="BTC">Bitcoin (BTC/USDT)</option>
+          <option value="ETH">Ethereum (ETH/USDT)</option>
+          <option value="SOL">Solana (SOL/USDT)</option>
+          <option value="XRP">Ripple (XRP/USDT)</option>
+        </select>
+        <div id="realtime-chart" style="
+          width: 100%;
+          height: 500px;
+          box-sizing: border-box;
+        "></div>
+      </div>
+      
+      <!-- Historical chart container -->
+      <div style="
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+      ">
+        <div id="historical-chart" style="
+          width: 100%;
+          height: 500px;
+          box-sizing: border-box;
+        "></div>
+      </div>
+    </div>
   </div>
 `;
 
-const selector = wrapper.querySelector('select');
-const chartContainer = wrapper.querySelector('#chart-container');
-display(wrapper);
+// Get container references
+const selector = dashboard.querySelector('select');
+const realtimeContainer = dashboard.querySelector('#realtime-chart');
+const historicalContainer = dashboard.querySelector('#historical-chart');
+display(dashboard);
 
-// Initialize chart with selected cryptocurrency
-const chart = Highcharts.chart(chartContainer, {
+// Add responsive handling to charts
+function updateChartSizes() {
+  realtimeChart.reflow();
+  historicalChart.reflow();
+}
+
+// Listen for window resize events
+window.addEventListener('resize', updateChartSizes);
+
+// Function to get full crypto name
+function getCryptoFullName(symbol) {
+  const cryptoNames = {
+    'BTC': 'Bitcoin',
+    'ETH': 'Ethereum',
+    'SOL': 'Solana',
+    'XRP': 'Ripple'
+  };
+  return cryptoNames[symbol] || symbol;
+}
+
+// Constants
+const TICK_INTERVAL = 15000; // 15 seconds for labels
+const DURATION = 60000; // 1 minute
+let startTime = null;
+let priceData = [];
+
+// Create real-time chart
+const initialCrypto = selector.value;
+const realtimeChart = Highcharts.chart(realtimeContainer, {
   chart: {
-    type: 'spline',
+    type: 'line',
     animation: false,
-    height: 500
+    style: {
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    },
+    reflow: true
   },
   title: {
-    text: 'Cryptocurrency Real-time Price'
+    text: `${getCryptoFullName(initialCrypto)} (${initialCrypto}/USDT) Real-time Price`
   },
   xAxis: {
     type: 'datetime',
+    tickInterval: TICK_INTERVAL,
     labels: {
-      format: '{value:%H:%M:%S}',
-      rotation: -45
+      format: '{value:%H:%M:%S}'
     },
-    tickPixelInterval: 100
+    gridLineColor: '#f3f3f3'
   },
   yAxis: {
     title: {
       text: 'Price (USD)'
     },
+    gridLineColor: '#f3f3f3',
     labels: {
-      format: '${value:,.2f}'
-    },
-    gridLineWidth: 1
-  },
-  tooltip: {
-    headerFormat: '<b>{series.name}</b><br/>',
-    pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>${point.y:,.2f}'
-  },
-  legend: {
-    enabled: true
+      formatter: function() {
+        return '$' + this.value.toLocaleString();
+      }
+    }
   },
   series: [{
-    name: 'BTC/USDT',
+    name: `${initialCrypto}/USDT`,
     data: [],
-    color: '#F7931A',
-    marker: {
-      enabled: false
+    color: '#2f7ed8',
+    step: 'left'
+  }],
+  legend: {
+    enabled: false
+  },
+  plotOptions: {
+    series: {
+      animation: false,
+      marker: {
+        enabled: false
+      }
     }
+  },
+  responsive: {
+    rules: [{
+      condition: {
+        maxWidth: 500
+      },
+      chartOptions: {
+        yAxis: {
+          labels: {
+            align: 'left',
+            x: 0,
+            y: -5
+          }
+        }
+      }
+    }]
+  }
+});
+
+// Sample flags data
+const flags = [
+  {
+    x: Date.UTC(2024, 0, 1),
+    title: 'E1',
+    text: 'Bitcoin ETF Approval'
+  },
+  {
+    x: Date.UTC(2024, 2, 15),
+    title: 'E2',
+    text: 'Ethereum Network Upgrade'
+  }
+];
+
+// Store original price data globally
+let historicalPriceData = {
+  btc: [],
+  eth: [],
+  sol: [],
+  xrp: []
+};
+
+// Create historical chart
+const historicalChart = Highcharts.stockChart(historicalContainer, {
+  chart: {
+    style: {
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    },
+    reflow: true
+  },
+  title: {
+    text: 'Cryptocurrency Performance Comparison'
+  },
+  subtitle: {
+    text: 'Indexed to 100'
+  },
+  rangeSelector: {
+    buttons: [{
+      type: 'month',
+      count: 1,
+      text: '1m'
+    }, {
+      type: 'month',
+      count: 3,
+      text: '3m'
+    }, {
+      type: 'month',
+      count: 6,
+      text: '6m'
+    }, {
+      type: 'ytd',
+      text: 'YTD'
+    }, {
+      type: 'year',
+      count: 1,
+      text: '1y'
+    }, {
+      type: 'all',
+      text: 'All'
+    }],
+    selected: 2,
+    inputEnabled: true
+  },
+  yAxis: [{
+    labels: {
+      format: '{value}%'
+    },
+    title: {
+      text: 'Performance (Indexed to 100)'
+    },
+    height: '60%',
+    lineWidth: 2,
+    gridLineColor: '#f3f3f3',
+    plotLines: [{
+      value: 100,
+      color: '#999999',
+      dashStyle: 'dash',
+      width: 1,
+      label: {
+        text: 'Base Value'
+      }
+    }]
+  }, {
+    top: '65%',
+    height: '35%',
+    offset: 0,
+    gridLineColor: '#f3f3f3'
+  }],
+  tooltip: {
+    shared: true,
+    split: false,
+    formatter: function() {
+      let points = this.points || [];
+      points.sort((a, b) => b.y - a.y);
+      
+      let tooltipText = '<b>' + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '</b><br/>';
+      
+      points.forEach(point => {
+        const series = point.series;
+        const symbolKey = series.options.id;
+        const originalPrice = historicalPriceData[symbolKey].find(p => p[0] === point.x);
+        const price = originalPrice ? originalPrice[1] : null;
+        
+        tooltipText += `<span style="color:${series.color}">${series.name}</span>: ` +
+          `<b>${point.y.toFixed(2)}%</b> ` +
+          `(${price ? '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'N/A'})<br/>`;
+      });
+      
+      return tooltipText;
+    }
+  },
+  responsive: {
+    rules: [{
+      condition: {
+        maxWidth: 500
+      },
+      chartOptions: {
+        rangeSelector: {
+          inputEnabled: false
+        }
+      }
+    }]
+  },
+  series: [{
+    type: 'line',
+    name: 'BTC/USDT',
+    id: 'btc',
+    color: '#F7931A',
+    data: []
+  }, {
+    type: 'line',
+    name: 'ETH/USDT',
+    id: 'eth',
+    color: '#627EEA',
+    data: []
+  }, {
+    type: 'line',
+    name: 'SOL/USDT',
+    id: 'sol',
+    color: '#00FFA3',
+    data: []
+  }, {
+    type: 'line',
+    name: 'XRP/USDT',
+    id: 'xrp',
+    color: '#23292F',
+    data: []
+  }, {
+    type: 'flags',
+    data: flags,
+    onSeries: 'btc',
+    shape: 'circlepin',
+    width: 16
   }]
 });
 
-// WebSocket connection
+// Function to update chart
+function updateRealtimeChart(price, timestamp) {
+  if (!price) return;
+
+  if (!startTime) {
+    startTime = timestamp;
+  }
+
+  priceData.push([timestamp, price]);
+  
+  const cutoffTime = timestamp - DURATION;
+  priceData = priceData.filter(point => point[0] >= cutoffTime);
+  
+  realtimeChart.series[0].setData(priceData, true, false, false);
+  
+  const windowEnd = Math.max(timestamp, startTime + DURATION);
+  realtimeChart.xAxis[0].setExtremes(
+    windowEnd - DURATION,
+    windowEnd
+  );
+}
+
+// Function to normalize data
+function normalizeData(data) {
+  if (data.length === 0) return [];
+  const baseValue = data[0][1];
+  return data.map(point => [
+    point[0],
+    (point[1] / baseValue) * 100
+  ]);
+}
+
+// Function to fetch historical data
+async function fetchHistoricalData(symbol) {
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() - 6);
+
+  try {
+    const response = await fetch(
+      `https://api.twelvedata.com/time_series?apikey=${API_KEY}&interval=1day&symbol=${symbol}/USD&start_date=${startDate.toISOString().split('T')[0]}&end_date=${endDate.toISOString().split('T')[0]}`
+    );
+    const data = await response.json();
+    
+    if (data.values) {
+      return data.values.map(item => [
+        new Date(item.datetime).getTime(),
+        parseFloat(item.close)
+      ]).reverse();
+    }
+    return [];
+  } catch (error) {
+    console.error(`Error fetching ${symbol} data:`, error);
+    return [];
+  }
+}
+
+// WebSocket setup and handling
 const ws = new WebSocket('wss://ws.coinapi.io/v1/');
 
 ws.onopen = () => {
-  console.log("WebSocket Connected");
+  console.log('WebSocket Connected');
+  const selectedCrypto = selector.value;
   ws.send(JSON.stringify({
     "type": "hello",
     "apikey": "86D96303-EA63-4B03-9863-B94D6F809010",
     "subscribe_data_type": ["trade"],
     "subscribe_filter_symbol_id": [
-      "BINANCE_SPOT_BTC_USDT$",
-      "BINANCE_SPOT_ETH_USDT$",
-      "BINANCE_SPOT_SOL_USDT$",
-      "BINANCE_SPOT_XRP_USDT$"
+      `BINANCE_SPOT_${selectedCrypto}_USDT$`
     ]
   }));
 };
-
-// Handle dropdown changes
-selector.addEventListener('change', (event) => {
-  const selectedCrypto = event.target.value;
-  const colors = {
-    BTC: '#F7931A',
-    ETH: '#627EEA',
-    SOL: '#00FFA3',
-    XRP: '#23292F'
-  };
-  
-  // Update chart title and series
-  chart.setTitle({ text: `${selectedCrypto}/USDT (Real-time Price)` });
-  chart.series[0].update({
-    name: `${selectedCrypto}/USDT`,
-    data: [],
-    color: colors[selectedCrypto]
-  });
-});
 
 ws.onmessage = (event) => {
   try {
@@ -342,11 +640,8 @@ ws.onmessage = (event) => {
     if (data.type === "trade") {
       const selectedCrypto = selector.value;
       if (data.symbol_id.includes(`${selectedCrypto}_USDT`)) {
-        const time = new Date(data.time_exchange).getTime();
-        const price = parseFloat(data.price);
-        
-        const series = chart.series[0];
-        series.addPoint([time, price], true, series.data.length > 100);
+        const timestamp = new Date(data.time_exchange).getTime();
+        updateRealtimeChart(parseFloat(data.price), timestamp);
       }
     }
   } catch (error) {
@@ -354,15 +649,57 @@ ws.onmessage = (event) => {
   }
 };
 
-ws.onerror = (error) => {
-  console.error('WebSocket error:', error);
-};
+// Handle cryptocurrency selection changes
+selector.addEventListener('change', (event) => {
+  const selectedCrypto = event.target.value;
+  
+  startTime = null;
+  priceData = [];
+  realtimeChart.series[0].setData([], true);
+  
+  realtimeChart.setTitle({
+    text: `${getCryptoFullName(selectedCrypto)} (${selectedCrypto}/USDT) Real-time Price`
+  });
+  realtimeChart.series[0].update({
+    name: `${selectedCrypto}/USDT`
+  });
+  
+  if (ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify({
+      "type": "hello",
+      "apikey": "86D96303-EA63-4B03-9863-B94D6F809010",
+      "subscribe_data_type": ["trade"],
+      "subscribe_filter_symbol_id": [
+        `BINANCE_SPOT_${selectedCrypto}_USDT$`
+      ]
+    }));
+  }
+});
+
+// Fetch initial historical data
+Promise.all([
+  fetchHistoricalData('BTC'),
+  fetchHistoricalData('ETH'),
+  fetchHistoricalData('SOL'),
+  fetchHistoricalData('XRP')
+]).then(([btcData, ethData, solData, xrpData]) => {
+  historicalPriceData.btc = btcData;
+  historicalPriceData.eth = ethData;
+  historicalPriceData.sol = solData;
+  historicalPriceData.xrp = xrpData;
+  
+  historicalChart.series[0].setData(normalizeData(btcData));
+  historicalChart.series[1].setData(normalizeData(ethData));
+  historicalChart.series[2].setData(normalizeData(solData));
+  historicalChart.series[3].setData(normalizeData(xrpData));
+});
 
 // Cleanup
 invalidation.then(() => {
   if (ws.readyState === WebSocket.OPEN) {
     ws.close();
   }
+  window.removeEventListener('resize', updateChartSizes);
 });
 ```
 
