@@ -1,11 +1,12 @@
 ---
 theme: dashboard
 index: true
+toc: false
 source: https://observablehq.com/@mbostock/bitcoin-transaction-size
 keywords: live real time data wss streaming stream socket
 ---
 
-# Stock Market Prices
+# Stock & Crypto Prices
 ```js
 import {datetime} from "../components/datetime.js";
 ```
@@ -14,19 +15,18 @@ import {datetime} from "../components/datetime.js";
   <div id="datetime"></div>
 </div>
 
+- Crypto: [Bitcoin Ticker](https://codepen.io/HebleV/pen/JygRjL) & [BitFinex](https://docs.bitfinex.com/docs/ws-websocket-checksum) | [CoinAPI](https://docs.coinapi.io/market-data/how-to-guides/real-time-trades-stream-using-websocket-with-different-languages) | [Blockchain](https://blockchain.info/api/api_websocket) | [Polygon](https://polygon.io/docs/stocks/getting-started)
+- Stocks: [TwelveData](https://twelvedata.com/account/api-playground)
+
 ---
 
-Data: [Blockchain](https://blockchain.info/api/api_websocket)
-and: [Bitcoin Ticker](https://codepen.io/HebleV/pen/JygRjL)
-and: [Polygon](https://polygon.io/docs/stocks/getting-started)
-and: [TwelveData](https://twelvedata.com/account/api-playground)
-
 ```js
-// First cell - Bitcoin WebSocket and price observers
-var ws = new WebSocket("wss://api.bitfinex.com/ws/2");
+// First cell - Crypto WebSocket and price observers
+// Bitfinex WebSocket for BTC
+var bitfinexWs = new WebSocket("wss://api.bitfinex.com/ws/2");
 
-ws.onopen = function() {
-    ws.send(JSON.stringify({
+bitfinexWs.onopen = function() {
+    bitfinexWs.send(JSON.stringify({
         "event": "subscribe",
         "channel": "ticker",
         "pair": "tBTCUSD",
@@ -34,40 +34,75 @@ ws.onopen = function() {
     }));
 };
 
+// CoinAPI WebSocket for ETH and SOL
+var coinApiWs = new WebSocket('wss://ws.coinapi.io/v1/');
+
+coinApiWs.onopen = function() {
+    coinApiWs.send(JSON.stringify({
+        "type": "hello",
+        "apikey": "86D96303-EA63-4B03-9863-B94D6F809010",
+        "subscribe_data_type": ["trade"],
+        "subscribe_filter_symbol_id": [
+            "BINANCE_SPOT_ETH_USDT$",
+            "BINANCE_SPOT_SOL_USDT$"
+        ]
+    }));
+};
+
+// Bitcoin price from Bitfinex
 const btc = Generators.observe((notify) => {
     const messaged = (msg) => {
         const response = JSON.parse(msg.data);
         if (Array.isArray(response) && response[1] && Array.isArray(response[1])) {
-            notify(response[1][6]);
+            notify(response[1][6]); // Last price
         }
     };
-    ws.addEventListener("message", messaged);
-    return () => ws.removeEventListener("message", messaged);
+    bitfinexWs.addEventListener("message", messaged);
+    return () => bitfinexWs.removeEventListener("message", messaged);
 });
 
-const bid = Generators.observe((notify) => {
+// ETH price from CoinAPI
+const eth = Generators.observe((notify) => {
     const messaged = (msg) => {
-        const response = JSON.parse(msg.data);
-        if (Array.isArray(response) && response[1] && Array.isArray(response[1])) {
-            notify(response[1][0]);
+        try {
+            const data = JSON.parse(msg.data);
+            if (data.type === "trade" && data.symbol_id.includes("ETH_USDT")) {
+                notify(parseFloat(data.price)); // Trade price
+            }
+        } catch (error) {
+            console.error('Error parsing ETH price:', error);
         }
     };
-    ws.addEventListener("message", messaged);
-    return () => ws.removeEventListener("message", messaged);
+    coinApiWs.addEventListener("message", messaged);
+    return () => coinApiWs.removeEventListener("message", messaged);
 });
 
-const ask = Generators.observe((notify) => {
+// SOL price from CoinAPI
+const sol = Generators.observe((notify) => {
     const messaged = (msg) => {
-        const response = JSON.parse(msg.data);
-        if (Array.isArray(response) && response[1] && Array.isArray(response[1])) {
-            notify(response[1][2]);
+        try {
+            const data = JSON.parse(msg.data);
+            if (data.type === "trade" && data.symbol_id.includes("SOL_USDT")) {
+                notify(parseFloat(data.price)); // Trade price
+            }
+        } catch (error) {
+            console.error('Error parsing SOL price:', error);
         }
     };
-    ws.addEventListener("message", messaged);
-    return () => ws.removeEventListener("message", messaged);
+    coinApiWs.addEventListener("message", messaged);
+    return () => coinApiWs.removeEventListener("message", messaged);
 });
 
-invalidation.then(() => ws.close());
+// Error handling for CoinAPI
+coinApiWs.onerror = function(error) {
+    console.error('CoinAPI WebSocket error:', error);
+};
+
+// Clean up WebSocket connections
+invalidation.then(() => {
+    bitfinexWs.close();
+    coinApiWs.close();
+});
 ```
 
 ```js
@@ -143,34 +178,47 @@ const sizes = Generators.observe((notify) => {
 });
 ```
 
+## Stocks
+
 ```html
 <!-- Fifth cell - Display HTML -->
-<div class="grid grid-cols-3 gap-4">
-  <div class="card">
-    <h2>Bitcoin (BTC/USD)</h2>
-    <div class="big">${btc?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
-  </div>
-</div>
-
 <div class="grid grid-cols-4 gap-4 mt-4">
-  <div class="card">
-    <h2>Meta (META)</h2>
+    <div class="card">
+        <h2>Meta (META)</h2>
     <div class="big">${meta?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
   </div>
   <div class="card">
-    <h2>Apple (AAPL)</h2>
+      <h2>Apple (AAPL)</h2>
     <div class="big">${apple?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
   </div>
   <div class="card">
-    <h2>Netflix (NFLX)</h2>
+      <h2>Netflix (NFLX)</h2>
     <div class="big">${netflix?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
   </div>
   <div class="card">
-    <h2>Google (GOOGL)</h2>
+      <h2>Google (GOOGL)</h2>
     <div class="big">${google?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
   </div>
 </div>
 ```
+
+---
+
+## Crypto
+<div class="grid grid-cols-3 gap-4 mt-4">
+    <div class="card">
+        <h2>Bitcoin (BTC/USD)</h2>
+        <div class="big">${btc?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
+    </div>
+    <div class="card">
+        <h2>Ethereum (ETH/USDT)</h2>
+        <div class="big">${eth?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
+    </div>
+    <div class="card">
+        <h2>Solana (SOL/USDT)</h2>
+        <div class="big">${sol?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
+    </div>
+</div>
 
 This is a realtime histogram of the size of recent unconfirmed bitcoin transactions. Transactions bigger than 1,000KB are included in the rightmost bin.
 
@@ -197,6 +245,7 @@ const chart = Plot.plot({
 
 display(chart);
 ```
+
 
 
   <!-- Polygon API -->
