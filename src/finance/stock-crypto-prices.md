@@ -246,7 +246,7 @@ const chart = Plot.plot({
 display(chart);
 ```
 
-
+## Trading Chart
 
   <!-- Polygon API -->
   
