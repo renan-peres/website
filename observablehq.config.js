@@ -15,7 +15,7 @@ export default {
         {name: "DuckDB: Parquet Converter", path: "/devbox/duckdb-parquet-converter"},
         {name: "WebR", path: "/devbox/webr"},
         {name: "Pyodide", path: "/devbox/pyodide"},
-        {name: "Google Sheets Connector", path: "/devbox/google-sheets"},
+        {name: "Spreadsheet Connector", path: "/devbox/spreadsheet-connector"},
         {name: "Excel Downloader", path: "/devbox/excel-downloader"}
       ]
     }
@@ -24,8 +24,9 @@ export default {
       name: "Finance",
       open: true,
       pages: [
-        {name: "Stock & Crypto Market", path: "/finance/stock-crypto-viewer"},
-        {name: "Mortgage Rates", path: "/finance/mortgage-rates"},
+        {name: "Stocks & Crypto", path: "/finance/stock-crypto-viewer"},
+        {name: "U.S. Mortgage Rates", path: "/finance/mortgage-rates"},
+        {name: "Apple Financial Model", path: "/finance/financial-model-apple"},
         {name: "Macro Indicators", path: "/finance/macro-indicators"},
         {name: "U.S. Monetary Base", path: "/finance/monetary-base"},
         {name: "Foreign Exchange Market", path: "/finance/fx-market"},

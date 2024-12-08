@@ -6,7 +6,7 @@ source: https://observablehq.com/@mbostock/bitcoin-transaction-size
 keywords: live real time data wss streaming stream socket
 ---
 
-# Stock and Crypto Market
+# Stocks and Crypto
 ```js
 import {datetime} from "../components/datetime.js";
 ```
@@ -15,8 +15,8 @@ import {datetime} from "../components/datetime.js";
   <div id="datetime"></div>
 </div>
 
-- Crypto: [CoinAPI](https://docs.coinapi.io/market-data/how-to-guides/real-time-trades-stream-using-websocket-with-different-languages) | [Bitcoin Ticker](https://codepen.io/HebleV/pen/JygRjL) & [BitFinex](https://docs.bitfinex.com/docs/ws-websocket-checksum) | [Blockchain](https://blockchain.info/api/api_websocket) | [Polygon](https://polygon.io/docs/stocks/getting-started)
-- Stocks: [TwelveData](https://twelvedata.com/account/api-playground)
+<!-- - Crypto: [CoinAPI](https://docs.coinapi.io/market-data/how-to-guides/real-time-trades-stream-using-websocket-with-different-languages) | [Bitcoin Ticker](https://codepen.io/HebleV/pen/JygRjL) & [BitFinex](https://docs.bitfinex.com/docs/ws-websocket-checksum) | [Blockchain](https://blockchain.info/api/api_websocket) | [Polygon](https://polygon.io/docs/stocks/getting-started)
+- Stocks: [TwelveData](https://twelvedata.com/account/api-playground) -->
 
 ---
 
@@ -731,7 +731,7 @@ display(chart);
 
 ---
 
-## Trading Chart
+## TradingView
 
 ```js
 // Trading Chart Section with Fullscreen Button
