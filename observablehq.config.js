@@ -35,6 +35,14 @@ export default {
     }
 
     ,{
+      name: "School",
+      open: true,
+      pages: [
+        {name: "Data Extraction & Visualization", path: "/school/01-data-extraction-visualization"}
+      ]
+    }
+
+    ,{
       name: "Analytics",
       open: true,
       pages: [

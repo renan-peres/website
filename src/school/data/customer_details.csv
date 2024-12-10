@@ -1,0 +1,70 @@
+row_names,customer_id,full_name,first_name,last_name,email,customer_location
+16,10,Daisuke Kitaguchi,Daisuke,Kitaguchi,dkitaguchi@student.hult.edu,Dubai_campus
+22,11,Florian Talke,Florian,Talke,ftalke@student.hult.edu,Dubai_campus
+63,19,Georgi Kodinov,Georgi,Kodinov,gkodinov@student.hult.edu,Boston_campus
+56,25,TANGUY STEVE YIPENE BADOLO,TANGUY STEVE YIPENE,BADOLO,tbadolo@student.hult.edu,Boston_campus
+18,29,Dani Grossman Shved,Dani,Shved,dshved@student.hult.edu,Dubai_campus
+65,32,Sandra Garcia Garcia,Sandra,Garcia Garcia,sgarcia1@student.hult.edu,Boston_campus
+69,44,Curtis Ching,Curtis,Ching,cching@student.hult.edu,Boston_campus
+66,52,Yazan Abu Alhayja,Yazan,Abu Alhayja,yalhayja@student.hult.edu,Boston_campus
+62,70,Michelle Zea,Michelle,Zea,mzea@student.hult.edu,Boston_campus
+64,77,Edson Antonio da Silva Filho,Edson,Antonio da Silva Filho,efilho@student.hult.edu,Boston_campus
+50,78,Sajid Hashmi,Sajid,Hashmi,shashmi1@student.hult.edu,Dubai_campus
+52,83,Adriana De Lucas,Adriana,De Lucas,alucas@student.hult.edu,Boston_campus
+58,99,Paula Cevallos,Paula,Cevallos,pcevallos@student.hult.edu,Boston_campus
+47,114,Bahaa El Ezzi,Bahaa,Ezzi,bezzi@student.hult.edu,Dubai_campus
+59,117,Alejandro Buitrago,Alejandro,Buitrago,abuitrago@student.hult.edu,Boston_campus
+26,120,Kirby Phillips,Kirby,Phillips,kphillips@student.hult.edu,Dubai_campus
+57,121,Juan Peña,Juan,Peña,jpena@student.hult.edu,Boston_campus
+55,123,Nadia Gil Serrano,Nadia,Gil Serrano,nserrano@student.hult.edu,Boston_campus
+15,128,Bojana Popovic,Bojana,Popovic,bpopovic@student.hult.edu,Dubai_campus
+60,131,Taylor Swearingen,Taylor,Swearingen,tswearingen@student.hult.edu,Boston_campus
+51,136,Zeyad Elgendy,Zeyad,Elgendy,zelgendy@student.hult.edu,Dubai_campus
+53,141,Fathimath Isha Ibrahim,Fathimath Isha,Ibrahim,iibrahim@student.hult.edu,Boston_campus
+54,148,Paul Bistre,Paul,Bistre,pbistre@student.hult.edu,Boston_campus
+61,157,Camila Parra,Camila,Parra,cparra@student.hult.edu,Boston_campus
+2,158,Aline Mardikian,Aline,Mardikian,amardikian@student.hult.edu,Dubai_campus
+20,171,Elias Mahesh Jakob,Elias,Jakob,ejakob@student.hult.edu,Dubai_campus
+6,186,Ntombenhle Ndwandwe,Ntombenhle,Ndwandwe,nndwandwe@student.hult.edu,Dubai_campus
+21,193,Fatima Abubakar,Fatima,Abubakar,fabubakar@student.hult.edu,Dubai_campus
+12,196,Alyssa Mae Tan,Alyssa,Tan,atan@student.hult.edu,Dubai_campus
+68,197,Moritz Petasch,Moritz,Petasch,mpetasch@student.hult.edu,Boston_campus
+11,219,Alexandra Paladii,Alexandra,Paladii,apaladii@student.hult.edu,Dubai_campus
+14,226,Aviwe Myendeki,Aviwe,Myendeki,amyendeki@student.hult.edu,Dubai_campus
+34,245,Ousmane Kakoro,Ousmane,Kakoro,okakoro@student.hult.edu,Dubai_campus
+25,254,Kengo Sugaya,Kengo,Sugaya,ksugaya@student.hult.edu,Dubai_campus
+37,265,Shimpei Iwata,Shimpei,Iwata,siwata@student.hult.edu,Dubai_campus
+39,311,Veronika Riazanova,Veronika,Riazanova,vriazanova@student.hult.edu,Dubai_campus
+1,337,Abdullahi Murtala,Abdullahi,Murtala,amurtala@student.hult.edu,Dubai_campus
+48,349,Georgio Mardini,Georgio,Mardini,gmardini@student.hult.edu,Dubai_campus
+43,400,Zeinab Elnefaly,Zeinab,Elnefaly,zelnefaly1@student.hult.edu,Dubai_campus
+35,454,Paolo Aldesino,Paolo,Aldesino,paldesino@student.hult.edu,Dubai_campus
+9,467,Ahmmed Eltayeb,Ahmmed,Eltayeb,aeltayeb@student.hult.edu,Dubai_campus
+10,497,Alexandra Charman,Alexandra,Charman,acharman@student.hult.edu,Dubai_campus
+49,525,Heba Faddah,Heba,Faddah,hfaddah@student.hult.edu,Dubai_campus
+4,539,Maria Helena Nama D'Oliveira,Maria,D'Oliveira,md'oliveira1@student.hult.edu,Dubai_campus
+5,554,Minghao Yang,Minghao,Yang,myang@student.hult.edu,Dubai_campus
+44,561,Ahmad Dikko Inde,Ahmad,Inde,ainde@student.hult.edu,Dubai_campus
+7,598,Razaq Ganiyu,Razaq,Ganiyu,rganiyu@student.hult.edu,Dubai_campus
+41,627,Yuri Pirozzi,Yuri,Pirozzi,ypirozzi@student.hult.edu,Dubai_campus
+42,681,Yuta Ozawa,Yuta,Ozawa,yozawa@student.hult.edu,Dubai_campus
+13,684,Andrea De Benedetto,Andrea,Benedetto,abenedetto@student.hult.edu,Dubai_campus
+46,720,Ali Al-Ganzory,Ali,Al-Ganzory,aal-ganzory@student.hult.edu,Dubai_campus
+38,724,Susumu Kakehi,Susumu,Kakehi,skakehi@student.hult.edu,Dubai_campus
+19,728,David Castro,David,Castro,dcastro@student.hult.edu,Dubai_campus
+3,740,Jessica Abou Khalil,Jessica,Khalil,jkhalil@student.hult.edu,Dubai_campus
+45,744,Aishwarya Rai,Aishwarya,Rai,arai@student.hult.edu,Dubai_campus
+29,784,Lilian Motallebi,Lilian,Motallebi,lmotallebi@student.hult.edu,Dubai_campus
+30,785,Lisa Sabine Metz,Lisa,Metz,lmetz@student.hult.edu,Dubai_campus
+67,800,Fernando Fernández,Fernando,Fernández,ffernandez1@student.hult.edu,Boston_campus
+27,809,Lara Reda Aboulenain,Lara,Aboulenain,lreda@student.hult.edu,Dubai_campus
+31,817,Lorenzo Mori,Lorenzo,Mori,lmori@student.hult.edu,Dubai_campus
+8,836,Waleed Youssef,Waleed,Youssef,wyoussef@student.hult.edu,Dubai_campus
+36,848,Paramaporn Youngtong,Paramaporn,Youngtong,pyoungtong@student.hult.edu,Dubai_campus
+32,860,Lucas Ezequiel de Ortuzar,Lucas,Ortuzar,lortuzar@student.hult.edu,Dubai_campus
+24,879,Kari Felton,Kari,Felton,kfelton@student.hult.edu,Dubai_campus
+17,918,Daniel Serrano Camacho,Daniel,Camacho,dserrano@student.hult.edu,Dubai_campus
+23,919,Henrietta MacDina Fabyan,Henrietta,Fabyan,hfabyan@student.hult.edu,Dubai_campus
+40,925,Wendi Zeng,Wendi,Zeng,wzeng@student.hult.edu,Dubai_campus
+33,993,Marie Bernadette Sene,Marie,Sene,msene@student.hult.edu,Dubai_campus
+28,999,Leandra Lopes,Leandra,Lopes,llopes@student.hult.edu,Dubai_campus
