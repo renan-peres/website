@@ -11,6 +11,14 @@ sql:
   security_masterlist: ./data/security_masterlist.csv
 ---
 
+```html
+<style>
+.observablehq textarea {
+  min-height: 600px !important;
+}
+</style>
+```
+
 # Data Extraction & Visualization
 
 ```js
@@ -78,18 +86,10 @@ const selectedTable = view(Inputs.select(tables, {
 ```
 
 ```js
-const code = view(Inputs.textarea({
-  value: `SELECT *
+// Create the SQL query string based on selected table
+const code = `SELECT *
 FROM ${selectedTable.table_name}
-LIMIT 10`,
-  width: "1000px",
-  rows: 8,
-  resize: "both",
-  style: { fontSize: "16px" },
-  onKeyDown: e => {
-    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
-  }
-}));
+LIMIT 10`;
 ```
 
 ```js
@@ -142,7 +142,7 @@ if (queryResult) {
 
 ---
 
-## Asset Risks (Beta) and Returns
+## Query Section
 
 ```js
 // Create the dropdown for pre-built queries
