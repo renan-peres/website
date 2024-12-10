@@ -142,49 +142,18 @@ if (queryResult) {
 
 ---
 
-## Pre-Built Queries
+## Asset Risks (Beta) and Returns
 
 ```js
-// Define pre-built queries
-const queries = {
-  "ror_25": `WITH sub1 AS (
-SELECT
-    date
-    ,ticker
-    ,value
-    , lag(value,25) 
-        OVER (
-            PARTITION BY ticker
-            ORDER BY date) AS "p25"
-FROM pricing_daily_new
-WHERE 
-    price_type = 'Adjusted'
-    AND date >= '2022-08-01'
-    AND ticker IN ('TLSA', 'NVDA', 'CRM', 'SPY', 'AGG', 'GLD')
-), 
-
-sub2 AS (
-SELECT 
-    *
-    , (value-p25)/p25 as p25_ror
-FROM sub1
-)
-
-SELECT *
-    ,CONCAT(ROUND(p25_ror * 100, 2), '%') as 'p25_ror_%'
-FROM sub2
-WHERE p25_ror IS NOT NULL
-ORDER BY
-    date
-    ,ticker
-    ,p25_ror`
-};
-
 // Create the dropdown for pre-built queries
-const selectedPrebuiltQuery = view(Inputs.select(Object.keys(queries), {
-  value: "ror_25"
+const returnInput = view(Inputs.range([0, 750], {
+  step: 25, 
+  value: 0, // Set initial value
+  placeholder: "1-750"
 }));
+```
 
+```js
 // Create the textarea that updates based on the selected query
 const prebuiltCode = view(Inputs.textarea({
   value: `WITH sub1 AS (
@@ -192,32 +161,51 @@ SELECT
     date
     ,ticker
     ,value
-    , lag(value,25) 
+    , lag(value,${returnInput}) 
         OVER (
             PARTITION BY ticker
-            ORDER BY date) AS "p25"
+            ORDER BY date) AS "p${returnInput}"
 FROM pricing_daily_new
 WHERE 
     price_type = 'Adjusted'
-    AND date >= '2022-08-01'
+    -- AND date >= '2022-08-01'
     AND ticker IN ('TLSA', 'NVDA', 'CRM', 'SPY', 'AGG', 'GLD')
-), 
+),
 
 sub2 AS (
 SELECT 
     *
-    , (value-p25)/p25 as p25_ror
+    , (value-p${returnInput})/p${returnInput} as ror
 FROM sub1
+),
+
+summary_stats AS (
+SELECT 
+    ticker,
+    AVG(ror) as mean,
+    STDDEV(ror) as risk
+FROM sub2
+WHERE ror IS NOT NULL
+GROUP BY ticker
 )
 
-SELECT *
-    ,CONCAT(ROUND(p25_ror * 100, 2), '%') as 'p25_ror_%'
-FROM sub2
-WHERE p25_ror IS NOT NULL
+SELECT 
+    s2.date,
+    s2.ticker,
+    s2.value,
+    s2.p${returnInput},
+    s2.ror,
+    CONCAT(ROUND(s2.ror * 100, 2), '%') as ror_pct,
+    st.mean,
+    CONCAT(ROUND(st.mean * 100, 2), '%') as mean_pct,
+    st.risk as risk_beta,
+FROM sub2 s2
+LEFT JOIN summary_stats st ON st.ticker = s2.ticker
+WHERE s2.ror IS NOT NULL
 ORDER BY
-    date
-    ,ticker
-    ,p25_ror`,
+    s2.date,
+    s2.ticker,
+    s2.ror`,
   width: "1000px",
   rows: 10,
   resize: "both",

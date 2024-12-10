@@ -34,11 +34,11 @@ export default {
     }
     
     ,{
-      name: "School",
+      name: "MFIN",
       open: true,
       pages: [
-        {name: "Data Extraction & Visualization", path: "/school/01-data-extraction-visualization"},
-        {name: "Apple Financial Model", path: "/school/financial-model-apple"}
+        {name: "Data Extraction (Individual)", path: "/mfin/data-extraction-individual"},
+        {name: "Financial Model (Apple)", path: "/mfin/financial-model-apple"}
       ]
     }
 
