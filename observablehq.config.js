@@ -26,19 +26,19 @@ export default {
       pages: [
         {name: "Stocks & Crypto", path: "/finance/stock-crypto-viewer"},
         {name: "U.S. Mortgage Rates", path: "/finance/mortgage-rates"},
-        {name: "Apple Financial Model", path: "/finance/financial-model-apple"},
         {name: "Macro Indicators", path: "/finance/macro-indicators"},
         {name: "U.S. Monetary Base", path: "/finance/monetary-base"},
         {name: "Foreign Exchange Market", path: "/finance/fx-market"},
         {name: "Portfolio Builder", path: "/finance/portfolio-builder"}
       ]
     }
-
+    
     ,{
       name: "School",
       open: true,
       pages: [
-        {name: "Data Extraction & Visualization", path: "/school/01-data-extraction-visualization"}
+        {name: "Data Extraction & Visualization", path: "/school/01-data-extraction-visualization"},
+        {name: "Apple Financial Model", path: "/school/financial-model-apple"}
       ]
     }
 
