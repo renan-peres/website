@@ -1,14 +1,5 @@
 ---
-theme: dashboard
 index: true
-keywords: duckdb, wasm
-sql:
-  quakes: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv
-  account_dim: ./data/account_dim.csv
-  customer_details: ./data/customer_details.csv
-  holdings_current: ./data/holdings_current.csv
-  pricing_daily_new: ./data/pricing_daily_new.csv
-  security_masterlist: ./data/security_masterlist.csv
 ---
 
 # Parquet Converter
