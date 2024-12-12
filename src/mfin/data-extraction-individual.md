@@ -11,13 +11,22 @@ sql:
   security_masterlist: ./data/security_masterlist.csv
 ---
 
-```html
+<!-- ```html
 <style>
 .observablehq textarea {
-  min-height: 600px !important;
+  min-height: 450px !important;
 }
 </style>
-```
+``` -->
+
+<!-- ```js
+// Create the dropdown for pre-built queries
+const returnInput = view(Inputs.range([0, 750], {
+  step: 25, 
+  value: 0, // Set initial value
+  placeholder: "1-750"
+}));
+``` -->
 
 # Data Extraction & Visualization
 
@@ -142,73 +151,43 @@ if (queryResult) {
 
 ---
 
-## Query Section
-
-```js
-// Create the dropdown for pre-built queries
-const returnInput = view(Inputs.range([0, 750], {
-  step: 25, 
-  value: 0, // Set initial value
-  placeholder: "1-750"
-}));
-```
+## Step 1: SQL View #1 (Customer# 128, Bojana Popovic) 
 
 ```js
 // Create the textarea that updates based on the selected query
 const prebuiltCode = view(Inputs.textarea({
-  value: `WITH sub1 AS (
-SELECT
-    date
-    ,ticker
-    ,value
-    , lag(value,${returnInput}) 
-        OVER (
-            PARTITION BY ticker
-            ORDER BY date) AS "p${returnInput}"
-FROM pricing_daily_new
+  value: `CREATE OR REPLACE VIEW Renan_Peres_1 AS (
+SELECT 
+    pd.date,
+    cd.customer_id,
+    cd.full_name,
+    ad.account_id,
+    ad.main_account AS main_account_id,
+	hc.ticker,
+    sm.security_name,
+    sm.sec_type,
+    sm.major_asset_class,
+    sm.minor_asset_class,
+    hc.quantity,
+    pd.value AS adj_closing_price,
+    ROUND((hc.quantity * pd.value), 2) AS amount
+FROM customer_details cd 
+JOIN account_dim ad ON ad.client_id = cd.customer_id
+JOIN holdings_current hc ON hc.account_id = ad.account_id
+JOIN security_masterlist sm ON hc.ticker = sm.ticker
+JOIN pricing_daily_new pd ON pd.ticker = sm.ticker AND hc.date = pd.date
 WHERE 
-    price_type = 'Adjusted'
-    -- AND date >= '2022-08-01'
-    AND ticker IN ('TLSA', 'NVDA', 'CRM', 'SPY', 'AGG', 'GLD')
-),
+    cd.customer_id = '128'
+    AND pd.price_type = 'Adjusted'
+);
 
-sub2 AS (
-SELECT 
-    *
-    , (value-p${returnInput})/p${returnInput} as ror
-FROM sub1
-),
-
-summary_stats AS (
-SELECT 
-    ticker,
-    AVG(ror) as mean,
-    STDDEV(ror) as risk
-FROM sub2
-WHERE ror IS NOT NULL
-GROUP BY ticker
-)
-
-SELECT 
-    s2.date,
-    s2.ticker,
-    s2.value,
-    s2.p${returnInput},
-    s2.ror,
-    CONCAT(ROUND(s2.ror * 100, 2), '%') as ror_pct,
-    st.mean,
-    CONCAT(ROUND(st.mean * 100, 2), '%') as mean_pct,
-    st.risk as risk_beta,
-FROM sub2 s2
-LEFT JOIN summary_stats st ON st.ticker = s2.ticker
-WHERE s2.ror IS NOT NULL
-ORDER BY
-    s2.date,
-    s2.ticker,
-    s2.ror`,
+SELECT *
+FROM Renan_Peres_1 
+ `,
   width: "1000px",
   rows: 10,
   resize: "both",
+  className: "sql-editor",
   style: { fontSize: "16px" },
   onKeyDown: e => {
     if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
@@ -223,6 +202,193 @@ display(Inputs.table(prebuiltQueryResult));
 
 // Display download buttons if we have results
 if (prebuiltQueryResult) {
+  display(html`
+    <div class="flex gap-6 mt-4">
+      <button
+        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+        onclick=${async function() {
+          this.disabled = true;
+          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${prebuiltCode}`);
+          await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
+          const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
+          const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
+          download(file);
+          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
+          this.disabled = false;
+        }}
+      >
+        Download Result as CSV
+      </button>
+      <button
+        class="px-6 py-2 ml-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-green-400"
+        onclick=${async function() {
+          this.disabled = true;
+          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${prebuiltCode}`);
+          const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
+          const parquetFile = await toParquet(predefinedDb, {
+            table: tmpTable,
+            name: `result_${timestamp}.parquet`
+          });
+          download(parquetFile);
+          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
+          this.disabled = false;
+        }}
+      >
+        Download Result as Parquet
+      </button>
+    </div>
+  `);
+}
+```
+
+---
+
+## Step 2: SQL View #2 (Return for the Assets in Bojana's Portfolio) 
+
+```js
+// Create the textarea that updates based on the selected query
+const rorCode = view(Inputs.textarea({
+  value: `CREATE OR REPLACE VIEW Renan_Peres_ror AS (
+WITH price_history AS (
+SELECT 
+	pd.date,
+	pd.ticker,
+	pd.value,
+	NULLIF(LAG(pd.value, 252) OVER (
+		PARTITION BY pd.ticker 
+		ORDER BY pd.date
+		), 0) AS prev_12m,
+		NULLIF(LAG(pd.value, 504) OVER (
+			PARTITION BY pd.ticker 
+			ORDER BY pd.date
+		), 0) AS prev_24m,
+		NULLIF(LAG(pd.value, 756) OVER (
+			PARTITION BY pd.ticker 
+			ORDER BY pd.date
+		), 0) AS prev_36m
+FROM 
+	pricing_daily_new pd
+	JOIN Renan_Peres_1 rp 
+		ON rp.ticker = pd.ticker
+WHERE 
+	pd.price_type = 'Adjusted'
+	AND CAST(pd.value AS DECIMAL) != 0
+)
+
+SELECT 
+     date
+    , ticker
+    , value as adj_closing_price
+    , (value-prev_12m)/prev_12m as ror_12m
+    , (value-prev_24m)/prev_24m as ror_24m
+    , (value-prev_36m)/prev_36m as ror_36m
+FROM price_history
+);
+
+SELECT *
+FROM Renan_Peres_ror
+ORDER BY
+	date, 
+  ticker`,
+  width: "1000px",
+  rows: 10,
+  resize: "both",
+  className: "sql-editor",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js
+// Execute and display pre-built query results
+const rorQueryResult = predefinedDb.query(rorCode);
+display(Inputs.table(rorQueryResult));
+
+// Display download buttons if we have results
+if (rorQueryResult) {
+  display(html`
+    <div class="flex gap-6 mt-4">
+      <button
+        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+        onclick=${async function() {
+          this.disabled = true;
+          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${prebuiltCode}`);
+          await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
+          const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
+          const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
+          download(file);
+          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
+          this.disabled = false;
+        }}
+      >
+        Download Result as CSV
+      </button>
+      <button
+        class="px-6 py-2 ml-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-green-400"
+        onclick=${async function() {
+          this.disabled = true;
+          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${prebuiltCode}`);
+          const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
+          const parquetFile = await toParquet(predefinedDb, {
+            table: tmpTable,
+            name: `result_${timestamp}.parquet`
+          });
+          download(parquetFile);
+          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
+          this.disabled = false;
+        }}
+      >
+        Download Result as Parquet
+      </button>
+    </div>
+  `);
+}
+```
+
+---
+
+## Step 3: Risk (STD) and Average Returns
+
+```js
+// Create the textarea that updates based on the selected query
+const riskCode = view(Inputs.textarea({
+  value: `SELECT 
+    ticker,
+    AVG(r.ror_12m) as avg_ror_12m, 
+    STDDEV(r.ror_12m) as std_12m,
+    AVG(r.ror_24m) as avg_ror_24m,
+    STDDEV(r.ror_24m) as std_24m,
+    AVG(r.ror_36m) as avg_ror_36m,
+    STDDEV(r.ror_36m) as std_36m
+FROM Renan_Peres_ror r
+WHERE date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '36 months'
+GROUP BY 
+    ticker
+ORDER BY ticker`,
+  width: "1000px",
+  rows: 10,
+  resize: "both",
+  className: "sql-editor",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js
+// Execute and display pre-built query results
+const riskQueryResult = predefinedDb.query(riskCode);
+display(Inputs.table(riskQueryResult));
+
+// Display download buttons if we have results
+if (riskQueryResult) {
   display(html`
     <div class="flex gap-6 mt-4">
       <button
