@@ -317,7 +317,7 @@ if (rorQueryResult) {
         onclick=${async function() {
           this.disabled = true;
           const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${prebuiltCode}`);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${rorCode}`);
           await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
           const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
           const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
@@ -333,7 +333,7 @@ if (rorQueryResult) {
         onclick=${async function() {
           this.disabled = true;
           const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${prebuiltCode}`);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${rorCode}`);
           const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
           const parquetFile = await toParquet(predefinedDb, {
             table: tmpTable,
@@ -396,7 +396,7 @@ if (riskQueryResult) {
         onclick=${async function() {
           this.disabled = true;
           const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${prebuiltCode}`);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${riskCode}`);
           await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
           const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
           const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
@@ -412,7 +412,7 @@ if (riskQueryResult) {
         onclick=${async function() {
           this.disabled = true;
           const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${prebuiltCode}`);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${riskCode}`);
           const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
           const parquetFile = await toParquet(predefinedDb, {
             table: tmpTable,
