@@ -256,22 +256,28 @@ SELECT
 	pd.date,
 	pd.ticker,
 	pd.value,
+	NULLIF(LAG(pd.value, 1) OVER (
+			PARTITION BY pd.ticker 
+			ORDER BY pd.date
+			), 0) AS prev_1d,
+	NULLIF(LAG(pd.value, 25) OVER (
+			PARTITION BY pd.ticker 
+			ORDER BY pd.date
+			), 0) AS prev_1m,
 	NULLIF(LAG(pd.value, 252) OVER (
-		PARTITION BY pd.ticker 
-		ORDER BY pd.date
-		), 0) AS prev_12m,
-		NULLIF(LAG(pd.value, 504) OVER (
 			PARTITION BY pd.ticker 
 			ORDER BY pd.date
-		), 0) AS prev_24m,
-		NULLIF(LAG(pd.value, 756) OVER (
+			), 0) AS prev_12m,
+	NULLIF(LAG(pd.value, 504) OVER (
 			PARTITION BY pd.ticker 
 			ORDER BY pd.date
-		), 0) AS prev_36m
-FROM 
-	pricing_daily_new pd
-	JOIN Renan_Peres_1 rp 
-		ON rp.ticker = pd.ticker
+			), 0) AS prev_24m,	
+	NULLIF(LAG(pd.value, 756) OVER (
+			PARTITION BY pd.ticker 
+			ORDER BY pd.date
+			), 0) AS prev_36m 
+FROM pricing_daily_new pd
+JOIN Renan_Peres_1 rp ON rp.ticker = pd.ticker
 WHERE 
 	pd.price_type = 'Adjusted'
 	AND CAST(pd.value AS DECIMAL) != 0
@@ -281,6 +287,8 @@ SELECT
      date
     , ticker
     , value as adj_closing_price
+	, (value-prev_1d)/prev_1d as ror_1d
+	, (value-prev_1m)/prev_1m as ror_1m
     , (value-prev_12m)/prev_12m as ror_12m
     , (value-prev_24m)/prev_24m as ror_24m
     , (value-prev_36m)/prev_36m as ror_36m
@@ -360,6 +368,29 @@ if (rorQueryResult) {
 const riskCode = view(Inputs.textarea({
   value: `SELECT 
     ticker,
+    -- 1-day metrics
+    (SELECT AVG(r2.ror_1d) 
+     FROM Renan_Peres_ror r2 
+     WHERE r2.ticker = r.ticker 
+     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '1 day') as avg_ror_1d,
+    
+    (SELECT STDDEV(r2.ror_1d) 
+     FROM Renan_Peres_ror r2 
+     WHERE r2.ticker = r.ticker 
+     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '1 day') as std_1d,
+    
+    -- 1-month metrics
+    (SELECT AVG(r2.ror_1m) 
+     FROM Renan_Peres_ror r2 
+     WHERE r2.ticker = r.ticker 
+     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '1 month') as avg_ror_1m,
+    
+    (SELECT STDDEV(r2.ror_1m) 
+     FROM Renan_Peres_ror r2 
+     WHERE r2.ticker = r.ticker 
+     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '1 month') as std_1m,
+    
+    -- 12-month metrics
     (SELECT AVG(r2.ror_12m) 
      FROM Renan_Peres_ror r2 
      WHERE r2.ticker = r.ticker 
@@ -370,6 +401,7 @@ const riskCode = view(Inputs.textarea({
      WHERE r2.ticker = r.ticker 
      AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '12 months') as std_12m,
     
+    -- 24-month metrics
     (SELECT AVG(r2.ror_24m) 
      FROM Renan_Peres_ror r2 
      WHERE r2.ticker = r.ticker 
@@ -380,6 +412,7 @@ const riskCode = view(Inputs.textarea({
      WHERE r2.ticker = r.ticker 
      AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '24 months') as std_24m,
     
+    -- 36-month metrics
     (SELECT AVG(r2.ror_36m) 
      FROM Renan_Peres_ror r2 
      WHERE r2.ticker = r.ticker 
@@ -392,7 +425,7 @@ const riskCode = view(Inputs.textarea({
 FROM Renan_Peres_ror r
 GROUP BY 
     ticker
-ORDER BY ticker`,
+ORDER BY ticker;`,
   width: "1000px",
   rows: 10,
   resize: "both",
