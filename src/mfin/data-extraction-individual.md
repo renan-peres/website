@@ -360,14 +360,36 @@ if (rorQueryResult) {
 const riskCode = view(Inputs.textarea({
   value: `SELECT 
     ticker,
-    AVG(r.ror_12m) as avg_ror_12m, 
-    STDDEV(r.ror_12m) as std_12m,
-    AVG(r.ror_24m) as avg_ror_24m,
-    STDDEV(r.ror_24m) as std_24m,
-    AVG(r.ror_36m) as avg_ror_36m,
-    STDDEV(r.ror_36m) as std_36m
+    (SELECT AVG(r2.ror_12m) 
+     FROM Renan_Peres_ror r2 
+     WHERE r2.ticker = r.ticker 
+     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '12 months') as avg_ror_12m,
+    
+    (SELECT STDDEV(r2.ror_12m) 
+     FROM Renan_Peres_ror r2 
+     WHERE r2.ticker = r.ticker 
+     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '12 months') as std_12m,
+    
+    (SELECT AVG(r2.ror_24m) 
+     FROM Renan_Peres_ror r2 
+     WHERE r2.ticker = r.ticker 
+     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '24 months') as avg_ror_24m,
+    
+    (SELECT STDDEV(r2.ror_24m) 
+     FROM Renan_Peres_ror r2 
+     WHERE r2.ticker = r.ticker 
+     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '24 months') as std_24m,
+    
+    (SELECT AVG(r2.ror_36m) 
+     FROM Renan_Peres_ror r2 
+     WHERE r2.ticker = r.ticker 
+     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '36 months') as avg_ror_36m,
+    
+    (SELECT STDDEV(r2.ror_36m) 
+     FROM Renan_Peres_ror r2 
+     WHERE r2.ticker = r.ticker 
+     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '36 months') as std_36m
 FROM Renan_Peres_ror r
-WHERE date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '36 months'
 GROUP BY 
     ticker
 ORDER BY ticker`,
