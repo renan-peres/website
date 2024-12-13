@@ -17,7 +17,7 @@ sql:
   min-height: 500px !important;
 }
 </style>
-``` -->
+```
 
 <!-- ```js
 // Create the dropdown for pre-built queries
