@@ -11,13 +11,13 @@ sql:
   security_masterlist: ./data/security_masterlist.csv
 ---
 
-```html
+<!-- ```html
 <style>
 .observablehq textarea {
   min-height: 500px !important;
 }
 </style>
-```
+``` -->
 
 <!-- ```js
 // Create the dropdown for pre-built queries
@@ -151,7 +151,7 @@ if (queryResult) {
 
 ---
 
-## Step 1: SQL View #1 (Customer# 128, Bojana Popovic) 
+## SQL View: (Customer# 128, Bojana Popovic) 
 
 ```js
 // Create the textarea that updates based on the selected query
@@ -245,7 +245,7 @@ if (prebuiltQueryResult) {
 
 ---
 
-## Step 2: SQL View #2 (Return for the Assets in Bojana's Portfolio) 
+## Q1: Historical Returns for the Assets in the Client's Portfolio
 
 ```js
 // Create the textarea that updates based on the selected query
@@ -361,70 +361,20 @@ if (rorQueryResult) {
 
 ---
 
-## Step 3: Risk (STD) and Average Returns
+## Q2: What is the most recent 12months sigma (risk) for each of the securities? What is the average daily return for each of the securities? 
 
 ```js
 // Create the textarea that updates based on the selected query
-const riskCode = view(Inputs.textarea({
+const riskCode1 = view(Inputs.textarea({
   value: `SELECT 
     ticker,
-    -- 1-day metrics
-    (SELECT AVG(r2.ror_1d) 
-     FROM Renan_Peres_ror r2 
-     WHERE r2.ticker = r.ticker 
-     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '1 day') as avg_ror_1d,
-    
-    (SELECT STDDEV(r2.ror_1d) 
-     FROM Renan_Peres_ror r2 
-     WHERE r2.ticker = r.ticker 
-     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '1 day') as std_1d,
-    
-    -- 1-month metrics
-    (SELECT AVG(r2.ror_1m) 
-     FROM Renan_Peres_ror r2 
-     WHERE r2.ticker = r.ticker 
-     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '1 month') as avg_ror_1m,
-    
-    (SELECT STDDEV(r2.ror_1m) 
-     FROM Renan_Peres_ror r2 
-     WHERE r2.ticker = r.ticker 
-     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '1 month') as std_1m,
-    
-    -- 12-month metrics
-    (SELECT AVG(r2.ror_12m) 
-     FROM Renan_Peres_ror r2 
-     WHERE r2.ticker = r.ticker 
-     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '12 months') as avg_ror_12m,
-    
-    (SELECT STDDEV(r2.ror_12m) 
-     FROM Renan_Peres_ror r2 
-     WHERE r2.ticker = r.ticker 
-     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '12 months') as std_12m,
-    
-    -- 24-month metrics
-    (SELECT AVG(r2.ror_24m) 
-     FROM Renan_Peres_ror r2 
-     WHERE r2.ticker = r.ticker 
-     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '24 months') as avg_ror_24m,
-    
-    (SELECT STDDEV(r2.ror_24m) 
-     FROM Renan_Peres_ror r2 
-     WHERE r2.ticker = r.ticker 
-     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '24 months') as std_24m,
-    
-    -- 36-month metrics
-    (SELECT AVG(r2.ror_36m) 
-     FROM Renan_Peres_ror r2 
-     WHERE r2.ticker = r.ticker 
-     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '36 months') as avg_ror_36m,
-    
-    (SELECT STDDEV(r2.ror_36m) 
-     FROM Renan_Peres_ror r2 
-     WHERE r2.ticker = r.ticker 
-     AND r2.date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '36 months') as std_36m
-FROM Renan_Peres_ror r
-GROUP BY 
-    ticker
+	AVG(ror_1d)  as avg_ror_1d,
+	STDDEV(ror_1d)  as std_ror_12m
+FROM Renan_Peres_ror
+WHERE 
+	date BETWEEN '2021-09-09' AND '2022-09-09'
+	-- date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '12 months'
+GROUP BY ticker
 ORDER BY ticker;`,
   width: "1000px",
   rows: 10,
@@ -439,11 +389,11 @@ ORDER BY ticker;`,
 
 ```js
 // Execute and display pre-built query results
-const riskQueryResult = predefinedDb.query(riskCode);
-display(Inputs.table(riskQueryResult));
+const riskQueryResult1 = predefinedDb.query(riskCode1);
+display(Inputs.table(riskQueryResult1));
 
 // Display download buttons if we have results
-if (riskQueryResult) {
+if (riskQueryResult1) {
   display(html`
     <div class="flex gap-6 mt-4">
       <button
@@ -451,7 +401,7 @@ if (riskQueryResult) {
         onclick=${async function() {
           this.disabled = true;
           const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${riskCode}`);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${riskCode1}`);
           await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
           const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
           const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
@@ -467,7 +417,86 @@ if (riskQueryResult) {
         onclick=${async function() {
           this.disabled = true;
           const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${riskCode}`);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${riskCode1}`);
+          const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
+          const parquetFile = await toParquet(predefinedDb, {
+            table: tmpTable,
+            name: `result_${timestamp}.parquet`
+          });
+          download(parquetFile);
+          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
+          this.disabled = false;
+        }}
+      >
+        Download Result as Parquet
+      </button>
+    </div>
+  `);
+}
+```
+
+---
+
+## Q3: Suggest adding a new investment to your portfolio - what would it be and how much risk (sigma) would it add to your client?  
+
+---
+
+## Q4: Risk adjusted returns for each Security by following this formula: AVG(returns for ticker)/STD(returns for ticker). Which of the securities is best from the rest (with highest risk adjusted returns), why?
+
+```js
+// Create the textarea that updates based on the selected query
+const riskCode2 = view(Inputs.textarea({
+  value: `SELECT 
+    ticker,
+	(AVG(ror_1d)  / STDDEV(ror_1d)) as adj_daly_ror_12m 
+FROM Renan_Peres_ror 
+WHERE 
+	date BETWEEN '2021-09-09' AND '2022-09-09'
+	-- date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '12 months'
+GROUP BY ticker
+ORDER BY ticker;`,
+  width: "1000px",
+  rows: 10,
+  resize: "both",
+  className: "sql-editor",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js
+// Execute and display pre-built query results
+const riskQueryResult2 = predefinedDb.query(riskCode2);
+display(Inputs.table(riskQueryResult2));
+
+// Display download buttons if we have results
+if (riskQueryResult2) {
+  display(html`
+    <div class="flex gap-6 mt-4">
+      <button
+        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+        onclick=${async function() {
+          this.disabled = true;
+          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${riskCode2}`);
+          await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
+          const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
+          const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
+          download(file);
+          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
+          this.disabled = false;
+        }}
+      >
+        Download Result as CSV
+      </button>
+      <button
+        class="px-6 py-2 ml-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-green-400"
+        onclick=${async function() {
+          this.disabled = true;
+          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${riskCode2}`);
           const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
           const parquetFile = await toParquet(predefinedDb, {
             table: tmpTable,

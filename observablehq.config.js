@@ -34,22 +34,22 @@ export default {
     }
     
     ,{
+      name: "Analytics",
+      open: true,
+      pages: [
+        {name: "U.S. Electricity Grid", path: "/analytics/eia"},
+        // {name: "AG Grid", path: "/analytics/ag-grid"},
+        // {name: "Tabulator", path: "/analytics/tabulator"},
+        {name: "Highcharter", path: "/analytics/highcharts"}
+      ]
+    }
+    
+    ,{
       name: "MFIN",
       open: true,
       pages: [
         {name: "Data Extraction (Individual)", path: "/mfin/data-extraction-individual"},
         {name: "Financial Model (Apple)", path: "/mfin/financial-model-apple"}
-      ]
-    }
-
-    ,{
-      name: "Analytics",
-      open: true,
-      pages: [
-        {name: "U.S. Electricity Grid", path: "/analytics/eia"},
-        {name: "Highcharter", path: "/analytics/highcharts"},
-        {name: "AG Grid", path: "/analytics/ag-grid"},
-        {name: "Tabulator", path: "/analytics/tabulator"}
       ]
     }
     
