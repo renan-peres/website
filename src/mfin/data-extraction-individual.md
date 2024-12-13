@@ -11,7 +11,7 @@ sql:
   security_masterlist: ./data/security_masterlist.csv
 ---
 
-<!-- ```html
+```html
 <style>
 .observablehq textarea {
   min-height: 500px !important;
@@ -26,7 +26,7 @@ const returnInput = view(Inputs.range([0, 750], {
   value: 0, // Set initial value
   placeholder: "1-750"
 }));
-``` -->
+```
 
 # Data Extraction & Visualization
 
@@ -245,7 +245,7 @@ if (prebuiltQueryResult) {
 
 ---
 
-## Q1: Historical Returns for the Assets in the Client's Portfolio
+## Q1 (Part #1): What is the most recent 12 months, 24 months, 36 months return for each of the securities? 
 
 ```js
 // Create the textarea that updates based on the selected query
@@ -253,7 +253,7 @@ const rorCode = view(Inputs.textarea({
   value: `CREATE OR REPLACE VIEW Renan_Peres_ror AS (
 WITH price_history AS (
 SELECT 
-	pd.date,
+	pd.date, 
 	pd.ticker,
 	pd.value,
 	NULLIF(LAG(pd.value, 1) OVER (
@@ -281,6 +281,7 @@ JOIN Renan_Peres_1 rp ON rp.ticker = pd.ticker
 WHERE 
 	pd.price_type = 'Adjusted'
 	AND CAST(pd.value AS DECIMAL) != 0
+AND pd.date >= '2019-08-08'
 )
 
 SELECT 
@@ -293,6 +294,7 @@ SELECT
     , (value-prev_24m)/prev_24m as ror_24m
     , (value-prev_36m)/prev_36m as ror_36m
 FROM price_history
+
 );
 
 SELECT *
@@ -342,6 +344,153 @@ if (rorQueryResult) {
           this.disabled = true;
           const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
           await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${rorCode}`);
+          const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
+          const parquetFile = await toParquet(predefinedDb, {
+            table: tmpTable,
+            name: `result_${timestamp}.parquet`
+          });
+          download(parquetFile);
+          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
+          this.disabled = false;
+        }}
+      >
+        Download Result as Parquet
+      </button>
+    </div>
+  `);
+}
+```
+
+---
+
+## Q1 (Part #2): What is the Average return for for the entire portfolio?
+
+```js
+// Create the textarea that updates based on the selected query
+const rorQueryResult2 = view(Inputs.textarea({
+  value: `WITH port AS (
+    SELECT 
+        ticker,
+        SUM(quantity) AS quantity
+    FROM Renan_Peres_1 
+    GROUP BY ticker
+),
+avg_1m AS (
+    SELECT  
+        ticker,
+        AVG(ror_1m) as avg_ror_1m   
+    FROM Renan_Peres_ror
+    WHERE  
+        date BETWEEN '2022-08-09' AND '2022-09-09'
+        AND ror_1m IS NOT NULL
+    GROUP BY ticker
+),
+avg_12m AS (
+    SELECT   
+        ticker,
+        AVG(ror_12m) as avg_ror_12m
+    FROM Renan_Peres_ror
+    WHERE 
+        date BETWEEN '2021-09-09' AND '2022-09-09'
+        AND ror_12m IS NOT NULL
+    GROUP BY ticker                  
+),
+avg_24m AS (
+    SELECT  
+        ticker,
+        AVG(ror_12m) as avg_ror_24m
+    FROM Renan_Peres_ror
+    WHERE 
+        date BETWEEN '2020-09-09' AND '2022-09-09'
+        AND ror_12m IS NOT NULL
+    GROUP BY ticker                  
+),
+avg_36m AS (
+    SELECT  
+        ticker,
+        AVG(ror_12m) as avg_ror_36m
+    FROM Renan_Peres_ror
+    WHERE 
+        date BETWEEN '2019-09-09' AND '2022-09-09'
+        AND ror_12m IS NOT NULL
+    GROUP BY ticker                   
+),
+portfolio_total AS (
+    SELECT 
+        port.*,
+        avg_1m.avg_ror_1m,                          
+        avg_12m.avg_ror_12m,
+        avg_24m.avg_ror_24m,
+        avg_36m.avg_ror_36m
+    FROM port 
+    LEFT JOIN avg_12m ON avg_12m.ticker = port.ticker
+    LEFT JOIN avg_1m ON avg_1m.ticker = port.ticker
+    LEFT JOIN avg_24m ON avg_24m.ticker = port.ticker
+    LEFT JOIN avg_36m ON avg_36m.ticker = port.ticker
+),
+final_result AS (
+    SELECT * FROM portfolio_total
+    UNION ALL
+    SELECT 
+        'Portfolio Average Return' as ticker,
+        SUM(quantity) as quantity,
+        SUM(CASE WHEN avg_ror_1m IS NOT NULL THEN quantity * avg_ror_1m ELSE 0 END) / 
+            NULLIF(SUM(CASE WHEN avg_ror_1m IS NOT NULL THEN quantity ELSE 0 END), 0) as avg_ror_1m,
+        SUM(CASE WHEN avg_ror_12m IS NOT NULL THEN quantity * avg_ror_12m ELSE 0 END) / 
+            NULLIF(SUM(CASE WHEN avg_ror_12m IS NOT NULL THEN quantity ELSE 0 END), 0) as avg_ror_12m,
+        SUM(CASE WHEN avg_ror_24m IS NOT NULL THEN quantity * avg_ror_24m ELSE 0 END) / 
+            NULLIF(SUM(CASE WHEN avg_ror_24m IS NOT NULL THEN quantity ELSE 0 END), 0) as avg_ror_24m,
+        SUM(CASE WHEN avg_ror_36m IS NOT NULL THEN quantity * avg_ror_36m ELSE 0 END) / 
+            NULLIF(SUM(CASE WHEN avg_ror_36m IS NOT NULL THEN quantity ELSE 0 END), 0) as avg_ror_36m
+    FROM portfolio_total
+)
+SELECT * FROM final_result
+ORDER BY CASE 
+    WHEN ticker = 'Portfolio Average Return' THEN 1 
+    ELSE 2 
+END;`,
+  width: "1000px",
+  rows: 10,
+  resize: "both",
+  className: "sql-editor",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js
+// Execute and display pre-built query results
+const rorResult2 = predefinedDb.query(rorQueryResult2);
+display(Inputs.table(rorResult2));
+
+// Display download buttons if we have results
+if (rorResult2) {
+  display(html`
+    <div class="flex gap-6 mt-4">
+      <button
+        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+        onclick=${async function() {
+          this.disabled = true;
+          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${rorQueryResult2}`);
+          await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
+          const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
+          const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
+          download(file);
+          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
+          this.disabled = false;
+        }}
+      >
+        Download Result as CSV
+      </button>
+      <button
+        class="px-6 py-2 ml-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-green-400"
+        onclick=${async function() {
+          this.disabled = true;
+          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${rorQueryResult2}`);
           const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
           const parquetFile = await toParquet(predefinedDb, {
             table: tmpTable,
