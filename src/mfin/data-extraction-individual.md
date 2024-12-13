@@ -11,13 +11,13 @@ sql:
   security_masterlist: ./data/security_masterlist.csv
 ---
 
-<!-- ```html
+```html
 <style>
 .observablehq textarea {
-  min-height: 450px !important;
+  min-height: 500px !important;
 }
 </style>
-``` -->
+```
 
 <!-- ```js
 // Create the dropdown for pre-built queries
