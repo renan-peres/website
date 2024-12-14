@@ -1,0 +1,455 @@
+row_names,id,security_name,ticker,sp500_weight,sec_type,major_asset_class,minor_asset_class
+183,183,Agilent Technologies Inc.,A,0.12042,common_share,equity,large_cap
+388,388,Goldman Sachs Physical Gold ETF,AAAU,,etf,commodities,oil
+1,1,Apple Inc.,AAPL,7.03391,common_share,equity,large_cap
+21,21,AbbVie Inc.,ABBV,0.73543,common_share,equity,large_cap
+303,303,AmerisourceBergen Corporation,ABC,0.06563,common_share,equity,large_cap
+33,33,Abbott Laboratories,ABT,0.55482,common_share,equity,large_cap
+35,35,Accenture Plc Class A,ACN,0.5402,common_share,equity,large_cap
+36,36,Adobe Incorporated,ADBE,0.53685,common_share,equity,large_cap
+93,93,Analog Devices Inc.,ADI,0.23608,common_share,equity,large_cap
+148,148,Archer-Daniels-Midland Company,ADM,0.15047,common_share,equity,large_cap
+72,72,Automatic Data Processing Inc.,ADP,0.30015,common_share,equity,large_cap
+158,158,Autodesk Inc.,ADSK,0.13587,common_share,equity,large_cap
+278,278,Ameren Corporation,AEE,0.07187,common_share,equity,large_cap
+140,140,American Electric Power Company Inc.,AEP,0.15815,common_share,equity,large_cap
+341,341,AES Corporation,AES,0.05367,common_share,equity,large_cap
+196,196,Aflac Incorporated,AFL,0.10929,common_share,equity,large_cap
+399,399,iShares Core U.S. Aggregate Bond ETF,AGG,,etf,fixed_income,
+171,171,American International Group Inc.,AIG,0.12747,common_share,equity,large_cap
+190,190,Arthur J. Gallagher & Co.,AJG,0.11519,common_share,equity,large_cap
+215,215,Albemarle Corporation,ALB,0.10031,common_share,equity,large_cap
+336,336,Align Technology Inc.,ALGN,0.05564,common_share,equity,large_cap
+208,208,Allstate Corporation,ALL,0.10338,common_share,equity,large_cap
+88,88,Applied Materials Inc.,AMAT,0.24602,common_share,equity,large_cap
+338,338,Amcor PLC,AMCR,0.05442,common_share,equity,large_cap
+52,52,Advanced Micro Devices Inc.,AMD,0.3973,common_share,equity,large_cap
+251,251,AMETEK Inc.,AME,0.08437,common_share,equity,large_cap
+54,54,Amgen Inc.,AMGN,0.38833,common_share,equity,large_cap
+233,233,Ameriprise Financial Inc.,AMP,0.09287,common_share,equity,large_cap
+61,61,American Tower Corporation,AMT,0.36012,common_share,equity,large_cap
+3,3,Amazon.com Inc.,AMZN,3.36425,common_share,equity,large_cap
+260,260,Arista Networks Inc.,ANET,0.08119,common_share,equity,large_cap
+306,306,ANSYS Inc.,ANSS,0.06533,common_share,equity,large_cap
+116,116,Aon Plc Class A,AON,0.183,common_share,equity,large_cap
+135,135,Air Products and Chemicals Inc.,APD,0.16672,common_share,equity,large_cap
+165,165,Amphenol Corporation Class A,APH,0.13183,common_share,equity,large_cap
+273,273,Aptiv PLC,APTV,0.07437,common_share,equity,large_cap
+435,437,AltShares Merger Arbitrage ETF,ARB,,etf,alternatives,
+290,290,Alexandria Real Estate Equities Inc.,ARE,0.06903,common_share,equity,large_cap
+362,362,Atmos Energy Corporation,ATO,0.04856,common_share,equity,large_cap
+123,123,Activision Blizzard Inc.,ATVI,0.17808,common_share,equity,large_cap
+247,247,AvalonBay Communities Inc.,AVB,0.08703,common_share,equity,large_cap
+28,28,Broadcom Inc.,AVGO,0.61904,common_share,equity,large_cap
+255,255,American Water Works Company Inc.,AWK,0.08254,common_share,equity,large_cap
+79,79,American Express Company,AXP,0.27735,common_share,equity,large_cap
+169,169,AutoZone Inc.,AZO,0.12893,common_share,equity,large_cap
+82,82,Boeing Company,BA,0.25989,common_share,equity,large_cap
+452,455,Alibaba Group Holdings,BABA,,common_share,equity,large_cap
+22,22,Bank of America Corp,BAC,0.72757,common_share,equity,large_cap
+332,332,Ball Corporation,BALL,0.0566,common_share,equity,large_cap
+383,383,GraniteShares Gold Shares,BAR,,etf,commodities,precious_metals
+244,244,Baxter International Inc.,BAX,0.08754,common_share,equity,large_cap
+379,379,abrdn Bloomberg All Commodity Strategy K-1 Free ETF,BCI,,etf,commodities,precious_metals
+102,102,Becton Dickinson and Company,BDX,0.2191,common_share,equity,large_cap
+447,450,Baidu,BIDU,,common_share,equity,small_cap
+241,241,Biogen Inc.,BIIB,0.09002,common_share,equity,large_cap
+415,416,SPDR Bloomberg 1-3 Month T-Bill ETF,BIL,,etf,fixed_income,
+226,226,Bank of New York Mellon Corp,BK,0.09576,common_share,equity,large_cap
+96,96,Booking Holdings Inc.,BKNG,0.22931,common_share,equity,large_cap
+300,300,Baker Hughes Company Class A,BKR,0.06618,common_share,equity,large_cap
+75,75,BlackRock Inc.,BLK,0.2909,common_share,equity,large_cap
+44,44,Bristol-Myers Squibb Company,BMY,0.43748,common_share,equity,large_cap
+398,398,Vanguard Total Bond Market ETF,BND,,etf,fixed_income,
+400,400,Vanguard Total International Bond ETF,BNDX,,etf,fixed_income,
+326,326,Broadridge Financial Solutions Inc.,BR,0.0584,common_share,equity,large_cap
+7,7,Berkshire Hathaway Inc. Class B,BRK.B,1.5182,common_share,equity,large_cap
+403,403,Vanguard Short-Term Bond ETF,BSV,,etf,fixed_income,
+121,121,Boston Scientific Corporation,BSX,0.18083,common_share,equity,large_cap
+428,429,AGFiQ US Market Neutral Anti-Beta Fund,BTAL,,etf,alternatives,
+77,77,Citigroup Inc.,C,0.28699,common_share,equity,large_cap
+327,327,Cardinal Health Inc.,CAH,0.05834,common_share,equity,large_cap
+202,202,Carrier Global Corp.,CARR,0.10644,common_share,equity,large_cap
+76,76,Caterpillar Inc.,CAT,0.28932,common_share,equity,large_cap
+89,89,Chubb Limited,CB,0.24485,common_share,equity,large_cap
+264,264,CBRE Group Inc. Class A,CBRE,0.0772,common_share,equity,large_cap
+100,100,Crown Castle Inc.,CCI,0.22345,common_share,equity,large_cap
+156,156,Cadence Design Systems Inc.,CDNS,0.13994,common_share,equity,large_cap
+286,286,CDW Corp.,CDW,0.06974,common_share,equity,large_cap
+257,257,Constellation Energy Corporation,CEG,0.08229,common_share,equity,large_cap
+312,312,CF Industries Holdings Inc.,CF,0.0633,common_share,equity,large_cap
+337,337,Citizens Financial Group Inc.,CFG,0.05527,common_share,equity,large_cap
+329,329,Church & Dwight Co. Inc.,CHD,0.05816,common_share,equity,large_cap
+159,159,Charter Communications Inc. Class A,CHTR,0.13582,common_share,equity,large_cap
+80,80,Cigna Corporation,CI,0.27318,common_share,equity,large_cap
+113,113,Colgate-Palmolive Company,CL,0.19324,common_share,equity,large_cap
+345,345,Clorox Company,CLX,0.05269,common_share,equity,large_cap
+42,42,Comcast Corporation Class A,CMCSA,0.45507,common_share,equity,large_cap
+105,105,CME Group Inc. Class A,CME,0.21443,common_share,equity,large_cap
+155,155,Chipotle Mexican Grill Inc.,CMG,0.14086,common_share,equity,large_cap
+239,239,Cummins Inc.,CMI,0.09079,common_share,equity,large_cap
+323,323,CMS Energy Corporation,CMS,0.05945,common_share,equity,large_cap
+395,395,Amplify Seymour Cannabis ETF,CNBS,,etf,commodities,cannabis
+141,141,Centene Corporation,CNC,0.15808,common_share,equity,large_cap
+318,318,CenterPoint Energy Inc.,CNP,0.06064,common_share,equity,large_cap
+179,179,Capital One Financial Corp,COF,0.12391,common_share,equity,large_cap
+49,49,ConocoPhillips,COP,0.41495,common_share,equity,large_cap
+25,25,Costco Wholesale Corporation,COST,0.69457,common_share,equity,large_cap
+275,275,Copart Inc.,CPRT,0.07356,common_share,equity,large_cap
+40,40,Salesforce Inc.,CRM,0.46168,common_share,equity,large_cap
+32,32,Cisco Systems Inc.,CSCO,0.5582,common_share,equity,large_cap
+107,107,CSX Corporation,CSX,0.20742,common_share,equity,large_cap
+434,436,Simplify Managed Futures Strategy ETF,CTA,,etf,alternatives,
+193,193,Cintas Corporation,CTAS,0.11186,common_share,equity,large_cap
+360,360,Catalent Inc,CTLT,0.04934,common_share,equity,large_cap
+287,287,Coterra Energy Inc.,CTRA,0.06961,common_share,equity,large_cap
+217,217,Cognizant Technology Solutions Corporation Class A,CTSH,0.09954,common_share,equity,large_cap
+163,163,Corteva Inc,CTVA,0.13313,common_share,equity,large_cap
+53,53,CVS Health Corporation,CVS,0.39671,common_share,equity,large_cap
+17,17,Chevron Corporation,CVX,0.9075,common_share,equity,large_cap
+110,110,Dominion Energy Inc,D,0.19803,common_share,equity,large_cap
+321,321,Delta Air Lines Inc.,DAL,0.06048,common_share,equity,large_cap
+377,377,Invesco DB Agriculture Fund,DBA,,etf,commodities,aggriculture
+373,373,Invesco DB Commodity Index Tracking Fund,DBC,,etf,commodities,precious_metals
+423,424,iMGP DBi Managed Futures Strategy ETF,DBMF,,etf,alternatives,
+245,245,DuPont de Nemours Inc.,DD,0.08744,common_share,equity,large_cap
+70,70,Deere & Company,DE,0.30525,common_share,equity,large_cap
+252,252,Discover Financial Services,DFS,0.08409,common_share,equity,large_cap
+134,134,Dollar General Corporation,DG,0.16764,common_share,equity,large_cap
+288,288,D.R. Horton Inc.,DHI,0.06913,common_share,equity,large_cap
+34,34,Danaher Corporation,DHR,0.55215,common_share,equity,large_cap
+29,29,Walt Disney Company,DIS,0.60599,common_share,equity,large_cap
+384,384,iPath Bloomberg Commodity Index Total Return ETN,DJP,,etf,commodities,precious_metals
+210,210,Digital Realty Trust Inc.,DLR,0.10282,common_share,equity,large_cap
+231,231,Dollar Tree Inc.,DLTR,0.09385,common_share,equity,large_cap
+339,339,Dover Corporation,DOV,0.05415,common_share,equity,large_cap
+199,199,Dow Inc.,DOW,0.10771,common_share,equity,large_cap
+295,295,Duke Realty Corporation,DRE,0.06801,common_share,equity,large_cap
+358,358,Darden Restaurants Inc.,DRI,0.04974,common_share,equity,large_cap
+266,266,DTE Energy Company,DTE,0.0768,common_share,equity,large_cap
+85,85,Duke Energy Corporation,DUK,0.249,common_share,equity,large_cap
+173,173,Devon Energy Corporation,DVN,0.12527,common_share,equity,large_cap
+201,201,DexCom Inc.,DXCM,0.10647,common_share,equity,large_cap
+204,204,Electronic Arts Inc.,EA,0.1059,common_share,equity,large_cap
+276,276,eBay Inc.,EBAY,0.07337,common_share,equity,large_cap
+174,174,Ecolab Inc.,ECL,0.12518,common_share,equity,large_cap
+205,205,Consolidated Edison Inc.,ED,0.10498,common_share,equity,large_cap
+284,284,Equifax Inc.,EFX,0.07038,common_share,equity,large_cap
+267,267,Edison International,EIX,0.07657,common_share,equity,large_cap
+132,132,Estee Lauder Companies Inc. Class A,EL,0.17023,common_share,equity,large_cap
+63,63,Elevance Health Inc.,ELV,0.35013,common_share,equity,large_cap
+420,421,iShares J.P. Morgan USD Emerging Markets Bond ETF,EMB,,etf,fixed_income,
+149,149,Emerson Electric Co.,EMR,0.1472,common_share,equity,large_cap
+172,172,Enphase Energy Inc.,ENPH,0.12575,common_share,equity,large_cap
+108,108,EOG Resources Inc.,EOG,0.20447,common_share,equity,large_cap
+443,445,Emles Alpha Opportunities ETF,EOPS,,etf,alternatives,
+280,280,EPAM Systems Inc.,EPAM,0.07169,common_share,equity,large_cap
+125,125,Equinix Inc.,EQIX,0.17546,common_share,equity,large_cap
+265,265,Equity Residential,EQR,0.07698,common_share,equity,large_cap
+234,234,Eversource Energy,ES,0.09245,common_share,equity,large_cap
+346,346,Essex Property Trust Inc.,ESS,0.05267,common_share,equity,large_cap
+133,133,Eaton Corp. Plc,ETN,0.16804,common_share,equity,large_cap
+282,282,Entergy Corporation,ETR,0.07136,common_share,equity,large_cap
+124,124,Edwards Lifesciences Corporation,EW,0.17617,common_share,equity,large_cap
+166,166,Exelon Corporation,EXC,0.13056,common_share,equity,large_cap
+355,355,Expeditors International of Washington Inc.,EXPD,0.0507,common_share,equity,large_cap
+262,262,Extra Space Storage Inc.,EXR,0.08013,common_share,equity,large_cap
+122,122,Ford Motor Company,F,0.17973,common_share,equity,large_cap
+299,299,Diamondback Energy Inc.,FANG,0.06621,common_share,equity,large_cap
+249,249,Fastenal Company,FAST,0.08572,common_share,equity,large_cap
+164,164,Freeport-McMoRan Inc.,FCX,0.13234,common_share,equity,large_cap
+356,356,FactSet Research Systems Inc.,FDS,0.05005,common_share,equity,large_cap
+152,152,FedEx Corporation,FDX,0.14327,common_share,equity,large_cap
+289,289,FirstEnergy Corp.,FE,0.0691,common_share,equity,large_cap
+136,136,Fidelity National Information Services Inc.,FIS,0.16242,common_share,equity,large_cap
+118,118,Fiserv Inc.,FISV,0.18225,common_share,equity,large_cap
+283,283,Fifth Third Bancorp,FITB,0.07116,common_share,equity,large_cap
+433,435,Franklin Systematic Style Premia ETF,FLSP,,etf,alternatives,
+361,361,FLEETCOR Technologies Inc.,FLT,0.04897,common_share,equity,large_cap
+430,431,First Trust Managed Futures Strategy Fund,FMF,,etf,alternatives,
+259,259,First Republic Bank,FRC,0.08132,common_share,equity,large_cap
+372,372,First Trust Global Tactical Commodity Strategy Fund,FTGC,,etf,commodities,precious_metals
+425,426,First Trust Long/Short Equity ETF,FTLS,,etf,alternatives,
+209,209,Fortinet Inc.,FTNT,0.10317,common_share,equity,large_cap
+292,292,Fortive Corp.,FTV,0.06883,common_share,equity,large_cap
+145,145,General Dynamics Corporation,GD,0.15468,common_share,equity,large_cap
+92,92,General Electric Company,GE,0.23954,common_share,equity,large_cap
+364,364,Goldman Sachs Acss Invmt Grd Corp Bd ETF,GIGB,,etf,fixed income,corporate
+91,91,Gilead Sciences Inc.,GILD,0.24121,common_share,equity,large_cap
+160,160,General Mills Inc.,GIS,0.13493,common_share,equity,large_cap
+367,367,SPDR Gold Shares,GLD,,etf,commodities,precious_metals
+371,371,SPDR Gold MiniShares Trust,GLDM,,etf,commodities,precious_metals
+380,380,abrdn Physical Precious Metals Basket Shares ETF,GLTR,,etf,commodities,precious_metals
+272,272,Corning Inc,GLW,0.07454,common_share,equity,large_cap
+126,126,General Motors Company,GM,0.17489,common_share,equity,large_cap
+6,6,Alphabet Inc. Class C,GOOG,1.78736,common_share,equity,large_cap
+5,5,Alphabet Inc. Class A,GOOGL,1.93082,common_share,equity,large_cap
+409,410,iShares U.S. Treasury Bond ETF,GOVT,,etf,fixed_income,
+293,293,Genuine Parts Company,GPC,0.06826,common_share,equity,large_cap
+194,194,Global Payments Inc.,GPN,0.11082,common_share,equity,large_cap
+67,67,Goldman Sachs Group Inc.,GS,0.34115,common_share,equity,large_cap
+376,376,iShares S&P GSCI Commodity-Indexed Trust,GSG,,etf,commodities,precious_metals
+274,274,W.W. Grainger Inc.,GWW,0.07357,common_share,equity,large_cap
+269,269,Halliburton Company,HAL,0.0754,common_share,equity,large_cap
+322,322,Huntington Bancshares Incorporated,HBAN,0.06029,common_share,equity,large_cap
+150,150,HCA Healthcare Inc,HCA,0.1457,common_share,equity,large_cap
+16,16,Home Depot Inc.,HD,0.91784,common_share,equity,large_cap
+442,444,ProShares Hedge Replication ETF,HDG,,etf,alternatives,
+222,222,Hess Corporation,HES,0.0969,common_share,equity,large_cap
+301,301,Hartford Financial Services Group Inc.,HIG,0.06567,common_share,equity,large_cap
+197,197,Hilton Worldwide Holdings Inc,HLT,0.10906,common_share,equity,large_cap
+352,352,Hologic Inc.,HOLX,0.05129,common_share,equity,large_cap
+56,56,Honeywell International Inc.,HON,0.37867,common_share,equity,large_cap
+351,351,Hewlett Packard Enterprise Co.,HPE,0.05136,common_share,equity,large_cap
+248,248,HP Inc.,HPQ,0.08579,common_share,equity,large_cap
+224,224,Hershey Company,HSY,0.09647,common_share,equity,large_cap
+119,119,Humana Inc.,HUM,0.18219,common_share,equity,large_cap
+368,368,iShares Gold Trust,IAU,,etf,commodities,gold
+378,378,iShares Gold Trust Micro ETF of Benef Interest,IAUM,,etf,commodities,precious_metals
+66,66,International Business Machines Corporation,IBM,0.34223,common_share,equity,large_cap
+129,129,Intercontinental Exchange Inc.,ICE,0.17106,common_share,equity,large_cap
+237,237,IDEXX Laboratories Inc.,IDXX,0.09138,common_share,equity,large_cap
+410,411,iShares 7-10 Year Treasury Bond ETF,IEF,,etf,fixed_income,
+453,456,Ishares Core MSCI Emerging Markets,IEMG,,etf,equity,emerging_markets
+250,250,International Flavors & Fragrances Inc.,IFF,0.08566,common_share,equity,large_cap
+412,413,iShares 1-5 Year Investment Grade Corporate Bond ETF,IGSB,,etf,fixed_income,
+227,227,Illumina Inc.,ILMN,0.09554,common_share,equity,large_cap
+58,58,Intel Corporation,INTC,0.37239,common_share,equity,large_cap
+59,59,Intuit Inc.,INTU,0.36724,common_share,equity,large_cap
+176,176,IQVIA Holdings Inc,IQV,0.12469,common_share,equity,large_cap
+325,325,Ingersoll Rand Inc.,IR,0.05879,common_share,equity,large_cap
+97,97,Intuitive Surgical Inc.,ISRG,0.22834,common_share,equity,large_cap
+277,277,Gartner Inc.,IT,0.07247,common_share,equity,large_cap
+128,128,Illinois Tool Works Inc.,ITW,0.17207,common_share,equity,large_cap
+417,418,iShares Core Total USD Bond Market ETF,IUSB,,etf,fixed_income,
+185,185,Johnson Controls International plc,JCI,0.11926,common_share,equity,large_cap
+9,9,Johnson & Johnson,JNJ,1.28895,common_share,equity,large_cap
+13,13,JPMorgan Chase & Co.,JPM,1.03165,common_share,equity,large_cap
+411,412,JPMorgan Ultra-Short Income ETF,JPST,,etf,fixed_income,
+343,343,Kellogg Company,K,0.05363,common_share,equity,large_cap
+253,253,Keurig Dr Pepper Inc.,KDP,0.08402,common_share,equity,large_cap
+354,354,KeyCorp,KEY,0.05073,common_share,equity,large_cap
+232,232,Keysight Technologies Inc,KEYS,0.09375,common_share,equity,large_cap
+270,270,Kraft Heinz Company,KHC,0.07527,common_share,equity,large_cap
+143,143,KLA Corporation,KLAC,0.15668,common_share,equity,large_cap
+177,177,Kimberly-Clark Corporation,KMB,0.12438,common_share,equity,large_cap
+207,207,Kinder Morgan Inc Class P,KMI,0.10342,common_share,equity,large_cap
+429,430,KFA Mount Lucas Index Strategy ETF,KMLM,,etf,alternatives,
+23,23,Coca-Cola Company,KO,0.71781,common_share,equity,large_cap
+390,390,ProShares UltraShort Bloomberg Natural Gas,KOLD,,etf,commodities,oil
+230,230,Kroger Co.,KR,0.09396,common_share,equity,large_cap
+386,386,KraneShares Global Carbon Strategy ETF,KRBN,,etf,commodities,carbon
+438,440,Leatherback Long/Short Alternative Yield ETF,LBAY,,etf,alternatives,
+320,320,Lennar Corporation Class A,LEN,0.06054,common_share,equity,large_cap
+305,305,Laboratory Corporation of America Holdings,LH,0.06553,common_share,equity,large_cap
+162,162,L3Harris Technologies Inc,LHX,0.13351,common_share,equity,large_cap
+48,48,Linde plc,LIN,0.42319,common_share,equity,large_cap
+20,20,Eli Lilly and Company,LLY,0.73691,common_share,equity,large_cap
+74,74,Lockheed Martin Corporation,LMT,0.29436,common_share,equity,large_cap
+51,51,Lowe's Companies Inc.,LOW,0.40018,common_share,equity,large_cap
+366,366,iShares iBoxx Invmt Grade Corp Bd ETF,LQD,,etf,fixed income,inv_grade_corp
+120,120,Lam Research Corporation,LRCX,0.18096,common_share,equity,large_cap
+304,304,Southwest Airlines Co.,LUV,0.06557,common_share,equity,large_cap
+311,311,LyondellBasell Industries NV,LYB,0.06408,common_share,equity,large_cap
+18,18,Mastercard Incorporated Class A,MA,0.84086,common_share,equity,large_cap
+328,328,Mid-America Apartment Communities Inc.,MAA,0.05832,common_share,equity,large_cap
+168,168,Marriott International Inc. Class A,MAR,0.1298,common_share,equity,large_cap
+437,439,First Trust Merger Arbitrage ETF,MARB,,etf,alternatives,
+413,414,iShares MBS ETF,MBB,,etf,fixed_income,
+30,30,McDonald's Corporation,MCD,0.56965,common_share,equity,large_cap
+200,200,Microchip Technology Incorporated,MCHP,0.10754,common_share,equity,large_cap
+139,139,McKesson Corporation,MCK,0.15937,common_share,equity,large_cap
+154,154,Moody's Corporation,MCO,0.14113,common_share,equity,large_cap
+84,84,Mondelez International Inc. Class A,MDLZ,0.24983,common_share,equity,large_cap
+64,64,Medtronic Plc,MDT,0.34871,common_share,equity,large_cap
+157,157,MetLife Inc.,MET,0.1368,common_share,equity,large_cap
+11,11,Meta Platforms Inc. Class A,META,1.10082,common_share,equity,large_cap
+392,392,ETFMG Alternative Harvest ETF,MJ,,etf,commodities,cannabis
+330,330,McCormick & Company Incorporated,MKC,0.05813,common_share,equity,large_cap
+308,308,Martin Marietta Materials Inc.,MLM,0.06474,common_share,equity,large_cap
+87,87,Marsh & McLennan Companies Inc.,MMC,0.24793,common_share,equity,large_cap
+112,112,3M Company,MMM,0.19553,common_share,equity,large_cap
+424,425,IQ Merger Arbitrage ETF,MNA,,etf,alternatives,
+212,212,Monster Beverage Corporation,MNST,0.10145,common_share,equity,large_cap
+90,90,Altria Group Inc,MO,0.24314,common_share,equity,large_cap
+316,316,Molina Healthcare Inc.,MOH,0.06113,common_share,equity,large_cap
+324,324,Mosaic Company,MOS,0.05916,common_share,equity,large_cap
+142,142,Marathon Petroleum Corporation,MPC,0.15774,common_share,equity,large_cap
+334,334,Monolithic Power Systems Inc.,MPWR,0.05615,common_share,equity,large_cap
+27,27,Merck & Co. Inc.,MRK,0.65474,common_share,equity,large_cap
+151,151,Moderna Inc.,MRNA,0.1448,common_share,equity,large_cap
+340,340,Marathon Oil Corporation,MRO,0.05368,common_share,equity,large_cap
+60,60,Morgan Stanley,MS,0.36655,common_share,equity,large_cap
+189,189,MSCI Inc. Class A,MSCI,0.1159,common_share,equity,large_cap
+2,2,Microsoft Corporation,MSFT,5.72638,common_share,equity,large_cap
+175,175,Motorola Solutions Inc.,MSI,0.12477,common_share,equity,large_cap
+391,391,AdvisorShares Pure US Cannabis ETF,MSOS,,etf,commodities,cannabis
+441,443,LHA Market State Alpha Seeker ETF,MSVX,,etf,alternatives,
+220,220,M&T Bank Corporation,MTB,0.09914,common_share,equity,large_cap
+359,359,Match Group Inc.,MTCH,0.04936,common_share,equity,large_cap
+246,246,Mettler-Toledo International Inc.,MTD,0.0874,common_share,equity,large_cap
+117,117,Micron Technology Inc.,MU,0.18263,common_share,equity,large_cap
+405,406,iShares National Muni Bond ETF,MUB,,etf,fixed_income,
+309,309,Nasdaq Inc.,NDAQ,0.06473,common_share,equity,large_cap
+37,37,NextEra Energy Inc.,NEE,0.52521,common_share,equity,large_cap
+216,216,Newmont Corporation,NEM,0.0997,common_share,equity,large_cap
+73,73,Netflix Inc.,NFLX,0.29824,common_share,equity,large_cap
+50,50,NIKE Inc. Class B,NKE,0.40993,common_share,equity,large_cap
+106,106,Northrop Grumman Corp.,NOC,0.21226,common_share,equity,large_cap
+81,81,ServiceNow Inc.,NOW,0.26763,common_share,equity,large_cap
+127,127,Norfolk Southern Corporation,NSC,0.17419,common_share,equity,large_cap
+317,317,Northern Trust Corporation,NTRS,0.06064,common_share,equity,large_cap
+195,195,Nucor Corporation,NUE,0.10986,common_share,equity,large_cap
+12,12,NVIDIA Corporation,NVDA,1.03751,common_share,equity,large_cap
+446,449,Novo-nordisk A-s,NVO,,common_share,equity,small_cap
+167,167,NXP Semiconductors NV,NXPI,0.12999,common_share,equity,large_cap
+186,186,Realty Income Corporation,O,0.11824,common_share,equity,large_cap
+279,279,Old Dominion Freight Line Inc.,ODFL,0.07172,common_share,equity,large_cap
+261,261,ONEOK Inc.,OKE,0.08042,common_share,equity,large_cap
+238,238,ON Semiconductor Corporation,ON,0.09079,common_share,equity,large_cap
+65,65,Oracle Corporation,ORCL,0.34742,common_share,equity,large_cap
+153,153,O'Reilly Automotive Inc.,ORLY,0.14182,common_share,equity,large_cap
+235,235,Otis Worldwide Corporation,OTIS,0.09158,common_share,equity,large_cap
+131,131,Occidental Petroleum Corporation,OXY,0.17037,common_share,equity,large_cap
+449,452,Palo Alto Networks,PANW,,common_share,equity,
+349,349,Paycom Software Inc.,PAYC,0.05157,common_share,equity,large_cap
+187,187,Paychex Inc.,PAYX,0.11801,common_share,equity,large_cap
+243,243,PACCAR Inc,PCAR,0.08821,common_share,equity,large_cap
+370,370,Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF,PDBC,,etf,commodities,precious_metals
+448,451,Pinduoduo Inc',PDD,,common_share,equity,small_cap
+213,213,Public Service Enterprise Group Inc,PEG,0.10102,common_share,equity,large_cap
+24,24,PepsiCo Inc.,PEP,0.7071,common_share,equity,large_cap
+19,19,Pfizer Inc.,PFE,0.78236,common_share,equity,large_cap
+344,344,Principal Financial Group Inc.,PFG,0.05345,common_share,equity,large_cap
+427,428,Simplify Interest Rate Hedge ETF,PFIX,,etf,alternatives,
+14,14,Procter & Gamble Company,PG,0.97963,common_share,equity,large_cap
+99,99,Progressive Corporation,PGR,0.22384,common_share,equity,large_cap
+206,206,Parker-Hannifin Corporation,PH,0.10436,common_share,equity,large_cap
+348,348,PerkinElmer Inc.,PKI,0.0516,common_share,equity,large_cap
+78,78,Prologis Inc.,PLD,0.27959,common_share,equity,large_cap
+43,43,Philip Morris International Inc.,PM,0.43899,common_share,equity,large_cap
+109,109,PNC Financial Services Group Inc.,PNC,0.19948,common_share,equity,large_cap
+394,394,Global X Cannabis ETF,POTX,,etf,commodities,cannabis
+242,242,PPG Industries Inc.,PPG,0.08923,common_share,equity,large_cap
+302,302,PPL Corporation,PPL,0.06565,common_share,equity,large_cap
+381,381,abrdn Physical Platinum Shares ETF,PPLT,,etf,commodities,precious_metals
+198,198,Prudential Financial Inc.,PRU,0.10804,common_share,equity,large_cap
+146,146,Public Storage,PSA,0.15351,common_share,equity,large_cap
+182,182,Phillips 66,PSX,0.12244,common_share,equity,large_cap
+315,315,Quanta Services Inc.,PWR,0.0617,common_share,equity,large_cap
+144,144,Pioneer Natural Resources Company,PXD,0.15624,common_share,equity,large_cap
+68,68,PayPal Holdings Inc.,PYPL,0.33097,common_share,equity,large_cap
+422,423,IQ Hedge Multi-Strategy Tracker ETF,QAI,,etf,alternatives,
+46,46,QUALCOMM Incorporated,QCOM,0.42741,common_share,equity,large_cap
+98,98,Regeneron Pharmaceuticals Inc.,REGN,0.22679,common_share,equity,large_cap
+313,313,Regions Financial Corporation,RF,0.06214,common_share,equity,large_cap
+436,438,ProShares Inflation Expectations ETF,RINF,,etf,alternatives,
+314,314,Raymond James Financial Inc.,RJF,0.06186,common_share,equity,large_cap
+426,427,SPDR SSgA Multi-Asset Real Return ETF,RLY,,etf,alternatives,
+214,214,ResMed Inc.,RMD,0.10068,common_share,equity,large_cap
+254,254,Rockwell Automation Inc.,ROK,0.08362,common_share,equity,large_cap
+170,170,Roper Technologies Inc.,ROP,0.12799,common_share,equity,large_cap
+223,223,Ross Stores Inc.,ROST,0.09672,common_share,equity,large_cap
+236,236,Republic Services Inc.,RSG,0.09153,common_share,equity,large_cap
+55,55,Raytheon Technologies Corporation,RTX,0.38166,common_share,equity,large_cap
+203,203,SBA Communications Corp. Class A,SBAC,0.10616,common_share,equity,large_cap
+71,71,Starbucks Corporation,SBUX,0.30397,common_share,equity,large_cap
+363,363,Shwab 5-10 year corporate bond,SCHI,,etf,fixed income,mid-term-corporate
+419,420,Schwab U.S. TIPS ETF,SCHP,,etf,fixed_income,
+69,69,Charles Schwab Corp,SCHW,0.32678,common_share,equity,large_cap
+389,389,ProShares UltraShort Bloomberg Crude Oil,SCO,,etf,commodities,oil
+350,350,SolarEdge Technologies Inc.,SEDG,0.05153,common_share,equity,large_cap
+374,374,abrdn Physical Gold Shares ETF,SGOL,,etf,commodities,precious_metals
+408,409,iShares Short Treasury Bond ETF,SHV,,etf,fixed_income,
+130,130,Sherwin-Williams Company,SHW,0.17104,common_share,equity,large_cap
+406,407,iShares 1-3 Year Treasury Bond ETF,SHY,,etf,fixed_income,
+281,281,SVB Financial Group,SIVB,0.0714,common_share,equity,large_cap
+385,385,abrdn Physical Silver Shares ETF,SIVR,,etf,commodities,silver
+138,138,Schlumberger NV,SLB,0.15979,common_share,equity,large_cap
+369,369,iShares Silver Trust,SLV,,etf,commodities,gold
+445,448,Snowflake,SNOW,,common_share,equity,small_cap
+147,147,Synopsys Inc.,SNPS,0.15128,common_share,equity,large_cap
+86,86,Southern Company,SO,0.24858,common_share,equity,large_cap
+219,219,Simon Property Group Inc.,SPG,0.09917,common_share,equity,large_cap
+57,57,S&P Global Inc.,SPGI,0.37734,common_share,equity,large_cap
+450,453,SPDR SANDP500,SPY,,etf,equity,large_cap
+137,137,Sempra Energy,SRE,0.16098,common_share,equity,large_cap
+319,319,STERIS Plc,STE,0.06058,common_share,equity,large_cap
+263,263,State Street Corporation,STT,0.07754,common_share,equity,large_cap
+184,184,Constellation Brands Inc. Class A,STZ,0.1202,common_share,equity,large_cap
+444,446,-1x Short VIX Futures ETF,SVIX,,etf,alternatives,
+104,104,Stryker Corporation,SYK,0.21845,common_share,equity,large_cap
+178,178,Sysco Corporation,SYY,0.12437,common_share,equity,large_cap
+62,62,AT&T Inc.,T,0.35557,common_share,equity,large_cap
+225,225,TransDigm Group Incorporated,TDG,0.09581,common_share,equity,large_cap
+347,347,Teledyne Technologies Incorporated,TDY,0.05227,common_share,equity,large_cap
+181,181,TE Connectivity Ltd.,TEL,0.12277,common_share,equity,large_cap
+114,114,Truist Financial Corporation,TFC,0.18876,common_share,equity,large_cap
+94,94,Target Corporation,TGT,0.23543,common_share,equity,large_cap
+396,396,Cannabis ETF,THCX,,etf,commodities,cannabis
+404,405,iShares TIPS Bond ETF,TIP,,etf,fixed_income,
+95,95,TJX Companies Inc,TJX,0.2312,common_share,equity,large_cap
+407,408,iShares 20+ Year Treasury Bond ETF,TLT,,etf,fixed_income,
+26,26,Thermo Fisher Scientific Inc.,TMO,0.65688,common_share,equity,large_cap
+83,83,T-Mobile US Inc.,TMUS,0.25366,common_share,equity,large_cap
+397,397,Cambria Cannabis ETF,TOKE,,etf,commodities,cannabis
+256,256,T. Rowe Price Group,TROW,0.08241,common_share,equity,large_cap
+188,188,Travelers Companies Inc.,TRV,0.11721,common_share,equity,large_cap
+296,296,Tractor Supply Company,TSCO,0.06724,common_share,equity,large_cap
+4,4,Tesla Inc,TSLA,2.15672,common_share,equity,large_cap
+454,457,Taiwan Semiconductor MFG,TSM,,common_share,equty,emerging_markets
+310,310,Tyson Foods Inc. Class A,TSN,0.06416,common_share,equity,large_cap
+192,192,Trane Technologies plc,TT,0.11262,common_share,equity,large_cap
+333,333,Take-Two Interactive Software Inc.,TTWO,0.05626,common_share,equity,large_cap
+229,229,Twitter Inc.,TWTR,0.09454,common_share,equity,large_cap
+41,41,Texas Instruments Incorporated,TXN,0.45943,common_share,equity,large_cap
+382,382,ProShares Ultra Bloomberg Crude Oil,UCO,,etf,commodities,precious_metals
+291,291,Ulta Beauty Inc.,ULTA,0.06889,common_share,equity,large_cap
+387,387,United States Natural Gas Fund LP,UNG,,etf,commodities,oil
+8,8,UnitedHealth Group Incorporated,UNH,1.46708,common_share,equity,large_cap
+45,45,Union Pacific Corporation,UNP,0.42844,common_share,equity,large_cap
+440,442,UPAR Ultra Risk Parity ETF,UPAR,,etf,alternatives,
+47,47,United Parcel Service Inc. Class B,UPS,0.42662,common_share,equity,large_cap
+307,307,United Rentals Inc.,URI,0.06491,common_share,equity,large_cap
+115,115,U.S. Bancorp,USB,0.18768,common_share,equity,large_cap
+365,365,iShares Broad USD Invm Grd Corp Bd ETF,USIG,,etf,fixed income corporate,
+375,375,United States Oil Fund LP,USO,,etf,commodities,oil
+432,433,2x Long VIX Futures ETF,UVIX,,etf,alternatives,
+15,15,Visa Inc. Class A,V,0.97829,common_share,equity,large_cap
+439,441,Cambria Value & Momentum ETF,VAMO,,etf,alternatives,
+402,402,Vanguard Intermediate-Term Corporate Bond ETF,VCIT,,etf,fixed_income,
+401,401,Vanguard Short-Term Corporate Bond ETF,VCSH,,etf,fixed_income,
+418,419,Vanguard Short-Term Treasury ETF,VGSH,,etf,fixed_income,
+228,228,VICI Properties Inc,VICI,0.09532,common_share,equity,large_cap
+161,161,Valero Energy Corporation,VLO,0.13467,common_share,equity,large_cap
+421,422,Vanguard Mortgage-Backed Securities ETF,VMBS,,etf,fixed_income,
+298,298,Vulcan Materials Company,VMC,0.0667,common_share,equity,large_cap
+240,240,Verisk Analytics Inc,VRSK,0.09074,common_share,equity,large_cap
+342,342,VeriSign Inc.,VRSN,0.05366,common_share,equity,large_cap
+103,103,Vertex Pharmaceuticals Incorporated,VRTX,0.2189,common_share,equity,large_cap
+416,417,Vanguard Tax-Exempt Bond ETF,VTEB,,etf,fixed_income,
+414,415,Vanguard Short-Term Inflation-Protected Securities ETF,VTIP,,etf,fixed_income,
+331,331,Ventas Inc.,VTR,0.05709,common_share,equity,large_cap
+451,454,Vanguard Ftse Emerging Markets,VWO,,etf,fixed_income,emerging_markets
+38,38,Verizon Communications Inc.,VZ,0.51394,common_share,equity,large_cap
+357,357,Westinghouse Air Brake Technologies Corporation,WAB,0.04998,common_share,equity,large_cap
+335,335,Waters Corporation,WAT,0.05574,common_share,equity,large_cap
+268,268,Walgreens Boots Alliance Inc.,WBA,0.07597,common_share,equity,large_cap
+258,258,Warner Bros. Discovery Inc. Series A,WBD,0.08173,common_share,equity,large_cap
+221,221,WEC Energy Group Inc,WEC,0.0984,common_share,equity,large_cap
+211,211,Welltower Inc,WELL,0.10268,common_share,equity,large_cap
+39,39,Wells Fargo & Company,WFC,0.50774,common_share,equity,large_cap
+111,111,Waste Management Inc.,WM,0.19692,common_share,equity,large_cap
+191,191,Williams Companies Inc.,WMB,0.11441,common_share,equity,large_cap
+31,31,Walmart Inc.,WMT,0.56727,common_share,equity,large_cap
+297,297,West Pharmaceutical Services Inc.,WST,0.06704,common_share,equity,large_cap
+431,432,WisdomTree Managed Futures Strategy Fund,WTMF,,etf,alternatives,
+285,285,Willis Towers Watson Public Limited Company,WTW,0.06975,common_share,equity,large_cap
+271,271,Weyerhaeuser Company,WY,0.07486,common_share,equity,large_cap
+180,180,Xcel Energy Inc.,XEL,0.12355,common_share,equity,large_cap
+10,10,Exxon Mobil Corporation,XOM,1.18412,common_share,equity,large_cap
+353,353,Xylem Inc.,XYL,0.05113,common_share,equity,large_cap
+393,393,AdvisorShares Pure Cannabis ETF,YOLO,,etf,commodities,cannabis
+218,218,Yum! Brands Inc.,YUM,0.09934,common_share,equity,large_cap
+294,294,Zimmer Biomet Holdings Inc.,ZBH,0.06807,common_share,equity,large_cap
+101,101,Zoetis Inc. Class A,ZTS,0.22109,common_share,equity,large_cap

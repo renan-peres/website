@@ -48,7 +48,8 @@ export default {
       name: "MFIN",
       open: true,
       pages: [
-        {name: "Data Extraction (Individual)", path: "/mfin/data-extraction-individual"},
+        {name: "Data Extraction (Individual)", path: "/mfin/Data-Extraction/Individual/data-extraction-individual"},
+        {name: "Data Extraction (Team)", path: "/mfin/Data-Extraction/Team/data-extraction-team"},
         {name: "Financial Model (Apple)", path: "/mfin/financial-model-apple"}
       ]
     }
