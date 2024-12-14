@@ -592,3 +592,116 @@ if (provinceResult) {
   `);
 }
 ```
+
+
+## Vaccination Data
+- vaccination_country
+- vaccination_province
+
+```js
+// Create the textarea that updates based on the selected query
+const vaccinationCountryCode = view(Inputs.textarea({
+  value: `WITH 
+-- Vaccination transformation
+base_vaccination AS (
+    SELECT 
+        Country_Region,
+        Lat,
+        Long,
+        Population,
+        STRPTIME(Date, '%m/%d/%Y') AS Date,
+        COALESCE(Vaccinations, 0) as Vaccinations
+    FROM vaccination_country
+),
+vaccination_final AS (
+    SELECT
+        Country_Region,
+        Lat,
+        Long,
+        Date,
+        CASE 
+            WHEN (Vaccinations - Prev_1d) < 0 THEN 0  
+            ELSE (Vaccinations - Prev_1d)         
+        END AS Vaccinations
+    FROM ( 
+        SELECT *, 
+            COALESCE(
+                LAG(Vaccinations, 1) OVER (  -- Explicitly use 1-day lag
+                    PARTITION BY Country_Region 
+                    ORDER BY Date
+                ), 0
+            ) AS Prev_1d
+        FROM base_vaccination
+        WHERE Vaccinations != 0
+    ) vaccination_country
+    GROUP BY Country_Region, Lat, Long, Population, Date, Vaccinations, Prev_1d
+)
+
+SELECT 
+    Country_Region,
+    Lat,
+    Long,
+    Date,
+    CAST(EXTRACT(YEAR FROM Date) AS INT) as Year,
+    MONTHNAME(Date) as Month,
+    Vaccinations
+FROM vaccination_final
+ORDER BY Country_Region, Date;`,
+  width: "1000px",
+  rows: 10,
+  resize: "both",
+  className: "sql-editor",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js
+// Execute and display pre-built query results
+const vaccinationCountryResult = predefinedDb.query(vaccinationCountryCode);
+display(Inputs.table(vaccinationCountryResult));
+
+// Display download buttons if we have results
+if (vaccinationCountryResult) {
+  display(html`
+    <div class="flex gap-6 mt-4">
+      <button
+        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+        onclick=${async function() {
+          this.disabled = true;
+          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${vaccinationCountryCode}`);
+          await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
+          const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
+          const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
+          download(file);
+          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
+          this.disabled = false;
+        }}
+      >
+        Download Result as CSV
+      </button>
+      <button
+        class="px-6 py-2 ml-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-green-400"
+        onclick=${async function() {
+          this.disabled = true;
+          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${vaccinationCountryCode}`);
+          const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
+          const parquetFile = await toParquet(predefinedDb, {
+            table: tmpTable,
+            name: `result_${timestamp}.parquet`
+          });
+          download(parquetFile);
+          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
+          this.disabled = false;
+        }}
+      >
+        Download Result as Parquet
+      </button>
+    </div>
+  `);
+}
+```
