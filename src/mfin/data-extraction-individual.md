@@ -26,7 +26,7 @@ const returnInput = view(Inputs.range([0, 750], {
   value: 0, // Set initial value
   placeholder: "1-750"
 }));
-```
+``` -->
 
 # Data Extraction & Visualization
 
@@ -253,26 +253,18 @@ const rorCode = view(Inputs.textarea({
   value: `CREATE OR REPLACE VIEW Renan_Peres_ror AS (
 WITH price_history AS (
 SELECT 
-	pd.date, 
+	pd.date,  
 	pd.ticker,
-	pd.value,
-	NULLIF(LAG(pd.value, 1) OVER (
-			PARTITION BY pd.ticker 
-			ORDER BY pd.date
-			), 0) AS prev_1d,
-	NULLIF(LAG(pd.value, 25) OVER (
-			PARTITION BY pd.ticker 
-			ORDER BY pd.date
-			), 0) AS prev_1m,
-	NULLIF(LAG(pd.value, 252) OVER (
+	pd.value,  
+	NULLIF(LAG(pd.value, 250) OVER (
 			PARTITION BY pd.ticker 
 			ORDER BY pd.date
 			), 0) AS prev_12m,
-	NULLIF(LAG(pd.value, 504) OVER (
+	NULLIF(LAG(pd.value, 500) OVER (
 			PARTITION BY pd.ticker 
-			ORDER BY pd.date
+			ORDER BY pd.date 
 			), 0) AS prev_24m,	
-	NULLIF(LAG(pd.value, 756) OVER (
+	NULLIF(LAG(pd.value, 750) OVER (
 			PARTITION BY pd.ticker 
 			ORDER BY pd.date
 			), 0) AS prev_36m 
@@ -281,23 +273,21 @@ JOIN Renan_Peres_1 rp ON rp.ticker = pd.ticker
 WHERE 
 	pd.price_type = 'Adjusted'
 	AND CAST(pd.value AS DECIMAL) != 0
-AND pd.date >= '2019-08-08'
 )
 
 SELECT 
      date
-    , ticker
+    , ticker 
     , value as adj_closing_price
-	, (value-prev_1d)/prev_1d as ror_1d
-	, (value-prev_1m)/prev_1m as ror_1m
     , (value-prev_12m)/prev_12m as ror_12m
     , (value-prev_24m)/prev_24m as ror_24m
     , (value-prev_36m)/prev_36m as ror_36m
 FROM price_history
+WHERE date = '2022-09-09'
 
 );
 
-SELECT *
+SELECT DISTINCT *
 FROM Renan_Peres_ror
 ORDER BY
 	date, 
@@ -374,57 +364,39 @@ const rorQueryResult2 = view(Inputs.textarea({
         SUM(quantity) AS quantity
     FROM Renan_Peres_1 
     GROUP BY ticker
-),
-avg_1m AS (
-    SELECT  
-        ticker,
-        AVG(ror_1m) as avg_ror_1m   
-    FROM Renan_Peres_ror
-    WHERE  
-        date BETWEEN '2022-08-09' AND '2022-09-09'
-        AND ror_1m IS NOT NULL
-    GROUP BY ticker
-),
+), 
 avg_12m AS (
     SELECT   
         ticker,
         AVG(ror_12m) as avg_ror_12m
-    FROM Renan_Peres_ror
-    WHERE 
-        date BETWEEN '2021-09-09' AND '2022-09-09'
-        AND ror_12m IS NOT NULL
-    GROUP BY ticker                  
+    FROM Renan_Peres_ror 
+    GROUP BY ticker    
+HAVING  AVG(ror_12m) IS NOT NULL              
 ),
 avg_24m AS (
     SELECT  
         ticker,
-        AVG(ror_12m) as avg_ror_24m
+        AVG(ror_24m) as avg_ror_24m
     FROM Renan_Peres_ror
-    WHERE 
-        date BETWEEN '2020-09-09' AND '2022-09-09'
-        AND ror_12m IS NOT NULL
     GROUP BY ticker                  
+HAVING  AVG(ror_24m) IS NOT NULL       
 ),
 avg_36m AS (
     SELECT  
         ticker,
-        AVG(ror_12m) as avg_ror_36m
+        AVG(ror_36m) as avg_ror_36m
     FROM Renan_Peres_ror
-    WHERE 
-        date BETWEEN '2019-09-09' AND '2022-09-09'
-        AND ror_12m IS NOT NULL
-    GROUP BY ticker                   
+    GROUP BY ticker      
+HAVING  AVG(ror_36m) IS NOT NULL                 
 ),
 portfolio_total AS (
     SELECT 
-        port.*,
-        avg_1m.avg_ror_1m,                          
+        port.*,                    
         avg_12m.avg_ror_12m,
         avg_24m.avg_ror_24m,
         avg_36m.avg_ror_36m
     FROM port 
     LEFT JOIN avg_12m ON avg_12m.ticker = port.ticker
-    LEFT JOIN avg_1m ON avg_1m.ticker = port.ticker
     LEFT JOIN avg_24m ON avg_24m.ticker = port.ticker
     LEFT JOIN avg_36m ON avg_36m.ticker = port.ticker
 ),
@@ -434,19 +406,14 @@ final_result AS (
     SELECT 
         'Portfolio Average Return' as ticker,
         SUM(quantity) as quantity,
-        SUM(CASE WHEN avg_ror_1m IS NOT NULL THEN quantity * avg_ror_1m ELSE 0 END) / 
-            NULLIF(SUM(CASE WHEN avg_ror_1m IS NOT NULL THEN quantity ELSE 0 END), 0) as avg_ror_1m,
-        SUM(CASE WHEN avg_ror_12m IS NOT NULL THEN quantity * avg_ror_12m ELSE 0 END) / 
-            NULLIF(SUM(CASE WHEN avg_ror_12m IS NOT NULL THEN quantity ELSE 0 END), 0) as avg_ror_12m,
-        SUM(CASE WHEN avg_ror_24m IS NOT NULL THEN quantity * avg_ror_24m ELSE 0 END) / 
-            NULLIF(SUM(CASE WHEN avg_ror_24m IS NOT NULL THEN quantity ELSE 0 END), 0) as avg_ror_24m,
-        SUM(CASE WHEN avg_ror_36m IS NOT NULL THEN quantity * avg_ror_36m ELSE 0 END) / 
-            NULLIF(SUM(CASE WHEN avg_ror_36m IS NOT NULL THEN quantity ELSE 0 END), 0) as avg_ror_36m
+        (SELECT SUM(quantity * avg_ror_12m) / SUM(quantity) as avg_ror_12m FROM portfolio_total WHERE avg_ror_12m IS NOT NULL),
+        (SELECT SUM(quantity * avg_ror_24m) / SUM(quantity) as avg_ror_24m FROM portfolio_total WHERE avg_ror_24m IS NOT NULL),
+        (SELECT SUM(quantity * avg_ror_36m) / SUM(quantity) as avg_ror_36m FROM portfolio_total WHERE avg_ror_36m IS NOT NULL)
     FROM portfolio_total
 )
 SELECT * FROM final_result
 ORDER BY CASE 
-    WHEN ticker = 'Portfolio Average Return' THEN 1 
+    WHEN ticker =  'Portfolio Average Return' THEN 1 
     ELSE 2 
 END;`,
   width: "1000px",
@@ -515,16 +482,54 @@ if (rorResult2) {
 ```js
 // Create the textarea that updates based on the selected query
 const riskCode1 = view(Inputs.textarea({
-  value: `SELECT 
-    ticker,
-	AVG(ror_1d)  as avg_ror_1d,
-	STDDEV(ror_1d)  as std_ror_12m
-FROM Renan_Peres_ror
-WHERE 
-	date BETWEEN '2021-09-09' AND '2022-09-09'
-	-- date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '12 months'
-GROUP BY ticker
-ORDER BY ticker;`,
+  value: `WITH prev_1d AS (
+    SELECT 
+        pd.date,  
+        pd.ticker,
+        pd.value,   
+        NULLIF(LAG(pd.value, 1) OVER ( 
+                PARTITION BY pd.ticker  
+                ORDER BY pd.date
+            ), 0) AS prev_1d,
+        NULLIF(LAG(pd.value, 250) OVER ( 
+                PARTITION BY pd.ticker 
+                ORDER BY pd.date
+            ), 0) AS prev_12m 
+    FROM pricing_daily_new pd
+    JOIN Renan_Peres_1 rp ON rp.ticker = pd.ticker
+    WHERE 
+        pd.price_type = 'Adjusted'
+        AND CAST(pd.value AS DECIMAL) != 0
+        AND pd.date BETWEEN '2021-09-08' AND '2022-09-09'
+),
+ror AS (
+    SELECT *,
+        (value-prev_1d)/prev_1d as ror_1d
+    FROM prev_1d
+),
+avg AS (
+    SELECT 
+        ticker,
+        AVG(ror_1d) as avg_ror_12m
+    FROM ror 
+    WHERE ror_1d IS NOT NULL
+    GROUP BY ticker
+),
+std AS (
+    SELECT 
+        ticker,
+        STDDEV(prev_12m) as std_12m
+    FROM ror 
+    WHERE prev_12m IS NOT NULL
+    GROUP BY ticker
+)
+SELECT DISTINCT
+    ror.ticker,
+    avg.avg_ror_12m,
+    std.std_12m
+FROM ror 
+JOIN avg ON avg.ticker = ror.ticker
+JOIN std ON std.ticker = ror.ticker`,
   width: "1000px",
   rows: 10,
   resize: "both",
