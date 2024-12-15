@@ -156,7 +156,14 @@ if (queryResult) {
 ```js
 // Create the textarea that updates based on the selected query
 const prebuiltCode = view(Inputs.textarea({
-  value: `-- CREATE VIEW Renan_Peres_1 AS (
+  value: `CREATE VIEW RenanPeres AS (
+
+/* 
+SQL VIEW: This VIEW below contains the daily pricing (adjusted) details for the securities that customer #128 (Bojana Popovic) posses in his portfolio (as of the last day holdings_current table '2022-09-09'). 
+			The data contains information for the periods BETWEEN '2019-09-08' AND '2022-09-09'.
+			The VIEW also contains the filters and dimensions that will be useful to answerd the questions for the PART #1 (Q. 1-4) of the Assignment as well as for PART #2 in Tableau for the visualization part.
+*/
+
 SELECT 
 	pd.date,
     cd.customer_id,
@@ -169,8 +176,7 @@ SELECT
     sm.major_asset_class,
     sm.minor_asset_class,
     hc.quantity,
-    pd.value AS adj_closing_price,
--- (hc.quantity * pd.value) AS amount
+    pd.value AS adj_closing_price
 FROM customer_details cd 
 JOIN account_dim ad ON ad.client_id = cd.customer_id
 JOIN holdings_current hc ON hc.account_id = ad.account_id
@@ -180,10 +186,10 @@ WHERE
     cd.customer_id = '128'
     AND pd.price_type = 'Adjusted'
     AND pd.date BETWEEN '2019-09-08' AND '2022-09-09'
--- )
+);
 
--- SELECT *
--- FROM Renan_Peres_1`,
+SELECT *
+FROM RenanPeres`,
   width: "1000px",
   rows: 10,
   resize: "both",
@@ -245,53 +251,59 @@ if (prebuiltQueryResult) {
 
 ---
 
-## Q1 (Part #1): What is the most recent 12 months, 24 months, 36 months return for each of the securities? 
+## Q1: What is the most recent 12 months, 24 months, 36 months return for each of the securities? And for the Whole Portfolio?
 
 ```js
 // Create the textarea that updates based on the selected query
 const rorCode = view(Inputs.textarea({
-  value: `CREATE OR REPLACE VIEW Renan_Peres_ror AS (
-WITH price_history AS (
-SELECT 
-	pd.date,  
-	pd.ticker,
-	pd.value,  
-	NULLIF(LAG(pd.value, 250) OVER (
-			PARTITION BY pd.ticker 
-			ORDER BY pd.date
-			), 0) AS prev_12m,
-	NULLIF(LAG(pd.value, 500) OVER (
-			PARTITION BY pd.ticker 
-			ORDER BY pd.date 
-			), 0) AS prev_24m,	
-	NULLIF(LAG(pd.value, 750) OVER (
-			PARTITION BY pd.ticker 
-			ORDER BY pd.date
-			), 0) AS prev_36m 
-FROM pricing_daily_new pd
-JOIN Renan_Peres_1 rp ON rp.ticker = pd.ticker
-WHERE 
-	pd.price_type = 'Adjusted'
-	AND CAST(pd.value AS DECIMAL) != 0
+  value: `WITH price_history AS (
+    SELECT DISTINCT
+        rp.date,  
+        rp.ticker,
+        rp.quantity,
+        rp.adj_closing_price,  
+        NULLIF(LAG(rp.adj_closing_price, 250) OVER (
+                PARTITION BY rp.ticker 
+                ORDER BY rp.date
+                ), 0) AS prev_12m,
+        NULLIF(LAG(rp.adj_closing_price, 500) OVER (
+                PARTITION BY rp.ticker 
+                ORDER BY rp.date
+                ), 0) AS prev_24m,    
+        NULLIF(LAG(rp.adj_closing_price, 750) OVER (
+                PARTITION BY rp.ticker 
+                ORDER BY rp.date
+                ), 0)  AS prev_36m 
+    FROM RenanPeres rp
+    WHERE CAST(rp.adj_closing_price AS DECIMAL) != 0
+),
+ror AS (
+    SELECT 
+        date,
+        ticker,
+        quantity,
+        adj_closing_price,
+        (adj_closing_price-prev_12m)/prev_12m as ror_12m,
+        (adj_closing_price-prev_24m)/prev_24m as ror_24m,
+        (adj_closing_price-prev_36m)/prev_36m as ror_36m
+    FROM price_history
+),
+
+-- Part 1: Most Recent Return for each of the Securities
+sec_ror AS (
+    SELECT DISTINCT *
+    FROM ror
+    WHERE date = '2022-09-09'
 )
 
-SELECT 
-     date
-    , ticker 
-    , value as adj_closing_price
-    , (value-prev_12m)/prev_12m as ror_12m
-    , (value-prev_24m)/prev_24m as ror_24m
-    , (value-prev_36m)/prev_36m as ror_36m
-FROM price_history
-WHERE date = '2022-09-09'
-
-);
-
-SELECT DISTINCT *
-FROM Renan_Peres_ror
-ORDER BY
-	date, 
-  ticker`,
+-- Part 2: Return for the whole Portfolio
+SELECT  
+    'Portfolio Return' as ticker,
+    SUM(quantity) as quantity,
+    SUM(quantity * ror_12m) / NULLIF(SUM(CASE WHEN ror_12m IS NOT NULL THEN quantity END), 0) as ror_12m,
+    SUM(quantity * ror_24m) / NULLIF(SUM(CASE WHEN ror_24m IS NOT NULL THEN quantity END), 0) as ror_24m,
+    SUM(quantity * ror_36m) / NULLIF(SUM(CASE WHEN ror_36m IS NOT NULL THEN quantity END), 0) as ror_36m
+FROM sec_ror;`,
   width: "1000px",
   rows: 10,
   resize: "both",
@@ -334,130 +346,6 @@ if (rorQueryResult) {
           this.disabled = true;
           const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
           await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${rorCode}`);
-          const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
-          const parquetFile = await toParquet(predefinedDb, {
-            table: tmpTable,
-            name: `result_${timestamp}.parquet`
-          });
-          download(parquetFile);
-          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
-          this.disabled = false;
-        }}
-      >
-        Download Result as Parquet
-      </button>
-    </div>
-  `);
-}
-```
-
----
-
-## Q1 (Part #2): What is the Average return for for the entire portfolio?
-
-```js
-// Create the textarea that updates based on the selected query
-const rorQueryResult2 = view(Inputs.textarea({
-  value: `WITH port AS (
-    SELECT 
-        ticker,
-        SUM(quantity) AS quantity
-    FROM Renan_Peres_1 
-    GROUP BY ticker
-), 
-avg_12m AS (
-    SELECT   
-        ticker,
-        AVG(ror_12m) as avg_ror_12m
-    FROM Renan_Peres_ror 
-    GROUP BY ticker    
-HAVING  AVG(ror_12m) IS NOT NULL              
-),
-avg_24m AS (
-    SELECT  
-        ticker,
-        AVG(ror_24m) as avg_ror_24m
-    FROM Renan_Peres_ror
-    GROUP BY ticker                  
-HAVING  AVG(ror_24m) IS NOT NULL       
-),
-avg_36m AS (
-    SELECT  
-        ticker,
-        AVG(ror_36m) as avg_ror_36m
-    FROM Renan_Peres_ror
-    GROUP BY ticker      
-HAVING  AVG(ror_36m) IS NOT NULL                 
-),
-portfolio_total AS (
-    SELECT 
-        port.*,                    
-        avg_12m.avg_ror_12m,
-        avg_24m.avg_ror_24m,
-        avg_36m.avg_ror_36m
-    FROM port 
-    LEFT JOIN avg_12m ON avg_12m.ticker = port.ticker
-    LEFT JOIN avg_24m ON avg_24m.ticker = port.ticker
-    LEFT JOIN avg_36m ON avg_36m.ticker = port.ticker
-),
-final_result AS (
-    SELECT * FROM portfolio_total
-    UNION ALL
-    SELECT 
-        'Portfolio Average Return' as ticker,
-        SUM(quantity) as quantity,
-        (SELECT SUM(quantity * avg_ror_12m) / SUM(quantity) as avg_ror_12m FROM portfolio_total WHERE avg_ror_12m IS NOT NULL),
-        (SELECT SUM(quantity * avg_ror_24m) / SUM(quantity) as avg_ror_24m FROM portfolio_total WHERE avg_ror_24m IS NOT NULL),
-        (SELECT SUM(quantity * avg_ror_36m) / SUM(quantity) as avg_ror_36m FROM portfolio_total WHERE avg_ror_36m IS NOT NULL)
-    FROM portfolio_total
-)
-SELECT * FROM final_result
-ORDER BY CASE 
-    WHEN ticker =  'Portfolio Average Return' THEN 1 
-    ELSE 2 
-END;`,
-  width: "1000px",
-  rows: 10,
-  resize: "both",
-  className: "sql-editor",
-  style: { fontSize: "16px" },
-  onKeyDown: e => {
-    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
-  }
-}));
-```
-
-```js
-// Execute and display pre-built query results
-const rorResult2 = predefinedDb.query(rorQueryResult2);
-display(Inputs.table(rorResult2));
-
-// Display download buttons if we have results
-if (rorResult2) {
-  display(html`
-    <div class="flex gap-6 mt-4">
-      <button
-        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
-        onclick=${async function() {
-          this.disabled = true;
-          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${rorQueryResult2}`);
-          await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
-          const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
-          const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
-          download(file);
-          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
-          this.disabled = false;
-        }}
-      >
-        Download Result as CSV
-      </button>
-      <button
-        class="px-6 py-2 ml-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-green-400"
-        onclick=${async function() {
-          this.disabled = true;
-          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${rorQueryResult2}`);
           const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
           const parquetFile = await toParquet(predefinedDb, {
             table: tmpTable,
