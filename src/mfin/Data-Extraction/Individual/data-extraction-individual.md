@@ -376,13 +376,9 @@ const riskCode1 = view(Inputs.textarea({
         ticker,
         adj_closing_price,   
         NULLIF(LAG(adj_closing_price, 1) OVER ( 
-                PARTITION BY ticker  
+                PARTITION BY ticker   
                 ORDER BY date
-            ), 0) AS prev_1d, 
-        NULLIF(LAG(adj_closing_price, 250) OVER (
-                PARTITION BY ticker 
-                ORDER BY date
-            ), 0) AS prev_12m 
+            ), 0) AS prev_1d
     FROM RenanPeres rp 
     WHERE CAST(adj_closing_price AS DECIMAL) != 0
 ),
