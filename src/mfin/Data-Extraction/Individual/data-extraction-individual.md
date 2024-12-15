@@ -483,6 +483,126 @@ if (riskQueryResult1) {
 
 ## Q3: Suggest adding a new investment to your portfolio - what would it be and how much risk (sigma) would it add to your client?  
 
+```js
+// Create the textarea that updates based on the selected query
+const question3 = view(Inputs.textarea({
+  value: `WITH price_history AS (
+    SELECT DISTINCT
+        rp.date,  
+        rp.ticker,
+        rp.quantity,
+        rp.adj_closing_price,  
+        NULLIF(LAG(rp.adj_closing_price, 250) OVER ( 
+                PARTITION BY rp.ticker 
+                ORDER BY rp.date
+                ), 0) AS prev_12m,
+        NULLIF(LAG(rp.adj_closing_price, 500) OVER (
+                PARTITION BY rp.ticker 
+                ORDER BY rp.date
+                ), 0) AS prev_24m,    
+        NULLIF(LAG(rp.adj_closing_price, 750) OVER (
+                PARTITION BY rp.ticker 
+                ORDER BY rp.date
+                ), 0)  AS prev_36m 
+    FROM RenanPeres rp
+    WHERE CAST(rp.adj_closing_price AS DECIMAL) != 0
+),
+ror AS (
+    SELECT 
+        date,
+        ticker,
+        quantity,
+        adj_closing_price,
+        (adj_closing_price-prev_12m)/prev_12m as ror_12m,
+        (adj_closing_price-prev_24m)/prev_24m as ror_24m,
+        (adj_closing_price-prev_36m)/prev_36m as ror_36m
+    FROM price_history
+),
+stats AS (
+    SELECT 
+        ticker,
+        AVG(ror_12m) as avg_ror_12m,
+        AVG(ror_24m) as avg_ror_24m,
+        AVG(ror_36m) as avg_ror_36m,
+        STDDEV(ror_12m) as std_ror_12m,
+        STDDEV(ror_24m) as std_ror_24m,
+        STDDEV(ror_36m) as std_ror_36m
+    FROM ror
+    WHERE ror_12m IS NOT NULL 
+        OR ror_24m IS NOT NULL 
+        OR ror_36m IS NOT NULL
+    GROUP BY ticker
+)
+SELECT 
+    ticker,
+    avg_ror_12m / NULLIF(std_ror_12m, 0) as adj_ror_12m,
+    avg_ror_24m / NULLIF(std_ror_24m, 0) as adj_ror_24m,
+    avg_ror_36m / NULLIF(std_ror_36m, 0) as adj_ror_36m
+FROM stats
+ORDER BY 
+	adj_ror_12m DESC,
+    adj_ror_24m DESC,
+    adj_ror_36m DESC
+;`,
+  width: "1000px",
+  rows: 10,
+  resize: "both",
+  className: "sql-editor",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js
+// Execute and display pre-built query results
+const question3Result = predefinedDb.query(question3);
+display(Inputs.table(question3Result));
+
+// Display download buttons if we have results
+if (question3Result) {
+  display(html`
+    <div class="flex gap-6 mt-4">
+      <button
+        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+        onclick=${async function() {
+          this.disabled = true;
+          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${question3}`);
+          await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
+          const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
+          const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
+          download(file);
+          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
+          this.disabled = false;
+        }}
+      >
+        Download Result as CSV
+      </button>
+      <button
+        class="px-6 py-2 ml-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-green-400"
+        onclick=${async function() {
+          this.disabled = true;
+          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
+          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${question3}`);
+          const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
+          const parquetFile = await toParquet(predefinedDb, {
+            table: tmpTable,
+            name: `result_${timestamp}.parquet`
+          });
+          download(parquetFile);
+          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
+          this.disabled = false;
+        }}
+      >
+        Download Result as Parquet
+      </button>
+    </div>
+  `);
+}
+```
+
 ---
 
 ## Q4: Risk adjusted returns for each Security by following this formula: AVG(returns for ticker)/STD(returns for ticker). Which of the securities is best from the rest (with highest risk adjusted returns), why?
