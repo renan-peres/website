@@ -372,27 +372,24 @@ if (rorQueryResult) {
 const riskCode1 = view(Inputs.textarea({
   value: `WITH prev_1d AS (
     SELECT 
-        pd.date,  
-        pd.ticker,
-        pd.value,   
-        NULLIF(LAG(pd.value, 1) OVER ( 
-                PARTITION BY pd.ticker  
-                ORDER BY pd.date
+        date,  
+        ticker,
+        adj_closing_price,   
+        NULLIF(LAG(adj_closing_price, 1) OVER ( 
+                PARTITION BY ticker  
+                ORDER BY date
             ), 0) AS prev_1d,
-        NULLIF(LAG(pd.value, 250) OVER ( 
-                PARTITION BY pd.ticker 
-                ORDER BY pd.date
+        NULLIF(LAG(adj_closing_price, 250) OVER (
+                PARTITION BY ticker 
+                ORDER BY date
             ), 0) AS prev_12m 
-    FROM pricing_daily_new pd
-    JOIN Renan_Peres_1 rp ON rp.ticker = pd.ticker
-    WHERE 
-        pd.price_type = 'Adjusted'
-        AND CAST(pd.value AS DECIMAL) != 0
-        AND pd.date BETWEEN '2021-09-08' AND '2022-09-09'
+    FROM RenanPeres rp 
+    WHERE CAST(adj_closing_price AS DECIMAL) != 0
+        AND date BETWEEN '2021-09-08' AND '2022-09-09'
 ),
 ror AS (
     SELECT *,
-        (value-prev_1d)/prev_1d as ror_1d
+        (adj_closing_price-prev_1d)/prev_1d as ror_1d
     FROM prev_1d
 ),
 avg AS (
@@ -406,9 +403,9 @@ avg AS (
 std AS (
     SELECT 
         ticker,
-        STDDEV(prev_12m) as std_12m
+        STDDEV(ror_1d) as std_12m
     FROM ror 
-    WHERE prev_12m IS NOT NULL
+    WHERE ror_1d IS NOT NULL
     GROUP BY ticker
 )
 SELECT DISTINCT
@@ -417,7 +414,7 @@ SELECT DISTINCT
     std.std_12m
 FROM ror 
 JOIN avg ON avg.ticker = ror.ticker
-JOIN std ON std.ticker = ror.ticker`,
+JOIN std ON std.ticker = ror.ticker;`,
   width: "1000px",
   rows: 10,
   resize: "both",
@@ -488,15 +485,59 @@ if (riskQueryResult1) {
 ```js
 // Create the textarea that updates based on the selected query
 const riskCode2 = view(Inputs.textarea({
-  value: `SELECT 
+  value: `WITH price_history AS (
+    SELECT DISTINCT
+        rp.date,  
+        rp.ticker,
+        rp.quantity,
+        rp.adj_closing_price,  
+        NULLIF(LAG(rp.adj_closing_price, 250) OVER ( 
+                PARTITION BY rp.ticker 
+                ORDER BY rp.date
+                ), 0) AS prev_12m,
+        NULLIF(LAG(rp.adj_closing_price, 500) OVER (
+                PARTITION BY rp.ticker 
+                ORDER BY rp.date
+                ), 0) AS prev_24m,    
+        NULLIF(LAG(rp.adj_closing_price, 750) OVER (
+                PARTITION BY rp.ticker 
+                ORDER BY rp.date
+                ), 0)  AS prev_36m 
+    FROM RenanPeres rp
+    WHERE CAST(rp.adj_closing_price AS DECIMAL) != 0
+),
+ror AS (
+    SELECT 
+        date,
+        ticker,
+        quantity,
+        adj_closing_price,
+        (adj_closing_price-prev_12m)/prev_12m as ror_12m,
+        (adj_closing_price-prev_24m)/prev_24m as ror_24m,
+        (adj_closing_price-prev_36m)/prev_36m as ror_36m
+    FROM price_history
+),
+stats AS (
+    SELECT 
+        ticker,
+        AVG(ror_12m) as avg_ror_12m,
+        AVG(ror_24m) as avg_ror_24m,
+        AVG(ror_36m) as avg_ror_36m,
+        STDDEV(ror_12m) as std_ror_12m,
+        STDDEV(ror_24m) as std_ror_24m,
+        STDDEV(ror_36m) as std_ror_36m
+    FROM ror
+    WHERE ror_12m IS NOT NULL 
+        OR ror_24m IS NOT NULL 
+        OR ror_36m IS NOT NULL
+    GROUP BY ticker
+)
+SELECT 
     ticker,
-	(AVG(ror_1d)  / STDDEV(ror_1d)) as adj_daly_ror_12m 
-FROM Renan_Peres_ror 
-WHERE 
-	date BETWEEN '2021-09-09' AND '2022-09-09'
-	-- date >= (SELECT MAX(date) FROM Renan_Peres_ror) - INTERVAL '12 months'
-GROUP BY ticker
-ORDER BY ticker;`,
+    avg_ror_12m / NULLIF(std_ror_12m, 0) as adj_ror_12m,
+    avg_ror_24m / NULLIF(std_ror_24m, 0) as adj_ror_24m,
+    avg_ror_36m / NULLIF(std_ror_36m, 0) as adj_ror_36m
+FROM stats;`,
   width: "1000px",
   rows: 10,
   resize: "both",
