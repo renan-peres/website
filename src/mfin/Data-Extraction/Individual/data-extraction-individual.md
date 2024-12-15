@@ -625,7 +625,7 @@ stats AS (
 )
 SELECT 
     ticker,
-    avg_ror_1d / NULLIF(std_ror_1d, 0) as adj_ror_1d
+    (avg_ror_1d / std_ror_1d) as adj_ror_1d
 FROM stats
 ORDER BY 
 	adj_ror_1d DESC
