@@ -536,14 +536,14 @@ ror AS (
 sigma AS (
     SELECT 
         ticker,
-        STDDEV(ror_1d) as std_ror_1d
+        STDDEV(ror_1d) as std_36m
     FROM ror
     GROUP BY ticker
 )
 
 SELECT 
     r.*,
-    v.std_ror_1d
+    v.std_36m
 FROM ror r
 JOIN sigma v ON r.ticker = v.ticker
 WHERE r.date = '2022-09-09';`,
@@ -649,8 +649,7 @@ SELECT
     (avg_ror_1d / std_ror_1d) as adj_ror_1d
 FROM stats
 ORDER BY 
-	adj_ror_1d DESC
-;`,
+	adj_ror_1d DESC;`,
   width: "1000px",
   rows: 10,
   resize: "both",
