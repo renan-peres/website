@@ -598,18 +598,10 @@ const riskCode2 = view(Inputs.textarea({
         rp.ticker,
         rp.quantity,
         rp.adj_closing_price,  
-        NULLIF(LAG(rp.adj_closing_price, 250) OVER ( 
+        NULLIF(LAG(rp.adj_closing_price, 1) OVER ( 
                 PARTITION BY rp.ticker 
                 ORDER BY rp.date
-                ), 0) AS prev_12m,
-        NULLIF(LAG(rp.adj_closing_price, 500) OVER (
-                PARTITION BY rp.ticker 
-                ORDER BY rp.date
-                ), 0) AS prev_24m,    
-        NULLIF(LAG(rp.adj_closing_price, 750) OVER (
-                PARTITION BY rp.ticker 
-                ORDER BY rp.date
-                ), 0)  AS prev_36m 
+                ), 0) AS prev_1d
     FROM RenanPeres rp
     WHERE CAST(rp.adj_closing_price AS DECIMAL) != 0
 ),
@@ -619,36 +611,24 @@ ror AS (
         ticker,
         quantity,
         adj_closing_price,
-        (adj_closing_price-prev_12m)/prev_12m as ror_12m,
-        (adj_closing_price-prev_24m)/prev_24m as ror_24m,
-        (adj_closing_price-prev_36m)/prev_36m as ror_36m
+        (adj_closing_price-prev_1d)/prev_1d as ror_1d
     FROM price_history
 ),
 stats AS (
     SELECT 
         ticker,
-        AVG(ror_12m) as avg_ror_12m,
-        AVG(ror_24m) as avg_ror_24m,
-        AVG(ror_36m) as avg_ror_36m,
-        STDDEV(ror_12m) as std_ror_12m,
-        STDDEV(ror_24m) as std_ror_24m,
-        STDDEV(ror_36m) as std_ror_36m
+        AVG(ror_1d) as avg_ror_1d,
+        STDDEV(ror_1d) as std_ror_1d
     FROM ror
-    WHERE ror_12m IS NOT NULL 
-        OR ror_24m IS NOT NULL 
-        OR ror_36m IS NOT NULL
+    WHERE ror_1d IS NOT NULL 
     GROUP BY ticker
 )
 SELECT 
     ticker,
-    avg_ror_12m / NULLIF(std_ror_12m, 0) as adj_ror_12m,
-    avg_ror_24m / NULLIF(std_ror_24m, 0) as adj_ror_24m,
-    avg_ror_36m / NULLIF(std_ror_36m, 0) as adj_ror_36m
+    avg_ror_1d / NULLIF(std_ror_1d, 0) as adj_ror_1d
 FROM stats
 ORDER BY 
-	adj_ror_12m DESC,
-    adj_ror_24m DESC,
-    adj_ror_36m DESC
+	adj_ror_1d DESC
 ;`,
   width: "1000px",
   rows: 10,
