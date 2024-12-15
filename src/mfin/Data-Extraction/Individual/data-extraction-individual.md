@@ -378,39 +378,44 @@ const riskCode1 = view(Inputs.textarea({
         NULLIF(LAG(adj_closing_price, 1) OVER ( 
                 PARTITION BY ticker  
                 ORDER BY date
-            ), 0) AS prev_1d,
+            ), 0) AS prev_1d, 
         NULLIF(LAG(adj_closing_price, 250) OVER (
                 PARTITION BY ticker 
                 ORDER BY date
             ), 0) AS prev_12m 
     FROM RenanPeres rp 
     WHERE CAST(adj_closing_price AS DECIMAL) != 0
-        AND date BETWEEN '2021-09-08' AND '2022-09-09'
 ),
+
 ror AS (
     SELECT *,
         (adj_closing_price-prev_1d)/prev_1d as ror_1d
     FROM prev_1d
 ),
+
+-- Part 1: What is the daily average return for each of the Securities?
 avg AS (
     SELECT 
         ticker,
-        AVG(ror_1d) as avg_ror_12m
+        AVG(ror_1d) as avg_daily_ror_12m
     FROM ror 
-    WHERE ror_1d IS NOT NULL
+    WHERE ror_1d IS NOT NULL AND date BETWEEN '2021-09-08' AND '2022-09-09'
     GROUP BY ticker
 ),
+
+-- Part 2: What is the Most Recent 12months signma(risk)?
 std AS (
     SELECT 
         ticker,
         STDDEV(ror_1d) as std_12m
     FROM ror 
-    WHERE ror_1d IS NOT NULL
+    WHERE ror_1d IS NOT NULL AND date BETWEEN '2021-09-08' AND '2022-09-09'
     GROUP BY ticker
 )
+
 SELECT DISTINCT
     ror.ticker,
-    avg.avg_ror_12m,
+    avg.avg_daily_ror_12m,
     std.std_12m
 FROM ror 
 JOIN avg ON avg.ticker = ror.ticker
@@ -537,7 +542,12 @@ SELECT
     avg_ror_12m / NULLIF(std_ror_12m, 0) as adj_ror_12m,
     avg_ror_24m / NULLIF(std_ror_24m, 0) as adj_ror_24m,
     avg_ror_36m / NULLIF(std_ror_36m, 0) as adj_ror_36m
-FROM stats;`,
+FROM stats
+ORDER BY 
+	adj_ror_12m DESC,
+    adj_ror_24m DESC,
+    adj_ror_36m DESC
+;`,
   width: "1000px",
   rows: 10,
   resize: "both",
