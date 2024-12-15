@@ -481,7 +481,9 @@ if (riskQueryResult1) {
 ```js
 // Create the textarea that updates based on the selected query
 const question3 = view(Inputs.textarea({
-  value: `WITH price_history AS (
+  value: `
+-- Part 1: Extract Historical data for the Securities (NOT Included in the Client's Portfolio)
+WITH price_history AS (
     SELECT 
         pd.date,
         pd.ticker,
@@ -512,6 +514,8 @@ const question3 = view(Inputs.textarea({
         AND pd.date BETWEEN '2019-09-08' AND '2022-09-09'
         AND pd.ticker NOT IN (Select DISTINCT ticker from RenanPeres)
 ),
+
+-- Part 2: Calculate the Returns
 returns AS (
     SELECT 
         date,
@@ -527,18 +531,21 @@ returns AS (
         (adj_closing_price-prev_36m)/prev_36m as ror_36m
     FROM price_history
 ),
-volatility AS (
+
+-- Part 3: Calculate the Sigma
+sigma AS (
     SELECT 
         ticker,
         STDDEV(ror_1d) as std_ror_1d
     FROM returns
     GROUP BY ticker
 )
+
 SELECT 
     r.*,
     v.std_ror_1d
 FROM returns r
-JOIN volatility v ON r.ticker = v.ticker
+JOIN sigma v ON r.ticker = v.ticker
 WHERE r.date = '2022-09-09';`,
   width: "1000px",
   rows: 10,
