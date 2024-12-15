@@ -516,7 +516,7 @@ WITH price_history AS (
 ),
 
 -- Part 2: Calculate the Returns
-returns AS (
+ror AS (
     SELECT 
         date,
         ticker,
@@ -537,14 +537,14 @@ sigma AS (
     SELECT 
         ticker,
         STDDEV(ror_1d) as std_ror_1d
-    FROM returns
+    FROM ror
     GROUP BY ticker
 )
 
 SELECT 
     r.*,
     v.std_ror_1d
-FROM returns r
+FROM ror r
 JOIN sigma v ON r.ticker = v.ticker
 WHERE r.date = '2022-09-09';`,
   width: "1000px",
