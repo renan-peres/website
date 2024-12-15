@@ -156,9 +156,9 @@ if (queryResult) {
 ```js
 // Create the textarea that updates based on the selected query
 const prebuiltCode = view(Inputs.textarea({
-  value: `CREATE OR REPLACE VIEW Renan_Peres_1 AS (
+  value: `-- CREATE VIEW Renan_Peres_1 AS (
 SELECT 
-    pd.date,
+	pd.date,
     cd.customer_id,
     cd.full_name,
     ad.account_id,
@@ -170,20 +170,20 @@ SELECT
     sm.minor_asset_class,
     hc.quantity,
     pd.value AS adj_closing_price,
-    ROUND((hc.quantity * pd.value), 2) AS amount
+-- (hc.quantity * pd.value) AS amount
 FROM customer_details cd 
 JOIN account_dim ad ON ad.client_id = cd.customer_id
 JOIN holdings_current hc ON hc.account_id = ad.account_id
 JOIN security_masterlist sm ON hc.ticker = sm.ticker
-JOIN pricing_daily_new pd ON pd.ticker = sm.ticker AND hc.date = pd.date
+JOIN pricing_daily_new pd ON pd.ticker = sm.ticker 
 WHERE 
     cd.customer_id = '128'
     AND pd.price_type = 'Adjusted'
-);
+    AND pd.date BETWEEN '2019-09-08' AND '2022-09-09'
+-- )
 
-SELECT *
-FROM Renan_Peres_1 
- `,
+-- SELECT *
+-- FROM Renan_Peres_1`,
   width: "1000px",
   rows: 10,
   resize: "both",
