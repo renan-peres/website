@@ -491,6 +491,10 @@ const question3 = view(Inputs.textarea({
         sm.major_asset_class,
         sm.minor_asset_class,
         pd.value AS adj_closing_price,
+        NULLIF(LAG(pd.value, 1) OVER (
+                PARTITION BY pd.ticker 
+                ORDER BY pd.date
+                ), 0) AS prev_1d,
         NULLIF(LAG(pd.value, 250) OVER (
                 PARTITION BY pd.ticker 
                 ORDER BY pd.date
@@ -498,7 +502,7 @@ const question3 = view(Inputs.textarea({
         NULLIF(LAG(pd.value, 500) OVER (
                 PARTITION BY pd.ticker 
                 ORDER BY pd.date
-                ), 0) AS prev_24m,    
+                ), 0) AS prev_24m,     
         NULLIF(LAG(pd.value, 750) OVER (
                 PARTITION BY pd.ticker 
                 ORDER BY pd.date
@@ -508,20 +512,35 @@ const question3 = view(Inputs.textarea({
     WHERE pd.price_type = 'Adjusted'
         AND pd.date BETWEEN '2019-09-08' AND '2022-09-09'
         AND pd.ticker NOT IN (Select DISTINCT ticker from RenanPeres)
+),
+returns AS (
+    SELECT 
+        date,
+        ticker,
+        security_name,
+        sec_type,
+        major_asset_class,
+        minor_asset_class,
+        adj_closing_price,
+        (adj_closing_price-prev_1d)/prev_1d as ror_1d,
+        (adj_closing_price-prev_12m)/prev_12m as ror_12m, 
+        (adj_closing_price-prev_24m)/prev_24m as ror_24m,
+        (adj_closing_price-prev_36m)/prev_36m as ror_36m
+    FROM price_history
+),
+volatility AS (
+    SELECT 
+        ticker,
+        STDDEV(ror_1d) as std_ror_1d
+    FROM returns
+    GROUP BY ticker
 )
 SELECT 
-    date,
-    ticker,
-    security_name,
-    sec_type,
-    major_asset_class,
-    minor_asset_class,
-    adj_closing_price,
-    (adj_closing_price-prev_12m)/prev_12m as ror_12m,
-    (adj_closing_price-prev_24m)/prev_24m as ror_24m,
-    (adj_closing_price-prev_36m)/prev_36m as ror_36m
-FROM price_history
-WHERE date = '2022-09-09';`,
+    r.*,
+    v.std_ror_1d
+FROM returns r
+JOIN volatility v ON r.ticker = v.ticker
+WHERE r.date = '2022-09-09';`,
   width: "1000px",
   rows: 10,
   resize: "both",
