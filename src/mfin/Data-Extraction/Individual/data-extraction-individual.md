@@ -486,64 +486,19 @@ if (riskQueryResult1) {
 ```js
 // Create the textarea that updates based on the selected query
 const question3 = view(Inputs.textarea({
-  value: `WITH price_history AS (
-    SELECT DISTINCT
-        rp.date,  
-        rp.ticker,
-        rp.quantity,
-        rp.adj_closing_price,  
-        NULLIF(LAG(rp.adj_closing_price, 250) OVER ( 
-                PARTITION BY rp.ticker 
-                ORDER BY rp.date
-                ), 0) AS prev_12m,
-        NULLIF(LAG(rp.adj_closing_price, 500) OVER (
-                PARTITION BY rp.ticker 
-                ORDER BY rp.date
-                ), 0) AS prev_24m,    
-        NULLIF(LAG(rp.adj_closing_price, 750) OVER (
-                PARTITION BY rp.ticker 
-                ORDER BY rp.date
-                ), 0)  AS prev_36m 
-    FROM RenanPeres rp
-    WHERE CAST(rp.adj_closing_price AS DECIMAL) != 0
-),
-ror AS (
-    SELECT 
-        date,
-        ticker,
-        quantity,
-        adj_closing_price,
-        (adj_closing_price-prev_12m)/prev_12m as ror_12m,
-        (adj_closing_price-prev_24m)/prev_24m as ror_24m,
-        (adj_closing_price-prev_36m)/prev_36m as ror_36m
-    FROM price_history
-),
-stats AS (
-    SELECT 
-        ticker,
-        AVG(ror_12m) as avg_ror_12m,
-        AVG(ror_24m) as avg_ror_24m,
-        AVG(ror_36m) as avg_ror_36m,
-        STDDEV(ror_12m) as std_ror_12m,
-        STDDEV(ror_24m) as std_ror_24m,
-        STDDEV(ror_36m) as std_ror_36m
-    FROM ror
-    WHERE ror_12m IS NOT NULL 
-        OR ror_24m IS NOT NULL 
-        OR ror_36m IS NOT NULL
-    GROUP BY ticker
-)
-SELECT 
-    ticker,
-    avg_ror_12m / NULLIF(std_ror_12m, 0) as adj_ror_12m,
-    avg_ror_24m / NULLIF(std_ror_24m, 0) as adj_ror_24m,
-    avg_ror_36m / NULLIF(std_ror_36m, 0) as adj_ror_36m
-FROM stats
-ORDER BY 
-	adj_ror_12m DESC,
-    adj_ror_24m DESC,
-    adj_ror_36m DESC
-;`,
+  value: `SELECT 
+	pd.date,
+    pd.ticker,
+    sm.security_name,
+    sm.sec_type,
+    sm.major_asset_class,
+    sm.minor_asset_class,
+    pd.value AS adj_closing_price
+FROM pricing_daily_new pd 
+JOIN security_masterlist sm ON pd.ticker = sm.ticker
+WHERE pd.price_type = 'Adjusted'
+    AND pd.date BETWEEN '2019-09-08' AND '2022-09-09'
+    AND pd.ticker NOT IN (Select DISTINCT ticker from RenanPeres)`,
   width: "1000px",
   rows: 10,
   resize: "both",
