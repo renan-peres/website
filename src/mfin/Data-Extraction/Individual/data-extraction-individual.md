@@ -280,7 +280,7 @@ const rorCode = view(Inputs.textarea({
 ror AS (
     SELECT 
         date,
-        ticker,
+        ticker, 
         quantity,
         adj_closing_price,
         (adj_closing_price-prev_12m)/prev_12m as ror_12m,
@@ -299,7 +299,6 @@ sec_ror AS (
 -- Part 2: Return for the whole Portfolio
 SELECT  
     'Portfolio Return' as ticker,
-    SUM(quantity) as quantity,
     SUM(quantity * ror_12m) / NULLIF(SUM(CASE WHEN ror_12m IS NOT NULL THEN quantity END), 0) as ror_12m,
     SUM(quantity * ror_24m) / NULLIF(SUM(CASE WHEN ror_24m IS NOT NULL THEN quantity END), 0) as ror_24m,
     SUM(quantity * ror_36m) / NULLIF(SUM(CASE WHEN ror_36m IS NOT NULL THEN quantity END), 0) as ror_36m
