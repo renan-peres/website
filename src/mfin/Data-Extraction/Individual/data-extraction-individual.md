@@ -486,19 +486,46 @@ if (riskQueryResult1) {
 ```js
 // Create the textarea that updates based on the selected query
 const question3 = view(Inputs.textarea({
-  value: `SELECT 
-	pd.date,
-    pd.ticker,
-    sm.security_name,
-    sm.sec_type,
-    sm.major_asset_class,
-    sm.minor_asset_class,
-    pd.value AS adj_closing_price
-FROM pricing_daily_new pd 
-JOIN security_masterlist sm ON pd.ticker = sm.ticker
-WHERE pd.price_type = 'Adjusted'
-    AND pd.date BETWEEN '2019-09-08' AND '2022-09-09'
-    AND pd.ticker NOT IN (Select DISTINCT ticker from RenanPeres)`,
+  value: `WITH price_history AS (
+    SELECT 
+        pd.date,
+        pd.ticker,
+        sm.security_name,
+        sm.sec_type,
+        sm.major_asset_class,
+        sm.minor_asset_class,
+        pd.value AS adj_closing_price,
+        NULLIF(LAG(pd.value, 250) OVER (
+                PARTITION BY pd.ticker 
+                ORDER BY pd.date
+                ), 0) AS prev_12m,
+        NULLIF(LAG(pd.value, 500) OVER (
+                PARTITION BY pd.ticker 
+                ORDER BY pd.date
+                ), 0) AS prev_24m,    
+        NULLIF(LAG(pd.value, 750) OVER (
+                PARTITION BY pd.ticker 
+                ORDER BY pd.date
+                ), 0) AS prev_36m 
+    FROM pricing_daily_new pd 
+    JOIN security_masterlist sm ON pd.ticker = sm.ticker
+    WHERE pd.price_type = 'Adjusted'
+        AND pd.date BETWEEN '2019-09-08' AND '2022-09-09'
+        AND pd.ticker NOT IN (Select DISTINCT ticker from RenanPeres)
+)
+SELECT 
+    date,
+    ticker,
+    security_name,
+    sec_type,
+    major_asset_class,
+    minor_asset_class,
+    adj_closing_price,
+    (adj_closing_price-prev_12m)/prev_12m as ror_12m,
+    (adj_closing_price-prev_24m)/prev_24m as ror_24m,
+    (adj_closing_price-prev_36m)/prev_36m as ror_36m
+FROM price_history
+WHERE date = '2022-09-09';`,
   width: "1000px",
   rows: 10,
   resize: "both",
