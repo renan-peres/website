@@ -78,6 +78,8 @@ async function toParquet(duckDbClient, {table = "data", originalName = table, na
 }
 ```
 
+---
+
 ## Tables
 
 ```sql id=tables
@@ -481,8 +483,7 @@ if (riskQueryResult1) {
 ```js
 // Create the textarea that updates based on the selected query
 const question3 = view(Inputs.textarea({
-  value: `
--- Part 1: Extract Historical data for the Securities (NOT Included in the Client's Portfolio)
+  value: `-- Part 1: Extract Historical data for the Securities (NOT Included in the Client's Portfolio)
 WITH price_history AS (
     SELECT 
         pd.date,
@@ -499,54 +500,67 @@ WITH price_history AS (
         NULLIF(LAG(pd.value, 250) OVER (
                 PARTITION BY pd.ticker 
                 ORDER BY pd.date
-                ), 0) AS prev_12m,
-        NULLIF(LAG(pd.value, 500) OVER (
-                PARTITION BY pd.ticker 
-                ORDER BY pd.date
-                ), 0) AS prev_24m,     
-        NULLIF(LAG(pd.value, 750) OVER (
-                PARTITION BY pd.ticker 
-                ORDER BY pd.date
-                ), 0) AS prev_36m 
+                ), 0) AS prev_12m
     FROM pricing_daily_new pd 
     JOIN security_masterlist sm ON pd.ticker = sm.ticker
     WHERE pd.price_type = 'Adjusted'
-        AND pd.date BETWEEN '2019-09-08' AND '2022-09-09'
+        AND pd.date BETWEEN '2021-09-08' AND '2022-09-09'
         AND pd.ticker NOT IN (Select DISTINCT ticker from RenanPeres)
 ),
 
--- Part 2: Calculate the Returns
+-- Part 2: Returns
 ror AS (
     SELECT 
         date,
-        ticker,
+        ticker, 
         security_name,
         sec_type,
         major_asset_class,
         minor_asset_class,
         adj_closing_price,
         (adj_closing_price-prev_1d)/prev_1d as ror_1d,
-        (adj_closing_price-prev_12m)/prev_12m as ror_12m, 
-        (adj_closing_price-prev_24m)/prev_24m as ror_24m,
-        (adj_closing_price-prev_36m)/prev_36m as ror_36m
+        (adj_closing_price-prev_12m)/prev_12m as ror_12m
     FROM price_history
 ),
 
--- Part 3: Calculate the Sigma
+-- Part 3: Sigma
 sigma AS (
     SELECT 
         ticker,
-        STDDEV(ror_1d) as std_36m
+        AVG(ror_1d) as avg_daily_ror_12m,
+        STDDEV(ror_1d) as std_12m
     FROM ror
+    WHERE ror_1d IS NOT NULL
     GROUP BY ticker
+),
+
+-- Part 4: Ranking Securities by Return and Risk
+ranked_securities AS (
+    SELECT 
+		r.date,
+        r.ticker, 
+        r.security_name,
+        r.sec_type,
+        r.major_asset_class,
+        r.minor_asset_class,
+        s.avg_daily_ror_12m,
+        s.std_12m,
+        ROW_NUMBER() OVER (
+            PARTITION BY r.major_asset_class
+            ORDER BY s.avg_daily_ror_12m DESC, s.std_12m ASC
+        ) as rank_within_type
+    FROM ror r 
+    JOIN sigma s ON r.ticker = s.ticker
+    WHERE r.date = '2022-09-09' AND r.ror_12m > 0
 )
 
-SELECT 
-    r.*,
-    v.std_36m
-FROM ror r
-JOIN sigma v ON r.ticker = v.ticker
-WHERE r.date = '2022-09-09';`,
+-- Part 5: Selecting Best Performing Security in for each major_asset_class
+SELECT *
+FROM ranked_securities
+WHERE rank_within_type = 1
+ORDER BY 
+    sec_type,
+    rank_within_type;`,
   width: "1000px",
   rows: 10,
   resize: "both",
@@ -708,3 +722,68 @@ if (riskQueryResult2) {
   `);
 }
 ```
+---
+
+## Dashboard (Tableau)
+
+```js
+const fullscreenBtn = htl.html`
+<button style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+ onclick=${(e) => {
+   const vizContainer = document.getElementById('viz1734447659946');
+   if (vizContainer.requestFullscreen) {
+     vizContainer.requestFullscreen();
+   } else if (vizContainer.webkitRequestFullscreen) {
+     vizContainer.webkitRequestFullscreen();
+   } else if (vizContainer.msRequestFullscreen) {
+     vizContainer.msRequestFullscreen();
+   }
+ }}>
+ Fullscreen
+</button>`
+```
+
+<div>
+  ${fullscreenBtn}
+  <div style="width: 100%; position: relative;">
+    <div class='tableauPlaceholder' id='viz1734447659946' style='position: relative'>
+      <noscript>
+        <a href='#'>
+          <img alt='Dashboard 1' src='https://public.tableau.com/static/images/Po/PortfolioAnalysis_17342958726450/Dashboard1/1_rss.png' style='border: none' />
+        </a>
+      </noscript>
+      <object class='tableauViz' style='display:none;'>
+        <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+        <param name='embed_code_version' value='3' />
+        <param name='site_root' value='' />
+        <param name='name' value='PortfolioAnalysis_17342958726450/Dashboard1' />
+        <param name='tabs' value='no' />
+        <param name='toolbar' value='yes' />
+        <param name='static_image' value='https://public.tableau.com/static/images/Po/PortfolioAnalysis_17342958726450/Dashboard1/1.png' />
+        <param name='animate_transition' value='yes' />
+        <param name='display_static_image' value='yes' />
+        <param name='display_spinner' value='yes' />
+        <param name='display_overlay' value='yes' />
+        <param name='display_count' value='yes' />
+        <param name='language' value='en-US' />
+      </object>
+    </div>
+    <script type='text/javascript'>
+      var divElement = document.getElementById('viz1734447659946');
+      var vizElement = divElement.getElementsByTagName('object')[0];
+      if (divElement.offsetWidth > 800) {
+        vizElement.style.width = '100%';
+        vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+      } else if (divElement.offsetWidth > 500) {
+        vizElement.style.width = '100%';
+        vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+      } else {
+        vizElement.style.width = '100%';
+        vizElement.style.height = '1327px';
+      }
+      var scriptElement = document.createElement('script');
+      scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+      vizElement.parentNode.insertBefore(scriptElement, vizElement);
+    </script>
+  </div>
+</div>
