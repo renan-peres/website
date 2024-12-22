@@ -31,7 +31,7 @@ const returnInput = view(Inputs.range([0, 750], {
 # Data Extraction & Visualization (Open Server)
 
 ```js
-import {datetime} from "../../../components/datetime.js";
+import {datetime} from "../../../../components/datetime.js";
 ```
 
 <div class="datetime-container">
