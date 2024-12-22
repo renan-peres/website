@@ -1,119 +1,132 @@
 ---
 toc: false
 ---
-<!-- 
-```js
-import {datetime} from "/components/datetime.js";
+
+```html
+<style>
+
+/* Header and container fixes */
+.observablehq article {
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.observablehq-markdown {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, li, ul, ol {
+  width: 100% !important;
+  max-width: none !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+</style>
 ```
 
-<div class="datetime-container">
-  <div id="datetime"></div>
+<div align="center">
+  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1719165425/05_LinkedIn_Banner-Animated_qh5l3y.gif" alt="LinkedIn Banner" width="100%" />
 </div>
 
-<div class="hero">
-  <h1>Renan Peres's Portfolio</h1>
-  <h2>Welcome to your new app! Edit&nbsp;<code style="font-size: 90%;">src/index.md</code> to change this page.</h2>
-  <a href="https://observablehq.com/framework/getting-started">Get started<span style="display: inline-block; margin-left: 0.25rem;">↗︎</span></a>
+Hello there! 👋
+
+I'm an Analytics Engineer and Finance professional with a strong skill set in data integration, financial reporting, business intelligence, and process automation. 
+
+Pursuing advanced degrees in Finance and Business Analytics to complement hands-on experience with Microsoft Fabric, Power BI, Excel, SQL, Python, and R. 
+
+Skilled in automating financial processes and developing strategic dashboards that drive operational efficiency and inform executive decision-making. 
+
+Multilingual (Portuguese, English, Spanish) with a global perspective, seeking to leverage my technical expertise and business acumen to drive data-driven solutions in finance and analytics.
+
+Feel free to connect with me on LinkedIn or via email.
+
+<div id="badges" align="left">
+  <a href="https://www.linkedin.com/in/renanperes/">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge" style="border: 2px solid white"/>
+  </a>
+  <a href="mailto:contact@renanperes.com">
+    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=mail.ru&logoColor=white" alt="Email Badge" style="border: 2px solid white"/>
+  </a>
+  <a href="https://github.com/renan-peres">
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Badge" style="border: 2px solid white"/>
+  </a>
 </div>
 
-<div class="grid grid-cols-2" style="grid-auto-rows: 504px;">
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Your awesomeness over time 🚀",
-      subtitle: "Up and to the right!",
-      width,
-      y: {grid: true, label: "Awesomeness"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(aapl, {x: "Date", y: "Close", tip: true})
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "How big are penguins, anyway? 🐧",
-      width,
-      grid: true,
-      x: {label: "Body mass (g)"},
-      y: {label: "Flipper length (mm)"},
-      color: {legend: true},
-      marks: [
-        Plot.linearRegressionY(penguins, {x: "body_mass_g", y: "flipper_length_mm", stroke: "species"}),
-        Plot.dot(penguins, {x: "body_mass_g", y: "flipper_length_mm", stroke: "species", tip: true})
-      ]
-    }))
-  }</div>
-</div>
+
+<!-- <br>
+<div id="stats" align="center" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 0px;">
+  <img src="https://streak-stats.demolab.com?user=renan-peres&hide_border=true&hide_current_streak=true&hide_longest_streak=true" alt="renan-peres" style="height: 160px; width: 30%;" />
+  <img src="https://github-readme-stats.vercel.app/api?username=renan-peres&hide=prs,issues,contribs&show_icons=true&hide_rank=true&custom_title=&hide_border=true" alt="renan-peres" style="height: 160px; width: 30%;" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=renan-peres&layout=compact&hide=CSS,TeX,SCSS&langs_count=4&hide_border=true" alt="renan-peres" style="height: 160px; width: 30%;" />
+</div> -->
 
 ---
 
-## Next steps
-
-Here are some ideas of things you could try…
-
-<div class="grid grid-cols-4">
-  <div class="card">
-    Chart your own data using <a href="https://observablehq.com/framework/lib/plot"><code>Plot</code></a> and <a href="https://observablehq.com/framework/files"><code>FileAttachment</code></a>. Make it responsive using <a href="https://observablehq.com/framework/javascript#resize(render)"><code>resize</code></a>.
-  </div>
-  <div class="card">
-    Create a <a href="https://observablehq.com/framework/project-structure">new page</a> by adding a Markdown file (<code>whatever.md</code>) to the <code>src</code> folder.
-  </div>
-  <div class="card">
-    Add a drop-down menu using <a href="https://observablehq.com/framework/inputs/select"><code>Inputs.select</code></a> and use it to filter the data shown in a chart.
-  </div>
-  <div class="card">
-    Write a <a href="https://observablehq.com/framework/loaders">data loader</a> that queries a local database or API, generating a data snapshot on build.
-  </div>
-  <div class="card">
-    Import a <a href="https://observablehq.com/framework/imports">recommended library</a> from npm, such as <a href="https://observablehq.com/framework/lib/leaflet">Leaflet</a>, <a href="https://observablehq.com/framework/lib/dot">GraphViz</a>, <a href="https://observablehq.com/framework/lib/tex">TeX</a>, or <a href="https://observablehq.com/framework/lib/duckdb">DuckDB</a>.
-  </div>
-  <div class="card">
-    Ask for help, or share your work or ideas, on our <a href="https://github.com/observablehq/framework/discussions">GitHub discussions</a>.
-  </div>
-  <div class="card">
-    Visit <a href="https://github.com/observablehq/framework">Framework on GitHub</a> and give us a star. Or file an issue if you’ve found a bug!
-  </div>
+### Certifications
+<div style="display: flex; width: 200px; align-items: center; gap: 10px;">
+  <a href="https://learn.microsoft.com/en-us/users/renanperes/credentials/11FF263357C970DA">
+    <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1718666740/PowerBI-DataAnalyst_vu86zn.png" alt="Power BI Data Analyst Badge" class="badge" width="100" />
+  </a>
+  <a href="https://learn.microsoft.com/en-us/users/renanperes/credentials/ba4fd516d92a81d3">
+    <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1718666724/Fabric-AnalyticsEngineer_evc52n.png" alt="Fabric Analytics Engineer Badge" class="badge" width="100" />
+  </a>
 </div>
 
-<style>
+### Programming Languages
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1718800618/powershell_oxhjff.svg" alt="PowerShell" width="40" />
+  <img src="https://cdn.iconscout.com/icon/premium/png-512-thumb/sql-10539439-8473936.png?f=webp&w=256" alt="SQL" width="40">
+  <img src="https://www.vectorlogo.zone/logos/r-project/r-project-icon.svg" alt="R" width="40">
+  <img src="https://www.vectorlogo.zone/logos/python/python-official.svg" alt="Python" width="100">
+  <img src="https://www.vectorlogo.zone/logos/apache_spark/apache_spark-ar21.svg" alt="Apache Spark" width="100">
+</div>
 
-.hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: var(--sans-serif);
-  margin: 4rem 0 8rem;
-  text-wrap: balance;
-  text-align: center;
-}
+### Cloud Platforms
+<div style="display: flex; align-items: center; gap: 15px;">
+  <img src="https://swimburger.net/media/ppnn3pcl/azure.png" alt="Azure" width="40">
+  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1718647187/Fabric_aieabk.svg" alt="Fabric" width="40">
+  <img src="https://img.icons8.com/?size=100&id=Ny0t2MYrJ70p&format=png&color=000000" alt="Power BI" width="45">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png" alt="Databricks" width="100">
+</div>
 
-.hero h1 {
-  margin: 1rem 0;
-  padding: 1rem 0;
-  max-width: none;
-  font-size: 14vw;
-  font-weight: 900;
-  line-height: 1;
-  background: linear-gradient(30deg, var(--theme-foreground-focus), currentColor);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+### IDEs
+<div style="display: flex; align-items: center; gap: px;">
+  <img src="https://code.visualstudio.com/assets/images/code-stable.png" alt="VSCode" width="50">
+  <img src="https://img.icons8.com/?size=100&id=YYhSxUUW8osK&format=png&color=000000" alt="R Studio" width="50">
+  <img src="https://www.vectorlogo.zone/logos/jupyter/jupyter-ar21.svg" alt="Jupyter" width="100">
+</div>
 
-.hero h2 {
-  margin: 0;
-  max-width: 34em;
-  font-size: 20px;
-  font-style: initial;
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--theme-foreground-muted);
-}
+### DevOps
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-ar21.svg" alt="Git" width="100">
+  <img src="https://pngimg.com/uploads/github/github_PNG20.png" alt="GitHub" width="50">
+  <img src="https://img.icons8.com/?size=100&id=lWL5zqQfa1pO&format=png&color=000000" alt="Azure DevOps" width="50">
+  <img src="https://ia902905.us.archive.org/11/items/github.com-actions-virtual-environments_-_2020-03-27_07-59-20/cover.jpg" alt="GitHub Actions" width="50">
+  <img src="https://logos-world.net/wp-content/uploads/2021/02/Docker-Emblem.png" alt="Docker" width="100">
+</div>
 
-@media (min-width: 640px) {
-  .hero h1 {
-    font-size: 90px;
-  }
-}
+### Databases
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://img.icons8.com/?size=100&id=laYYF3dV0Iew&format=png&color=000000" alt="SQL Server" width="50">
+  <img src="https://img.icons8.com/?size=100&id=UFXRpPFebwa2&format=png&color=000000" alt="MySQL" width="50">
+  <img src="https://www.vectorlogo.zone/logos/postgresql/postgresql-ar21.svg" alt="PostgreSQL" width="100">
+  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1718646533/DuckDB_Logo_Yellow_Text_b20snd.png" alt="DuckDB" width="60">
+</div>
 
-</style> -->
+### Structured Tables
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://www.databricks.com/wp-content/uploads/2019/05/delta-lake-square.png" alt="Delta Lake" width="60">
+  <img src="https://www.dremio.com/wp-content/uploads/2021/06/iceberg-logo-with-name.png" alt="Apache Iceberg" width="50">
+</div>
+
+### Web Development
+<div style="display: flex; align-items: center; justify-content: left; gap: 10px;">
+  <img src="https://th.bing.com/th/id/R.4e0fa5da8edc46e91123dd12b0fa83a0?rik=2wcB7lzmzWzi5g&pid=ImgRaw&r=0" alt="Quarto" width="100">
+  <img src="https://www.vectorlogo.zone/logos/netlify/netlify-ar21.svg" alt="Netlify" width="100">
+  <img src="https://www.vectorlogo.zone/logos/w3_html5/w3_html5-ar21.svg" alt="HTML5" width="100">
+</div>
