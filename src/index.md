@@ -34,7 +34,7 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 </div> -->
 
 <div align="center">
-  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1734900752/08_LinkedIn_Banner_lcdima.png" alt="LinkedIn Banner" width="100%" />
+  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1734902113/10_LinkedIn_Banner_Animated_nkpavy.gif" alt="LinkedIn Banner" width="100%" />
 </div>
 
 Hello there! 👋
