@@ -42,7 +42,7 @@ The analysis is based on official SEC filings from Apple Inc.:
 - [2023 Annual Report (10-K)](https://investor.apple.com/sec-filings/sec-filings-details/default.aspx?FilingId=17028298)
 - [2022 Annual Report (10-K)](https://investor.apple.com/sec-filings/sec-filings-details/default.aspx?FilingId=16157374)
 
-## Model Components
+<!-- ## Model Components
 The financial model is structured into three main sections:
 
 ### 1. Summary
@@ -64,7 +64,7 @@ The financial model is structured into three main sections:
 - DCF valuation analysis
 - Cost allocation and variance analysis
 - Sensitivity analysis and scenario modeling
-- Key performance indicators (KPIs)
+- Key performance indicators (KPIs) -->
 
 This financial model serves as a comprehensive tool for analyzing Apple's financial performance, cost structure, and valuation, providing valuable insights for educational and analytical purposes.
 

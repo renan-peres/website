@@ -29,8 +29,12 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 </style>
 ```
 
-<div align="center">
+<!-- <div align="center">
   <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1719165425/05_LinkedIn_Banner-Animated_qh5l3y.gif" alt="LinkedIn Banner" width="100%" />
+</div> -->
+
+<div align="center">
+  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1734900752/08_LinkedIn_Banner_lcdima.png" alt="LinkedIn Banner" width="100%" />
 </div>
 
 Hello there! 👋
