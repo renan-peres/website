@@ -224,3 +224,18 @@ display(html`
 />
 `);
 ```
+
+---
+
+# Report
+
+```js
+const reportHtml = await FileAttachment("report-base64.txt").text();
+display(html`
+  <embed 
+    src="data:application/pdf;base64,${reportHtml}" 
+    width="100%" 
+    height="1200px"
+/>
+`);
+```
