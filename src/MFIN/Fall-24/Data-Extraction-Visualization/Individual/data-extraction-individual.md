@@ -13,32 +13,39 @@ sql:
 
 ```html
 <style>
-.observablehq textarea {
+.observablehq textarea,
+.observablehq-input textarea,
+.sql-editor {
   min-height: 500px !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
 }
+
+/* Header and container fixes */
+.observablehq article {
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.observablehq-markdown {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, li, ul, ol {
+  width: 100% !important;
+  max-width: none !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
 </style>
 ```
-
-<!-- ```js
-// Create the dropdown for pre-built queries
-const returnInput = view(Inputs.range([0, 750], {
-  step: 25, 
-  value: 0, // Set initial value
-  placeholder: "1-750"
-}));
-``` -->
-
-# Data Extraction & Visualization
-
-```js
-import {datetime} from "../../../components/datetime.js";
-```
-
-<div class="datetime-container">
-  <div id="datetime"></div>
-</div>
-
----
 
 ```js
 // Load predefined tables
@@ -78,9 +85,125 @@ async function toParquet(duckDbClient, {table = "data", originalName = table, na
 }
 ```
 
+<!-- ```js
+// Create the dropdown for pre-built queries
+const returnInput = view(Inputs.range([0, 750], {
+  step: 25, 
+  value: 0, // Set initial value
+  placeholder: "1-750"
+}));
+``` -->
+
+# Portfolio Analysis - Data Extraction & Visualization (Fall 2024)
+```js
+import {datetime} from "../../../../components/datetime.js";
+```
+
+<div class="datetime-container">
+  <div id="datetime"></div>
+</div>
+
+This project presents a comprehensive portfolio analysis tool combining SQL-based data extraction with Tableau visualization capabilities. The system analyzes financial portfolio data for customer #128 (Bojana Popovic), providing insights into investment performance, risk assessment, and potential portfolio optimization opportunities. By leveraging both SQL for complex calculations and Tableau for visualization, the project delivers a complete view of the client's investment portfolio.
+
+### Key Features
+- DuckDB integration for efficient data processing
+- Sequential query execution for streamlined analysis
+- Responsive full-width layout design
+- Interactive data visualization
+- Export functionality in CSV and Parquet formats
+- Automated data processing and handling
+- Real-time data extraction capabilities
+
+### [Part 1: Data Extraction (SQL)](#part-1-data-extraction-sql-1)
+The SQL component integrates multiple data sources including account dimensions, customer details, holdings, and pricing information. It processes this data through a series of analytical queries:
+
+- **SQL View**: Creates a comprehensive view consolidating all client portfolio data with relevant dimensions and metrics
+- **Query 1**: Analyzes portfolio performance through 12, 24, and 36-month return calculations for individual securities and the overall portfolio
+- **Query 2**: Evaluates investment risk through sigma (volatility) calculations and average daily returns
+- **Query 3**: Identifies potential investment opportunities by analyzing securities not currently in the portfolio
+- **Query 4**: Calculates risk-adjusted returns (Sharpe-like ratio) to determine optimal investment efficiency
+
+### [Part 2: Interactive Dashboard (Tableau)](#part-2-interactive-dashboard-tableau-1)
+The Tableau dashboard provides an interactive visualization layer that transforms the SQL analysis into actionable insights:
+
+- Asset allocation breakdown and portfolio composition
+- Historical performance trends and comparisons
+- Risk-return relationship visualization
+- Dynamic filtering and drill-down capabilities
+- Fullscreen viewing mode for detailed analysis
+- Real-time metric updates and portfolio monitoring
+
+This dual-approach methodology combines the computational power of SQL with the visual analytics of Tableau, providing a robust platform for comprehensive portfolio analysis and decision-making support.
+
 ---
 
-## Tables
+# Part 2: Interactive Dashboard (Tableau) 
+
+```js
+const fullscreenBtn = htl.html`
+<button style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+ onclick=${(e) => {
+   const vizContainer = document.getElementById('viz1734447659946');
+   if (vizContainer.requestFullscreen) {
+     vizContainer.requestFullscreen();
+   } else if (vizContainer.webkitRequestFullscreen) {
+     vizContainer.webkitRequestFullscreen();
+   } else if (vizContainer.msRequestFullscreen) {
+     vizContainer.msRequestFullscreen();
+   }
+ }}>
+ Fullscreen
+</button>`
+```
+
+<div>
+  ${fullscreenBtn}
+  <div style="width: 100%; position: relative;">
+    <div class='tableauPlaceholder' id='viz1734447659946' style='position: relative'>
+      <noscript>
+        <a href='#'>
+          <img alt='Dashboard 1' src='https://public.tableau.com/static/images/Po/PortfolioAnalysis_17342958726450/Dashboard1/1_rss.png' style='border: none' />
+        </a>
+      </noscript>
+      <object class='tableauViz' style='display:none;'>
+        <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+        <param name='embed_code_version' value='3' />
+        <param name='site_root' value='' />
+        <param name='name' value='PortfolioAnalysis_17342958726450/Dashboard1' />
+        <param name='tabs' value='no' />
+        <param name='toolbar' value='yes' />
+        <param name='static_image' value='https://public.tableau.com/static/images/Po/PortfolioAnalysis_17342958726450/Dashboard1/1.png' />
+        <param name='animate_transition' value='yes' />
+        <param name='display_static_image' value='yes' />
+        <param name='display_spinner' value='yes' />
+        <param name='display_overlay' value='yes' />
+        <param name='display_count' value='yes' />
+        <param name='language' value='en-US' />
+      </object>
+    </div>
+    <script type='text/javascript'>
+      var divElement = document.getElementById('viz1734447659946');
+      var vizElement = divElement.getElementsByTagName('object')[0];
+      if (divElement.offsetWidth > 800) {
+        vizElement.style.width = '100%';
+        vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+      } else if (divElement.offsetWidth > 500) {
+        vizElement.style.width = '100%';
+        vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+      } else {
+        vizElement.style.width = '100%';
+        vizElement.style.height = '1327px';
+      }
+      var scriptElement = document.createElement('script');
+      scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+      vizElement.parentNode.insertBefore(scriptElement, vizElement);
+    </script>
+  </div>
+</div>
+
+---
+
+# Part 1: Data Extraction (SQL)
 
 ```sql id=tables
 SELECT DISTINCT table_name 
@@ -154,6 +277,9 @@ if (queryResult) {
 ---
 
 ## SQL View: (Customer# 128, Bojana Popovic) 
+- Step1: Identify your client (listed above) in your database - learn about your client and what they have. Create all required relationships between tables (joins) to better understand what assets your client has, asset classifications, asset types and prices.  
+
+- Step 2: Once you get that large joined table with all your client's assets and their prices (from Step1) - use that data to create a VIEW in the invest schema with data for your client.  This view should have the following information: asset classification (major and minor), asset names, asset types, prices with pricing information and dates and have ONLY the data related to your client. Make sure to add all necessary filters for your VIEW.
 
 ```js
 // Create the textarea that updates based on the selected query
@@ -314,6 +440,16 @@ FROM sec_ror;`,
     if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
   }
 }));
+
+// Execute query and trigger next one
+const rorQueryResult = predefinedDb.query(rorCode);
+display(Inputs.table(rorQueryResult));
+setTimeout(() => {
+  const riskCode1Element = document.querySelector('#risk-code-1');
+  if (riskCode1Element) {
+    riskCode1Element.dispatchEvent(new Event('input'));
+  }
+}, 1000);
 ```
 
 ```js
@@ -426,6 +562,16 @@ JOIN std ON std.ticker = ror.ticker;`,
     if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
   }
 }));
+
+// Execute query and trigger next one
+const riskQueryResult1 = predefinedDb.query(riskCode1);
+display(Inputs.table(riskQueryResult1));
+setTimeout(() => {
+  const question3Element = document.querySelector('#question-3');
+  if (question3Element) {
+    question3Element.dispatchEvent(new Event('input'));
+  }
+}, 1000);
 ```
 
 ```js
@@ -570,6 +716,16 @@ ORDER BY
     if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
   }
 }));
+
+// Execute query and trigger next one
+const question3Result = predefinedDb.query(question3);
+display(Inputs.table(question3Result));
+setTimeout(() => {
+  const riskCode2Element = document.querySelector('#risk-code-2');
+  if (riskCode2Element) {
+    riskCode2Element.dispatchEvent(new Event('input'));
+  }
+}, 1000);
 ```
 
 ```js
@@ -673,6 +829,10 @@ ORDER BY
     if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
   }
 }));
+
+// Execute final query
+const riskQueryResult2 = predefinedDb.query(riskCode2);
+display(Inputs.table(riskQueryResult2));
 ```
 
 ```js
@@ -722,68 +882,3 @@ if (riskQueryResult2) {
   `);
 }
 ```
----
-
-## Dashboard (Tableau)
-
-```js
-const fullscreenBtn = htl.html`
-<button style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
- onclick=${(e) => {
-   const vizContainer = document.getElementById('viz1734447659946');
-   if (vizContainer.requestFullscreen) {
-     vizContainer.requestFullscreen();
-   } else if (vizContainer.webkitRequestFullscreen) {
-     vizContainer.webkitRequestFullscreen();
-   } else if (vizContainer.msRequestFullscreen) {
-     vizContainer.msRequestFullscreen();
-   }
- }}>
- Fullscreen
-</button>`
-```
-
-<div>
-  ${fullscreenBtn}
-  <div style="width: 100%; position: relative;">
-    <div class='tableauPlaceholder' id='viz1734447659946' style='position: relative'>
-      <noscript>
-        <a href='#'>
-          <img alt='Dashboard 1' src='https://public.tableau.com/static/images/Po/PortfolioAnalysis_17342958726450/Dashboard1/1_rss.png' style='border: none' />
-        </a>
-      </noscript>
-      <object class='tableauViz' style='display:none;'>
-        <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
-        <param name='embed_code_version' value='3' />
-        <param name='site_root' value='' />
-        <param name='name' value='PortfolioAnalysis_17342958726450/Dashboard1' />
-        <param name='tabs' value='no' />
-        <param name='toolbar' value='yes' />
-        <param name='static_image' value='https://public.tableau.com/static/images/Po/PortfolioAnalysis_17342958726450/Dashboard1/1.png' />
-        <param name='animate_transition' value='yes' />
-        <param name='display_static_image' value='yes' />
-        <param name='display_spinner' value='yes' />
-        <param name='display_overlay' value='yes' />
-        <param name='display_count' value='yes' />
-        <param name='language' value='en-US' />
-      </object>
-    </div>
-    <script type='text/javascript'>
-      var divElement = document.getElementById('viz1734447659946');
-      var vizElement = divElement.getElementsByTagName('object')[0];
-      if (divElement.offsetWidth > 800) {
-        vizElement.style.width = '100%';
-        vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
-      } else if (divElement.offsetWidth > 500) {
-        vizElement.style.width = '100%';
-        vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
-      } else {
-        vizElement.style.width = '100%';
-        vizElement.style.height = '1327px';
-      }
-      var scriptElement = document.createElement('script');
-      scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-      vizElement.parentNode.insertBefore(scriptElement, vizElement);
-    </script>
-  </div>
-</div>

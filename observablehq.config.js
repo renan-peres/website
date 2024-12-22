@@ -12,7 +12,7 @@ export default {
       open: true,
       pages: [
         {name: "Playground", path: "/devbox/devbox-playground"},
-        {name: "DuckDB: Parquet Converter", path: "/devbox/duckdb-parquet-converter"},
+        {name: "Parquet Converter (DuckDB)", path: "/devbox/duckdb-parquet-converter"},
         {name: "WebR", path: "/devbox/webr"},
         {name: "Pyodide", path: "/devbox/pyodide"},
         {name: "Spreadsheet Connector", path: "/devbox/spreadsheet-connector"},
@@ -34,6 +34,17 @@ export default {
     }
     
     ,{
+      name: "MFIN",
+      open: true,
+      pages: [
+        {name: "Portfolio Analysis (SQL & Tableau)", path: "/MFIN/Fall-24/Data-Extraction-Visualization/Individual/data-extraction-individual"},
+        // {name: "Data Extraction (Open Server)", path: "/MFIN/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
+        // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/MFIN/Fall-24/Data-Extraction/Team/data-extraction-team"}
+        {name: "Apple Financial Model (Excel)", path: "/MFIN/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
+      ]
+    }
+    
+    ,{
       name: "Analytics",
       open: true,
       pages: [
@@ -41,17 +52,6 @@ export default {
         // {name: "AG Grid", path: "/analytics/ag-grid"},
         // {name: "Tabulator", path: "/analytics/tabulator"},
         {name: "Highcharter", path: "/analytics/highcharts"}
-      ]
-    }
-    
-    ,{
-      name: "MFIN",
-      open: true,
-      pages: [
-        {name: "Data Extraction (Open Server)", path: "/mfin/Data-Extraction/Individual/data-extraction-sql"},
-        {name: "Data Extraction (Individual)", path: "/mfin/Data-Extraction/Individual/data-extraction-individual"},
-        {name: "Data Extraction (Team)", path: "/mfin/Data-Extraction/Team/data-extraction-team"}
-        // {name: "Financial Model (Apple)", path: "/mfin/financial-model-apple"}
       ]
     }
     
