@@ -26,8 +26,8 @@ export default {
       pages: [
         {name: "Stocks & Crypto", path: "/finance/stock-crypto-viewer"},
         {name: "U.S. Mortgage Rates", path: "/finance/mortgage-rates"},
-        {name: "Macro Indicators", path: "/finance/macro-indicators"},
         {name: "U.S. Monetary Base", path: "/finance/monetary-base"},
+        {name: "Macro Indicators", path: "/finance/macro-indicators"},
         {name: "Foreign Exchange Market", path: "/finance/fx-market"},
         {name: "Portfolio Builder", path: "/finance/portfolio-builder"}
       ]
