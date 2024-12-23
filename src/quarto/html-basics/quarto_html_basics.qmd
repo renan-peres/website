@@ -1,17 +1,24 @@
 ---
 title: "Quarto HTML Basics"
-author: "Norah Jones"
-date: "March 22nd, 2021"
-toc: true
 format:
   html:
     html-math-method: katex
     code-tools: true
     self-contained: true
     embed-resources: true
+    page-layout: full
+    
 execute:
   warning: false
 ---
+
+```{css, echo=FALSE}
+
+.main-container {
+  margin-left: 0px !important;
+  margin-top: 10px
+}
+```
 
 ## Introduction
 

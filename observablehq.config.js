@@ -1,7 +1,7 @@
 // See https://observablehq.com/framework/config for documentation.
 export default {
   // The app’s title; used in the sidebar and webpage titles.
-  title: "Renan Peres's Portfolio",
+  title: "Renan Peres's Website",
 
   // The pages and sections in the sidebar. If you don’t specify this option,
   // all pages will be listed in alphabetical order. Listing pages explicitly
@@ -59,7 +59,8 @@ export default {
       name: "Quarto",
       open: true,
       pages: [
-        {name: "Quarto HTML Basics", path: "/quarto/html-basics/quarto_html_basics"}
+        {name: "HTML Basics (Report)", path: "/quarto/html-basics/quarto_html_basics"},
+        {name: "Stock Explorer (Dashboard)", path: "/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
       ]
     }
     
