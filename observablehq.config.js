@@ -54,6 +54,14 @@ export default {
         {name: "Highcharter", path: "/analytics/highcharts"}
       ]
     }
+
+    ,{
+      name: "Quarto",
+      open: true,
+      pages: [
+        {name: "Quarto HTML Basics", path: "/quarto/html-basics/quarto_html_basics"}
+      ]
+    }
     
   ],
 
