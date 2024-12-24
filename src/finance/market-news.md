@@ -89,16 +89,9 @@ loadNews();
   <title>Market News</title>
 </head>
 <body>
-  <div id="news-container"></div> <!-- The container where news will be displayed -->
-  
-  <script src="news.js"></script> <!-- Include your JavaScript file here -->
+  <div id="news-container"></div>
 </body>
 </html>
-
-<div class="wrapper">
-  <div class="toc-container" id="toc-container"></div>
-  <div id="news-container"></div>
-</div>
 
 ```css echo=false
 /* Add basic styling for the news display */
