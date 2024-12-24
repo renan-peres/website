@@ -1,7 +1,7 @@
 ---
 theme: dashboard
 index: true
-toc: false
+toc: true
 source: https://finnhub.io/docs/api/news
 keywords: market news stocks crypto forex mergers real-time updates
 ---
@@ -16,8 +16,6 @@ import {datetime} from "../components/datetime.js";
 </div>
 
 ---
-
-## Latest Market News
 
 ```js
 // Set your API Key and categories
@@ -36,54 +34,54 @@ async function fetchNews(category) {
     }
 
     const data = await response.json();
-    displayNews(data, category); // Display the news once fetched
+    return { category, data };
   } catch (error) {
     console.error(`Error fetching ${category} news:`, error);
+    return { category, data: [] };
   }
 }
 
 // This function will display the fetched news on the webpage
-function displayNews(newsData, category) {
+function displayNews(newsData) {
   const newsContainer = document.getElementById('news-container');
-  const categoryContainer = document.createElement('div');
-  categoryContainer.classList.add('category-container');
-  categoryContainer.innerHTML = `<h2>${category.toUpperCase()} News</h2>`; // Title for category
+  newsContainer.innerHTML = ''; // Clear the container
 
-  // Check if the response contains news articles
-  if (Array.isArray(newsData) && newsData.length > 0) {
-    newsData.forEach(article => {
-      const articleElement = document.createElement('div');
-      articleElement.classList.add('article');
-      articleElement.innerHTML = `
-        <h3><a href="${article.url}" target="_blank">${article.headline}</a></h3>
-        <p>${article.summary}</p>
-        <p><em>Date: ${new Date(article.datetime * 1000).toLocaleString()}</em></p>
-      `;
-      categoryContainer.appendChild(articleElement);
-    });
-  } else {
-    categoryContainer.innerHTML += '<p>No news available.</p>';
-  }
+  newsData.forEach(({ category, data }) => {
+    const categoryContainer = document.createElement('div');
+    categoryContainer.classList.add('category-container');
+    categoryContainer.innerHTML = `<h2>${category.toUpperCase()} News</h2>`;
 
-  // Append the category container to the main news container
-  newsContainer.appendChild(categoryContainer);
+    if (Array.isArray(data) && data.length > 0) {
+      data.forEach((article) => {
+        const articleElement = document.createElement('div');
+        articleElement.classList.add('article');
+        articleElement.innerHTML = `
+          <h3><a href="${article.url}" target="_blank">${article.headline}</a></h3>
+          <p>${article.summary}</p>
+          <p><em>Date: ${new Date(article.datetime * 1000).toLocaleString()}</em></p>
+        `;
+        categoryContainer.appendChild(articleElement);
+      });
+    } else {
+      categoryContainer.innerHTML += '<p>No news available.</p>';
+    }
+
+    newsContainer.appendChild(categoryContainer);
+  });
 }
 
 // Initial function to load news for each category
-function loadNews() {
-  NEWS_CATEGORIES.forEach(category => {
-    fetchNews(category); // Fetch and display news for each category
-  });
+async function loadNews() {
+  const newsData = await Promise.all(
+    NEWS_CATEGORIES.map(fetchNews)
+  );
+  displayNews(newsData);
 }
 
 // Call the function to load news when the page loads
 loadNews();
-
-
 ```
 
-```html
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -97,8 +95,10 @@ loadNews();
 </body>
 </html>
 
-
-```
+<div class="wrapper">
+  <div class="toc-container" id="toc-container"></div>
+  <div id="news-container"></div>
+</div>
 
 ```css echo=false
 /* Add basic styling for the news display */
