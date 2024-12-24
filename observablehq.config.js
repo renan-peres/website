@@ -57,10 +57,10 @@ export default {
       name: "Analytics",
       open: true,
       pages: [
-        {name: "U.S. Electricity Grid", path: "/analytics/eia"},
+        {name: "U.S. Electricity Grid", path: "/analytics/eia"}
         // {name: "AG Grid", path: "/analytics/ag-grid"},
         // {name: "Tabulator", path: "/analytics/tabulator"},
-        {name: "Highcharter", path: "/analytics/highcharts"}
+        // {name: "Highcharter", path: "/analytics/highcharts"}
       ]
     }
 
