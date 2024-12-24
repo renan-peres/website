@@ -17,7 +17,7 @@ import {datetime} from "../components/datetime.js";
 <div id="countdown"></div>
 
 ```js
-import { loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.mjs";
+import { loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.mjs";
 
 async function initializePyodide() {
   const countdownElement = document.getElementById('countdown');
@@ -31,19 +31,55 @@ async function initializePyodide() {
   }, 1000);
 
   try {
-    let pyodide = await loadPyodide();
+    let pyodide = await loadPyodide({
+      indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/"
+    });
     clearInterval(timer);
     countdownElement.textContent = 'Loading packages...';
     
+    // Load core packages
     await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "scikit-learn"]);
-    await pyodide.loadPackage("micropip");
-    const micropip = pyodide.pyimport("micropip");
     
-    countdownElement.textContent = 'Ready!';
+    // Load micropip
+    await pyodide.loadPackage("micropip");
+    
+    try {
+      countdownElement.textContent = 'Installing polars...';
+      
+      // First load micropip
+      await pyodide.loadPackage("micropip");
+      const micropip = pyodide.pyimport("micropip");
+      
+      // Install polars
+      console.log("Attempting to install polars...");
+      await micropip.install('polars');
+      
+      // Test the installation
+      const result = pyodide.runPython(`
+        import polars as pl
+        print(f"Successfully imported polars {pl.__version__}")
+        
+        # Create a test dataframe
+        df = pl.DataFrame({
+            "a": [1, 2, 3],
+            "b": ["x", "y", "z"]
+        })
+        print(df)
+      `);
+      
+      console.log('Polars installation completed');
+      countdownElement.textContent = 'Ready!';
+      
+    } catch (error) {
+      console.error('Installation error:', error);
+      countdownElement.textContent = 'Ready (without polars)';
+    }
+    
     return pyodide;
   } catch (err) {
     clearInterval(timer);
     countdownElement.textContent = 'Initialization failed';
+    console.error('Pyodide initialization error:', err);
     throw err;
   }
 }
