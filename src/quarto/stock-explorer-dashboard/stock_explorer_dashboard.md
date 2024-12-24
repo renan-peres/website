@@ -1,7 +1,7 @@
 ---
 theme: dashboard
 index: true
-title: Penguin Presentation
+title: Stock Explorer
 toc: false
 ---
 
