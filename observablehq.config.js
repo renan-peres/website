@@ -26,7 +26,7 @@ export default {
       pages: [
         {name: "U.S. Mortgage Rates", path: "/finance/mortgage-rates"},
         {name: "U.S. Monetary Base", path: "/finance/monetary-base"},
-        {name: "U.S Macro Indicators", path: "/finance/macro-indicators"}
+        {name: "U.S. Macro Indicators", path: "/finance/macro-indicators"}
       ]
     }
 
