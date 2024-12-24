@@ -36,6 +36,7 @@ export default {
       pages: [
         {name: "Stocks & Crypto Prices", path: "/finance/stock-crypto-viewer"},
         {name: "Foreign Exchange", path: "/finance/fx-market"},
+        {name: "Market News", path: "/finance/market-news"},
         {name: "Portfolio Builder", path: "/finance/portfolio-builder"}
       ]
     }
