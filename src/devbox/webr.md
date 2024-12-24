@@ -16,44 +16,33 @@ import {datetime} from "../components/datetime.js";
 <div id="countdown"></div>
 
 ```js
-{
+async function initializeWebR() {
   const countdownElement = document.getElementById('countdown');
   let secondsLeft = 5;
   
   const timer = setInterval(() => {
     if (secondsLeft > 0) {
-      countdownElement.textContent = `Initializing DuckDB... ${secondsLeft}`;
+      countdownElement.textContent = `Initializing WebR... ${secondsLeft}`;
       secondsLeft--;
     }
   }, 1000);
 
   try {
-    // Load predefined tables
-    const security_masterlist = await FileAttachment("./data/security_masterlist.csv").csv({typed: true});
-    const account_dim = await FileAttachment("./data/account_dim.csv").csv({typed: true});
-    const customer_details = await FileAttachment("./data/customer_details.csv").csv({typed: true});
-    const holdings_current = await FileAttachment("./data/holdings_current.csv").csv({typed: true});
-    const pricing_daily_new = await FileAttachment("./data/pricing_daily_new.csv").csv({typed: true});
-
-    // Initialize DuckDB
-    const predefinedDb = await DuckDBClient.of({
-      security_masterlist,
-      account_dim,
-      customer_details,
-      holdings_current,
-      pricing_daily_new,
-    });
-
+    const webR = new (await import("https://webr.r-wasm.org/latest/webr.mjs")).WebR();
     clearInterval(timer);
-    countdownElement.textContent = 'DuckDB Ready!';
+    countdownElement.textContent = 'Starting WebR...';
     
-    return predefinedDb;
+    await webR.init();
+    countdownElement.textContent = 'Ready!';
+    return webR;
   } catch (err) {
     clearInterval(timer);
-    countdownElement.textContent = 'DuckDB initialization failed';
+    countdownElement.textContent = 'Initialization failed';
     throw err;
   }
 }
+
+const webR = await initializeWebR();
 ```
 ---
 
