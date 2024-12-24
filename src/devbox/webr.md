@@ -1,6 +1,6 @@
 ---
 theme: dashboard
-index: true
+index: false
 keywords: R, wasm
 ---
 

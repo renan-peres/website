@@ -1,6 +1,6 @@
 ---
 theme: dashboard
-index: true
+index: false
 source: https://pyodide.org/en/stable/usage/quickstart.html
 keywords: Python, wasm
 ---
