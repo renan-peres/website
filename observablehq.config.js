@@ -21,14 +21,21 @@ export default {
     }
     
     ,{
-      name: "Finance",
+      name: "Economics",
       open: true,
       pages: [
-        {name: "Stocks & Crypto", path: "/finance/stock-crypto-viewer"},
         {name: "U.S. Mortgage Rates", path: "/finance/mortgage-rates"},
         {name: "U.S. Monetary Base", path: "/finance/monetary-base"},
-        {name: "Macro Indicators", path: "/finance/macro-indicators"},
-        {name: "Foreign Exchange Market", path: "/finance/fx-market"},
+        {name: "U.S Macro Indicators", path: "/finance/macro-indicators"}
+      ]
+    }
+
+    ,{
+      name: "Financial Markets",
+      open: true,
+      pages: [
+        {name: "Stocks & Crypto Prices", path: "/finance/stock-crypto-viewer"},
+        {name: "Foreign Exchange", path: "/finance/fx-market"},
         {name: "Portfolio Builder", path: "/finance/portfolio-builder"}
       ]
     }

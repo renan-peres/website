@@ -1,3 +1,9 @@
+---
+theme: dashboard
+index: true
+toc: false
+---
+
 # Primary mortgage market survey
 
 ```js

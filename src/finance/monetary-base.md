@@ -6,7 +6,7 @@ source: https://fred.stlouisfed.org/
 keywords: monetary base money stock currency circulation FRED API
 ---
 
-# Monetary Base Dashboard
+# Monetary Base
 ```js
 import {datetime} from "../components/datetime.js";
 ```
