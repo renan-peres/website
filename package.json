@@ -6,10 +6,7 @@
     "build": "observable build",
     "dev": "observable preview",
     "deploy": "observable deploy",
-    "observable": "observable",
-
-    "rust": "rust-script",
-    "rust-build": "rust-script build"
+    "observable": "observable"
   },
   "dependencies": {
     "@duckdb/node-api": "^1.1.3-alpha.8",
@@ -33,6 +30,7 @@
     "rimraf": "^5.0.5"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=18",
+    "Rust": ">=1.82.0"
   }
 }
