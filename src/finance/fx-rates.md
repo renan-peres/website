@@ -1,13 +1,13 @@
 ---
 theme: dashboard
 index: true
-title: Bond Valuation
+title: Foreing Exchange Rates
 toc: false
-source: https://developer.finra.org/docs/api-explorer/query_api-fixed_income-agency_debt_market_breadth
+source: https://fiscaldata.treasury.gov/datasets/treasury-reporting-rates-exchange/treasury-reporting-rates-of-exchange
 keywords: 
 ---
 
-# Bond Valuation
+# Foreign Exhchange Rates
 
 ```js
 import {datetime} from "../assets/components/datetime.js";
@@ -19,15 +19,34 @@ import {datetime} from "../assets/components/datetime.js";
 
 ---
 
-## Treasury Monthly Aggregates
+## Quartely Reports
 
 ```js 
 // Import dependencies and prepare data
-const finra = FileAttachment("../assets/loaders/rust/finra_api.csv").csv();
 import * as XLSX from "npm:xlsx";
+const datasetname = "forex_data";
 
-const data = finra;
-const datasetname = "finra_data";
+// Load the CSV file and process it
+const forex = await FileAttachment("../assets/loaders/rust/fiscaldata_forex_api.csv").csv();
+
+// Define the columns you want to extract
+const desiredColumns = [
+  "country",
+  "country_currency_desc",
+  "currency",
+  "effective_date",
+  "record_date",
+  "exchange_rate",
+];
+
+// Filter the data to include only the desired columns
+const data = forex.map(row => {
+  const filteredRow = {};
+  desiredColumns.forEach(column => {
+    filteredRow[column] = row[column];
+  });
+  return filteredRow;
+});
 ```
 
 ```js
@@ -61,3 +80,4 @@ display(html`
   ${Inputs.table(data, { rows: 30 })}
 `);
 ```
+
