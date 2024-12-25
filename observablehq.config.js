@@ -37,11 +37,11 @@ export default {
       open: true,
       pages: [
         {name: "Playground", path: "/devbox/devbox-playground"},
-        {name: "Parquet Converter (DuckDB)", path: "/devbox/duckdb-parquet-converter"},
+        {name: "DuckDB WASM (Parquet Converter)", path: "/devbox/duckdb-parquet-converter"},
         {name: "WebR", path: "/devbox/webr"},
         {name: "Pyodide", path: "/devbox/pyodide"},
-        {name: "Spreadsheet Connector", path: "/devbox/spreadsheet-connector"},
-        {name: "Excel Downloader", path: "/devbox/excel-downloader"}
+        {name: "Excel/Google Sheets Connector", path: "/devbox/spreadsheet-connector"}
+        // {name: "Excel Downloader", path: "/devbox/excel-downloader"}
       ]
     }
     
