@@ -40,8 +40,7 @@ export default {
         {name: "DuckDB (Parquet Converter)", path: "/devbox/duckdb-parquet-converter"},
         {name: "WebR", path: "/devbox/webr"},
         {name: "Pyodide", path: "/devbox/pyodide"},
-        {name: "Excel/Google Sheets Connector", path: "/devbox/spreadsheet-connector"},
-        {name: "Rust Loader", path: "/devbox/rust-loader"}
+        {name: "Excel/Google Sheets Connector", path: "/devbox/spreadsheet-connector"}
         // {name: "Excel Downloader", path: "/devbox/excel-downloader"}
       ]
     }
