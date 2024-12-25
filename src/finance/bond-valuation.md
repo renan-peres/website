@@ -6,7 +6,7 @@ toc: false
 source: https://developer.finra.org/docs/api-explorer/query_api-fixed_income-agency_debt_market_breadth
 keywords: 
 sql:
-  finra: ./data/finra.parquet
+  finra: ./data/finra.csv
 ---
 
 # Bond Valuation
