@@ -7,8 +7,8 @@ toc: false
 
 ```js
 // Import components
-import {countryInterchangeChart, top5BalancingAuthoritiesChart, usGenDemandForecastChart} from "../components/charts.js";
-import {balancingAuthoritiesLegend, balancingAuthoritiesMap} from "../components/map.js";
+import {countryInterchangeChart, top5BalancingAuthoritiesChart, usGenDemandForecastChart} from "../assets/components/charts.js";
+import {balancingAuthoritiesLegend, balancingAuthoritiesMap} from "../assets/components/map.js";
 ```
 
 ```js
