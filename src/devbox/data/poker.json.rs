@@ -1,5 +1,3 @@
-//! Since Framework uses rust-script, we can define dependencies here.
-//!
 //! ```cargo
 //! [dependencies]
 //! serde = { version = "1.0.203", features = ["derive"] }
@@ -13,24 +11,22 @@ use rayon::prelude::*;
 use serde::Serialize;
 use serde_json::json;
 use std::collections::HashMap;
+use std::time::Instant;
 
 fn main() {
     const COUNT: u32 = 10_000_000;
-    let start = std::time::Instant::now();
+    let total_start = Instant::now();
 
+    // Time the hand generation and categorization
+    let generation_start = Instant::now();
     let counts = (0..COUNT)
-        // This line breaks the work up into multiple parallel jobs.
         .into_par_iter()
-        // Calculate the category of random hands
         .map(|_| {
             let hand = Hand::random();
-            // Convert the category into a one-element hashmap, so the reducer
-            // can sum up all the counts for each category.
             let mut map = HashMap::new();
             map.insert(hand.categorize(), 1);
             map
         })
-        // count up each category
         .reduce(
             || HashMap::with_capacity(10),
             |mut acc, map| {
@@ -40,17 +36,41 @@ fn main() {
                 acc
             },
         );
+    let generation_duration = generation_start.elapsed();
 
+    // Time the data processing and sorting
+    let processing_start = Instant::now();
     let mut tidy_data = counts
         .into_iter()
         .map(|(category, count)| SummaryRow { category, count })
         .collect::<Vec<_>>();
     tidy_data.sort_by_key(|data| data.category);
+    let processing_duration = processing_start.elapsed();
 
+    // Time the JSON output generation
+    let output_start = Instant::now();
     serde_json::to_writer(std::io::stdout(), &json!({
         "summary": tidy_data,
-        "meta": { "count": COUNT, "duration_ms": start.elapsed().as_millis() },
+        "meta": {
+            "count": COUNT,
+            "duration_ms": total_start.elapsed().as_millis(),
+            "timings": {
+                "generation_ms": generation_duration.as_millis(),
+                "processing_ms": processing_duration.as_millis(),
+                "output_ms": output_start.elapsed().as_millis(),
+            }
+        },
     })).unwrap();
+    let output_duration = output_start.elapsed();
+
+    // Print timing information to stderr
+    eprintln!("\nTiming Information:");
+    eprintln!("Hand generation and categorization: {:?}", generation_duration);
+    eprintln!("Data processing and sorting: {:?}", processing_duration);
+    eprintln!("Output generation: {:?}", output_duration);
+    eprintln!("Total execution time: {:?}", total_start.elapsed());
+    eprintln!("\nSimulation Details:");
+    eprintln!("Total hands simulated: {}", COUNT);
 }
 
 // Here, we create types for the domain model of a poker hand. Working with

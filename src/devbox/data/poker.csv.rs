@@ -1,5 +1,3 @@
-//! Since Framework uses rust-script, we can define dependencies here.
-//!
 //! ```cargo
 //! [dependencies]
 //! serde = { version = "1.0.203", features = ["derive"] }
@@ -13,11 +11,14 @@ use rand::Rng;
 use rayon::prelude::*;
 use serde::Serialize;
 use std::collections::HashMap;
+use std::time::Instant;
 
 fn main() {
     const COUNT: u32 = 10_000_000;
-    let start = std::time::Instant::now();
+    let total_start = Instant::now();
 
+    // Time the hand generation and categorization
+    let generation_start = Instant::now();
     let counts = (0..COUNT)
         .into_par_iter()
         .map(|_| {
@@ -35,13 +36,20 @@ fn main() {
                 acc
             },
         );
+    let generation_duration = generation_start.elapsed();
 
+    // Time the data processing and sorting
+    let processing_start = Instant::now();
     let mut tidy_data = counts
         .into_iter()
         .map(|(category, count)| SummaryRow { category, count })
         .collect::<Vec<_>>();
     tidy_data.sort_by_key(|data| data.category);
+    let processing_duration = processing_start.elapsed();
 
+    // Time the output generation
+    let output_start = Instant::now();
+    
     // Write CSV header
     println!("category,count,percentage");
     
@@ -53,10 +61,16 @@ fn main() {
             (row.count as f64 / COUNT as f64) * 100.0
         );
     }
+    let output_duration = output_start.elapsed();
 
-    // Write metadata as a comment
-    eprintln!("# Total hands: {}", COUNT);
-    eprintln!("# Duration (ms): {}", start.elapsed().as_millis());
+    // Print timing information to stderr
+    eprintln!("\nTiming Information:");
+    eprintln!("Hand generation and categorization: {:?}", generation_duration);
+    eprintln!("Data processing and sorting: {:?}", processing_duration);
+    eprintln!("Output generation: {:?}", output_duration);
+    eprintln!("Total execution time: {:?}", total_start.elapsed());
+    eprintln!("\nSimulation Details:");
+    eprintln!("Total hands simulated: {}", COUNT);
 }
 
 #[derive(Debug, Clone, Serialize)]
