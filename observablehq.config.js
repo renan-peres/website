@@ -37,11 +37,11 @@ export default {
       open: true,
       pages: [
         {name: "Playground", path: "/devbox/devbox-playground"},
-        {name: "Parquet Converter (DuckDB)", path: "/devbox/duckdb-parquet-converter"},
+        {name: "DuckDB WASM (Parquet Converter)", path: "/devbox/duckdb-parquet-converter"},
         {name: "WebR", path: "/devbox/webr"},
         {name: "Pyodide", path: "/devbox/pyodide"},
-        {name: "Spreadsheet Connector", path: "/devbox/spreadsheet-connector"},
-        {name: "Excel Downloader", path: "/devbox/excel-downloader"}
+        {name: "Excel/Google Sheets Connector", path: "/devbox/spreadsheet-connector"}
+        // {name: "Excel Downloader", path: "/devbox/excel-downloader"}
       ]
     }
     
@@ -59,8 +59,8 @@ export default {
       name: "Financial Markets",
       open: true,
       pages: [
-        {name: "Market News", path: "/finance/market-news"},
-        {name: "Stocks & Crypto Prices", path: "/finance/stock-crypto-viewer"},
+        {name: "Daily Market News", path: "/finance/market-news"},
+        {name: "Stocks & Crypto Tracker (WebSocket)", path: "/finance/stock-crypto-viewer"},
         {name: "Bond Valuation", path: "/finance/bond-valuation"},
         {name: "Foreign Exchange", path: "/finance/fx-market"},
         {name: "Portfolio Builder", path: "/finance/portfolio-builder"}
