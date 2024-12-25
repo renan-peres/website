@@ -18,10 +18,27 @@ keywords:
 ## Treasury Monthly Aggregates
 
 ```js 
-// const hands = FileAttachment("./data/poker.json").json();
+// Import dependencies and prepare data
 const finra = FileAttachment("./data/finra.csv").csv({typed: true});
+import * as XLSX from "npm:xlsx";
+
+const data = finra;
+const datasetname = "treasury_aggregates";
 ```
 
 ```js
-Inputs.table(finra, { rows: 30 })
+// Display table with download button
+display(
+  html`<div style="margin-bottom: 10px;">
+    ${Inputs.button(`Download ${datasetname}.xlsx`, {
+      reduce() {
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet);
+        XLSX.writeFile(workbook, `${datasetname}.xlsx`);
+      }
+    })}
+  </div>
+  ${Inputs.table(finra, { rows: 30 })}`
+);
 ```
