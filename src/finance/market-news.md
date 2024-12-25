@@ -32,7 +32,7 @@ function createWordBubbleChart(container, text) {
   const stopwords = new Set([
     'your', 'here', 'what', 'just', 'have', 'their', 'says', 'said', 'than',
     'first', 'heres','since','into', 'from', 'over', 'will', 'about', 'that', 'this', 'these',
-    'those', 'with', 'which', 'would', 'could', 'should', 'there',
+    'those', 'with', 'which', 'would', 'could', 'should', 'there', 'amid', 'newswire', 'like',
     'where', 'when', 'were', 'they', 'them', 'then', 'been', 'being',
     'also', 'after', 'other', 'such', 'some', 'only', 'more', 'most',
     'much', 'many', 'very', 'been', 'before', 'both', 'through'
