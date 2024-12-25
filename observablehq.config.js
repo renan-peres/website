@@ -59,8 +59,8 @@ export default {
       name: "Financial Markets",
       open: true,
       pages: [
-        {name: "Market News", path: "/finance/market-news"},
-        {name: "Stocks & Crypto Prices", path: "/finance/stock-crypto-viewer"},
+        {name: "Daily Market News", path: "/finance/market-news"},
+        {name: "Stocks & Crypto Tracker (WebSocket)", path: "/finance/stock-crypto-viewer"},
         {name: "Bond Valuation", path: "/finance/bond-valuation"},
         {name: "Foreign Exchange", path: "/finance/fx-market"},
         {name: "Portfolio Builder", path: "/finance/portfolio-builder"}
