@@ -5,8 +5,6 @@ title: Rust Loader
 toc: false
 source: https://observablehq.observablehq.cloud/framework-example-loader-rust-to-json/
 keywords: 
-sql:
-    hands: ./data/poker.csv
 ---
 
 # Rust Loader
@@ -18,14 +16,10 @@ sql:
 ---
 
 ```js 
-const hands = FileAttachment("./data/poker.json").json();
+// const hands = FileAttachment("./data/poker.json").json();
+const hands = FileAttachment("./data/poker.csv").csv({typed: true});
 ```
 
 ```js
-Inputs.table(hands.summary)
-```
-
-```sql
-SELECT *
-FROM hands
+Inputs.table(hands)
 ```
