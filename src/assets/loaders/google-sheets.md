@@ -5,8 +5,6 @@ author: Cobus Theunissen
 
 # Google Sheets data loader
 
-If your sheet is public, the quickest way to load it is to `fetch` from its csv file export address (see [Hello, Google sheets](/party/google-sheets)). When it’s a private file, you have to use some authentication.
-
 You can follow the instructions [here](https://hackernoon.com/how-to-use-google-sheets-api-with-nodejs-cz3v316f) to create a service account that has access to your files. Then find the name of your project and create an [API key](https://console.cloud.google.com/apis/credentials), and copy these values into your `.env` file:
 
 ```sh
