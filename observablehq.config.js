@@ -80,22 +80,21 @@ export default {
     }
     
     ,{
-      name: "Analytics",
-      open: true,
-      pages: [
-        {name: "U.S. Electricity Grid", path: "/analytics/eia"}
-        // {name: "AG Grid", path: "/analytics/ag-grid"},
-        // {name: "Tabulator", path: "/analytics/tabulator"},
-        // {name: "Highcharter", path: "/analytics/highcharts"}
-      ]
-    }
-
-    ,{
       name: "Quarto",
       open: true,
       pages: [
         {name: "HTML Basics (Report)", path: "/quarto/html-basics/quarto_html_basics"},
         {name: "Stock Explorer (Dashboard)", path: "/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
+      ]
+    }
+    
+    ,{
+      name: "Analytics",
+      open: true,
+      pages: [
+        // {name: "AG Grid", path: "/analytics/ag-grid"},
+        // {name: "Tabulator", path: "/analytics/tabulator"},
+        // {name: "Highcharter", path: "/analytics/highcharts"}
       ]
     }
     
