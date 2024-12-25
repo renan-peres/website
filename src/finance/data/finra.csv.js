@@ -21,7 +21,7 @@ async function getFinraData() {
   const token = tokenData.access_token;
   
   // Get market data
-  const marketResponse = await fetch("https://api.finra.org/data/group/fixedIncomeMarket/name/AgencyMarketBreadth?limit=100", {
+  const marketResponse = await fetch("https://api.finra.org/data/group/fixedIncomeMarket/name/treasuryMonthlyAggregates?limit=1000", {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,
