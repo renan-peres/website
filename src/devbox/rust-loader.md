@@ -17,7 +17,7 @@ keywords:
 
 ```js 
 // const hands = FileAttachment("./data/poker.json").json();
-const hands = FileAttachment("./data/poker.csv").csv({typed: true});
+const hands = FileAttachment("../assets/loaders/rust/poker.csv").csv({typed: true});
 ```
 
 ```js

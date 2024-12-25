@@ -23,7 +23,7 @@ import {datetime} from "../assets/components/datetime.js";
 
 ```js 
 // Import dependencies and prepare data
-const finra = FileAttachment("./data/finra.csv").csv({typed: true});
+const finra = FileAttachment("../assets/loaders/rust/finra_api.csv").csv({typed: true});
 import * as XLSX from "npm:xlsx";
 
 const data = finra;

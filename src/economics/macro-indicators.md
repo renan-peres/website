@@ -21,7 +21,7 @@ import {datetime} from "../assets/components/datetime.js";
 
 ```js
 // Load and process the data
-const economicData = await FileAttachment("data/macro.csv").csv({typed: true});
+const economicData = await FileAttachment("../assets/loaders/js/fred_macro_api.csv").csv({typed: true});
 
 // Debug log to see the structure and first few rows
 console.log("CSV Column names:", Object.keys(economicData[0]));

@@ -21,7 +21,7 @@ import {datetime} from "../assets/components/datetime.js";
 
 ```js
 // Load and process the data
-const monetaryData = await FileAttachment("data/mb.csv").csv({typed: true});
+const monetaryData = await FileAttachment("../assets/loaders/js/fred_mb_api.csv").csv({typed: true});
 
 // Make sure we have data and process it into the correct format
 const processedData = monetaryData.map(d => ({

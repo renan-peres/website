@@ -7,7 +7,7 @@ toc: false
 # Primary mortgage market survey
 
 ```js
-const pmms = FileAttachment("data/pmms.csv").csv({typed: true});
+const pmms = FileAttachment("../assets/loaders/js/freddiemac_pmms.csv").csv({typed: true});
 const tidy = pmms.then((pmms) => pmms.flatMap(({date, pmms30, pmms15}) => [{date, rate: pmms30, type: "30Y FRM"}, {date, rate: pmms15, type: "15Y FRM"}]));
 ```
 
