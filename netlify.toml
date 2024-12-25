@@ -1,6 +1,3 @@
 [build]
 publish = "/"
 command = "rustup toolchain install stable && cargo install rust-script && npm run build"
-
-[build.environment]
-RUST_VERSION = "1.82.0"
