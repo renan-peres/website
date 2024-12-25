@@ -8,7 +8,7 @@ keywords: market news stocks crypto forex mergers real-time updates word-analysi
 # Market News & Word Analysis
 
 ```js
-import {datetime} from "../components/datetime.js";
+import {datetime} from "../assets/components/datetime.js";
 // Import d3 from Observable
 const d3 = await import("https://cdn.jsdelivr.net/npm/d3@7/+esm");
 ```

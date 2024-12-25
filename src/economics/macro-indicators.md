@@ -8,7 +8,7 @@ keywords: macro economics indicators unemployment gdp inflation exchange rate
 
 # Macro Indicators
 ```js
-import {datetime} from "../components/datetime.js";
+import {datetime} from "../assets/components/datetime.js";
 ```
 
 <div class="datetime-container">

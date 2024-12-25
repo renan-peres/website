@@ -6,7 +6,7 @@ keywords: R, wasm
 
 # WebR (R WASM)
 ```js
-import {datetime} from "../components/datetime.js";
+import {datetime} from "../assets/components/datetime.js";
 ```
 
 <div class="datetime-container">
