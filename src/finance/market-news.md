@@ -5,7 +5,7 @@ source: https://finnhub.io/docs/api/news
 keywords: market news stocks crypto forex mergers real-time updates word-analysis
 ---
 
-# Market News & Word Analysis
+# Market News & Word Count Analysis
 
 ```js
 import {datetime} from "../assets/components/datetime.js";
@@ -17,146 +17,18 @@ const d3 = await import("https://cdn.jsdelivr.net/npm/d3@7/+esm");
   <div id="datetime"></div>
 </div>
 
+<br>
+
+<div class="filter-section">
+  <input type="text" id="text-filter" placeholder="Filter articles by keyword..." />
+</div>
+
 ---
 
 ```js
-// Keep track of the current news data globally
-let currentNewsData = [];
-let selectedWord = null;
-
-// Word Bubble Chart Component with interaction
-function createWordBubbleChart(container, text) {
-  if (!text) return;
-  
-  // Define stopwords (filler words to exclude)
-  const stopwords = new Set([
-    'your', 'here', 'what', 'just', 'have', 'their', 'says', 'said', 'than',
-    'first', 'heres','since','into', 'from', 'over', 'will', 'about', 'that', 'this', 'these',
-    'those', 'with', 'which', 'would', 'could', 'should', 'there', 'amid', 'newswire', 'like',
-    'where', 'when', 'were', 'they', 'them', 'then', 'been', 'being',
-    'also', 'after', 'other', 'such', 'some', 'only', 'more', 'most',
-    'much', 'many', 'very', 'been', 'before', 'both', 'through'
-  ]);
-
-  // Process text and count words, excluding stopwords
-  const words = text.toLowerCase()
-    .replace(/[^\w\s]/g, '')
-    .split(/\s+/)
-    .filter(word => word.length > 3 && !stopwords.has(word));
-  
-  const wordCounts = {};
-  words.forEach(word => {
-    wordCounts[word] = (wordCounts[word] || 0) + 1;
-  });
-  
-  const data = Object.entries(wordCounts)
-    .map(([word, count]) => ({
-      name: word,
-      value: count
-    }))
-    .sort((a, b) => b.value - a.value)
-    .slice(0, 50);
-  
-  // Set up dimensions
-  const width = 928;
-  const height = 928;
-  const margin = 1;
-  
-  // Clear existing content
-  container.innerHTML = '';
-  
-  // Create SVG
-  const svg = d3.create("svg")
-    .attr("viewBox", [-margin, -margin, width, height])
-    .attr("width", width)
-    .attr("height", height)
-    .attr("style", "max-width: 100%; height: auto; background: white;");
-  
-  // Create color scale
-  const color = d3.scaleOrdinal(d3.schemeTableau10);
-  
-  // Create pack layout
-  const pack = d3.pack()
-    .size([width - margin * 2, height - margin * 2])
-    .padding(3);
-  
-  // Create hierarchy
-  const root = pack(d3.hierarchy({ children: data })
-    .sum(d => d.value));
-  
-  // Create nodes with interaction
-  const node = svg.append("g")
-    .selectAll("g")
-    .data(root.leaves())
-    .join("g")
-    .attr("transform", d => `translate(${d.x},${d.y})`)
-    .attr("cursor", "pointer")
-    .on("click", (event, d) => {
-      const word = d.data.name;
-      selectedWord = selectedWord === word ? null : word;
-      updateNewsDisplay(currentNewsData);
-      
-      // Update visual feedback
-      svg.selectAll("circle")
-        .attr("stroke", d => d.data.name === selectedWord ? "#000" : "none")
-        .attr("stroke-width", d => d.data.name === selectedWord ? 2 : 0);
-    })
-    .on("mouseover", function() {
-      d3.select(this)
-        .attr("opacity", 0.8);
-    })
-    .on("mouseout", function() {
-      d3.select(this)
-        .attr("opacity", 1);
-    });
-  
-  // Add circles
-  node.append("circle")
-    .attr("fill-opacity", 0.7)
-    .attr("fill", d => color(d.value))
-    .attr("r", d => d.r)
-    .attr("stroke", d => d.data.name === selectedWord ? "#000" : "none")
-    .attr("stroke-width", d => d.data.name === selectedWord ? 2 : 0);
-  
-  // Add word labels
-  node.append("text")
-    .attr("text-anchor", "middle")
-    .attr("dy", "0.3em")
-    .attr("font-size", d => Math.min(d.r * 0.4, 16))
-    .text(d => d.data.name);
-  
-  // Add count labels
-  node.append("text")
-    .attr("text-anchor", "middle")
-    .attr("dy", "1.5em")
-    .attr("font-size", d => Math.min(d.r * 0.3, 12))
-    .attr("opacity", 0.7)
-    .text(d => d.data.value);
-  
-  container.appendChild(svg.node());
-  
-  // Add clear filter button if there's a selected word
-  if (selectedWord) {
-    const clearButton = document.createElement('button');
-    clearButton.textContent = 'Clear Filter';
-    clearButton.className = 'clear-filter-btn';
-    clearButton.onclick = () => {
-      selectedWord = null;
-      updateNewsDisplay(currentNewsData);
-      svg.selectAll("circle")
-        .attr("stroke", "none")
-        .attr("stroke-width", 0);
-      clearButton.remove();
-    };
-    container.appendChild(clearButton);
-  }
-}
-
-// Set your API Key and categories
 const API_KEY = 'ctl0tnpr01qn6d7jqpj0ctl0tnpr01qn6d7jqpjg';
 const NEWS_CATEGORIES = ['general', 'forex', 'crypto', 'merger'];
 
-// Enhanced news fetching function
 async function fetchNews(category) {
   try {
     const response = await fetch(
@@ -175,16 +47,124 @@ async function fetchNews(category) {
   }
 }
 
-// Function to check if an article contains the selected word
-function articleContainsWord(article, word) {
-  if (!word) return true;
-  const searchText = `${article.headline} ${article.summary}`.toLowerCase();
-  return searchText.includes(word.toLowerCase());
+// Keep track of the current news data globally
+let currentNewsData = [];
+let selectedWord = [];
+
+// Word Bubble Chart Component with interaction
+function createWordBubbleChart(container, text) {
+  if (!text) return;
+
+  // Define stopwords (filler words to exclude)
+  const stopwords = new Set([
+    'your', 'here', 'what', 'just', 'have', 'their', 'says', 'said', 'than',
+    'first', 'heres','since','into', 'from', 'over', 'will', 'about', 'that', 'this', 'these',
+    'those', 'with', 'which', 'would', 'could', 'should', 'there', 'amid', 'newswire', 'like',
+    'where', 'when', 'were', 'they', 'them', 'then', 'been', 'being',
+    'also', 'after', 'other', 'such', 'some', 'only', 'more', 'most',
+    'much', 'many', 'very', 'been', 'before', 'both', 'through'
+  ]);
+
+  // Process text and count words, excluding stopwords
+  const words = text.toLowerCase()
+    .replace(/[^\w\s]/g, '')
+    .split(/\s+/)
+    .filter(word => word.length > 3 && !stopwords.has(word));
+
+  const wordCounts = {};
+  words.forEach(word => {
+    wordCounts[word] = (wordCounts[word] || 0) + 1;
+  });
+
+  const data = Object.entries(wordCounts)
+    .map(([word, count]) => ({
+      name: word,
+      value: count
+    }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 50);
+
+  const width = 928;
+  const height = 928;
+  const margin = 1;
+
+  container.innerHTML = '';
+
+  const svg = d3.create("svg")
+    .attr("viewBox", [-margin, -margin, width, height])
+    .attr("width", width)
+    .attr("height", height)
+    .attr("style", "max-width: 100%; height: auto; background: white;");
+
+  const color = d3.scaleOrdinal(d3.schemeTableau10);
+
+  const pack = d3.pack()
+    .size([width - margin * 2, height - margin * 2])
+    .padding(3);
+
+  const root = pack(d3.hierarchy({ children: data }).sum(d => d.value));
+
+  const node = svg.append("g")
+    .selectAll("g")
+    .data(root.leaves())
+    .join("g")
+    .attr("transform", d => `translate(${d.x},${d.y})`)
+    .attr("cursor", "pointer")
+    .on("click", (event, d) => {
+      const word = d.data.name;
+
+      // Toggle word selection with CTRL
+      if (event.ctrlKey) {
+        if (selectedWord.includes(word)) {
+          selectedWord = selectedWord.filter(w => w !== word);
+        } else {
+          selectedWord.push(word);
+        }
+      } else {
+        selectedWord = [word]; // Normal click resets selection
+      }
+
+      updateNewsDisplay(currentNewsData);
+
+      // Update visual feedback
+      svg.selectAll("circle")
+        .attr("stroke", d => selectedWord.includes(d.data.name) ? "#000" : "none")
+        .attr("stroke-width", d => selectedWord.includes(d.data.name) ? 2 : 0);
+    })
+    .on("mouseover", function() {
+      d3.select(this).attr("opacity", 0.8);
+    })
+    .on("mouseout", function() {
+      d3.select(this).attr("opacity", 1);
+    });
+
+  node.append("circle")
+    .attr("fill-opacity", 0.7)
+    .attr("fill", d => color(d.value))
+    .attr("r", d => d.r)
+    .attr("stroke", d => selectedWord.includes(d.data.name) ? "#000" : "none")
+    .attr("stroke-width", d => selectedWord.includes(d.data.name) ? 2 : 0);
+
+  node.append("text")
+    .attr("text-anchor", "middle")
+    .attr("dy", "0.3em")
+    .attr("font-size", d => Math.min(d.r * 0.4, 16))
+    .text(d => d.data.name);
+
+  node.append("text")
+    .attr("text-anchor", "middle")
+    .attr("dy", "1.5em")
+    .attr("font-size", d => Math.min(d.r * 0.3, 12))
+    .attr("opacity", 0.7)
+    .text(d => d.data.value);
+
+  container.appendChild(svg.node());
 }
 
-// Enhanced display function with filtering
+// Update the news filtering logic
 function updateNewsDisplay(newsData) {
   const newsContainer = document.getElementById('news-container');
+  const textFilterInput = document.getElementById('text-filter').value.toLowerCase();
   newsContainer.innerHTML = '';
 
   let filteredArticlesCount = 0;
@@ -192,28 +172,32 @@ function updateNewsDisplay(newsData) {
   newsData.forEach(({ category, data }) => {
     const categoryContainer = document.createElement('div');
     categoryContainer.classList.add('category-container');
-    
-    // Filter articles if a word is selected
-    const filteredData = data.filter(article => articleContainsWord(article, selectedWord));
-    
+
+    const filteredData = data.filter(article => {
+      const searchText = `${article.headline} ${article.summary}`.toLowerCase();
+
+      const matchesWords = selectedWord.length === 0 || selectedWord.some(word => searchText.includes(word));
+      const matchesTextFilter = !textFilterInput || searchText.includes(textFilterInput);
+
+      return matchesWords && matchesTextFilter;
+    });
+
     if (filteredData.length > 0) {
       categoryContainer.innerHTML = `
-        <h2>${category.toUpperCase()} News ${selectedWord ? 
-          `<span class="filter-info">(Filtered by: "${selectedWord}")</span>` : 
-          ''}</h2>
+        <h2>${category.toUpperCase()} News ${selectedWord.length > 0 || textFilterInput ? 
+          `<span class="filter-info">(Filtered)</span>` : ''}</h2>
       `;
 
       filteredData.forEach((article) => {
         filteredArticlesCount++;
         const articleElement = document.createElement('div');
         articleElement.classList.add('article');
-        
-        // If there's a selected word, highlight it in the text
+
         let headline = article.headline;
         let summary = article.summary;
-        
-        if (selectedWord) {
-          const highlightRegex = new RegExp(selectedWord, 'gi');
+
+        if (selectedWord.length > 0 || textFilterInput) {
+          const highlightRegex = new RegExp(`(${[...selectedWord, textFilterInput].join('|')})`, 'gi');
           headline = headline.replace(highlightRegex, match => `<mark>${match}</mark>`);
           summary = summary.replace(highlightRegex, match => `<mark>${match}</mark>`);
         }
@@ -225,27 +209,35 @@ function updateNewsDisplay(newsData) {
         `;
         categoryContainer.appendChild(articleElement);
       });
-      
+
       newsContainer.appendChild(categoryContainer);
     }
   });
 
-  // Show "no results" message if no articles match the filter
-  if (selectedWord && filteredArticlesCount === 0) {
+  if ((selectedWord.length > 0 || textFilterInput) && filteredArticlesCount === 0) {
     newsContainer.innerHTML = `
       <div class="no-results">
-        <p>No articles found containing the word "${selectedWord}"</p>
+        <p>No articles found matching your filters</p>
       </div>
     `;
   }
 }
 
-// Main display function that updates both news and word chart
+document.getElementById('text-filter').addEventListener('input', () => {
+  updateNewsDisplay(currentNewsData);
+});
+
+async function loadNews() {
+  const newsData = await Promise.all(
+    NEWS_CATEGORIES.map(fetchNews)
+  );
+  displayNews(newsData);
+}
+
 function displayNews(newsData) {
   currentNewsData = newsData;
   const wordAnalysisContainer = document.getElementById('word-analysis-container');
 
-  // Collect all text for word analysis
   let allText = '';
   newsData.forEach(({ data }) => {
     if (Array.isArray(data)) {
@@ -255,43 +247,38 @@ function displayNews(newsData) {
     }
   });
 
-  // Create word analysis visualization
   createWordBubbleChart(wordAnalysisContainer, allText);
-  
-  // Display news with current filter
   updateNewsDisplay(newsData);
 }
 
-// Initial function to load news and analyze words
-async function loadNews() {
-  const newsData = await Promise.all(
-    NEWS_CATEGORIES.map(fetchNews)
-  );
-  displayNews(newsData);
-}
-
-// Call the function to load news when the page loads
 loadNews();
 ```
 
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Market News & Word Analysis</title>
-</head>
-<body>
-  <div class="analysis-section">
-    <h2 class="word-analysis-title">Word Frequency Analysis</h2>
-    <p class="word-analysis-description">Click on any word to filter articles containing that word. Click again to clear the filter.</p>
-    <div id="word-analysis-container" class="bubble-chart-container"></div>
-  </div>
-  <div class="news-section">
-    <h2 class="news-title">News Articles</h2>
-    <div id="news-container"></div>
-  </div>
-</body>
+<div class="analysis-section">
+  <h2 class="word-analysis-title">Word Frequency Analysis</h2>
+  <p class="word-analysis-description">Click on any word to filter articles containing that word. Press CTRL + multiple words (in case you want to filter for multiple keywords).</p>
+  <div id="word-analysis-container" class="bubble-chart-container"></div>
+</div>
+<br>
+<div class="news-section">
+  <h2 class="news-title"> </h2>
+  <div id="news-container"></div>
+</div>
 </html>
+
+```html
+<style>
+  
+h1, h2, h3, h4, h5, h6, p, li, ul, ol {
+  width: 100% !important;
+  max-width: none !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+</style>
+```
 
 ```css echo=false
 /* Main layout sections */
