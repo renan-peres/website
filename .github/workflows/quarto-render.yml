@@ -17,14 +17,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Run Quarto Render Script
-      run: |
-        chmod +x src/quarto/quarto_render.sh
-        ./src/quarto/quarto_render.sh
+    - name: Set up R
+      run: sudo apt install r-base-core r-base r-base-dev
 
     - name: Install R packages
       run: |
         Rscript -e 'install.packages(c("knitr", "rmarkdown"))'
+
+    - name: Run Quarto Render Script
+      run: |
+        chmod +x src/quarto/quarto_render.sh
+        ./src/quarto/quarto_render.sh
 
     - name: Commit and Push Changes
       run: |
