@@ -4,10 +4,7 @@ on:
   schedule:
     - cron: '0 */4 * * *'  # Runs every 4 hours
   workflow_dispatch:  # Allows manual triggering
-  push:
-    branches:
-      - main  # Adjust to your main branch name
-      
+
 jobs:
   render-quarto:
     runs-on: ubuntu-latest

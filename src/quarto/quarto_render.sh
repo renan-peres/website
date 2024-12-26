@@ -16,15 +16,8 @@ else
     apt-get install -y r-base r-base-dev
 fi
 
-# Check and install R packages for Quarto
-R -e "
-if (!require('knitr')) {
-    install.packages('knitr', repos='http://cran.rstudio.com/')
-}
-if (!require('rmarkdown')) {
-    install.packages('rmarkdown', repos='http://cran.rstudio.com/')
-}
-"
+# Install R packages for Quarto
+R -e "install.packages(c('knitr', 'rmarkdown'), repos='http://cran.rstudio.com/')"
 
 # Check if Quarto is installed in the system PATH
 CURRENT_QUARTO=$(which quarto 2>/dev/null)
@@ -83,6 +76,7 @@ fi
 # Install requirements if the file exists
 if [ -f "requirements.txt" ]; then
     python3 -m pip list > installed_packages.txt
+    python3 -m pip install jupyter
     python3 -m pip install --break-system-packages $(grep -v -f installed_packages.txt requirements.txt) --ignore-installed
     rm installed_packages.txt
 fi
