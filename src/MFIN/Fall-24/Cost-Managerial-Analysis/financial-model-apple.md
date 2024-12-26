@@ -66,8 +66,6 @@ The financial model is structured into three main sections:
 - Sensitivity analysis and scenario modeling
 - Key performance indicators (KPIs) -->
 
-This financial model serves as a comprehensive tool for analyzing Apple's financial performance, cost structure, and valuation, providing valuable insights for educational and analytical purposes.
-
 ---
 
 # Model
