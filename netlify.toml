@@ -3,11 +3,6 @@ publish = "/"
 command = """
   rustup toolchain install stable && \
   cargo install rust-script && \
-  curl -LO https://github.com/quarto-dev/quarto-cli/releases/download/v1.6.39/quarto-1.6.39-linux-amd64.tar.gz && \
-  mkdir -p $HOME/opt && \
-  tar -xvzf quarto-1.6.39-linux-amd64.tar.gz -C $HOME/opt && \
-  ln -s $HOME/opt/quarto-1.6.39/bin/quarto $HOME/.local/bin/quarto && \
-  export PATH=$PATH:$HOME/.local/bin && \
-  quarto check && \
+  sh src/quarto/quarto_render.sh && \
   npm run build
 """
