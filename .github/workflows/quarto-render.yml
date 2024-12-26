@@ -31,6 +31,7 @@ jobs:
 
     - name: Run Quarto Render Script
       run: |
+        cd src/quarto
         chmod +x quarto_render.sh
         ./quarto_render.sh
 
