@@ -3,5 +3,7 @@ publish = "/"
 command = """
   rustup toolchain install stable && \
   cargo install rust-script && \
+  sudo apt-get install r-base-dev && \
+  sh src/quarto/quarto_render.sh && \
   npm run build
 """
