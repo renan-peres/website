@@ -22,6 +22,10 @@ jobs:
         chmod +x src/quarto/quarto_render.sh
         ./src/quarto/quarto_render.sh
 
+    - name: Install R packages
+      run: |
+        Rscript -e 'install.packages(c("knitr", "rmarkdown"))'
+
     - name: Commit and Push Changes
       run: |
         git config --local user.email "github@renanperes.com"
