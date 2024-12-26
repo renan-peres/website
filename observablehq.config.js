@@ -46,7 +46,7 @@ export default {
     }
     
     ,{
-      name: "Economics",
+      name: "Economy",
       open: true,
       pages: [
         {name: "U.S. Mortgage Rates", path: "/economics/mortgage-rates"},
