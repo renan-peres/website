@@ -1,0 +1,31 @@
+name: Quarto Render
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'  # Runs every 4 hours
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  render-quarto:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Run Quarto Render Script
+      run: |
+        chmod +x src/quarto/quarto_render.sh
+        ./src/quarto/quarto_render.sh
+
+    - name: Commit and Push Changes
+      run: |
+        git config --local user.email "github@renanperes.com"
+        git config --local user.name "renan-peres"
+        git add .
+        git commit -m "Render Quarto documents" || exit 0
+        git push
