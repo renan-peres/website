@@ -25,6 +25,7 @@
     "recharts": "^2.14.1",
     "topojson-client": "^3.1.0",
     "topojson-simplify": "^3.0.3",
+    "unidecode": "^1.1.0",
     "ws": "^8.18.0"
   },
   "devDependencies": {

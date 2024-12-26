@@ -1,8 +1,14 @@
-import unidecode from 'unidecode';
+// Fallback for unidecode if not available
+const unidecode = (str) => {
+  // Basic accent removal implementation
+  return str.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^\w\s]/g, '');
+};
 
 /**
  * Clean and standardize column names
- * @param {Object[]} data - The input data array
+ * @param {Object[] | any} data - The input data 
  * @param {Object} options - Configuration options for cleaning
  * @returns {Object[]} - Transformed data with cleaned column names
  */
@@ -21,8 +27,18 @@ export function cleanColumnNames(data, options = {}) {
   // Merge default options with provided options
   const config = { ...defaultOptions, ...options };
 
+  // Validation and type checking
+  if (data == null) {
+    console.warn('cleanColumnNames: Input data is null or undefined');
+    return [];
+  }
+
+  // Ensure data is an array of objects
+  let processedData = Array.isArray(data) ? data : [data];
+
   // Helper function to clean a single name
   const cleanName = (name) => {
+    // Handle null or undefined
     if (name == null) return '';
     
     // Convert to string
@@ -30,7 +46,11 @@ export function cleanColumnNames(data, options = {}) {
 
     // Strip accents if configured
     if (config.stripAccents) {
-      cleanedName = unidecode(cleanedName);
+      try {
+        cleanedName = unidecode(cleanedName);
+      } catch (error) {
+        console.warn('Error stripping accents:', error);
+      }
     }
 
     // Remove special characters and replace with separator
@@ -83,30 +103,60 @@ export function cleanColumnNames(data, options = {}) {
     return cleanedName;
   };
 
-  // If no data, return empty array
-  if (!data || !Array.isArray(data) || data.length === 0) {
+  // If no data or empty array, return empty array
+  if (processedData.length === 0) {
     return [];
   }
 
+  // Determine if we're dealing with an array of objects or a single object
+  if (typeof processedData[0] !== 'object') {
+    console.warn('cleanColumnNames: Input is not an array of objects');
+    return processedData;
+  }
+
   // Clean column names
-  const cleanedData = data.map(row => {
+  const cleanedData = processedData.map(row => {
+    if (row == null) return null;
+    
     const cleanedRow = {};
-    Object.keys(row).forEach(key => {
+    
+    // Handle both object and array-like structures
+    const keys = Object.keys(row);
+    
+    keys.forEach(key => {
       const newKey = cleanName(key);
       cleanedRow[newKey] = row[key];
     });
+    
     return cleanedRow;
   });
 
   return cleanedData;
 }
 
-// Example usage
-export function transformFinraData(data) {
-  return cleanColumnNames(data, {
-    case: 'lower',
-    separator: '_',
-    insertUnderscores: true,
-    stripAccents: true
-  });
+// Fallback transformation for various data types
+export function transformData(data, options = {}) {
+  try {
+    // If data is a DataFrame or similar, extract underlying data
+    if (data && typeof data.toArray === 'function') {
+      data = data.toArray();
+    }
+    
+    // If data is a CSV string, parse it
+    if (typeof data === 'string') {
+      if (typeof Papa !== 'undefined') {
+        data = Papa.parse(data, { header: true }).data;
+      } else {
+        console.error('Papa Parse library not available for CSV parsing');
+        return [];
+      }
+    }
+    
+    return cleanColumnNames(data, options);
+  } catch (error) {
+    console.error('Error transforming data:', error);
+    return [];
+  }
 }
+
+export default cleanColumnNames;
