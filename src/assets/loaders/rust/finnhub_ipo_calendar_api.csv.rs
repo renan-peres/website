@@ -6,12 +6,16 @@
 //! tokio = { version = "1.0", features = ["full"] }
 //! csv = "1.2"
 //! chrono = "0.4"
+//! unicode-normalization = "0.1"
 //! ```
 
 use serde::{Deserialize};
 use std::error::Error;
 use std::time::Instant;
 use chrono::Local;
+use crate::make_clean_names::clean_column_name;
+
+mod make_clean_names;
 
 #[derive(Debug, Deserialize)]
 struct FinnhubResponse {
@@ -65,7 +69,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let mut wtr = csv::Writer::from_writer(std::io::stdout());
     
     // Write headers
-    wtr.write_record(&[
+    let headers: Vec<String> = [
         "date",
         "exchange",
         "name",
@@ -74,7 +78,11 @@ async fn main() -> Result<(), Box<dyn Error>> {
         "status",
         "symbol",
         "totalSharesValue"
-    ])?;
+    ]
+    .iter()
+    .map(|h| clean_column_name(h))
+    .collect();
+    wtr.write_record(&headers)?;
 
     // Write data rows
     for item in &api_response.ipo_calendar {

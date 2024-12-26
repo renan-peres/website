@@ -6,6 +6,7 @@
 //! tokio = { version = "1.0", features = ["full"] }
 //! base64 = "0.21"
 //! csv = "1.2"
+//! unicode-normalization = "0.1"
 //! ```
 
 use serde::{Deserialize};
@@ -15,6 +16,9 @@ use base64::engine::general_purpose::STANDARD;
 use serde_json::Value;
 use std::collections::BTreeMap;
 use std::time::Instant;
+use make_clean_names::clean_column_name;
+
+mod make_clean_names;
 
 #[derive(Deserialize)]
 struct TokenResponse {
@@ -60,7 +64,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         let headers: Vec<String> = first_item.as_object()
             .unwrap_or(&serde_json::Map::new())
             .keys()
-            .cloned()
+            .map(|k| clean_column_name(k))
             .collect();
         wtr.write_record(&headers)?;
     }
@@ -77,7 +81,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
                         Value::Null => String::from(""),
                         _ => v.to_string(),
                     };
-                    (k.clone(), value)
+                    (clean_column_name(k), value)
                 })
                 .collect();
             
