@@ -7,7 +7,7 @@ source: https://fiscaldata.treasury.gov/datasets/treasury-reporting-rates-exchan
 keywords: 
 ---
 
-# Foreign Exhchange Rates
+# Foreign Exchange Rates
 
 ```js
 import {datetime} from "../assets/components/datetime.js";
@@ -19,7 +19,7 @@ import {datetime} from "../assets/components/datetime.js";
 
 ---
 
-## Quartely Reports
+## Quartely Report
 
 ```js 
 // Import dependencies and prepare data
@@ -32,8 +32,8 @@ const forex = await FileAttachment("../assets/loaders/rust/fiscaldata_forex_api.
 // Define the columns you want to extract
 const desiredColumns = [
   "country",
-  "country_currency_desc",
   "currency",
+  // "country_currency_desc",
   "effective_date",
   "record_date",
   "exchange_rate",

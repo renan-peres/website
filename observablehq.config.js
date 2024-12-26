@@ -49,10 +49,10 @@ export default {
       name: "Economy",
       open: true,
       pages: [
-        {name: "U.S. Mortgage Rates", path: "/economics/mortgage-rates"},
-        {name: "U.S. Monetary Base", path: "/economics/monetary-base"},
-        {name: "U.S. Macro Indicators", path: "/economics/macro-indicators"},
-        {name: "U.S. Foreign Exchange Rates", path: "/economics/fx-rates"}
+        {name: "U.S. Macro Indicators", path: "/economy/macro-indicators"},
+        {name: "U.S. Monetary Base", path: "/economy/monetary-base"},
+        {name: "U.S. Mortgage Rates", path: "/economy/mortgage-rates"},
+        {name: "U.S. Foreign Exchange Rates", path: "/economy/fx-rates"}
       ]
     }
 
@@ -61,7 +61,7 @@ export default {
       open: true,
       pages: [
         {name: "Daily Market News", path: "/finance/market-news"},
-        {name: "Stocks & Crypto Prices", path: "/finance/stock-crypto-viewer"},
+        {name: "Stocks & Crypto Prices", path: "/finance/stock-crypto-prices"},
         {name: "Bond Valuation", path: "/finance/bond-valuation"},
         {name: "Portfolio Builder", path: "/finance/portfolio-builder"}
       ]
