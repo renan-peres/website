@@ -63,9 +63,17 @@ export default {
         {name: "Latest Market News", path: "/finance/market-news"},
         {name: "Real-Time Stock & Crypto Prices", path: "/finance/rt-stock-crypto-prices"},
         {name: "Stock Quotes", path: "/finance/stock-quotes"},
-        {name: "IPO Calendar", path: "/finance/ipo-calendar"},
+        {name: "IPO Calendar", path: "/finance/ipo-calendar"}
+      ]
+    }
+
+    ,{
+      name: "Financial Analytics",
+      open: true,
+      pages: [
         {name: "Bond Valuation", path: "/finance/bond-valuation"},
-        {name: "Portfolio Builder & Optimization", path: "/finance/portfolio-builder"}
+        {name: "Portfolio Builder & Optimization", path: "/finance/portfolio-builder"},
+        {name: "Naive Arbitrage for Trading", path: "/finance/naive-arb-trading"}
       ]
     }
     
@@ -80,6 +88,17 @@ export default {
       ]
     }
     
+    // ,{
+    //   name: "MBAN",
+    //   open: false,
+    //   pages: [
+    //     // {name: "Portfolio Analysis (SQL & Tableau)", path: "/MFIN/Fall-24/Data-Extraction-Visualization/Individual/data-extraction-individual"},
+    //     // // {name: "Data Extraction (Open Server)", path: "/MFIN/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
+    //     // // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/MFIN/Fall-24/Data-Extraction/Team/data-extraction-team"}
+    //     // {name: "Apple Financial Model (Excel)", path: "/MFIN/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
+    //   ]
+    // }
+    
     ,{
       name: "Quarto",
       open: true,
@@ -88,17 +107,7 @@ export default {
         {name: "Stock Explorer (Dashboard)", path: "/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
       ]
     }
-    
-    ,{
-      name: "Analytics",
-      open: true,
-      pages: [
-        // {name: "AG Grid", path: "/analytics/ag-grid"},
-        // {name: "Tabulator", path: "/analytics/tabulator"},
-        // {name: "Highcharter", path: "/analytics/highcharts"}
-      ]
-    }
-    
+
   ],
 
   // Content to add to the head of the page, e.g. for a favicon:
