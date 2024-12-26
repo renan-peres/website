@@ -1,5 +1,3 @@
-use unicode_normalization::UnicodeNormalization;
-
 pub fn clean_column_name(name: &str) -> String {
     let mut cleaned_name = String::new();
     let mut prev_char_is_upper = false;

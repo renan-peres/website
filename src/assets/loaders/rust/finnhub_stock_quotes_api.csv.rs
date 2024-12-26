@@ -1,3 +1,18 @@
+//! **Finnhub Stock Market Data API Tool**
+//!
+//! Fetches real-time quotes and company profiles for US stocks using concurrent requests
+//! Documentation: https://finnhub.io/docs/api/quote
+//!
+//! **Usage**:rust-script finnhub_stock_quotes_api.csv.rs > output.csv
+//!
+//! **Features**:
+//! - Concurrent API requests for better performance
+//! - Real-time quotes and company profiles
+//! - Major US stocks across sectors
+//! - Error handling and logging
+//! - Clean CSV output format
+//!
+//! **Environment Setup**:
 //! ```cargo
 //! [dependencies]
 //! reqwest = { version = "0.11", features = ["json"] }
@@ -13,6 +28,9 @@ use std::error::Error;
 use std::time::Instant;
 use futures::future;
 use std::collections::HashMap;
+use make_clean_names::clean_column_name;
+
+mod make_clean_names;
 
 #[derive(Debug, Deserialize, Clone)]
 struct QuoteResponse {
@@ -27,20 +45,23 @@ struct QuoteResponse {
 
 #[derive(Debug, Deserialize, Clone)]
 struct CompanyProfile {
-    country: Option<String>,
-    currency: Option<String>,
-    exchange: Option<String>,
-    ipo: Option<String>,
-    #[serde(rename = "marketCapitalization")]
-    market_capitalization: Option<f64>,
-    name: Option<String>,
-    phone: Option<String>,
-    #[serde(rename = "shareOutstanding")]
-    share_outstanding: Option<f64>,
-    ticker: String,
-    weburl: Option<String>,
-    #[serde(rename = "finnhubIndustry")]
-    industry: Option<String>,
+   country: Option<String>,
+   currency: Option<String>,
+   exchange: Option<String>,
+   ipo: Option<String>,
+   #[serde(rename = "marketCapitalization")]
+   market_capitalization: Option<f64>,
+   name: Option<String>,
+   #[allow(dead_code)]
+   phone: Option<String>,
+   #[allow(dead_code)]
+   #[serde(rename = "shareOutstanding")]
+   share_outstanding: Option<f64>,
+   #[allow(dead_code)]
+   ticker: String,
+   weburl: Option<String>,
+   #[serde(rename = "finnhubIndustry")]
+   industry: Option<String>,
 }
 
 #[derive(Debug)]
@@ -81,7 +102,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let data_start = Instant::now();
     let client = reqwest::Client::new();
 
-    // Create concurrent requests for both quotes and profiles
     let requests = symbols.iter().map(|symbol| {
         let client = &client;
         let api_key = api_key;
@@ -122,7 +142,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let results: Vec<Result<StockData, Box<dyn Error + Send + Sync>>> = future::join_all(requests.collect::<Vec<_>>()).await;
 
-    // Store results in a HashMap for ordered access
     let mut data_map: HashMap<String, (QuoteResponse, Option<CompanyProfile>)> = HashMap::new();
     for result in results {
         if let Ok(stock_data) = result {
@@ -132,8 +151,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let mut wtr = csv::Writer::from_writer(std::io::stdout());
     
-    // Write headers
-    wtr.write_record(&[
+    let headers = vec![
         "symbol",
         "current_price",
         "change",
@@ -150,9 +168,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
         "market_cap",
         "industry",
         "website"
-    ])?;
+    ].into_iter()
+    .map(|h| clean_column_name(h))
+    .collect::<Vec<String>>();
 
-    // Write data in the original symbol order
+    wtr.write_record(&headers)?;
+
     let mut successful_entries = 0;
     for symbol in &symbols {
         if let Some((quote, profile)) = data_map.get(*symbol) {

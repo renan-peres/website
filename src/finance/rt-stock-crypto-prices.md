@@ -19,6 +19,8 @@ import {datetime} from "../assets/components/datetime.js";
 <!-- - Crypto: [CoinAPI](https://docs.coinapi.io/market-data/how-to-guides/real-time-trades-stream-using-websocket-with-different-languages) | [Bitcoin Ticker](https://codepen.io/HebleV/pen/JygRjL) & [BitFinex](https://docs.bitfinex.com/docs/ws-websocket-checksum) | [Blockchain](https://blockchain.info/api/api_websocket) | [Polygon](https://polygon.io/docs/stocks/getting-started)
 - Stocks: [TwelveData](https://twelvedata.com/account/api-playground) -->
 
+Source: [CoinAPI](https://docs.coinapi.io/market-data/how-to-guides/real-time-trades-stream-using-websocket-with-different-languages)
+
 ---
 
 ```js
@@ -121,7 +123,7 @@ const API_KEY = 'cffcf251cc0243f198823fa3e34ddf65';
 const FOUR_HOURS = 4 * 60 * 60 * 1000;
 
 function getStockPrice(symbol) {
-    return fetch(`https://api.twelvedata.com/time_series?apikey=${API_KEY}&interval=4h&symbol=${symbol}&type=stock&previous_close=true`)
+    return fetch(`https://api.twelvedata.com/time_series?apikey=${API_KEY}&interval=1h&symbol=${symbol}&type=stock&previous_close=true`)
         .then(response => response.json())
         .then(data => {
             if (data.values && data.values.length > 0) {
@@ -764,106 +766,3 @@ const tradingChartSection = html`
 
 display(tradingChartSection);
 ```
-
-  <!-- Polygon API -->
-  
-  <!-- ```js
-  // Bitcoin WebSocket (keep your existing working code)
-  var ws = new WebSocket("wss://api.bitfinex.com/ws/2");
-  
-  ws.onopen = function() {
-      ws.send(JSON.stringify({
-          "event": "subscribe",
-          "channel": "ticker",
-          "pair": "tBTCUSD",
-          "freq": "F0"
-      }));
-  };
-  
-  // Bitcoin observers (keep your existing working code)
-  const btc = Generators.observe((notify) => {
-      const messaged = (msg) => {
-          const response = JSON.parse(msg.data);
-          if (Array.isArray(response) && response[1] && Array.isArray(response[1])) {
-              notify(response[1][6]);
-          }
-      };
-      ws.addEventListener("message", messaged);
-      return () => ws.removeEventListener("message", messaged);
-  });
-  
-  const bid = Generators.observe((notify) => {
-      const messaged = (msg) => {
-          const response = JSON.parse(msg.data);
-          if (Array.isArray(response) && response[1] && Array.isArray(response[1])) {
-              notify(response[1][0]);
-          }
-      };
-      ws.addEventListener("message", messaged);
-      return () => ws.removeEventListener("message", messaged);
-  });
-  
-  const ask = Generators.observe((notify) => {
-      const messaged = (msg) => {
-          const response = JSON.parse(msg.data);
-          if (Array.isArray(response) && response[1] && Array.isArray(response[1])) {
-              notify(response[1][2]);
-          }
-      };
-      ws.addEventListener("message", messaged);
-      return () => ws.removeEventListener("message", messaged);
-  });
-  
-  // Stock data polling setup
-  const API_KEY = 'c0KFyIQaj_jV9vq_dpS5NcmiJEep2XRI';
-  
-  function getStockPrice(symbol) {
-      return fetch(`https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?adjusted=true&apiKey=${API_KEY}`)
-          .then(response => response.json())
-          .then(data => data.results[0].c);
-  }
-  
-  // Stock observers
-  const meta = Generators.observe((notify) => {
-      function updatePrice() {
-          getStockPrice('META').then(price => notify(price));
-      }
-      updatePrice(); // Initial fetch
-      const interval = setInterval(updatePrice, 12000);
-      return () => clearInterval(interval);
-  });
-  
-  const apple = Generators.observe((notify) => {
-      function updatePrice() {
-          getStockPrice('AAPL').then(price => notify(price));
-      }
-      updatePrice(); // Initial fetch
-      const interval = setInterval(updatePrice, 12000);
-      return () => clearInterval(interval);
-  });
-  
-  const netflix = Generators.observe((notify) => {
-      function updatePrice() {
-          getStockPrice('NFLX').then(price => notify(price));
-      }
-      updatePrice(); // Initial fetch
-      const interval = setInterval(updatePrice, 12000);
-      return () => clearInterval(interval);
-  });
-  
-  const google = Generators.observe((notify) => {
-      function updatePrice() {
-          getStockPrice('GOOGL').then(price => notify(price));
-      }
-      updatePrice(); // Initial fetch
-      const interval = setInterval(updatePrice, 12000);
-      return () => clearInterval(interval);
-  });
-  
-  invalidation.then(() => {
-      ws.close();
-      // Intervals will be cleared by the generator cleanup
-  });
-  
-  // Display both Bitcoin and Stocks HTML
-  ``` -->
