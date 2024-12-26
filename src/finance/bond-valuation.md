@@ -23,41 +23,52 @@ import {datetime} from "../assets/components/datetime.js";
 
 ```js 
 // Import dependencies and prepare data
-const finra = FileAttachment("../assets/loaders/rust/finra_api.csv").csv();
+import { cleanColumnNames } from "../components/cleanColumnNames.js";
+import {datetime} from "../assets/components/datetime.js";
 import * as XLSX from "npm:xlsx";
 
-const data = finra;
+// Load FINRA data
+const finra = FileAttachment("../assets/loaders/rust/finra_api.csv").csv();
+
+// Clean column names
+const cleanedData = cleanColumnNames(finra, {
+  case: 'lower',
+  separator: '_',
+  insertUnderscores: true,
+  stripAccents: true
+});
+
 const datasetname = "finra_data";
 ```
 
 ```js
 // Display buttons and table
 display(html`
-  <div style="display: flex; margin-bottom: 10px;">
-    ${Inputs.button(`Download ${datasetname}.xlsx`, {
-      reduce() {
-        const worksheet = XLSX.utils.json_to_sheet(data);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet);
-        XLSX.writeFile(workbook, `${datasetname}.xlsx`);
-      }
-    })}
-    ${Inputs.button(`Download ${datasetname}.csv`, {
-      reduce() {
-        const worksheet = XLSX.utils.json_to_sheet(data);
-        const csvContent = XLSX.utils.sheet_to_csv(worksheet);
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.setAttribute("href", url);
-        link.setAttribute("download", `${datasetname}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }
-    })}
-  </div>
-  ${Inputs.table(data, { rows: 30 })}
+  ${Inputs.button(`Download ${datasetname}.xlsx`, {
+    reduce() {
+      const worksheet = XLSX.utils.json_to_sheet(cleanedData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet);
+      XLSX.writeFile(workbook, `${datasetname}.xlsx`);
+    }
+  })}
+  
+  ${Inputs.button(`Download ${datasetname}.csv`, {
+    reduce() {
+      const worksheet = XLSX.utils.json_to_sheet(cleanedData);
+      const csvContent = XLSX.utils.sheet_to_csv(worksheet);
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `${datasetname}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+  })}
+  
+  ${Inputs.table(cleanedData, { rows: 30 })}
 `);
 ```
