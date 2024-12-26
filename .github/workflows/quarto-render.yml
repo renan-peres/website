@@ -8,6 +8,8 @@ on:
 jobs:
   render-quarto:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -29,3 +31,5 @@ jobs:
         git add .
         git commit -m "Render Quarto documents" || exit 0
         git push
+      env:
+        GITHUB_TOKEN: ${{secrets.TOKEN}}
