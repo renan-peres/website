@@ -53,8 +53,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
         let response = client
             .get("https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/rates_of_exchange")
             .query(&[
-                ("filter", "effective_date:gte:2020-01-01"),
-                ("sort", "-effective_date"), // Sort by date descending
+                ("filter", "record_date:gte:2020-01-01"),
+                ("sort", "-record_date"), // Sort by date descending
                 ("page[size]", &page_size.to_string()),
                 ("page[number]", &current_page.to_string())
             ])
