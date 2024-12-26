@@ -61,9 +61,11 @@ export default {
       open: true,
       pages: [
         {name: "Latest Market News", path: "/finance/market-news"},
-        {name: "Stocks & Crypto Prices", path: "/finance/stock-crypto-prices"},
+        {name: "Real-Time Stock & Crypto Prices", path: "/finance/rt-stock-crypto-prices"},
+        {name: "Stock Quotes", path: "/finance/stock-quotes"},
+        {name: "IPO Calendar", path: "/finance/ipo-calendar"},
         {name: "Bond Valuation", path: "/finance/bond-valuation"},
-        {name: "Portfolio Builder", path: "/finance/portfolio-builder"}
+        {name: "Portfolio Builder & Optimization", path: "/finance/portfolio-builder"}
       ]
     }
     

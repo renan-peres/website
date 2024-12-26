@@ -1,4 +1,5 @@
 ---
+title: Market News & Word Count Analysis
 index: true
 toc: true
 source: https://finnhub.io/docs/api/news
