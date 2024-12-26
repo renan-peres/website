@@ -16,6 +16,16 @@ else
     apt-get install -y r-base r-base-dev
 fi
 
+# Check and install R packages for Quarto
+R -e "
+if (!require('knitr')) {
+    install.packages('knitr', repos='http://cran.rstudio.com/')
+}
+if (!require('rmarkdown')) {
+    install.packages('rmarkdown', repos='http://cran.rstudio.com/')
+}
+"
+
 # Check if Quarto is installed in the system PATH
 CURRENT_QUARTO=$(which quarto 2>/dev/null)
 
@@ -61,18 +71,20 @@ if ! check_quarto_version; then
     echo "Quarto installation complete."
 fi
 
-# Install R packages for Quarto
-R -e "install.packages(c('knitr', 'rmarkdown'), repos='http://cran.rstudio.com/')"
-
-# Create virtual environment if it doesn't exist
-if [ ! -d "venv" ]; then
-    /usr/bin/python3 -m venv venv
-    . venv/bin/activate
-    if [ -f "requirements.txt" ]; then
-        pip install -r requirements.txt
-    fi
+# Check if Python 3 is available
+if command -v python3 &> /dev/null; then
+    echo "Python 3 is already installed: $(python3 --version)"
 else
-    . venv/bin/activate
+    echo "Python 3 not found. Installing Python 3..."
+    sudo apt-get update
+    sudo apt-get install -y python3 python3-pip
+fi
+
+# Install requirements if the file exists
+if [ -f "requirements.txt" ]; then
+    python3 -m pip list > installed_packages.txt
+    python3 -m pip install --break-system-packages $(grep -v -f installed_packages.txt requirements.txt) --ignore-installed
+    rm installed_packages.txt
 fi
 
 # Find all .qmd files recursively and render them

@@ -3,5 +3,6 @@ publish = "/"
 command = """
   rustup toolchain install stable && \
   cargo install rust-script && \
+  sh quarto_render && \
   npm run build
 """
