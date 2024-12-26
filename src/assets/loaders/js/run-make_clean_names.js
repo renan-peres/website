@@ -1,4 +1,4 @@
-import cleanColumnNames from '../loaders/js/make_clean_names.js';
+import cleanColumnNames from 'make_clean_names.js';
 
 // Example usage
 const data = [
