@@ -17,7 +17,7 @@ else
 fi
 
 # Install R packages for Quarto
-R -e "install.packages(c('knitr', 'rmarkdown'), repos='http://cran.rstudio.com/')"
+R -e "install.packages(c('knitr', 'rmarkdown'))"
 
 # Check if Quarto is installed in the system PATH
 CURRENT_QUARTO=$(which quarto 2>/dev/null)
