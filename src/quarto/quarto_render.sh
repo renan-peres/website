@@ -27,7 +27,7 @@ if [ ! -x "$(command -v R)" ]; then
 fi
 
 # Install R packages for Quarto
-Rscript -e 'install.packages(c("knitr", "rmarkdown"))'
+Rscript -e 'install.packages(c("knitr", "rmarkdown", "ggplot2"))'
 
 # Create and activate virtual environment
 if [ ! -d "venv" ]; then
