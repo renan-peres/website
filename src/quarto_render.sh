@@ -10,14 +10,14 @@ if command -v R &> /dev/null; then
 else
     echo "R not found. Installing R..."
     # Update package list
-    apt-get update
+    sudo apt-get update
     
     # Install R and R development packages
-    apt-get install -y r-base r-base-dev
+    sudo apt-get install -y r-base r-base-dev
 fi
 
 # Check and install R packages for Quarto
-R -e "
+sudo R -e "
 if (!require('knitr')) {
     install.packages('knitr', repos='http://cran.rstudio.com/')
 }

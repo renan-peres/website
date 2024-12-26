@@ -22,3 +22,4 @@ debugpy==1.8.0
 prompt-toolkit==3.0.39
 tqdm==4.66.1
 click==8.1.7
+pyyaml
