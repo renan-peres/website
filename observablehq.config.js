@@ -60,7 +60,7 @@ export default {
       name: "Financial Markets",
       open: true,
       pages: [
-        {name: "Daily Market News", path: "/finance/market-news"},
+        {name: "Latest Market News", path: "/finance/market-news"},
         {name: "Stocks & Crypto Prices", path: "/finance/stock-crypto-prices"},
         {name: "Bond Valuation", path: "/finance/bond-valuation"},
         {name: "Portfolio Builder", path: "/finance/portfolio-builder"}
