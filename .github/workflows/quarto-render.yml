@@ -21,8 +21,8 @@
 
 #     - name: Run Quarto Render Script
 #       run: |
-#         chmod +x quarto_render.sh
-#         ./quarto_render.sh
+#         chmod +x src/quarto_render.sh
+#         ./src/quarto_render.sh
 
 #     - name: Commit and Push Changes
 #       run: |
