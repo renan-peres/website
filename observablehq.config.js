@@ -37,10 +37,10 @@ export default {
       open: true,
       pages: [
         {name: "Playground", path: "/devbox/devbox-playground"},
-        {name: "DuckDB (Parquet Converter)", path: "/devbox/duckdb-parquet-converter"},
+        {name: "DuckDB: Parquet Converter", path: "/devbox/duckdb-parquet-converter"},
+        {name: "DuckDB: Attach Databases", path: "/devbox/duckdb-attach-databases"},
         {name: "WebR", path: "/devbox/webr"},
         {name: "Pyodide", path: "/devbox/pyodide"},
-        // {name: "MotherDuck (Mosaic Dashboard)", path: "/devbox/duckdb-motherduck-wasm"},
         // {name: "S3 API", path: "/devbox/aws-s3-api-starter"},
         {name: "Excel/Google Sheets Connector", path: "/devbox/spreadsheet-connector"}
         // {name: "Excel Downloader", path: "/devbox/excel-downloader"}

@@ -1,12 +1,123 @@
-<!-- ---
-title: MotherDuck Dashboard (Mosaic)
-index: true 
-toc: true
+---
+title: Attach Remote DuckDB Databases
+index: true
+toc: false
+source: https://talk.observablehq.com/t/loading-a-duckdb-database/8977/4 | https://tobilg.com/using-duckdb-wasm-for-in-browser-data-engineering | https://duckdb.org/docs/guides/network_cloud_storage/duckdb_over_https_or_s3
+keywords: 
+sql:
+  base: ../assets/data/data.db
 ---
 
-# MotherDuck Dashboard (Mosaic)
+
+# SQL Code Block
+
+<br>
+
+## <u>Local</u> (YAML Definition)
+
+```
+--- 
+sql:
+  base: ../assets/data/data.db
+---
+```
+
+```sql echo=true
+USE base;
+-- SHOW TABLES;
+
+SELECT * 
+FROM dim_SRDESC;
+```
+
+<br>
+
+## <u>Remote</u>
+
+```sql echo=true
+ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/FRED-gov-data/data.db' AS github;
+USE github;
+-- SHOW TABLES;
+
+SELECT * 
+FROM dim_SRDESC
+LIMIT 10;
+```
+
+<br>
+
+---
+
+#  FileAttachment (Interactive)
+
+<br>
+
+## <u>Local</u>
+
+```js echo=true
+// Initialize DuckDB with predefined tables
+const db = await DuckDBClient.of({base: FileAttachment('../assets/data/data.db')});
+```
+
+```js echo=true
+// Get tables
+const tables = await db.query(`
+  SELECT DISTINCT table_name 
+  FROM information_schema.tables 
+  WHERE table_schema = 'main'
+`);
+
+// Create the select input and store its value
+const selectedTable = view(Inputs.select(tables, {
+  format: d => d.table_name
+}));
+
+```
 
 ```js
+const result = await db.query(`SELECT * FROM base.${selectedTable.table_name} LIMIT 10;`);
+display(Inputs.table(result));
+```
+
+<br>
+
+##  <u>Remote</u>
+
+```js echo=true
+// Create the textarea that updates based on the selected query
+const prebuiltCode = view(Inputs.textarea({
+  value: `ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/FRED-gov-data/data.db' AS github;
+
+USE github;
+
+-- SHOW TABLES;
+
+SELECT * 
+FROM dim_SRDESC
+LIMIT 10;`,
+  width: "880px",
+  rows: 9,
+  resize: "both",
+  className: "sql-editor",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js
+// Execute and display pre-built query results
+const prebuiltQueryResult = db.query(prebuiltCode);
+display(Inputs.table(prebuiltQueryResult));
+```
+
+---
+
+<!-- ## MotherDuck (Not Available Yet) -->
+
+
+<!-- ```js
 import { MDConnection } from '@motherduck/wasm-client/with-arrow';
 import * as XLSX from "npm:xlsx";
 import * as vg from "@uwdata/vgplot";
