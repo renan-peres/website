@@ -1,2 +1,3 @@
 /.observablehq/cache/
 venv/
+secrets/

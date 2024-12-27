@@ -5,6 +5,8 @@ title: Foreing Exchange Rates
 toc: false
 source: https://fiscaldata.treasury.gov/datasets/treasury-reporting-rates-exchange/treasury-reporting-rates-of-exchange
 keywords: 
+sql:
+  forex: ../assets/loaders/rust/fiscaldata_forex_api.parquet
 ---
 
 # Foreign Exchange Rates
@@ -25,7 +27,11 @@ import {datetime} from "../assets/components/datetime.js";
 // Import dependencies and prepare data
 import * as XLSX from "npm:xlsx";
 const datasetname = "forex_data";
+```
 
+<!-- ### CSV
+
+```js
 // Load the CSV file and process it
 const forex = await FileAttachment("../assets/loaders/rust/fiscaldata_forex_api.csv").csv();
 
@@ -46,6 +52,33 @@ const data = forex.map(row => {
     filteredRow[column] = row[column];
   });
   return filteredRow;
+});
+``` -->
+
+<!-- ### Parquet -->
+
+```js
+const forex = await FileAttachment("../assets/loaders/rust/fiscaldata_forex_api.parquet").parquet();
+
+// Define the columns you want to extract
+const desiredColumns = [
+  "country",
+  "currency",
+  // "country_currency_desc",
+  "effective_date",
+  "record_date",
+  "exchange_rate",
+];
+
+// Get selected columns table first
+const selectedTable = forex.select(desiredColumns);
+
+const data = Array.from(selectedTable).map((row, index) => {
+ const obj = {};
+ desiredColumns.forEach(col => {
+   obj[col] = selectedTable.getChild(col).get(index);
+ });
+ return obj;
 });
 ```
 
@@ -80,4 +113,8 @@ display(html`
   ${Inputs.table(data, { rows: 30 })}
 `);
 ```
-
+<!-- 
+```sql
+SELECT *
+FROM forex
+``` -->

@@ -40,6 +40,8 @@ export default {
         {name: "DuckDB (Parquet Converter)", path: "/devbox/duckdb-parquet-converter"},
         {name: "WebR", path: "/devbox/webr"},
         {name: "Pyodide", path: "/devbox/pyodide"},
+        // {name: "MotherDuck (Mosaic Dashboard)", path: "/devbox/duckdb-motherduck-wasm"},
+        // {name: "S3 API", path: "/devbox/aws-s3-api-starter"},
         {name: "Excel/Google Sheets Connector", path: "/devbox/spreadsheet-connector"}
         // {name: "Excel Downloader", path: "/devbox/excel-downloader"}
       ]
@@ -128,5 +130,17 @@ export default {
   // typographer: false, // smart quotes and other typographic improvements
   // preserveExtension: false, // drop .html from URLs
   // preserveIndex: false, // drop /index from URLs
-  duckdb: {extensions: ["spatial", "h3", "pivot_table"]}
+  duckdb: {extensions: ["spatial", "h3", "pivot_table"]},
+  server: {
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'require-corp'
+    }
+  },
+  build: {
+    base: '/',
+    duckdbConfig: {
+      loadPath: 'https://app.motherduck.com'
+    }
+  }
 };
