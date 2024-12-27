@@ -18,25 +18,10 @@ which R || echo "R not found"
 
 # If not found, install R
 if [ ! -x "$(command -v R)" ]; then
-    # Install fresh
     sudo apt update
     sudo apt install r-base-core r-base r-base-dev
-
-    # Verify
     which R
 fi
-
-# Initialize and setup renv
-Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")'
-Rscript -e '
-if (!file.exists("renv.lock")) {
-    renv::init()
-    packages <- readLines("r_packages.txt")
-    renv::install(packages)
-    renv::snapshot()
-}'
-
-Rscript -e 'renv::restore()'
 
 # Create and activate virtual environment
 if [ ! -d "venv" ]; then
@@ -91,7 +76,6 @@ if ! check_quarto_version; then
        echo 'export PATH="$PATH:$HOME/.local/bin"' >> "$HOME/.bashrc"
    fi
 
-   # Verify installation
    if ! quarto check; then
        echo "Quarto installation failed"
        exit 1
