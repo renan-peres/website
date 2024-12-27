@@ -40,8 +40,9 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-renv-
 
-    - name: Initialize renv cache
+    - name: Initialize R environment
       run: |
+        cd src/quarto
         mkdir -p ~/.local/share/renv
         chmod -R 777 ~/.local/share/renv
         echo "RENV_PATHS_CACHE=~/.local/share/renv" >> $GITHUB_ENV
