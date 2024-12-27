@@ -35,14 +35,8 @@ if (!file.exists("renv.lock")) {
     renv::install(packages)
     renv::snapshot()
 }'
-Rscript -e 'renv::restore()'
 
-# If new packages need to be installed, add them and update renv.lock
-if [ -f "r_packages.txt" ]; then
-    while IFS= read -r package; do
-        Rscript -e "if (!requireNamespace('$package', quietly = TRUE)) { renv::install('$package'); renv::snapshot() }"
-    done < "r_packages.txt"
-fi
+Rscript -e 'renv::restore()'
 
 # Create and activate virtual environment
 if [ ! -d "venv" ]; then
@@ -89,11 +83,8 @@ check_quarto_version() {
 # If Quarto is not installed or version doesn't match, proceed with installation
 if ! check_quarto_version; then
    mkdir -p "$HOME/opt" "$HOME/.local/bin"
-   
    curl -LO "https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-${QUARTO_ARCH}.tar.gz"
-   
    tar -xzf "quarto-${QUARTO_VERSION}-${QUARTO_ARCH}.tar.gz" -C "$HOME/opt"
-   
    ln -sf "$HOME/opt/quarto-${QUARTO_VERSION}/bin/quarto" "$HOME/.local/bin/quarto"
    
    if ! grep -q "$HOME/.local/bin" "$HOME/.bashrc"; then
