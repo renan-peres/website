@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      RENV_PATHS_ROOT: ~/.local/share/renv
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -26,6 +28,33 @@ jobs:
       uses: r-lib/actions/setup-r@v2
       with:
         r-version: '4.2.0'
+
+    - name: Cache R packages
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.local/share/renv
+          ~/.cache/R
+          ${{ runner.temp }}/Library
+        key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-renv-
+
+    - name: Initialize R environment
+      run: |
+        cd src/quarto
+        mkdir -p ~/.local/share/renv
+        echo "RENV_PATHS_CACHE=~/.local/share/renv" >> $GITHUB_ENV
+        Rscript -e 'install.packages("renv")'
+        Rscript -e 'renv::consent(provided = TRUE)'
+        Rscript -e 'renv::restore()'
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+        cache: 'pip'
+        cache-dependency-path: 'src/quarto/requirements.txt'
 
     - name: Run Quarto Render Script
       run: |
