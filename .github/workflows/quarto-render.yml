@@ -40,10 +40,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-renv-
 
-    - name: Initialize R environment
+    - name: Initialize renv cache
       run: |
-        cd src/quarto
         mkdir -p ~/.local/share/renv
+        chmod -R 777 ~/.local/share/renv
         echo "RENV_PATHS_CACHE=~/.local/share/renv" >> $GITHUB_ENV
         Rscript -e 'install.packages("renv")'
         Rscript -e 'renv::consent(provided = TRUE)'
