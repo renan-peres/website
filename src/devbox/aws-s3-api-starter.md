@@ -1,4 +1,4 @@
-# [AWS S3 API Starter](https://observablehq.com/@observablehq/aws-s3-api-starter)
+<!-- # [AWS S3 API Starter](https://observablehq.com/@observablehq/aws-s3-api-starter)
 
 Get started using the Amazon Web Services SDK for S3 securely in the browser.
 
@@ -63,4 +63,4 @@ Inputs.table(response.Contents, {
 
 ## References
 - [AWS SDK for JavaScript v3 Documentation](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html)
-- [AWS HTTP Status Dashboard](https://observablehq.com/@observablehq/aws-http-status-dashboard)
+- [AWS HTTP Status Dashboard](https://observablehq.com/@observablehq/aws-http-status-dashboard) -->

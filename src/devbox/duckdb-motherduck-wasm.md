@@ -1,4 +1,4 @@
----
+<!-- ---
 title: MotherDuck Dashboard (Mosaic)
 index: true 
 toc: true
@@ -97,4 +97,4 @@ display(html`
   </div>
   ${Inputs.table(size, { rows: 30 })}
 `);
-```
+``` -->
