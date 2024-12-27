@@ -13,18 +13,18 @@ PYTHON_PATH=$(which python3)
 # Check if Quarto is installed in the system PATH
 CURRENT_QUARTO=$(which quarto 2>/dev/null)
 
-# # Check if R is installed
-# which R || echo "R not found"
+# Check if R is installed
+which R || echo "R not found"
 
-# # If not found, install R
-# if [ ! -x "$(command -v R)" ]; then
-#     # Install fresh
-#     sudo apt update
-#     sudo apt install r-base-core r-base r-base-dev
+# If not found, install R
+if [ ! -x "$(command -v R)" ]; then
+    # Install fresh
+    sudo apt update
+    sudo apt install r-base-core r-base r-base-dev
 
-#     # Verify
-#     which R
-# fi
+    # Verify
+    which R
+fi
 
 # Install R packages for Quarto
 Rscript -e 'install.packages(c("knitr", "rmarkdown", "ggplot2", "dygraphs"))'
