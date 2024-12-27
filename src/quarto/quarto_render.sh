@@ -26,8 +26,23 @@ if [ ! -x "$(command -v R)" ]; then
     which R
 fi
 
-# Install R packages for Quarto
-Rscript -e 'install.packages(c("knitr", "rmarkdown", "ggplot2", "dygraphs"))'
+# Initialize and setup renv
+Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")'
+Rscript -e '
+if (!file.exists("renv.lock")) {
+    renv::init()
+    packages <- readLines("r_packages.txt")
+    renv::install(packages)
+    renv::snapshot()
+}'
+Rscript -e 'renv::restore()'
+
+# If new packages need to be installed, add them and update renv.lock
+if [ -f "r_packages.txt" ]; then
+    while IFS= read -r package; do
+        Rscript -e "if (!requireNamespace('$package', quietly = TRUE)) { renv::install('$package'); renv::snapshot() }"
+    done < "r_packages.txt"
+fi
 
 # Create and activate virtual environment
 if [ ! -d "venv" ]; then
