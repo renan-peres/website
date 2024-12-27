@@ -1,3 +1,6 @@
 /.observablehq/cache/
 venv/
 secrets/
+renv/
+.Rprofile
+renv.lock
