@@ -3,4 +3,3 @@ venv/
 secrets/
 renv/
 .Rprofile
-renv.lock
