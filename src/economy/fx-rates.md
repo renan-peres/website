@@ -5,8 +5,6 @@ title: Foreing Exchange Rates
 toc: false
 source: https://fiscaldata.treasury.gov/datasets/treasury-reporting-rates-exchange/treasury-reporting-rates-of-exchange
 keywords: 
-sql:
-  forex: ../assets/loaders/rust/fiscaldata_forex_api.parquet
 ---
 
 # Foreign Exchange Rates
@@ -113,8 +111,3 @@ display(html`
   ${Inputs.table(data, { rows: 30 })}
 `);
 ```
-<!-- 
-```sql
-SELECT *
-FROM forex
-``` -->
