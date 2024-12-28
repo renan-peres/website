@@ -1,4 +1,5 @@
 import * as XLSX from "npm:xlsx";
+import * as d3 from "d3";
 
 // Basic table format with downloads
 export function getTableFormat(data, options = {}) {
@@ -7,14 +8,26 @@ export function getTableFormat(data, options = {}) {
     datasetName = "data"
   } = options;
 
+  // Ensure data is converted to a plain array of objects
+  let dataArray = data.toArray ? data.toArray().map(row => Object.fromEntries(row)) : 
+                  Array.isArray(data) ? data : 
+                  Array.from(data);
+
+  // Apply date parsing to the data
+  dataArray = dataArray.map(item => {
+    Object.entries(item).forEach(([key, value]) => {
+      if (value && (key === 'Date' || key === 'date')) {
+        item[key] = d3.timeFormat("%Y-%m-%d")(d3.isoParse(value) || new Date(value));
+      }
+    });
+    return item;
+  });
+
   // Create the download buttons
   const xlsxButton = document.createElement("button");
   xlsxButton.textContent = `Download ${datasetName}.xlsx`;
   xlsxButton.onclick = () => {
     try {
-      // Convert data to array if it's not already
-      const dataArray = Array.isArray(data) ? data : Array.from(data);
-      
       // Create worksheet
       const worksheet = XLSX.utils.json_to_sheet(dataArray);
       const workbook = XLSX.utils.book_new();
@@ -31,9 +44,6 @@ export function getTableFormat(data, options = {}) {
   csvButton.textContent = `Download ${datasetName}.csv`;
   csvButton.onclick = () => {
     try {
-      // Convert data to array if it's not already
-      const dataArray = Array.isArray(data) ? data : Array.from(data);
-      
       // Create worksheet and convert to CSV
       const worksheet = XLSX.utils.json_to_sheet(dataArray);
       const csvContent = XLSX.utils.sheet_to_csv(worksheet);
@@ -85,15 +95,13 @@ export function getTableFormat(data, options = {}) {
     format: {
       Date: value => {
         if (!value) return '';
-        if (typeof value === 'string' && value.includes('T')) return value;
-        const date = new Date(Number(value));
-        return date.toISOString().split('T')[0];
+        const date = d3.isoParse(value) || new Date(value);
+        return d3.timeFormat("%Y-%m-%d")(date);
       },
       date: value => {
         if (!value) return '';
-        if (typeof value === 'string' && value.includes('T')) return value;
-        const date = new Date(Number(value));
-        return date.toISOString().split('T')[0];
+        const date = d3.isoParse(value) || new Date(value);
+        return d3.timeFormat("%Y-%m-%d")(date);
       }
     },
     rows
@@ -106,7 +114,7 @@ export function getCustomTableFormat(data, options = {}) {
     rows = 30,
     datasetName = "data",
     dateColumns = ['Date', 'date'],
-    dateFormat = date => date.toISOString().split('T')[0],
+    dateFormat = d3.timeFormat("%Y-%m-%d"),
     additionalFormatting = {}
   } = options;
 
@@ -118,8 +126,7 @@ export function getCustomTableFormat(data, options = {}) {
   dateColumns.forEach(colName => {
     formatConfig[colName] = value => {
       if (!value) return '';
-      if (typeof value === 'string' && value.includes('T')) return value;
-      const date = new Date(Number(value));
+      const date = d3.isoParse(value) || new Date(value);
       return dateFormat(date);
     };
   });

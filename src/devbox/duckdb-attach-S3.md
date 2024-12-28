@@ -71,7 +71,7 @@ const result = await db.query(`SELECT * FROM ${selectedTable.table_name} LIMIT 1
 const tableConfig = getCustomTableFormat(result, {
   datasetName: `${selectedTable.table_name}`,
   rows: 10,
-  dateColumns: ['Date', 'created_date', 'updated_date']
+  dateColumns: ['Date', 'date', 'created_date', 'updated_date']
 });
 
 // Display the buttons and table
@@ -104,9 +104,7 @@ LIMIT 10;`,
 
 ```js echo=true
 // Execute and display pre-built query results
-const prebuiltQueryResult = db.query(prebuiltCode);
-// display(Inputs.table(prebuiltQueryResult));
-
+const prebuiltQueryResult = await db.query(prebuiltCode);
 
 // Get the configuration and buttons
 const tableConfig2 = getCustomTableFormat(prebuiltQueryResult, {
@@ -117,5 +115,4 @@ const tableConfig2 = getCustomTableFormat(prebuiltQueryResult, {
 // Display the buttons and table
 display(tableConfig2.container);
 display(Inputs.table(prebuiltQueryResult, tableConfig2));
-
 ```
