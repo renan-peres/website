@@ -5,7 +5,7 @@ toc: false
 source: https://talk.observablehq.com/t/loading-a-duckdb-database/8977/4 | https://tobilg.com/using-duckdb-wasm-for-in-browser-data-engineering | https://duckdb.org/docs/guides/network_cloud_storage/duckdb_over_https_or_s3
 keywords: 
 sql:
-  base: ../assets/data/data.db
+  base: ../assets/data/duckdb/data_sample.db
 ---
 
 
@@ -18,7 +18,7 @@ sql:
 ```
 --- 
 sql:
-  base: ../assets/data/data.db
+  base: ../assets/data/duckdb/data_sample.db
 ---
 ```
 
@@ -56,7 +56,7 @@ LIMIT 10;
 
 ```js echo=true
 // Initialize DuckDB with predefined tables
-const db = await DuckDBClient.of({base: FileAttachment('../assets/data/data.db')});
+const db = await DuckDBClient.of({base: FileAttachment('../assets/data/duckdb/data_sample.db')});
 ```
 
 ```js echo=true
