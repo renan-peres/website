@@ -63,8 +63,8 @@ export default {
       name: "Financial Markets",
       open: true,
       pages: [
-        {name: "Latest Market News", path: "/finance/market-news"},
-        {name: "Real-Time Stock & Crypto Prices", path: "/finance/rt-stock-crypto-prices"},
+        {name: "Market News", path: "/finance/market-news"},
+        {name: "Stock & Crypto Prices", path: "/finance/rt-stock-crypto-prices"},
         // {name: "Real-Time Stock & Crypto Prices", path: "/finance/rt-stock-crypto-prices-old"},
         {name: "IPO Calendar", path: "/finance/ipo-calendar"}
       ]
