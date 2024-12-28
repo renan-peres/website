@@ -3,17 +3,26 @@ title: Attach Remote DuckDB Databases
 theme: dashboard
 index: true
 toc: false
-source: https://talk.observablehq.com/t/loading-a-duckdb-database/8977/4 | https://tobilg.com/using-duckdb-wasm-for-in-browser-data-engineering | https://duckdb.org/docs/guides/network_cloud_storage/duckdb_over_https_or_s3
+source: https://observablehq.com/framework/lib/duckdb | https://talk.observablehq.com/t/loading-a-duckdb-database/8977/4 | https://tobilg.com/using-duckdb-wasm-for-in-browser-data-engineering | https://duckdb.org/docs/guides/network_cloud_storage/duckdb_over_https_or_s3
 keywords: 
 sql:
   base: ../assets/data/duckdb/data_sample.db
 ---
 
-# SQL Code Block
+```html
+<style>
+h1, h2, h3, h4, h5, h6, p, li, ul, ol {
+  width: 100% !important;
+  max-width: none !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
 
-<br>
+</style>
+```
 
-## <u>Local</u> (YAML Definition)
+
+# Method 1: YAML Definition (SQL Code Block & getDefaultClient())
 
 ```
 --- 
@@ -21,6 +30,16 @@ sql:
   base: ../assets/data/duckdb/data_sample.db
 ---
 ```
+
+```js echo=true
+import * as vgplot from "npm:@uwdata/vgplot";
+import {getDefaultClient} from "observablehq:stdlib/duckdb";
+const db = await getDefaultClient();
+```
+
+<br>
+
+## <u>Local</u> 
 
 ```sql echo=true
 USE base;
@@ -46,49 +65,37 @@ LIMIT 10;
 
 <br>
 
----
-
-#  FileAttachment (Interactive)
-
-<br>
-
-## <u>Local</u>
-
-```js echo=true
-// Initialize DuckDB with predefined tables
-const db = await DuckDBClient.of({base: FileAttachment('../assets/data/duckdb/data_sample.db')});
-```
+## <u>Responsive Input</u>
 
 ```js echo=true
 // Get tables
-const tables = await db.query(`
+const tables = await db.sql`
   SELECT DISTINCT table_name 
   FROM information_schema.tables 
   WHERE table_schema = 'main'
-`);
+`;
 
 // Create the select input and store its value
 const selectedTable = view(Inputs.select(tables, {
   format: d => d.table_name
 }));
-
 ```
 
-```js
-const result = await db.query(`SELECT * FROM base.${selectedTable.table_name} LIMIT 10;`);
-// display(Inputs.table(result));
+```js echo=true
+// For your query display block
+const result = await db.query(`SELECT * FROM "base"."${selectedTable.table_name}" LIMIT 10;`);
 
 display(Inputs.table(result, {
-        rows: 30,
-        format: {
-          	url: (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''
-        }
-      }));
+  rows: 30,
+  format: {
+    url: (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''
+  }
+}));
 ```
 
 <br>
 
-##  <u>Remote</u>
+## <u>Interactive Code</u>
 
 ```js echo=true
 // Create the textarea that updates based on the selected query
@@ -113,12 +120,97 @@ LIMIT 10;`,
 }));
 ```
 
-```js
+```js echo=true
 // Execute and display pre-built query results
 const prebuiltQueryResult = db.query(prebuiltCode);
 // display(Inputs.table(prebuiltQueryResult));
 
 display(Inputs.table(prebuiltQueryResult, {
+        rows: 30,
+        format: {
+          	url: (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''
+        }
+      }));
+```
+
+---
+
+# Method 2: FileAttachment (DuckDBClient.of())
+
+<br>
+
+## <u>Local</u>
+
+```js echo=true
+// Initialize DuckDB with predefined tables
+const db2 = await DuckDBClient.of({base: FileAttachment('../assets/data/duckdb/data_sample.db')});
+```
+
+```js echo=true
+// Get tables
+const tables2 = await db2.query(`
+  SELECT DISTINCT table_name 
+  FROM information_schema.tables 
+  WHERE table_schema = 'main'
+`);
+
+// Create the select input and store its value
+const selectedTable2 = view(Inputs.select(tables2, {
+  format: d => d.table_name
+}));
+
+```
+
+```js echo=true
+const result = await db2.query(`SELECT * FROM base.${selectedTable2.table_name} LIMIT 10;`);
+// display(Inputs.table(result));
+
+display(Inputs.table(result, {
+        rows: 30,
+        format: {
+          	url: (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''
+        }
+      }));
+```
+
+<br>
+
+##  <u>Remote</u>
+
+```js echo=true
+// Initialize DuckDB with predefined tables
+const db3 = DuckDBClient.of();
+```
+
+```js echo=true
+// Create the textarea that updates based on the selected query
+const prebuiltCode2 = view(Inputs.textarea({
+  value: `ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/FRED-gov-data/data.db' AS github;
+
+USE github;
+
+-- SHOW TABLES;
+
+SELECT * 
+FROM dim_SRDESC
+LIMIT 10;`,
+  width: "880px",
+  rows: 9,
+  resize: "both",
+  className: "sql-editor",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js echo=true
+// Execute and display pre-built query results
+const prebuiltQueryResult2 = db3.query(prebuiltCode2);
+// display(Inputs.table(prebuiltQueryResult));
+
+display(Inputs.table(prebuiltQueryResult2, {
         rows: 30,
         format: {
           	url: (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''
