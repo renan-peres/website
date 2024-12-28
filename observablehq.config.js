@@ -39,6 +39,7 @@ export default {
         {name: "Playground", path: "/devbox/devbox-playground"},
         {name: "DuckDB: Parquet Converter", path: "/devbox/duckdb-parquet-converter"},
         {name: "DuckDB: Attach Databases", path: "/devbox/duckdb-attach-databases"},
+        {name: "DuckDB: Attach S3", path: "/devbox/duckdb-attach-S3"},
         {name: "WebR", path: "/devbox/webr"},
         {name: "Pyodide", path: "/devbox/pyodide"},
         // {name: "S3 API", path: "/devbox/aws-s3-api-starter"},
