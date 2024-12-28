@@ -3,7 +3,7 @@ title: Attach Remote DuckDB Databases
 theme: dashboard
 index: true
 toc: false
-source: https://observablehq.com/framework/lib/duckdb | https://talk.observablehq.com/t/loading-a-duckdb-database/8977/4 | https://tobilg.com/using-duckdb-wasm-for-in-browser-data-engineering | https://duckdb.org/docs/guides/network_cloud_storage/duckdb_over_https_or_s3
+source: https://observablehq.com/framework/lib/duckdb | https://duckdb.org/docs/api/wasm/overview.html | https://duckdb.org/docs/guides/network_cloud_storage/duckdb_over_https_or_s3.html | https://talk.observablehq.com/t/loading-a-duckdb-database/8977/4 | https://tobilg.com/using-duckdb-wasm-for-in-browser-data-engineering | https://duckdb.org/docs/guides/network_cloud_storage/duckdb_over_https_or_s3
 keywords: 
 sql:
   base: ../assets/data/duckdb/data_sample.db
@@ -34,6 +34,7 @@ sql:
 ```js echo=true
 import * as vgplot from "npm:@uwdata/vgplot";
 import {getDefaultClient} from "observablehq:stdlib/duckdb";
+
 const db = await getDefaultClient();
 ```
 
@@ -51,7 +52,7 @@ FROM dim_SRDESC;
 
 <br>
 
-## <u>Remote</u>
+## <u>Remote</u> (GitHub)
 
 ```sql echo=true
 ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/FRED-gov-data/data.db' AS github;
@@ -65,14 +66,31 @@ LIMIT 10;
 
 <br>
 
+## <u>Remote</u> (S3)
+
+```sql echo=true
+ATTACH 's3://duckdb-blobs/databases/stations.duckdb' AS s3;
+-- SHOW DATABASES;
+
+USE s3;
+
+-- SHOW TABLES;
+
+SELECT * 
+FROM stations
+LIMIT 10;
+```
+
+<br>
+
 ## <u>Responsive Input</u>
 
 ```js echo=true
 // Get tables
 const tables = await db.sql`
-  SELECT DISTINCT table_name 
+  SELECT DISTINCT CONCAT(table_catalog, '.', table_name) AS table_name
   FROM information_schema.tables 
-  WHERE table_schema = 'main'
+  -- WHERE table_schema = 'main'
 `;
 
 // Create the select input and store its value
@@ -83,7 +101,7 @@ const selectedTable = view(Inputs.select(tables, {
 
 ```js echo=true
 // For your query display block
-const result = await db.query(`SELECT * FROM "base"."${selectedTable.table_name}" LIMIT 10;`);
+const result = await db.query(`SELECT * FROM ${selectedTable.table_name} LIMIT 10;`);
 
 display(Inputs.table(result, {
   rows: 30,
@@ -100,17 +118,15 @@ display(Inputs.table(result, {
 ```js echo=true
 // Create the textarea that updates based on the selected query
 const prebuiltCode = view(Inputs.textarea({
-  value: `ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/FRED-gov-data/data.db' AS github;
-
-USE github;
+  value: `USE s3;
 
 -- SHOW TABLES;
 
 SELECT * 
-FROM dim_SRDESC
+FROM stations
 LIMIT 10;`,
   width: "880px",
-  rows: 9,
+  rows: 7,
   resize: "both",
   className: "sql-editor",
   style: { fontSize: "16px" },
@@ -149,9 +165,9 @@ const db2 = await DuckDBClient.of({base: FileAttachment('../assets/data/duckdb/d
 ```js echo=true
 // Get tables
 const tables2 = await db2.query(`
-  SELECT DISTINCT table_name 
+  SELECT DISTINCT CONCAT(table_catalog, '.', table_name) AS table_name
   FROM information_schema.tables 
-  WHERE table_schema = 'main'
+  -- WHERE table_schema = 'main'
 `);
 
 // Create the select input and store its value
@@ -162,7 +178,7 @@ const selectedTable2 = view(Inputs.select(tables2, {
 ```
 
 ```js echo=true
-const result = await db2.query(`SELECT * FROM base.${selectedTable2.table_name} LIMIT 10;`);
+const result = await db2.query(`SELECT * FROM ${selectedTable2.table_name} LIMIT 10;`);
 // display(Inputs.table(result));
 
 display(Inputs.table(result, {
@@ -175,7 +191,7 @@ display(Inputs.table(result, {
 
 <br>
 
-##  <u>Remote</u>
+##  <u>Remote</u> (GitHub)
 
 ```js echo=true
 // Initialize DuckDB with predefined tables
