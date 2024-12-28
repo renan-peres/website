@@ -113,7 +113,7 @@ export function getCustomTableFormat(data, options = {}) {
   const {
     rows = 30,
     datasetName = "data",
-    dateColumns = ['Date', 'date'],
+    dateColumns = ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth'],
     dateFormat = d3.timeFormat("%Y-%m-%d"),
     additionalFormatting = {}
   } = options;

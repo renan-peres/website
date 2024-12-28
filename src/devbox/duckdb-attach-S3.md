@@ -7,17 +7,6 @@ source: https://observablehq.com/framework/lib/duckdb | https://duckdb.org/docs/
 keywords: 
 ---
 
-# Attach DuckDB Database from S3
-
-```js
-import {datetime} from "../assets/components/datetime.js";
-import { getTableFormat, getCustomTableFormat } from "../assets/components/tableFormatting.js"; // Table Formatting & Do
-```
-
-<div class="datetime-container">
-  <div id="datetime"></div>
-</div>
-
 ```html
 <style>
 h1, h2, h3, h4, h5, h6, p, li, ul, ol {
@@ -29,6 +18,16 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 
 </style>
 ```
+
+# Attach DuckDB Database from S3
+```js
+import {datetime} from "../assets/components/datetime.js";
+```
+
+<div class="datetime-container">
+  <div id="datetime"></div>
+</div>
+
 ---
 
 ## Setup
@@ -36,10 +35,11 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 ```js echo=true
 import * as vgplot from "npm:@uwdata/vgplot";
 import {getDefaultClient} from "observablehq:stdlib/duckdb";
+import { getTableFormat, getCustomTableFormat } from "../assets/components/tableFormatting.js"; // Table Formatting & Download Buttons
 const db = await getDefaultClient();
 ```
 
-```sql echo=true
+```sql echo=true display=false
 ATTACH 's3://aws-test-duckdb/duckdb/data.db' AS s3;
 SHOW DATABASES;
 USE s3;
@@ -47,9 +47,9 @@ USE s3;
 
 ---
 
-## <u>Responsive Input</u>
+## <u>Responsive Output</u>
 
-```js echo=true
+```js
 // Get tables
 const tables = await db.sql`
   SELECT DISTINCT CONCAT(table_catalog, '.', table_name) AS table_name
@@ -63,15 +63,15 @@ const selectedTable = view(Inputs.select(tables, {
 }));
 ```
 
-```js echo=true
+```js
 // For your query display block
-const result = await db.query(`SELECT * FROM ${selectedTable.table_name} LIMIT 10000000;`);
+const result = await db.query(`SELECT * FROM ${selectedTable.table_name} LIMIT 10;`);
 
 // Get the configuration and buttons
 const tableConfig = getCustomTableFormat(result, {
   datasetName: `${selectedTable.table_name}`,
   rows: 10,
-  dateColumns: ['Date', 'date', 'created_date', 'updated_date']
+  dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth'] // Opitional
 });
 
 // Display the buttons and table
@@ -79,11 +79,11 @@ display(tableConfig.container);
 display(Inputs.table(result, tableConfig));
 ```
 
-<br>
+---
 
 ## <u>Interactive Code</u>
 
-```js echo=true
+```js
 // Create the textarea that updates based on the selected query
 const prebuiltCode = view(Inputs.textarea({
   value: `USE s3;
@@ -91,7 +91,7 @@ const prebuiltCode = view(Inputs.textarea({
 SELECT * 
 FROM airports
 LIMIT 10;`,
-  width: "880px",
+  width: "600px",
   rows: 5,
   resize: "both",
   className: "sql-editor",
@@ -102,14 +102,15 @@ LIMIT 10;`,
 }));
 ```
 
-```js echo=true
+```js
 // Execute and display pre-built query results
 const prebuiltQueryResult = await db.query(prebuiltCode);
 
 // Get the configuration and buttons
 const tableConfig2 = getCustomTableFormat(prebuiltQueryResult, {
   datasetName: 'query_result',
-  rows: 10
+  rows: 10,
+  dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth'] // Opitional
 });
 
 // Display the buttons and table
