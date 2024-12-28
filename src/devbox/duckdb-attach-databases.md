@@ -1,5 +1,6 @@
 ---
 title: Attach Remote DuckDB Databases
+theme: dashboard
 index: true
 toc: false
 source: https://talk.observablehq.com/t/loading-a-duckdb-database/8977/4 | https://tobilg.com/using-duckdb-wasm-for-in-browser-data-engineering | https://duckdb.org/docs/guides/network_cloud_storage/duckdb_over_https_or_s3
@@ -7,7 +8,6 @@ keywords:
 sql:
   base: ../assets/data/duckdb/data_sample.db
 ---
-
 
 # SQL Code Block
 
@@ -76,7 +76,14 @@ const selectedTable = view(Inputs.select(tables, {
 
 ```js
 const result = await db.query(`SELECT * FROM base.${selectedTable.table_name} LIMIT 10;`);
-display(Inputs.table(result));
+// display(Inputs.table(result));
+
+display(Inputs.table(result, {
+        rows: 30,
+        format: {
+          	url: (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''
+        }
+      }));
 ```
 
 <br>
@@ -109,7 +116,14 @@ LIMIT 10;`,
 ```js
 // Execute and display pre-built query results
 const prebuiltQueryResult = db.query(prebuiltCode);
-display(Inputs.table(prebuiltQueryResult));
+// display(Inputs.table(prebuiltQueryResult));
+
+display(Inputs.table(prebuiltQueryResult, {
+        rows: 30,
+        format: {
+          	url: (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''
+        }
+      }));
 ```
 
 ---
