@@ -51,6 +51,7 @@ export default {
       name: "Economy",
       open: true,
       pages: [
+        {name: "Economic Calendar", path: "/economy/economic-calendar"},
         {name: "U.S. Macro Indicators", path: "/economy/macro-indicators"},
         {name: "U.S. Monetary Base", path: "/economy/monetary-base"},
         {name: "U.S. Mortgage Rates", path: "/economy/mortgage-rates"},
