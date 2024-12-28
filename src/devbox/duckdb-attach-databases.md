@@ -9,6 +9,16 @@ sql:
   base: ../assets/data/duckdb/data_sample.db
 ---
 
+# Attach DuckDB Databases
+
+```js
+import {datetime} from "../assets/components/datetime.js";
+```
+
+<div class="datetime-container">
+  <div id="datetime"></div>
+</div>
+
 ```html
 <style>
 h1, h2, h3, h4, h5, h6, p, li, ul, ol {
@@ -21,6 +31,7 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 </style>
 ```
 
+---
 
 # Method 1: YAML Definition (SQL Code Block & getDefaultClient())
 

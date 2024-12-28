@@ -7,6 +7,16 @@ source: https://observablehq.com/framework/lib/duckdb | https://duckdb.org/docs/
 keywords: 
 ---
 
+# Attach DuckDB Database from S3
+
+```js
+import {datetime} from "../assets/components/datetime.js";
+```
+
+<div class="datetime-container">
+  <div id="datetime"></div>
+</div>
+
 ```html
 <style>
 h1, h2, h3, h4, h5, h6, p, li, ul, ol {
@@ -18,9 +28,10 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 
 </style>
 ```
+---
 
-# Attach DuckDB Database from S3
-
+## Setup
+*Please wait a few seconds for the database to load.*
 ```js echo=true
 import * as vgplot from "npm:@uwdata/vgplot";
 import {getDefaultClient} from "observablehq:stdlib/duckdb";
@@ -33,7 +44,7 @@ SHOW DATABASES;
 USE s3;
 ```
 
-<br>
+---
 
 ## <u>Responsive Input</u>
 
