@@ -3,7 +3,7 @@ title: Real-Time Stock & Crypto Prices
 theme: dashboard
 index: true
 toc: false
-source: https://finnhub.io/docs/api/websocket-trades | https://www.tradingview.com/widget-docs/widgets/charts/symbol-overview/ | https://www.coingecko.com/en/widgets
+source: https://finnhub.io/docs/api/websocket-trades | https://www.tradingview.com/widget-docs/widgets/charts/symbol-overview/ | https://www.coingecko.com/en/widgets | https://www.geckoterminal.com/solana/pools/22WrmyTj8x2TRVQen3fxxi2r4Rn6JDHWoMTpsSmn8RUd
 keywords: live real time data wss streaming stream socket
 ---
 
