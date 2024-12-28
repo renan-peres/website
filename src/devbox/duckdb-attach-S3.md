@@ -11,6 +11,7 @@ keywords:
 
 ```js
 import {datetime} from "../assets/components/datetime.js";
+import { getTableFormat, getCustomTableFormat } from "../assets/components/tableFormatting.js"; // Table Formatting & Do
 ```
 
 <div class="datetime-container">
@@ -64,9 +65,18 @@ const selectedTable = view(Inputs.select(tables, {
 
 ```js echo=true
 // For your query display block
-const result = await db.query(`SELECT * FROM ${selectedTable.table_name} LIMIT 10;`);
+const result = await db.query(`SELECT * FROM ${selectedTable.table_name} LIMIT 10000000;`);
 
-display(Inputs.table(result, {rows: 30}));
+// Get the configuration and buttons
+const tableConfig = getCustomTableFormat(result, {
+  datasetName: `${selectedTable.table_name}`,
+  rows: 10,
+  dateColumns: ['Date', 'created_date', 'updated_date']
+});
+
+// Display the buttons and table
+display(tableConfig.container);
+display(Inputs.table(result, tableConfig));
 ```
 
 <br>
@@ -97,5 +107,15 @@ LIMIT 10;`,
 const prebuiltQueryResult = db.query(prebuiltCode);
 // display(Inputs.table(prebuiltQueryResult));
 
-display(Inputs.table(prebuiltQueryResult, {rows: 30}));
+
+// Get the configuration and buttons
+const tableConfig2 = getCustomTableFormat(prebuiltQueryResult, {
+  datasetName: 'query_result',
+  rows: 10
+});
+
+// Display the buttons and table
+display(tableConfig2.container);
+display(Inputs.table(prebuiltQueryResult, tableConfig2));
+
 ```
