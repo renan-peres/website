@@ -3,7 +3,7 @@ title: Real-Time Stock & Crypto Prices
 theme: dashboard
 index: true
 toc: false
-source: https://finnhub.io/docs/api/websocket-trades
+source: https://finnhub.io/docs/api/websocket-trades | https://www.tradingview.com/widget-docs/widgets/charts/symbol-overview/ | https://www.coingecko.com/en/widgets
 keywords: live real time data wss streaming stream socket
 ---
 
@@ -19,10 +19,6 @@ const datasetname = "stock_data";
 <div class="datetime-container">
   <div id="datetime"></div>
 </div>
-
-Source: https://finnhub.io/docs/api/websocket-trades
-
----
 
 ```js
 // Initial stock prices from CSV
@@ -261,58 +257,6 @@ finnhubWs.onerror = function(error) {
 invalidation.then(() => finnhubWs.close());
 ```
 
-<h2 class="mt-8 mb-4">Stocks</h2>
-<div class="grid grid-cols-4 gap-4 mt-4">
-  <div class="card">
-    <h2>Meta (META)</h2>
-    <div class="big">${meta?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
-    <div class="text-sm text-gray-500">${meta?.timestamp ?? "--"}</div>
-  </div>
-  <div class="card">
-    <h2>Apple (AAPL)</h2>
-    <div class="big">${aapl?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
-    <div class="text-sm text-gray-500">${aapl?.timestamp ?? "--"}</div>
-  </div>
-  <div class="card">
-    <h2>Netflix (NFLX)</h2>
-    <div class="big">${nflx?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
-    <div class="text-sm text-gray-500">${nflx?.timestamp ?? "--"}</div>
-  </div>
-  <div class="card">
-    <h2>Google (GOOGL)</h2>
-    <div class="big">${googl?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
-    <div class="text-sm text-gray-500">${googl?.timestamp ?? "--"}</div>
-  </div>
-</div>
-
-<h2 class="mt-8 mb-4">Crypto</h2>
-<div class="grid grid-cols-4 gap-4 mt-4">
-  <div class="card">
-    <h2>Bitcoin (BTC)</h2>
-    <div class="big">${btc?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
-    <div class="text-sm text-gray-500">${btc?.timestamp ?? "--"}</div>
-  </div>
-  <div class="card">
-    <h2>Ethereum (ETH)</h2>
-    <div class="big">${eth?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
-    <div class="text-sm text-gray-500">${eth?.timestamp ?? "--"}</div>
-  </div>
-  <div class="card">
-    <h2>Solana (SOL)</h2>
-    <div class="big">${sol?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
-    <div class="text-sm text-gray-500">${sol?.timestamp ?? "--"}</div>
-  </div>
-  <div class="card">
-    <h2>Ripple (XRP)</h2>
-    <div class="big">${xrp?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
-    <div class="text-sm text-gray-500">${xrp?.timestamp ?? "--"}</div>
-  </div>
-</div>
-
----
-
-## Data
-
 ```js 
 // Function to format market cap
 function formatMarketCap(value) {
@@ -431,6 +375,128 @@ display(html`
 
 ---
 
+# Stocks 
+
+<div class="grid grid-cols-4 gap-4 mt-4">
+  <div class="card">
+    <h2>Apple (AAPL)</h2>
+    <div class="big">${aapl?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
+    <div class="text-sm text-gray-500">${aapl?.timestamp ?? "--"}</div>
+  </div>
+  <div class="card">
+    <h2>Google (GOOGL)</h2>
+    <div class="big">${googl?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
+    <div class="text-sm text-gray-500">${googl?.timestamp ?? "--"}</div>
+  </div>
+  <div class="card">
+    <h2>Meta (META)</h2>
+    <div class="big">${meta?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
+    <div class="text-sm text-gray-500">${meta?.timestamp ?? "--"}</div>
+  </div>
+  <div class="card">
+    <h2>Netflix (NFLX)</h2>
+    <div class="big">${nflx?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
+    <div class="text-sm text-gray-500">${nflx?.timestamp ?? "--"}</div>
+  </div>
+</div>
+
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container" style="height: 500px; width: 100%;">
+ <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
+ <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+ {
+ "symbols": [
+   [
+     "Apple",
+     "AAPL|1D"
+   ],
+   [
+     "Google",
+     "GOOGL|1D"
+   ],
+    [
+      "Meta",
+      "NASDAQ:META|1D"
+    ],
+   [
+     "Netflix",
+     "NASDAQ:NFLX|1D"
+   ]
+ ],
+ "chartOnly": false,
+ "width": "100%",
+ "height": 500,
+ "locale": "en",
+ "colorTheme": "dark",
+ "autosize": true,
+ "showVolume": false,
+ "showMA": false,
+ "hideDateRanges": false,
+ "hideMarketStatus": false,
+ "hideSymbolLogo": false,
+ "scalePosition": "right",
+ "scaleMode": "Normal",
+ "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+ "fontSize": "10",
+ "noTimeScale": false,
+ "valuesTracking": "1",
+ "changeMode": "price-and-percent",
+ "chartType": "area",
+ "maLineColor": "#2962FF",
+ "maLineWidth": 1,
+ "maLength": 9,
+ "headerFontSize": "medium",
+ "lineWidth": 2,
+ "lineType": 0,
+ "dateRanges": [
+   "1d|1",
+   "1m|30",
+   "3m|60",
+   "12m|1D",
+   "60m|1W",
+   "all|1M"
+ ]
+}
+ </script>
+</div>
+<!-- TradingView Widget END -->
+
+---
+
+# Crypto
+
+<br>
+
+<div style="width: 100%; position: relative;">
+  <script src="https://widgets.coingecko.com/gecko-coin-price-marquee-widget.js"></script>
+  <gecko-coin-price-marquee-widget locale="en" dark-mode="false" outlined="true" coin-ids="bitcoin, ethereum, solana, ripple" initial-currency="usd"></gecko-coin-price-marquee-widget>
+</div>
+
+<div class="grid grid-cols-4 gap-4 mt-4">
+  <div class="card">
+    <h2>Bitcoin (BTC)</h2>
+    <div class="big">${btc?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
+    <div class="text-sm text-gray-500">${btc?.timestamp ?? "--"}</div>
+  </div>
+  <div class="card">
+    <h2>Ethereum (ETH)</h2>
+    <div class="big">${eth?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
+    <div class="text-sm text-gray-500">${eth?.timestamp ?? "--"}</div>
+  </div>
+  <div class="card">
+    <h2>Solana (SOL)</h2>
+    <div class="big">${sol?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
+    <div class="text-sm text-gray-500">${sol?.timestamp ?? "--"}</div>
+  </div>
+  <div class="card">
+    <h2>Ripple (XRP)</h2>
+    <div class="big">${xrp?.price?.toLocaleString("en-US", {style: "currency", currency: "USD"}) ?? "--"}</div>
+    <div class="text-sm text-gray-500">${xrp?.timestamp ?? "--"}</div>
+  </div>
+</div>
+
+---
+
 ## TradingView
 
 ```js
@@ -451,10 +517,10 @@ const tradingChartSection = html`
       }}>
       Fullscreen
     </button>
-    <div style="width: 100%; height: 600px; position: relative;">
+    <div style="width: 100%; height: 1000px; position: relative;">
       <iframe
         src="https://trading-api-javascript.netlify.app"
-        style="width: 100%; height: 1000px; border: none; position: absolute; top: 0; left: 0;"
+        style="width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0;"
         allow="fullscreen"
       ></iframe>
     </div>
@@ -463,3 +529,68 @@ const tradingChartSection = html`
 
 display(tradingChartSection);
 ```
+
+---
+
+## GeckoTerminal
+
+```js
+const geckoterminal = html`
+  <div>
+    <button 
+      style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+      onclick=${(e) => {
+        const iframe = e.target.parentElement.querySelector('iframe');
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+          iframe.msRequestFullscreen();
+        }
+      }}>
+      Fullscreen
+    </button>
+    <div style="width: 100%; height: 1000px; position: relative;">
+    <iframe height="100%" width="100%" 
+        id="geckoterminal-embed" 
+        title="GeckoTerminal Embed"
+        src="https://www.geckoterminal.com/chain-rankings"
+        frameborder="0" allow="clipboard-write" allowfullscreen></iframe>
+    </div>
+  </div>
+`;
+
+display(geckoterminal);
+```
+
+<!-- ```js
+const geckoterminal = html`
+  <div>
+    <button 
+      style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+      onclick=${(e) => {
+        const iframe = e.target.parentElement.querySelector('iframe');
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+          iframe.msRequestFullscreen();
+        }
+      }}>
+      Fullscreen
+    </button>
+    <div style="width: 100%; height: 600px; position: relative;">
+    <iframe height="100%" width="100%" 
+        id="geckoterminal-embed" 
+        title="GeckoTerminal Embed"
+        // src="https://www.geckoterminal.com/solana/pools/22WrmyTj8x2TRVQen3fxxi2r4Rn6JDHWoMTpsSmn8RUd?embed=1&info=1&swaps=1&grayscale=0&light_chart=0"
+        src="https://www.geckoterminal.com/chain-rankings"
+        frameborder="0" allow="clipboard-write" allowfullscreen></iframe>
+    </div>
+  </div>
+`;
+
+display(geckoterminal);
+``` -->
