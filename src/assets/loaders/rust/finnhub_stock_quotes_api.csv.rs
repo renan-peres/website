@@ -10,10 +10,13 @@
 //! - Real-time quotes and company profiles
 //! - Major US stocks across sectors
 //! - Error handling and logging
-//! - Clean CSV output format
+//! - Clean CSV output format with proper data types
 //!
 //! **Environment Setup**:
 //! ```cargo
+//! [package]
+//! edition = "2021"
+//! 
 //! [dependencies]
 //! reqwest = { version = "0.11", features = ["json"] }
 //! serde = { version = "1.0", features = ["derive"] }
@@ -23,6 +26,7 @@
 //! futures = "0.3"
 //! ```
 
+use serde::{Serialize, Deserialize};
 use serde_json::Value;
 use std::error::Error;
 use std::time::{Instant, Duration};
@@ -32,9 +36,19 @@ use tokio::time::sleep;
 #[path = "./finnhub_config.rs"]
 mod config;
 
-#[path = "./make_clean_names.rs"]
-mod make_clean_names;
-use make_clean_names::clean_column_name;
+
+
+#[derive(Debug, Serialize, Deserialize)]
+struct StockQuote {
+    symbol: String,
+    current_price: f64,
+    change: f64,
+    percent_change: f64,
+    high_price: f64,
+    low_price: f64,
+    open_price: f64,
+    previous_close: f64,
+}
 
 async fn fetch_quote(
     client: &reqwest::Client,
@@ -130,8 +144,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let processing_start = Instant::now();
     let mut wtr = csv::Writer::from_writer(std::io::stdout());
     
-    // Write predefined headers
-    let headers = vec![
+    // Write headers with type hints
+    wtr.write_record(&[
         "symbol",
         "current_price",
         "change",
@@ -140,22 +154,18 @@ async fn main() -> Result<(), Box<dyn Error>> {
         "low_price",
         "open_price",
         "previous_close"
-    ].into_iter()
-    .map(|h| clean_column_name(h))
-    .collect::<Vec<String>>();
-
-    wtr.write_record(&headers)?;
+    ])?;
 
     let mut successful_entries = 0;
+
     for (symbol, result) in symbols.iter().zip(all_results.iter()) {
         if let Ok(Some(item)) = result {
             if let Some(obj) = item.as_object() {
-                // Map API fields to our desired columns
                 let record = vec![
                     symbol.to_string(),
                     obj.get("c").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),
                     obj.get("d").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),
-                    obj.get("dp").and_then(|v| v.as_f64()).map(|v| format!("{:.2}", v)).unwrap_or_default(),
+                    obj.get("dp").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),
                     obj.get("h").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),
                     obj.get("l").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),
                     obj.get("o").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),

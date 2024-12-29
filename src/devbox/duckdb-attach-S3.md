@@ -15,13 +15,19 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
   margin-right: 0 !important;
   padding-right: 0 !important;
 }
-
 </style>
 ```
 
 # Attach DuckDB Database from S3
+
 ```js
 import {datetime} from "../assets/components/datetime.js";
+import * as vgplot from "npm:@uwdata/vgplot";
+import {getDefaultClient} from "observablehq:stdlib/duckdb";
+import { DEFAULT_TABLE_CONFIG, getCustomTableFormat, createCollapsibleSection } from "../assets/components/tableFormatting.js";
+
+const formatUrl = (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''; // Helper function for URL formatting
+const db = await getDefaultClient();
 ```
 
 <div class="datetime-container">
@@ -32,13 +38,6 @@ import {datetime} from "../assets/components/datetime.js";
 
 ## Setup
 *Please wait a few seconds for the database to load.*
-```js echo=true
-import * as vgplot from "npm:@uwdata/vgplot";
-import {getDefaultClient} from "observablehq:stdlib/duckdb";
-import { getTableFormat, getCustomTableFormat } from "../assets/components/tableFormatting.js"; // Table Formatting & Download Buttons
-const formatUrl = (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''; // Helper function for URL formatting
-const db = await getDefaultClient();
-```
 
 ```sql echo=true display=false
 ATTACH 's3://aws-test-duckdb/duckdb/data.db' AS s3;
@@ -53,9 +52,9 @@ USE s3;
 ```js
 // Get tables
 const tables = await db.sql`
-  SELECT DISTINCT CONCAT(table_catalog, '.', table_name) AS table_name
-  FROM information_schema.tables 
-  -- WHERE table_schema = 'main'
+  SELECT CONCAT(database, '.', schema,'.' , name) AS table_name
+  FROM (SHOW ALL TABLES)
+  -- WHERE schema = 'main';
 `;
 
 // Create the select input and store its value
@@ -70,18 +69,19 @@ const result = await db.query(`SELECT * FROM ${selectedTable.table_name} LIMIT 1
 
 // Get the configuration and buttons
 const tableConfig = getCustomTableFormat(result, {
-  datasetName: `${selectedTable.table_name}`,
-  rows: 10,
-  dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth'], // Opitional
-  additionalFormatting: {
-    url: formatUrl,
-    website: formatUrl
-  }
+  ...DEFAULT_TABLE_CONFIG,
+  datasetName: `${selectedTable.table_name}`
 });
 
-// Display the buttons and table
-display(tableConfig.container);
-display(Inputs.table(result, tableConfig));
+// Create collapsible content
+const collapsibleContent = htl.html`
+  ${tableConfig.container}
+  ${Inputs.table(tableConfig.dataArray, tableConfig)}
+`;
+
+// Display the collapsible section
+// display(createCollapsibleSection(collapsibleContent, "Show Data", "collapsed"));
+display(createCollapsibleSection(collapsibleContent, "Show Data", "expanded"));
 ```
 
 ---
@@ -111,18 +111,18 @@ LIMIT 10;`,
 // Execute and display pre-built query results
 const prebuiltQueryResult = await db.query(prebuiltCode);
 
-// Get the configuration and buttons
 const tableConfig2 = getCustomTableFormat(prebuiltQueryResult, {
-  datasetName: 'query_result',
-  rows: 10,
-  dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth'],
-  additionalFormatting: {
-    url: formatUrl,
-    website: formatUrl
-  }
+  ...DEFAULT_TABLE_CONFIG,
+  datasetName: 'query_result'
 });
 
-// Display the buttons and table
-display(tableConfig2.container);
-display(Inputs.table(prebuiltQueryResult, tableConfig2));
+// Create collapsible content
+const collapsibleContent2 = htl.html`
+  ${tableConfig2.container}
+  ${Inputs.table(tableConfig2.dataArray, tableConfig2)}
+`;
+
+// Display the collapsible section
+// display(createCollapsibleSection(collapsibleContent2, "Show Data", "collapsed"));
+display(createCollapsibleSection(collapsibleContent2, "Show Data", "expanded"));
 ```

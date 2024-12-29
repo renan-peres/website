@@ -12,8 +12,8 @@ keywords: live real time data wss streaming stream socket
 // Import dependencies and prepare data
 import {datetime} from "../assets/components/datetime.js";
 import * as XLSX from "npm:xlsx";
-import { getTableFormat, getCustomTableFormat } from "../assets/components/tableFormatting.js"; // Table Formatting & Download Buttons
-const formatUrl = (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''; // Helper function for URL formatting
+import { DEFAULT_TABLE_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../assets/components/tableFormatting.js";
+import * as htl from "htl";
 const stock_quotes = FileAttachment("../assets/loaders/rust/finnhub_stock_quotes_api.csv").csv();
 ```
 
@@ -288,43 +288,17 @@ const selectedStockData = stock_quotes.map(({
 }));
 
 // Collapsible Display
-display(html`
-  <div>
-    <button 
-      style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
-      onclick=${(e) => {
-        const dataSection = e.target.nextElementSibling;
-        const isHidden = dataSection.style.display === 'none';
-        
-        dataSection.style.display = isHidden ? 'block' : 'none';
-        e.target.textContent = isHidden ? 'Hide Data' : 'Show Data';
-      }}
-    >
-      Show Data
-    </button>
-    
-    <div style="display: none;">
-      ${(() => {
-        // Get the configuration and buttons
-        const tableConfig = getCustomTableFormat(selectedStockData, {
-          datasetName: 'stock_data',
-          rows: 20,
-          additionalFormatting: {
-            logo: formatUrl,
-            url: formatUrl,
-            website: formatUrl,
-            weburl: formatUrl
-          }
-        });
-        
-        return html`
-          ${tableConfig.container}
-          ${Inputs.table(selectedStockData, tableConfig)}
-        `;
-      })()}
-    </div>
-  </div>
-`);
+const tableConfig = getCustomTableFormat(selectedStockData, {
+  ...DEFAULT_TABLE_CONFIG,
+  datasetName: 'stock_data'
+});
+
+const collapsibleContent = htl.html`
+  ${tableConfig.container}
+  ${Inputs.table(tableConfig.dataArray, tableConfig)}
+`;
+
+display(createCollapsibleSection(collapsibleContent, "Show Data", "collapsed"));
 ```
 
 ---

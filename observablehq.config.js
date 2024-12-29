@@ -49,6 +49,17 @@ export default {
     }
     
     ,{
+      name: "Financial Markets",
+      open: true,
+      pages: [
+        {name: "Market News", path: "/financial-markets/market-news"},
+        {name: "Stock & Crypto Prices", path: "/financial-markets/stock-crypto-prices"},
+        // {name: "Real-Time Stock & Crypto Prices", path: "/financial-markets/stock-crypto-prices-old"},
+        {name: "IPO Calendar", path: "/financial-markets/ipo-calendar"}
+      ]
+    }
+
+    ,{
       name: "Economy",
       open: true,
       pages: [
@@ -61,23 +72,13 @@ export default {
     }
 
     ,{
-      name: "Financial Markets",
-      open: true,
-      pages: [
-        {name: "Market News", path: "/finance/market-news"},
-        {name: "Stock & Crypto Prices", path: "/finance/stock-crypto-prices"},
-        // {name: "Real-Time Stock & Crypto Prices", path: "/finance/stock-crypto-prices-old"},
-        {name: "IPO Calendar", path: "/finance/ipo-calendar"}
-      ]
-    }
-
-    ,{
       name: "Quantitative Finance",
       open: true,
       pages: [
-        {name: "Bond Valuation", path: "/finance/bond-valuation"},
-        {name: "Portfolio Builder & Optimization", path: "/finance/portfolio-builder"},
-        {name: "Naive Arbitrage for Trading", path: "/finance/naive-arb-trading"}
+        {name: "Bond Valuation", path: "/quantitative-finance/bond-valuation"},
+        {name: "Portfolio Builder & Optimization", path: "/quantitative-finance/portfolio-builder"},
+        {name: "Option Pricing Model", path: "/quantitative-finance/option-pricing-model"},
+        {name: "Naive Arbitrage for Trading", path: "/quantitative-finance/naive-arb-trading"}
       ]
     }
     

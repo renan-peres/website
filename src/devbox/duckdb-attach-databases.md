@@ -6,7 +6,7 @@ toc: false
 source: https://observablehq.com/framework/lib/duckdb | https://duckdb.org/docs/api/wasm/overview.html | https://duckdb.org/docs/guides/network_cloud_storage/duckdb_over_https_or_s3.html | https://observablehq.com/@bayre/duckdb-s3 | https://talk.observablehq.com/t/loading-a-duckdb-database/8977/4 | https://tobilg.com/using-duckdb-wasm-for-in-browser-data-engineering | https://duckdb.org/docs/guides/network_cloud_storage/duckdb_over_https_or_s3
 keywords: 
 sql:
-  base: ../assets/loaders/duckdb_database.db
+  base: ../assets/loaders/duckdb/data.db
 ---
 
 # Attach DuckDB Databases
@@ -66,7 +66,7 @@ FROM dim_SRDESC;
 ## <u>Remote</u> (GitHub)
 
 ```sql echo=true
-ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/FRED-gov-data/data.db' AS github;
+ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/duckdb/duckdb_database_sample.db' AS github;
 USE github;
 -- SHOW TABLES;
 
@@ -99,9 +99,9 @@ LIMIT 10;
 ```js echo=true
 // Get tables
 const tables = await db.sql`
-  SELECT DISTINCT CONCAT(table_catalog, '.', table_name) AS table_name
-  FROM information_schema.tables 
-  -- WHERE table_schema = 'main'
+  SELECT CONCAT(database, '.', schema,'.' , name) AS table_name
+  FROM (SHOW ALL TABLES)
+  -- WHERE schema = 'main';
 `;
 
 // Create the select input and store its value
@@ -170,15 +170,15 @@ display(Inputs.table(prebuiltQueryResult, {
 
 ```js echo=true
 // Initialize DuckDB with predefined tables
-const db2 = await DuckDBClient.of({base: FileAttachment('../assets/loaders/duckdb_database.db')});
+const db2 = await DuckDBClient.of({base: FileAttachment('../assets/loaders/duckdb/data.db')});
 ```
 
 ```js echo=true
 // Get tables
 const tables2 = await db2.query(`
-  SELECT DISTINCT CONCAT(table_catalog, '.', table_name) AS table_name
-  FROM information_schema.tables 
-  -- WHERE table_schema = 'main'
+  SELECT CONCAT(database, '.', schema,'.' , name) AS table_name
+  FROM (SHOW ALL TABLES)
+  -- WHERE schema = 'main';
 `);
 
 // Create the select input and store its value
@@ -212,7 +212,7 @@ const db3 = DuckDBClient.of();
 ```js echo=true
 // Create the textarea that updates based on the selected query
 const prebuiltCode2 = view(Inputs.textarea({
-  value: `ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/FRED-gov-data/data.db' AS github;
+  value: `ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/duckdb/duckdb_database_sample.db' AS github;
 
 USE github;
 
