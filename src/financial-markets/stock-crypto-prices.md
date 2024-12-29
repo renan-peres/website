@@ -12,7 +12,7 @@ keywords: live real time data wss streaming stream socket
 // Import dependencies and prepare data
 import {datetime} from "../assets/components/datetime.js";
 import * as XLSX from "npm:xlsx";
-import { DEFAULT_TABLE_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../assets/components/tableFormatting.js";
+import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../assets/components/tableFormatting.js";
 import * as htl from "htl";
 const stock_quotes = FileAttachment("../assets/loaders/rust/finnhub_stock_quotes_api.csv").csv();
 ```
@@ -289,7 +289,7 @@ const selectedStockData = stock_quotes.map(({
 
 // Collapsible Display
 const tableConfig = getCustomTableFormat(selectedStockData, {
-  ...DEFAULT_TABLE_CONFIG,
+  ...DEFAULT_CONFIG,
   datasetName: 'stock_data'
 });
 

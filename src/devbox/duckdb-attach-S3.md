@@ -24,9 +24,7 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 import {datetime} from "../assets/components/datetime.js";
 import * as vgplot from "npm:@uwdata/vgplot";
 import {getDefaultClient} from "observablehq:stdlib/duckdb";
-import { DEFAULT_TABLE_CONFIG, getCustomTableFormat, createCollapsibleSection } from "../assets/components/tableFormatting.js";
-
-const formatUrl = (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''; // Helper function for URL formatting
+import { DEFAULT_CONFIG, getCustomTableFormat, createCollapsibleSection } from "../assets/components/tableFormatting.js";
 const db = await getDefaultClient();
 ```
 
@@ -47,7 +45,7 @@ USE s3;
 
 ---
 
-## <u>Responsive Output</u>
+## <u>Tables Available</u>
 
 ```js
 // Get tables
@@ -69,7 +67,7 @@ const result = await db.query(`SELECT * FROM ${selectedTable.table_name} LIMIT 1
 
 // Get the configuration and buttons
 const tableConfig = getCustomTableFormat(result, {
-  ...DEFAULT_TABLE_CONFIG,
+  ...DEFAULT_CONFIG,
   datasetName: `${selectedTable.table_name}`
 });
 
@@ -86,7 +84,7 @@ display(createCollapsibleSection(collapsibleContent, "Show Data", "expanded"));
 
 ---
 
-## <u>Interactive Code</u>
+## <u>Responsive SQL Code</u>
 
 ```js
 // Create the textarea that updates based on the selected query
@@ -94,10 +92,11 @@ const prebuiltCode = view(Inputs.textarea({
   value: `USE s3;
 
 SELECT * 
-FROM dim_SRDESC
-LIMIT 10;`,
+FROM us_president_favorability
+ORDER BY "Very Favorable %" DESC
+LIMIT 100;`,
   width: "600px",
-  rows: 5,
+  rows: 6,
   resize: "both",
   className: "sql-editor",
   style: { fontSize: "16px" },
@@ -112,7 +111,7 @@ LIMIT 10;`,
 const prebuiltQueryResult = await db.query(prebuiltCode);
 
 const tableConfig2 = getCustomTableFormat(prebuiltQueryResult, {
-  ...DEFAULT_TABLE_CONFIG,
+  ...DEFAULT_CONFIG,
   datasetName: 'query_result'
 });
 

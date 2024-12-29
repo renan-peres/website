@@ -2,13 +2,19 @@ import * as XLSX from "npm:xlsx";
 import * as d3 from "d3";
 import * as htl from "htl";
 
-const DEFAULT_OPTIONS = {
-  rows: 30,
+const DEFAULT_CONFIG = {
+  rows: 15,
   datasetName: "data",
-  dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth'],
+  dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth', 'time', 'pickup', 
+              'dropoff', 'birthday', 'First Inauguration Date', 'last_updated', 'retrieved_time'],
   dateFormat: d3.timeFormat("%Y-%m-%d"),
-  decimalColumns: ['Open', 'High', 'Low', 'Close', 'Adj Close', 'current_price'],
-  formatSpecifiers: {}
+  decimalColumns: ['Open', 'High', 'Low', 'Close', 'Adj Close', 'current_price', 'value', 'amount'],
+  formatSpecifiers: {},
+  additionalFormatting: {
+    url: (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : '',
+    website: (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : '',
+    'Portrait URL': (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''
+  }
 };
 
 const createButton = (text, styles, onClick) => {
@@ -51,20 +57,17 @@ const createDownloadButton = (text, dataArray, datasetName, format, formatSpecif
     }
   });
 
-export const formatUrl = (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : '';
-
-export const DEFAULT_TABLE_CONFIG = {
-  rows: 10,
-  dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth'],
-  decimalColumns: ['Open', 'High', 'Low', 'Close', 'Adj Close', 'value', 'amount'],
-  additionalFormatting: {
-    url: formatUrl,
-    website: formatUrl
-  }
+const createToggleButton = (text, container, displayStyle = 'block') => {
+  const button = createButton(text, { marginRight: "10px" }, () => {
+    const isHidden = container.style.display === 'none';
+    container.style.display = isHidden ? displayStyle : 'none';
+    button.textContent = isHidden ? `Hide ${text}` : `Show ${text}`;
+  });
+  return button;
 };
 
 export const getTableFormat = (data, options = {}) => {
-  const { rows, datasetName, dateColumns, dateFormat, decimalColumns, formatSpecifiers } = { ...DEFAULT_OPTIONS, ...options };
+  const { rows, datasetName, dateColumns, dateFormat, decimalColumns, formatSpecifiers } = { ...DEFAULT_CONFIG, ...options };
 
   let dataArray = convertToArray(data);
   
@@ -106,7 +109,6 @@ export const getTableFormat = (data, options = {}) => {
   dataDisplay.textContent = JSON.stringify(dataArray, null, 2);
   
   dataContainer.appendChild(dataDisplay);
-  dataContainer.append(jsonToggleButton);
   buttonContainer.append(xlsxButton, csvButton, jsonToggleButton);
   container.append(buttonContainer, dataContainer, tableContainer);
 
@@ -118,7 +120,7 @@ export const getTableFormat = (data, options = {}) => {
 };
 
 export const getCustomTableFormat = (data, options = {}) => {
-  const { additionalFormatting = {}, ...baseOptions } = { ...DEFAULT_OPTIONS, ...options };
+  const { additionalFormatting = {}, ...baseOptions } = { ...DEFAULT_CONFIG, ...options };
   const baseConfig = getTableFormat(data, baseOptions);
   
   return {
