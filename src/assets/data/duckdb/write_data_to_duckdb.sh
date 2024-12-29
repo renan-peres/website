@@ -6,7 +6,7 @@ DB_FILE="data.db"
 for csv_file in *.csv; do
    [ -f "$csv_file" ] || continue
    table_name=$(echo "${csv_file%.csv}" | tr '-' '_')
-   duckdb "$DB_FILE" "CREATE OR REPLACE TABLE $table_name AS (FROM read_csv('$csv_file'));"
+   duckdb "$DB_FILE" "CREATE OR REPLACE TABLE $table_name AS (read_csv_auto('$csv_file'));"
    echo "Created table $table_name from $csv_file"
 done
 
