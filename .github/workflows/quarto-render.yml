@@ -2,7 +2,7 @@ name: Quarto Render
 
 on:
   schedule:
-    - cron: '0 */10 * * *'  # 10 Hours
+    - cron: '0 10 * * 1-5'  # Every weekday (Mon-Fri) at 10 AM
   workflow_dispatch:
   push:
     branches:
