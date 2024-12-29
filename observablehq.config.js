@@ -72,7 +72,7 @@ export default {
     }
 
     ,{
-      name: "Financial Analytics",
+      name: "Quantitative Finance",
       open: true,
       pages: [
         {name: "Bond Valuation", path: "/finance/bond-valuation"},
