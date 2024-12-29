@@ -36,6 +36,7 @@ import {datetime} from "../assets/components/datetime.js";
 import * as vgplot from "npm:@uwdata/vgplot";
 import {getDefaultClient} from "observablehq:stdlib/duckdb";
 import { getTableFormat, getCustomTableFormat } from "../assets/components/tableFormatting.js"; // Table Formatting & Download Buttons
+const formatUrl = (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : ''; // Helper function for URL formatting
 const db = await getDefaultClient();
 ```
 
@@ -71,7 +72,11 @@ const result = await db.query(`SELECT * FROM ${selectedTable.table_name} LIMIT 1
 const tableConfig = getCustomTableFormat(result, {
   datasetName: `${selectedTable.table_name}`,
   rows: 10,
-  dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth'] // Opitional
+  dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth'], // Opitional
+  additionalFormatting: {
+    url: formatUrl,
+    website: formatUrl
+  }
 });
 
 // Display the buttons and table
@@ -89,7 +94,7 @@ const prebuiltCode = view(Inputs.textarea({
   value: `USE s3;
 
 SELECT * 
-FROM airports
+FROM dim_SRDESC
 LIMIT 10;`,
   width: "600px",
   rows: 5,
@@ -110,7 +115,11 @@ const prebuiltQueryResult = await db.query(prebuiltCode);
 const tableConfig2 = getCustomTableFormat(prebuiltQueryResult, {
   datasetName: 'query_result',
   rows: 10,
-  dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth'] // Opitional
+  dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth'],
+  additionalFormatting: {
+    url: formatUrl,
+    website: formatUrl
+  }
 });
 
 // Display the buttons and table
