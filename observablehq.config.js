@@ -26,7 +26,7 @@ a.setAttribute("href", a.getAttribute("href") + (
 
 export default {
   // The app’s title; used in the sidebar and webpage titles.
-  title: "Renan Peres's Website",
+  title: "Home",
 
   // The pages and sections in the sidebar. If you don’t specify this option,
   // all pages will be listed in alphabetical order. Listing pages explicitly
