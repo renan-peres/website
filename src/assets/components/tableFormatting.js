@@ -5,7 +5,9 @@ import * as d3 from "d3";
 export function getTableFormat(data, options = {}) {
   const {
     rows = 30,
-    datasetName = "data"
+    datasetName = "data",
+    dateColumns = ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth'],
+    dateFormat = d3.timeFormat("%Y-%m-%d")
   } = options;
 
   // Ensure data is converted to a plain array of objects
@@ -16,8 +18,8 @@ export function getTableFormat(data, options = {}) {
   // Apply date parsing to the data
   dataArray = dataArray.map(item => {
     Object.entries(item).forEach(([key, value]) => {
-      if (value && (key === 'Date' || key === 'date')) {
-        item[key] = d3.timeFormat("%Y-%m-%d")(d3.isoParse(value) || new Date(value));
+      if (value && dateColumns.includes(key)) {
+        item[key] = dateFormat(d3.isoParse(value) || new Date(value));
       }
     });
     return item;
@@ -65,7 +67,7 @@ export function getTableFormat(data, options = {}) {
 
   // Style the buttons
   [xlsxButton, csvButton].forEach(button => {
-    button.className = "button"; // Use Observable's default button class
+    button.className = "button";
     button.style.marginRight = "10px";
   });
 
@@ -89,21 +91,20 @@ export function getTableFormat(data, options = {}) {
   buttonContainer.appendChild(csvButton);
   container.appendChild(buttonContainer);
 
+  // Create format configuration using dateColumns
+  const format = {};
+  dateColumns.forEach(colName => {
+    format[colName] = value => {
+      if (!value) return '';
+      const date = d3.isoParse(value) || new Date(value);
+      return dateFormat(date);
+    };
+  });
+
   // Return the formatting configuration and buttons
   return {
     container,
-    format: {
-      Date: value => {
-        if (!value) return '';
-        const date = d3.isoParse(value) || new Date(value);
-        return d3.timeFormat("%Y-%m-%d")(date);
-      },
-      date: value => {
-        if (!value) return '';
-        const date = d3.isoParse(value) || new Date(value);
-        return d3.timeFormat("%Y-%m-%d")(date);
-      }
-    },
+    format,
     rows
   };
 }
@@ -118,20 +119,20 @@ export function getCustomTableFormat(data, options = {}) {
     additionalFormatting = {}
   } = options;
 
-  // Create basic config
-  const baseConfig = getTableFormat(data, { rows, datasetName });
-  
-  // Create custom format configuration
-  const formatConfig = { ...additionalFormatting };
-  dateColumns.forEach(colName => {
-    formatConfig[colName] = value => {
-      if (!value) return '';
-      const date = d3.isoParse(value) || new Date(value);
-      return dateFormat(date);
-    };
+  // Create basic config with the same date columns
+  const baseConfig = getTableFormat(data, { 
+    rows, 
+    datasetName, 
+    dateColumns,
+    dateFormat 
   });
+  
+  // Add any additional formatting
+  const formatConfig = { 
+    ...baseConfig.format,
+    ...additionalFormatting 
+  };
 
-  // Return combined configuration
   return {
     ...baseConfig,
     format: formatConfig
