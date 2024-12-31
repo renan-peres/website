@@ -8,7 +8,7 @@ const DEFAULT_CONFIG = {
   dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth', 'time', 'pickup', 
               'dropoff', 'birthday', 'First Inauguration Date', 'last_updated', 'retrieved_time'],
   dateFormat: d3.timeFormat("%Y-%m-%d"),
-  decimalColumns: ['Open', 'High', 'Low', 'Close', 'Adj Close', 'value', 'amount'],
+  decimalColumns: [],
   formatSpecifiers: {},
   additionalFormatting: {
     url: (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : '',

@@ -267,69 +267,58 @@ display(createCollapsibleSection(collapsibleContent, "Show Data", "hide"));
 
 # TradingView
 
-```js
-const tradingChartSection = html`
-  <div>
-    <button 
-      style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
-      onclick=${(e) => {
-        const iframe = e.target.parentElement.querySelector('iframe');
-        if (iframe.requestFullscreen) {
-          iframe.requestFullscreen();
-        } else if (iframe.webkitRequestFullscreen) {
-          iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) {
-          iframe.msRequestFullscreen();
-        }
-      }}>
-      Fullscreen
-    </button>
-    <div style="width: 100%; height: 1000px; position: relative;">
-      <iframe
-        src="https://trading-api-javascript.netlify.app"
-        style="width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0;"
-        allow="fullscreen"
-      ></iframe>
-    </div>
+<div>
+  <button 
+    style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+    onclick=${(e) => {
+      const iframe = e.target.parentElement.querySelector('iframe');
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.msRequestFullscreen) {
+        iframe.msRequestFullscreen();
+      }
+    }}>
+    Fullscreen
+  </button>
+  <div style="width: 100%; height: 1000px; position: relative;">
+    <iframe
+      src="https://trading-api-javascript.netlify.app"
+      style="width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0;"
+      allow="fullscreen"
+    ></iframe>
   </div>
+</div>
 `;
-
-display(tradingChartSection);
-```
 
 ---
 
 # GeckoTerminal
 
-```js
-const geckoterminal = html`
-  <div>
-    <button 
-      style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
-      onclick=${(e) => {
-        const iframe = e.target.parentElement.querySelector('iframe');
-        if (iframe.requestFullscreen) {
-          iframe.requestFullscreen();
-        } else if (iframe.webkitRequestFullscreen) {
-          iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) {
-          iframe.msRequestFullscreen();
-        }
-      }}>
-      Fullscreen
-    </button>
-    <div style="width: 100%; height: 1000px; position: relative;">
-    <iframe height="100%" width="100%" 
-        id="geckoterminal-embed" 
-        title="GeckoTerminal Embed"
-        src="https://www.geckoterminal.com/chain-rankings"
-        frameborder="0" allow="clipboard-write" allowfullscreen></iframe>
-    </div>
+<div>
+  <button 
+    style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+    onclick=${(e) => {
+      const iframe = e.target.parentElement.querySelector('iframe');
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.msRequestFullscreen) {
+        iframe.msRequestFullscreen();
+      }
+    }}>
+    Fullscreen
+  </button>
+  <div style="width: 100%; height: 1000px; position: relative;">
+  <iframe height="100%" width="100%" 
+      id="geckoterminal-embed" 
+      title="GeckoTerminal Embed"
+      src="https://www.geckoterminal.com/chain-rankings"
+      frameborder="0" allow="clipboard-write" allowfullscreen></iframe>
   </div>
-`;
-
-display(geckoterminal);
-```
+</div>
 
 <!-- ```js
 const geckoterminal = html`
