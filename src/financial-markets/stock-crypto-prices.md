@@ -140,93 +140,136 @@ display(createCollapsibleSection(collapsibleContent, "Show Data", "hide"));
 </div>
 
 <!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container" style="height: 500px; width: 100%;">
-  <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
-    {
-      "symbols": [
-        ["Apple", "AAPL|1D"],
-        ["Google", "GOOGL|1D"],
-        ["Meta", "NASDAQ:META|1D"],
-        ["Netflix", "NASDAQ:NFLX|1D"]
-      ],
-      "chartOnly": false,
-      "width": "100%",
-      "height": 500,
-      "locale": "en",
-      "colorTheme": "dark",
-      "autosize": true,
-      "showVolume": false,
-      "showMA": false,
-      "hideDateRanges": false,
-      "hideMarketStatus": false,
-      "hideSymbolLogo": false,
-      "scalePosition": "right",
-      "scaleMode": "Normal",
-      "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
-      "fontSize": "10",
-      "noTimeScale": false,
-      "valuesTracking": "1",
-      "changeMode": "price-and-percent",
-      "chartType": "area",
-      "maLineColor": "#2962FF",
-      "maLineWidth": 1,
-      "maLength": 9,
-      "headerFontSize": "medium",
-      "lineWidth": 2,
-      "lineType": 0,
-      "dateRanges": [
-        "1d|1",
-        "1m|30",
-        "3m|60",
-        "12m|1D",
-        "60m|1W",
-        "all|1M"
-      ]
-    }
-  </script>
-</div>
-<!-- TradingView Widget END -->
-
-<br>
-
-<div class="tradingview-widget-container">
-  <div class="tradingview-widget-container__widget"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-  {
-    "width": "100%",
-    "height": 800,
-    "symbol": "NASDAQ:AAPL",
-    "interval": "D",
-    "timezone": "exchange",
-    "theme": "dark",
-    "backgroundColor": "rgba(22, 26, 37, 1)",
-    "style": "1",
-    "withdateranges": true,
-    "hide_side_toolbar": false,
-    "allow_symbol_change": true,
-    "save_image": true,
-    "locale": "en",
-    "watchlist": [
-      "AAPL",
-      "GOOG",
-      "META",
-      "NFLX"
-    ],
-    "studies": [
-    "ROC@tv-basicstudies",
-    "StochasticRSI@tv-basicstudies",
-    "MASimple@tv-basicstudies"
-    ],
-    "locale": "en",
-    "show_popup_button": true,
-    "popup_width": "1000",
-    "popup_height": "650",
-    "calendar": true,
-    "support_host": "https://www.tradingview.com"
-  }
-  </script>
-</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradingView Widgets Side by Side</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .charts-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            gap: 16px;
+            padding: 16px;
+        }
+        .chart-wrapper {
+            flex: 1;
+            min-width: 300px;
+        }
+        .tradingview-widget-container {
+            width: 100%;
+            height: 500px;
+        }
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .charts-container {
+                flex-direction: column;
+            }
+            .chart-wrapper {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="charts-container">
+        <div class="chart-wrapper">
+            <!-- First TradingView Widget (Symbol Overview) -->
+            <div class="tradingview-widget-container" style="height: 500px; width: 100%;">
+                <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+                {
+                    "symbols": [
+                        ["Apple", "AAPL|1D"],
+                        ["Google", "GOOGL|1D"],
+                        ["Meta", "NASDAQ:META|1D"],
+                        ["Netflix", "NASDAQ:NFLX|1D"]
+                    ],
+                    "chartOnly": false,
+                    "width": "100%",
+                    "height": 500,
+                    "locale": "en",
+                    "colorTheme": "dark",
+                    "autosize": true,
+                    "showVolume": false,
+                    "showMA": false,
+                    "hideDateRanges": false,
+                    "hideMarketStatus": false,
+                    "hideSymbolLogo": false,
+                    "scalePosition": "right",
+                    "scaleMode": "Normal",
+                    "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+                    "fontSize": "10",
+                    "noTimeScale": false,
+                    "valuesTracking": "1",
+                    "changeMode": "price-and-percent",
+                    "calendar": true,
+                    "chartType": "area",
+                    "maLineColor": "#2962FF",
+                    "maLineWidth": 1,
+                    "maLength": 9,
+                    "headerFontSize": "medium",
+                    "lineWidth": 2,
+                    "lineType": 0,
+                    "dateRanges": [
+                        "1d|1",
+                        "1m|30",
+                        "3m|60",
+                        "12m|1D",
+                        "60m|1W",
+                        "all|1M"
+                    ]
+                }
+                </script>
+            </div>
+        </div>
+        <div class="chart-wrapper">
+            <!-- Second TradingView Widget (Advanced Chart) -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                {
+                    "width": "100%",
+                    "height": 500,
+                    "symbol": "NASDAQ:AAPL",
+                    "interval": "D",
+                    "timezone": "exchange",
+                    "theme": "dark",
+                    "backgroundColor": "rgba(22, 26, 37, 1)",
+                    "style": "1",
+                    "withdateranges": true,
+                    "hide_side_toolbar": false,
+                    "allow_symbol_change": true,
+                    "save_image": true,
+                    "locale": "en",
+                    "watchlist": [
+                        "AAPL",
+                        "GOOG",
+                        "META",
+                        "NFLX"
+                    ],
+                    "studies": [
+                        "ROC@tv-basicstudies",
+                        "StochasticRSI@tv-basicstudies",
+                        "MASimple@tv-basicstudies"
+                    ],
+                    "locale": "en",
+                    "show_popup_button": true,
+                    "popup_width": "1000",
+                    "popup_height": "650",
+                    "calendar": true,
+                    "support_host": "https://www.tradingview.com"
+                }
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
 
 ---
 
@@ -256,59 +299,136 @@ display(createCollapsibleSection(collapsibleContent, "Show Data", "hide"));
 </div>
 
 <!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container" style="height: 500px; width: 100%;">
-  <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
-    {
-      "symbols": [
-        ["BTC/USD", "BINANCE:BTCUSD|1D"],
-        ["ETH/USD", "BINANCE:ETHUSD|1D"],
-        ["SOL/USD", "BINANCE:SOLUSD|1D"],
-        ["XPP/USD", "BINANCE:XRPUSD|1D"]
-      ],
-      "chartOnly": false,
-      "width": "100%",
-      "height": 500,
-      "locale": "en",
-      "colorTheme": "dark",
-      "autosize": true,
-      "showVolume": false,
-      "showMA": false,
-      "hideDateRanges": false,
-      "hideMarketStatus": false,
-      "hideSymbolLogo": false,
-      "scalePosition": "right",
-      "scaleMode": "Normal",
-      "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
-      "fontSize": "10",
-      "noTimeScale": false,
-      "valuesTracking": "1",
-      "changeMode": "price-and-percent",
-      "chartType": "area",
-      "maLineColor": "#2962FF",
-      "maLineWidth": 1,
-      "maLength": 9,
-      "headerFontSize": "medium",
-      "lineWidth": 2,
-      "lineType": 0,
-      "dateRanges": [
-        "1d|1",
-        "1m|30",
-        "3m|60",
-        "12m|1D",
-        "60m|1W",
-        "all|1M"
-      ]
-    }
-  </script>
-</div>
-<!-- TradingView Widget END -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradingView Widgets Side by Side</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .charts-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            gap: 16px;
+            padding: 16px;
+        }
+        .chart-wrapper {
+            flex: 1;
+            min-width: 300px;
+        }
+        .tradingview-widget-container {
+            width: 100%;
+            height: 500px;
+        }
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .charts-container {
+                flex-direction: column;
+            }
+            .chart-wrapper {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="charts-container">
+        <div class="chart-wrapper">
+            <!-- First TradingView Widget (Symbol Overview) -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+                {
+                    "symbols": [
+                        ["BTC/USD", "BINANCE:BTCUSD|1D"],
+                        ["ETH/USD", "BINANCE:ETHUSD|1D"],
+                        ["SOL/USD", "BINANCE:SOLUSD|1D"],
+                        ["XRP/USD", "BINANCE:XRPUSD|1D"]
+                    ],
+                    "chartOnly": false,
+                    "width": "100%",
+                    "height": 500,
+                    "locale": "en",
+                    "colorTheme": "dark",
+                    "autosize": true,
+                    "showVolume": false,
+                    "showMA": false,
+                    "hideDateRanges": false,
+                    "hideMarketStatus": false,
+                    "hideSymbolLogo": false,
+                    "scalePosition": "right",
+                    "scaleMode": "Normal",
+                    "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+                    "fontSize": "10",
+                    "noTimeScale": false,
+                    "valuesTracking": "1",
+                    "changeMode": "price-and-percent",
+                    "chartType": "area",
+                    "maLineColor": "#2962FF",
+                    "maLineWidth": 1,
+                    "maLength": 9,
+                    "headerFontSize": "medium",
+                    "lineWidth": 2,
+                    "lineType": 0,
+                    "dateRanges": [
+                        "1d|1",
+                        "1m|30",
+                        "3m|60",
+                        "12m|1D",
+                        "60m|1W",
+                        "all|1M"
+                    ]
+                }
+                </script>
+            </div>
+        </div>
+        <div class="chart-wrapper">
+            <!-- Second TradingView Widget (Advanced Chart) -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                {
+                    "width": "100%",
+                    "height": 500,
+                    "symbol": "BINANCE:BTCUSD",
+                    "interval": "D",
+                    "timezone": "exchange",
+                    "theme": "dark",
+                    "backgroundColor": "rgba(22, 26, 37, 1)",
+                    "style": "1",
+                    "withdateranges": true,
+                    "hide_side_toolbar": false,
+                    "allow_symbol_change": true,
+                    "save_image": true,
+                    "locale": "en",
+                    "watchlist": [
+                        "BINANCE:BTCUSD",
+                        "BINANCE:ETHUSD",
+                        "BINANCE:SOLUSD",
+                        "BINANCE:XRPUSD"
+                    ],
+                    "studies": [
+                        "ROC@tv-basicstudies",
+                        "StochasticRSI@tv-basicstudies",
+                        "MASimple@tv-basicstudies"
+                    ],
+                    "show_popup_button": true,
+                    "popup_width": "1000",
+                    "popup_height": "650",
+                    "calendar": true,
+                    "support_host": "https://www.tradingview.com"
+                }
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
 
-<br>
-
-<!-- # TradingView -->
-
-```js
+<!-- ```js
 const tradingChartSection = html`
   <div>
     <button 
@@ -336,11 +456,11 @@ const tradingChartSection = html`
 `;
 
 display(tradingChartSection);
-```
+``` -->
 
-<br>
+---
 
-<!-- # GeckoTerminal -->
+## GeckoTerminal
 
 ```js
 const geckoterminal = html`
