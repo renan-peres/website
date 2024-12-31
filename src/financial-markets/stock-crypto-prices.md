@@ -9,20 +9,29 @@ keywords: live real time data wss streaming stream socket
 
 # Real-Time Stock & Crypto Prices
 ```js
-// Import dependencies and prepare data
-import {datetime} from "../assets/components/datetime.js";
+import { datetime } from "../assets/components/datetime.js";
 import * as XLSX from "npm:xlsx";
 import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../assets/components/tableFormatting.js";
 import * as htl from "htl";
-const stock_quotes = FileAttachment("../assets/loaders/rust/finnhub_stock_quotes_api.csv").csv();
+import * as arrow from "apache-arrow";
 ```
 
-<div class="datetime-container">
-  <div id="datetime"></div>
-</div>
+<div class="datetime-container"> <div id="datetime"></div> </div>
 
 ```js
-// Initial stock prices from CSV
+const stock_quotes = await FileAttachment("../assets/loaders/rust/parquet/finnhub_stock_quotes_api.parquet").parquet()
+  .then(table => Array.from(table, row => ({
+    symbol: row.symbol,
+    current_price: row.current_price,
+    previous_close: row.previous_close,
+    change: row.change,
+    percent_change: row.percent_change
+  })))
+  .catch(error => {
+    console.error("Error loading Parquet file:", error);
+    return [];
+  });
+
 const initialStockPrices = {
   'META': null,
   'AAPL': null,
@@ -30,264 +39,65 @@ const initialStockPrices = {
   'GOOGL': null
 };
 
-// Populate initial stock prices from stock_quotes
 stock_quotes.forEach(quote => {
-  switch(quote.symbol) {
-    case 'META':
-      initialStockPrices.META = {
-        price: parseFloat(quote.current_price),
-        timestamp: new Date().toLocaleTimeString()
-      };
-      break;
-    case 'AAPL':
-      initialStockPrices.AAPL = {
-        price: parseFloat(quote.current_price),
-        timestamp: new Date().toLocaleTimeString()
-      };
-      break;
-    case 'NFLX':
-      initialStockPrices.NFLX = {
-        price: parseFloat(quote.current_price),
-        timestamp: new Date().toLocaleTimeString()
-      };
-      break;
-    case 'GOOGL':
-      initialStockPrices.GOOGL = {
-        price: parseFloat(quote.current_price),
-        timestamp: new Date().toLocaleTimeString()
-      };
-      break;
+  const priceData = {
+    price: Number(quote.current_price),
+    timestamp: new Date().toLocaleTimeString()
+  };
+  if (initialStockPrices.hasOwnProperty(quote.symbol)) {
+    initialStockPrices[quote.symbol] = priceData;
   }
 });
+```
 
-// Create WebSocket connection
+```js
 const finnhubWs = new WebSocket('wss://ws.finnhub.io?token=ctl0tnpr01qn6d7jqpj0ctl0tnpr01qn6d7jqpjg');
 
-// Subscribe on open
-finnhubWs.onopen = function() {
-    ['META', 'GOOGL', 'NFLX', 'AAPL', 
-     'BINANCE:BTCUSDT', 'BINANCE:ETHUSDT', 
-     'BINANCE:SOLUSDT', 'BINANCE:XRPUSDT'].forEach(symbol => {
-        finnhubWs.send(JSON.stringify({'type':'subscribe', 'symbol': symbol}));
-    });
+finnhubWs.onopen = () => {
+  ['META', 'GOOGL', 'NFLX', 'AAPL', 'BINANCE:BTCUSDT', 'BINANCE:ETHUSDT', 'BINANCE:SOLUSDT', 'BINANCE:XRPUSDT'].forEach(symbol => {
+    finnhubWs.send(JSON.stringify({ 'type': 'subscribe', 'symbol': symbol }));
+  });
 };
 
-// Meta price observer
-const meta = Generators.observe((notify) => {
-    // Initially set from stock_quotes
-    if (initialStockPrices.META) {
-        notify(initialStockPrices.META);
+const createObserver = (symbol, initialData) => Generators.observe((notify) => {
+  if (initialData) notify(initialData);
+  const messaged = (msg) => {
+    try {
+      const data = JSON.parse(msg.data);
+      if (data.data && data.data[0].s === symbol) {
+        const trade = data.data[0];
+        notify({
+          price: Number(trade.p),
+          timestamp: new Date(trade.t).toLocaleTimeString()
+        });
+      }
+    } catch (error) {
+      console.error(`Error parsing ${symbol} price:`, error);
     }
-
-    const messaged = (msg) => {
-        try {
-            const data = JSON.parse(msg.data);
-            if (data.data && data.data[0].s === 'META') {
-                const trade = data.data[0];
-                notify({
-                    price: parseFloat(trade.p),
-                    timestamp: new Date(trade.t).toLocaleTimeString()
-                });
-            }
-        } catch (error) {
-            console.error('Error parsing META price:', error);
-        }
-    };
-    finnhubWs.addEventListener("message", messaged);
-    return () => finnhubWs.removeEventListener("message", messaged);
+  };
+  finnhubWs.addEventListener("message", messaged);
+  return () => finnhubWs.removeEventListener("message", messaged);
 });
 
-// Apple price observer
-const aapl = Generators.observe((notify) => {
-    // Initially set from stock_quotes
-    if (initialStockPrices.AAPL) {
-        notify(initialStockPrices.AAPL);
-    }
+const meta = createObserver('META', initialStockPrices.META);
+const aapl = createObserver('AAPL', initialStockPrices.AAPL);
+const nflx = createObserver('NFLX', initialStockPrices.NFLX);
+const googl = createObserver('GOOGL', initialStockPrices.GOOGL);
+const btc = createObserver('BINANCE:BTCUSDT');
+const eth = createObserver('BINANCE:ETHUSDT');
+const sol = createObserver('BINANCE:SOLUSDT');
+const xrp = createObserver('BINANCE:XRPUSDT');
 
-    const messaged = (msg) => {
-        try {
-            const data = JSON.parse(msg.data);
-            if (data.data && data.data[0].s === 'AAPL') {
-                const trade = data.data[0];
-                notify({
-                    price: parseFloat(trade.p),
-                    timestamp: new Date(trade.t).toLocaleTimeString()
-                });
-            }
-        } catch (error) {
-            console.error('Error parsing AAPL price:', error);
-        }
-    };
-    finnhubWs.addEventListener("message", messaged);
-    return () => finnhubWs.removeEventListener("message", messaged);
-});
+finnhubWs.onerror = (error) => console.error('Finnhub WebSocket error:', error);
 
-// Netflix price observer
-const nflx = Generators.observe((notify) => {
-    // Initially set from stock_quotes
-    if (initialStockPrices.NFLX) {
-        notify(initialStockPrices.NFLX);
-    }
-
-    const messaged = (msg) => {
-        try {
-            const data = JSON.parse(msg.data);
-            if (data.data && data.data[0].s === 'NFLX') {
-                const trade = data.data[0];
-                notify({
-                    price: parseFloat(trade.p),
-                    timestamp: new Date(trade.t).toLocaleTimeString()
-                });
-            }
-        } catch (error) {
-            console.error('Error parsing NFLX price:', error);
-        }
-    };
-    finnhubWs.addEventListener("message", messaged);
-    return () => finnhubWs.removeEventListener("message", messaged);
-});
-
-// Google price observer
-const googl = Generators.observe((notify) => {
-    // Initially set from stock_quotes
-    if (initialStockPrices.GOOGL) {
-        notify(initialStockPrices.GOOGL);
-    }
-
-    const messaged = (msg) => {
-        try {
-            const data = JSON.parse(msg.data);
-            if (data.data && data.data[0].s === 'GOOGL') {
-                const trade = data.data[0];
-                notify({
-                    price: parseFloat(trade.p),
-                    timestamp: new Date(trade.t).toLocaleTimeString()
-                });
-            }
-        } catch (error) {
-            console.error('Error parsing GOOGL price:', error);
-        }
-    };
-    finnhubWs.addEventListener("message", messaged);
-    return () => finnhubWs.removeEventListener("message", messaged);
-});
-
-// BTC, ETH, SOL, XRP price observers remain the same (no initial CSV data)
-const btc = Generators.observe((notify) => {
-    const messaged = (msg) => {
-        try {
-            const data = JSON.parse(msg.data);
-            if (data.data && data.data[0].s === 'BINANCE:BTCUSDT') {
-                const trade = data.data[0];
-                notify({
-                    price: parseFloat(trade.p),
-                    timestamp: new Date(trade.t).toLocaleTimeString()
-                });
-            }
-        } catch (error) {
-            console.error('Error parsing BTC price:', error);
-        }
-    };
-    finnhubWs.addEventListener("message", messaged);
-    return () => finnhubWs.removeEventListener("message", messaged);
-});
-
-const eth = Generators.observe((notify) => {
-    const messaged = (msg) => {
-        try {
-            const data = JSON.parse(msg.data);
-            if (data.data && data.data[0].s === 'BINANCE:ETHUSDT') {
-                const trade = data.data[0];
-                notify({
-                    price: parseFloat(trade.p),
-                    timestamp: new Date(trade.t).toLocaleTimeString()
-                });
-            }
-        } catch (error) {
-            console.error('Error parsing ETH price:', error);
-        }
-    };
-    finnhubWs.addEventListener("message", messaged);
-    return () => finnhubWs.removeEventListener("message", messaged);
-});
-
-const sol = Generators.observe((notify) => {
-    const messaged = (msg) => {
-        try {
-            const data = JSON.parse(msg.data);
-            if (data.data && data.data[0].s === 'BINANCE:SOLUSDT') {
-                const trade = data.data[0];
-                notify({
-                    price: parseFloat(trade.p),
-                    timestamp: new Date(trade.t).toLocaleTimeString()
-                });
-            }
-        } catch (error) {
-            console.error('Error parsing SOL price:', error);
-        }
-    };
-    finnhubWs.addEventListener("message", messaged);
-    return () => finnhubWs.removeEventListener("message", messaged);
-});
-
-const xrp = Generators.observe((notify) => {
-    const messaged = (msg) => {
-        try {
-            const data = JSON.parse(msg.data);
-            if (data.data && data.data[0].s === 'BINANCE:XRPUSDT') {
-                const trade = data.data[0];
-                notify({
-                    price: parseFloat(trade.p),
-                    timestamp: new Date(trade.t).toLocaleTimeString()
-                });
-            }
-        } catch (error) {
-            console.error('Error parsing XRP price:', error);
-        }
-    };
-    finnhubWs.addEventListener("message", messaged);
-    return () => finnhubWs.removeEventListener("message", messaged);
-});
-
-// Error handling
-finnhubWs.onerror = function(error) {
-    console.error('Finnhub WebSocket error:', error);
-};
-
-// Cleanup
 invalidation.then(() => finnhubWs.close());
 ```
 
 ```js
-
-// Select Columns
-
-const selectedStockData = stock_quotes.map(({ 
-  symbol, 
-  current_price, 
-  previous_close, 
-  change, 
-  percent_change,
-  // 'market_cap',
-  // 'industry',
-  // 'website',
-  // 'ipo_date',
-  // 'exchange',
-  // 'country',
-  // 'currency',
-  // 'high_price', 
-  // 'low_price',
-  // 'open_price',
-  
-}) => ({ 
-  symbol, 
-  current_price, 
-  previous_close, 
-  change, 
-  percent_change 
+const selectedStockData = stock_quotes.map(({ symbol, current_price, previous_close, change, percent_change }) => ({
+  symbol, current_price, previous_close, change, percent_change
 }));
 
-// Collapsible Display
 const tableConfig = getCustomTableFormat(selectedStockData, {
   ...DEFAULT_CONFIG,
   datasetName: 'stock_data'
@@ -298,12 +108,12 @@ const collapsibleContent = htl.html`
   ${Inputs.table(tableConfig.dataArray, tableConfig)}
 `;
 
-display(createCollapsibleSection(collapsibleContent, "Show Data", "collapsed"));
+display(createCollapsibleSection(collapsibleContent, "Show Data", "hide"));
 ```
 
 ---
 
-# Stocks 
+# Stocks
 
 <div class="grid grid-cols-4 gap-4 mt-4">
   <div class="card">
@@ -330,73 +140,56 @@ display(createCollapsibleSection(collapsibleContent, "Show Data", "collapsed"));
 
 <!-- TradingView Widget BEGIN -->
 <div class="tradingview-widget-container" style="height: 500px; width: 100%;">
- <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
- <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
- {
- "symbols": [
-   [
-     "Apple",
-     "AAPL|1D"
-   ],
-   [
-     "Google",
-     "GOOGL|1D"
-   ],
-    [
-      "Meta",
-      "NASDAQ:META|1D"
-    ],
-   [
-     "Netflix",
-     "NASDAQ:NFLX|1D"
-   ]
- ],
- "chartOnly": false,
- "width": "100%",
- "height": 500,
- "locale": "en",
- "colorTheme": "dark",
- "autosize": true,
- "showVolume": false,
- "showMA": false,
- "hideDateRanges": false,
- "hideMarketStatus": false,
- "hideSymbolLogo": false,
- "scalePosition": "right",
- "scaleMode": "Normal",
- "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
- "fontSize": "10",
- "noTimeScale": false,
- "valuesTracking": "1",
- "changeMode": "price-and-percent",
- "chartType": "area",
- "maLineColor": "#2962FF",
- "maLineWidth": 1,
- "maLength": 9,
- "headerFontSize": "medium",
- "lineWidth": 2,
- "lineType": 0,
- "dateRanges": [
-   "1d|1",
-   "1m|30",
-   "3m|60",
-   "12m|1D",
-   "60m|1W",
-   "all|1M"
- ]
-}
- </script>
+  <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+    {
+      "symbols": [
+        ["Apple", "AAPL|1D"],
+        ["Google", "GOOGL|1D"],
+        ["Meta", "NASDAQ:META|1D"],
+        ["Netflix", "NASDAQ:NFLX|1D"]
+      ],
+      "chartOnly": false,
+      "width": "100%",
+      "height": 500,
+      "locale": "en",
+      "colorTheme": "dark",
+      "autosize": true,
+      "showVolume": false,
+      "showMA": false,
+      "hideDateRanges": false,
+      "hideMarketStatus": false,
+      "hideSymbolLogo": false,
+      "scalePosition": "right",
+      "scaleMode": "Normal",
+      "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+      "fontSize": "10",
+      "noTimeScale": false,
+      "valuesTracking": "1",
+      "changeMode": "price-and-percent",
+      "chartType": "area",
+      "maLineColor": "#2962FF",
+      "maLineWidth": 1,
+      "maLength": 9,
+      "headerFontSize": "medium",
+      "lineWidth": 2,
+      "lineType": 0,
+      "dateRanges": [
+        "1d|1",
+        "1m|30",
+        "3m|60",
+        "12m|1D",
+        "60m|1W",
+        "all|1M"
+      ]
+    }
+  </script>
 </div>
 <!-- TradingView Widget END -->
 
 ---
 
 # Crypto
-
-<!-- <div style="width: 100%; position: relative;">
-  <script src="https://widgets.coingecko.com/gecko-coin-price-marquee-widget.js"></script>
-  <gecko-coin-price-marquee-widget locale="en" dark-mode="false" outlined="true" coin-ids="bitcoin, ethereum, solana, ripple" initial-currency="usd"></gecko-coin-price-marquee-widget>
-</div> -->
 
 <div class="grid grid-cols-4 gap-4 mt-4">
   <div class="card">
@@ -423,71 +216,58 @@ display(createCollapsibleSection(collapsibleContent, "Show Data", "collapsed"));
 
 <!-- TradingView Widget BEGIN -->
 <div class="tradingview-widget-container" style="height: 500px; width: 100%;">
- <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
- <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
- {
- "symbols": [
-   [
-     "BTC/USD",
-     "BINANCE:BTCUSD|1D"
-   ],
-   [
-     "ETH/USD",
-     "BINANCE:ETHUSD|1D"
-   ],
-   [
-     "SOL/USD",
-     "BINANCE:SOLUSD|1D"
-   ],
-   [
-     "XPP/USD",
-     "BINANCE:XRPUSD|1D"
-   ]
- ],
- "chartOnly": false,
- "width": "100%",
- "height": 500,
- "locale": "en",
- "colorTheme": "dark",
- "autosize": true,
- "showVolume": false,
- "showMA": false,
- "hideDateRanges": false,
- "hideMarketStatus": false,
- "hideSymbolLogo": false,
- "scalePosition": "right",
- "scaleMode": "Normal",
- "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
- "fontSize": "10",
- "noTimeScale": false,
- "valuesTracking": "1",
- "changeMode": "price-and-percent",
- "chartType": "area",
- "maLineColor": "#2962FF",
- "maLineWidth": 1,
- "maLength": 9,
- "headerFontSize": "medium",
- "lineWidth": 2,
- "lineType": 0,
- "dateRanges": [
-   "1d|1",
-   "1m|30",
-   "3m|60",
-   "12m|1D",
-   "60m|1W",
-   "all|1M"
- ]
-}
- </script>
+  <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+    {
+      "symbols": [
+        ["BTC/USD", "BINANCE:BTCUSD|1D"],
+        ["ETH/USD", "BINANCE:ETHUSD|1D"],
+        ["SOL/USD", "BINANCE:SOLUSD|1D"],
+        ["XPP/USD", "BINANCE:XRPUSD|1D"]
+      ],
+      "chartOnly": false,
+      "width": "100%",
+      "height": 500,
+      "locale": "en",
+      "colorTheme": "dark",
+      "autosize": true,
+      "showVolume": false,
+      "showMA": false,
+      "hideDateRanges": false,
+      "hideMarketStatus": false,
+      "hideSymbolLogo": false,
+      "scalePosition": "right",
+      "scaleMode": "Normal",
+      "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+      "fontSize": "10",
+      "noTimeScale": false,
+      "valuesTracking": "1",
+      "changeMode": "price-and-percent",
+      "chartType": "area",
+      "maLineColor": "#2962FF",
+      "maLineWidth": 1,
+      "maLength": 9,
+      "headerFontSize": "medium",
+      "lineWidth": 2,
+      "lineType": 0,
+      "dateRanges": [
+        "1d|1",
+        "1m|30",
+        "3m|60",
+        "12m|1D",
+        "60m|1W",
+        "all|1M"
+      ]
+    }
+  </script>
 </div>
 <!-- TradingView Widget END -->
 
 ---
 
-## TradingView
+# TradingView
 
 ```js
-// Trading Chart Section with Fullscreen Button
 const tradingChartSection = html`
   <div>
     <button 
@@ -519,7 +299,7 @@ display(tradingChartSection);
 
 ---
 
-## GeckoTerminal
+# GeckoTerminal
 
 ```js
 const geckoterminal = html`

@@ -25,9 +25,10 @@ use arrow::record_batch::RecordBatch;
 use parquet::file::properties::WriterProperties;
 use parquet::arrow::ArrowWriter;
 use std::time::Instant;
-use make_clean_names::clean_column_name;
 
+#[path = "../make_clean_names.rs"]
 mod make_clean_names;
+use make_clean_names::clean_column_name;
 
 #[derive(Debug, Deserialize)]
 struct ApiResponse {

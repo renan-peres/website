@@ -1,22 +1,19 @@
-//! **Finnhub Stock Market Data API Tool**
+//! **Finnhub Company Profiles API Tool**
 //!
-//! Fetches real-time quotes and company profiles for US stocks using concurrent requests
-//! Documentation: https://finnhub.io/docs/api/quote
+//! Fetches company profiles for US stocks using concurrent requests
+//! Documentation: https://finnhub.io/docs/api/company-profile2
 //!
-//! **Usage**: rust-script finnhub_stock_quotes_api.csv.rs > output.csv
+//! **Usage**: rust-script finnhub_company_profile_api.csv.rs > output.csv
 //!
 //! **Features**:
 //! - Concurrent API requests for better performance
 //! - Real-time quotes and company profiles
 //! - Major US stocks across sectors
 //! - Error handling and logging
-//! - Clean CSV output format with proper data types
+//! - Clean CSV output format
 //!
 //! **Environment Setup**:
 //! ```cargo
-//! [package]
-//! edition = "2021"
-//! 
 //! [dependencies]
 //! reqwest = { version = "0.11", features = ["json"] }
 //! serde = { version = "1.0", features = ["derive"] }
@@ -26,31 +23,21 @@
 //! futures = "0.3"
 //! ```
 
-use serde::{Serialize, Deserialize};
 use serde_json::Value;
 use std::error::Error;
 use std::time::{Instant, Duration};
 use futures::future;
+use std::collections::BTreeMap;
 use tokio::time::sleep;
 
-#[path = "./finnhub_config.rs"]
+#[path = "../finnhub_config.rs"]
 mod config;
 
+#[path = "../make_clean_names.rs"]
+mod make_clean_names;
+use make_clean_names::clean_column_name;
 
-
-#[derive(Debug, Serialize, Deserialize)]
-struct StockQuote {
-    symbol: String,
-    current_price: f64,
-    change: f64,
-    percent_change: f64,
-    high_price: f64,
-    low_price: f64,
-    open_price: f64,
-    previous_close: f64,
-}
-
-async fn fetch_quote(
+async fn fetch_profile(
     client: &reqwest::Client,
     symbol: &str,
     api_key: &str,
@@ -61,8 +48,8 @@ async fn fetch_quote(
             sleep(Duration::from_millis(100 * (attempt as u64))).await;
         }
 
-        let quote_response = client
-            .get("https://finnhub.io/api/v1/quote")
+        let profile_response = client
+            .get("https://finnhub.io/api/v1/stock/profile2")
             .query(&[
                 ("token", api_key),
                 ("symbol", &symbol)
@@ -71,37 +58,30 @@ async fn fetch_quote(
             .await?;
 
         // Check if we hit the rate limit
-        if quote_response.status() == 429 {
+        if profile_response.status() == 429 {
             eprintln!("Rate limit hit for {}, waiting before retry...", symbol);
             sleep(Duration::from_secs(1)).await;
             continue;
         }
 
-        let response_text = quote_response.text().await?;
+        let response_text = profile_response.text().await?;
         if response_text.trim().is_empty() {
             eprintln!("Empty response for symbol: {}", symbol);
             return Ok(None);
         }
 
         match serde_json::from_str::<Value>(&response_text) {
-            Ok(quote) => {
-                // Verify that we have all required fields
-                if let Some(obj) = quote.as_object() {
-                    if obj.contains_key("c") && obj.contains_key("d") && 
-                       obj.contains_key("dp") && obj.contains_key("h") && 
-                       obj.contains_key("l") && obj.contains_key("o") && 
-                       obj.contains_key("pc") {
-                        eprintln!("Successfully processed quote for: {}", symbol);
-                        return Ok(Some(quote));
-                    }
-                }
-                eprintln!("Incomplete quote data for symbol: {}", symbol);
-                if attempt == retry_count - 1 {
+            Ok(profile) => {
+                if profile.as_object().map_or(false, |obj| !obj.is_empty()) {
+                    eprintln!("Successfully processed profile for: {}", symbol);
+                    return Ok(Some(profile));
+                } else {
+                    eprintln!("Empty profile data for symbol: {}", symbol);
                     return Ok(None);
                 }
             },
             Err(e) => {
-                eprintln!("Error parsing quote data for {}: {}", symbol, e);
+                eprintln!("Error parsing profile data for {}: {}", symbol, e);
                 if attempt == retry_count - 1 {
                     return Ok(None);
                 }
@@ -130,7 +110,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
             let symbol = symbol.to_string();
             
             async move {
-                fetch_quote(client, &symbol, api_key, 3).await
+                fetch_profile(client, &symbol, api_key, 3).await
             }
         });
 
@@ -144,33 +124,39 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let processing_start = Instant::now();
     let mut wtr = csv::Writer::from_writer(std::io::stdout());
     
-    // Write headers with type hints
-    wtr.write_record(&[
-        "symbol",
-        "current_price",
-        "change",
-        "percent_change",
-        "high_price",
-        "low_price",
-        "open_price",
-        "previous_close"
-    ])?;
+    // Get headers from the first successful response
+    let first_valid_response = all_results.iter()
+        .filter_map(|r: &Result<Option<Value>, Box<dyn Error + Send + Sync>>| r.as_ref().ok())
+        .filter_map(|r: &Option<Value>| r.as_ref())
+        .next();
+
+    if let Some(first_item) = first_valid_response {
+        if let Some(obj) = first_item.as_object() {
+            let headers: Vec<String> = obj.keys()
+                .map(|k| clean_column_name(k))
+                .collect();
+            wtr.write_record(&headers)?;
+        }
+    }
 
     let mut successful_entries = 0;
-
-    for (symbol, result) in symbols.iter().zip(all_results.iter()) {
+    for result in all_results {
         if let Ok(Some(item)) = result {
             if let Some(obj) = item.as_object() {
-                let record = vec![
-                    symbol.to_string(),
-                    obj.get("c").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),
-                    obj.get("d").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),
-                    obj.get("dp").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),
-                    obj.get("h").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),
-                    obj.get("l").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),
-                    obj.get("o").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),
-                    obj.get("pc").and_then(|v| v.as_f64()).map(|v| v.to_string()).unwrap_or_default(),
-                ];
+                let ordered: BTreeMap<_, _> = obj.iter()
+                    .map(|(k, v)| {
+                        let value = match v {
+                            Value::String(s) => s.clone(),
+                            Value::Number(n) => n.to_string(),
+                            Value::Bool(b) => b.to_string(),
+                            Value::Null => String::from(""),
+                            _ => v.to_string(),
+                        };
+                        (clean_column_name(k), value)
+                    })
+                    .collect();
+                
+                let record: Vec<String> = ordered.values().cloned().collect();
                 wtr.write_record(&record)?;
                 successful_entries += 1;
             }

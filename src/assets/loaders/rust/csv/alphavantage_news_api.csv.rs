@@ -22,7 +22,11 @@ use std::time::Instant;
 use chrono::prelude::*;
 use serde_json::Value;
 use std::collections::BTreeMap;
+
+#[path = "../make_clean_names.rs"]
+mod make_clean_names;
 use make_clean_names::clean_column_name;
+
 
 mod make_clean_names;
 

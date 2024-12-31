@@ -29,9 +29,11 @@ use base64::engine::general_purpose::STANDARD;
 use serde_json::Value;
 use std::collections::BTreeMap;
 use std::time::Instant;
+
+#[path = "../make_clean_names.rs"]
+mod make_clean_names;
 use make_clean_names::clean_column_name;
 
-mod make_clean_names;
 
 #[derive(Deserialize)]
 struct TokenResponse {

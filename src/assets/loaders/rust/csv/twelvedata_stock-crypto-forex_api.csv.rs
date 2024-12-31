@@ -1,6 +1,6 @@
 //! This script fetches cryptocurrency time-series data from the Twelve Data API.
 //!
-//! **Usage**: rust-script twelvedata_stock-cryto-forex_api.csv.rs > output.csv
+//! **Usage**: rust-script twelvedata_stock-crypto-forex_api.csv.rs > output.csv
 //! 
 //! Documentation: https://twelvedata.com/docs#time-series
 //! 
@@ -29,9 +29,10 @@ use std::error::Error;
 use std::time::Instant;
 use serde_json::Value;
 use std::collections::BTreeMap;
-use make_clean_names::clean_column_name;
 
+#[path = "../make_clean_names.rs"]
 mod make_clean_names;
+use make_clean_names::clean_column_name;
 
 #[derive(Debug, Deserialize)]
 struct ErrorResponse {

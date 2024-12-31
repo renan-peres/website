@@ -8,7 +8,7 @@ const DEFAULT_CONFIG = {
   dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth', 'time', 'pickup', 
               'dropoff', 'birthday', 'First Inauguration Date', 'last_updated', 'retrieved_time'],
   dateFormat: d3.timeFormat("%Y-%m-%d"),
-  decimalColumns: ['Open', 'High', 'Low', 'Close', 'Adj Close', 'current_price', 'value', 'amount'],
+  decimalColumns: ['Open', 'High', 'Low', 'Close', 'Adj Close', 'value', 'amount'],
   formatSpecifiers: {},
   additionalFormatting: {
     url: (x) => x ? htl.html`<a href="${/^https?:\/\//.test(x) ? x : 'https://' + x}" target="_blank">${x}</a>` : '',
@@ -57,15 +57,6 @@ const createDownloadButton = (text, dataArray, datasetName, format, formatSpecif
     }
   });
 
-const createToggleButton = (text, container, displayStyle = 'block') => {
-  const button = createButton(text, { marginRight: "10px" }, () => {
-    const isHidden = container.style.display === 'none';
-    container.style.display = isHidden ? displayStyle : 'none';
-    button.textContent = isHidden ? `Hide ${text}` : `Show ${text}`;
-  });
-  return button;
-};
-
 export const getTableFormat = (data, options = {}) => {
   const { rows, datasetName, dateColumns, dateFormat, decimalColumns, formatSpecifiers } = { ...DEFAULT_CONFIG, ...options };
 
@@ -97,7 +88,7 @@ export const getTableFormat = (data, options = {}) => {
   dataContainer.style.display = "none";
   tableContainer.style.display = "none";
   
-  const jsonToggleButton = createButton("Show JSON", { marginRight: "10px" }, () => {
+  const jsonToggleButton = createButton("Show JSON", { marginRight: "10px", background: "rgb(65, 96, 182)", "border-radius": "4px", padding: "4px 9px", color: "white", border: "none"}, () => {
     const isHidden = dataContainer.style.display === 'none';
     dataContainer.style.display = isHidden ? 'block' : 'none';
     jsonToggleButton.textContent = isHidden ? 'Hide JSON' : 'Show JSON';
@@ -109,7 +100,7 @@ export const getTableFormat = (data, options = {}) => {
   dataDisplay.textContent = JSON.stringify(dataArray, null, 2);
   
   dataContainer.appendChild(dataDisplay);
-  buttonContainer.append(xlsxButton, csvButton, jsonToggleButton);
+  buttonContainer.append(jsonToggleButton, xlsxButton, csvButton);
   container.append(buttonContainer, dataContainer, tableContainer);
 
   const format = Object.fromEntries(
@@ -129,8 +120,8 @@ export const getCustomTableFormat = (data, options = {}) => {
   };
 };
 
-export const createCollapsibleSection = (content, buttonText = "Show Data", defaultState = "collapsed") => {
-  const isCollapsed = defaultState === "collapsed";
+export const createCollapsibleSection = (content, buttonText = "Show Data", defaultState = "hide") => {
+  const isCollapsed = defaultState === "hide";
   return htl.html`
     <div>
       <button 

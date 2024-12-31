@@ -25,6 +25,8 @@ import {datetime} from "../assets/components/datetime.js";
 import * as vgplot from "npm:@uwdata/vgplot";
 import {getDefaultClient} from "observablehq:stdlib/duckdb";
 import { DEFAULT_CONFIG, getCustomTableFormat, createCollapsibleSection } from "../assets/components/tableFormatting.js";
+import * as htl from "htl";
+import * as arrow from "apache-arrow";
 const db = await getDefaultClient();
 ```
 
@@ -55,15 +57,25 @@ const tables = await db.sql`
   -- WHERE schema = 'main';
 `;
 
+// Extract table names from the SQL result
+const tableNames = Array.from(tables, row => row.table_name);
+
 // Create the select input and store its value
 const selectedTable = view(Inputs.select(tables, {
+  label: "Select Table",
   format: d => d.table_name
+}));
+
+const rowLimit = view(Inputs.range([10, 1000], {
+  label: "Number of rows", 
+  step: 10,
+  value: 5
 }));
 ```
 
 ```js
 // For your query display block
-const result = await db.query(`SELECT * FROM ${selectedTable.table_name} LIMIT 10;`);
+const result = await db.query(`SELECT * FROM ${selectedTable.table_name} LIMIT ${rowLimit};`);
 
 // Get the configuration and buttons
 const tableConfig = getCustomTableFormat(result, {
@@ -79,7 +91,7 @@ const collapsibleContent = htl.html`
 
 // Display the collapsible section
 // display(createCollapsibleSection(collapsibleContent, "Show Data", "collapsed"));
-display(createCollapsibleSection(collapsibleContent, "Show Data", "expanded"));
+display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
 ```
 
 ---
@@ -123,5 +135,5 @@ const collapsibleContent2 = htl.html`
 
 // Display the collapsible section
 // display(createCollapsibleSection(collapsibleContent2, "Show Data", "collapsed"));
-display(createCollapsibleSection(collapsibleContent2, "Show Data", "expanded"));
+display(createCollapsibleSection(collapsibleContent2, "Show Data", "show"));
 ```

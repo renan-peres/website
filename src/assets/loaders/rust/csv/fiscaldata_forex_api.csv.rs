@@ -20,9 +20,10 @@ use std::error::Error;
 use serde_json::Value;
 use std::collections::BTreeMap;
 use std::time::Instant;
-use make_clean_names::clean_column_name;
 
+#[path = "../make_clean_names.rs"]
 mod make_clean_names;
+use make_clean_names::clean_column_name;
 
 #[derive(Debug, Deserialize)]
 struct ApiResponse {

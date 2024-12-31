@@ -1,7 +1,7 @@
 ---
 theme: dashboard
 index: true
-title: Foreing Exchange Rates
+title: Foreign Exchange Rates
 toc: false
 source: https://fiscaldata.treasury.gov/datasets/treasury-reporting-rates-exchange/treasury-reporting-rates-of-exchange
 keywords: 
@@ -10,7 +10,12 @@ keywords:
 # Foreign Exchange Rates
 
 ```js
-import {datetime} from "../assets/components/datetime.js";
+import { datetime } from "../assets/components/datetime.js";
+import * as XLSX from "npm:xlsx";
+import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../assets/components/tableFormatting.js";
+import * as htl from "htl";
+
+const datasetname = "forex_data";
 ```
 
 <div class="datetime-container">
@@ -19,50 +24,15 @@ import {datetime} from "../assets/components/datetime.js";
 
 ---
 
-## Quartely Report
-
-```js 
-// Import dependencies and prepare data
-import * as XLSX from "npm:xlsx";
-const datasetname = "forex_data";
-```
-
-<!-- ### CSV
+## Quarterly Report
 
 ```js
-// Load the CSV file and process it
-const forex = await FileAttachment("../assets/loaders/rust/fiscaldata_forex_api.csv").csv();
+const forex = await FileAttachment("../assets/loaders/rust/parquet/fiscaldata_forex_api.parquet").parquet();
 
 // Define the columns you want to extract
 const desiredColumns = [
   "country",
   "currency",
-  // "country_currency_desc",
-  "effective_date",
-  "record_date",
-  "exchange_rate",
-];
-
-// Filter the data to include only the desired columns
-const data = forex.map(row => {
-  const filteredRow = {};
-  desiredColumns.forEach(column => {
-    filteredRow[column] = row[column];
-  });
-  return filteredRow;
-});
-``` -->
-
-<!-- ### Parquet -->
-
-```js
-const forex = await FileAttachment("../assets/loaders/rust/fiscaldata_forex_api.parquet").parquet();
-
-// Define the columns you want to extract
-const desiredColumns = [
-  "country",
-  "currency",
-  // "country_currency_desc",
   "effective_date",
   "record_date",
   "exchange_rate",
@@ -71,43 +41,40 @@ const desiredColumns = [
 // Get selected columns table first
 const selectedTable = forex.select(desiredColumns);
 
-const data = Array.from(selectedTable).map((row, index) => {
- const obj = {};
- desiredColumns.forEach(col => {
-   obj[col] = selectedTable.getChild(col).get(index);
- });
- return obj;
+// Convert to array of objects
+const selected_data = Array.from(selectedTable).map((row, index) => {
+  const obj = {};
+  desiredColumns.forEach(col => {
+    obj[col] = selectedTable.getChild(col).get(index);
+  });
+  return obj;
 });
+
+// Get unique countries, sort them, and add "All" as first option
+const countries = ["All", ...[...new Set(selected_data.map(d => d.country))].sort()];
+
+// Create the country select input and store its value
+const selectedCountry = view(Inputs.select(countries, {
+  label: "Filter by Country:",
+  value: "All" // Set default value to "All"
+}));
 ```
 
 ```js
-// Display buttons and table
-display(html`
-  <div style="display: flex; margin-bottom: 10px;">
-    ${Inputs.button(`Download ${datasetname}.xlsx`, {
-      reduce() {
-        const worksheet = XLSX.utils.json_to_sheet(data);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet);
-        XLSX.writeFile(workbook, `${datasetname}.xlsx`);
-      }
-    })}
-    ${Inputs.button(`Download ${datasetname}.csv`, {
-      reduce() {
-        const worksheet = XLSX.utils.json_to_sheet(data);
-        const csvContent = XLSX.utils.sheet_to_csv(worksheet);
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.setAttribute("href", url);
-        link.setAttribute("download", `${datasetname}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }
-    })}
-  </div>
-  ${Inputs.table(data, { rows: 30 })}
-`);
+// Create filtered data based on country selection
+const filteredData = selectedCountry === "All" 
+  ? selected_data 
+  : selected_data.filter(d => d.country === selectedCountry);
+
+const tableConfig = getCustomTableFormat(filteredData, {
+  ...DEFAULT_CONFIG,
+  datasetName: datasetname
+});
+
+const collapsibleContent = htl.html`
+  ${tableConfig.container}
+  ${Inputs.table(tableConfig.dataArray, tableConfig)}
+`;
+
+display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
 ```
