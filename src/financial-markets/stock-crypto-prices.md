@@ -7,7 +7,6 @@ source: https://finnhub.io/docs/api/websocket-trades | https://www.tradingview.c
 keywords: live real time data wss streaming stream socket
 ---
 
-# Real-Time Stock & Crypto Prices
 ```js
 import { datetime } from "../assets/components/datetime.js";
 import * as XLSX from "npm:xlsx";
@@ -16,7 +15,13 @@ import * as htl from "htl";
 import * as arrow from "apache-arrow";
 ```
 
+# Real-Time Stock & Crypto Prices
+
 <div class="datetime-container"> <div id="datetime"></div> </div>
+
+---
+
+# Stocks
 
 ```js
 const stock_quotes = await FileAttachment("../assets/loaders/rust/parquet/finnhub_stock_quotes_api.parquet").parquet()
@@ -111,10 +116,6 @@ const collapsibleContent = htl.html`
 display(createCollapsibleSection(collapsibleContent, "Show Data", "hide"));
 ```
 
----
-
-# Stocks
-
 <div class="grid grid-cols-4 gap-4 mt-4">
   <div class="card">
     <h2>Apple (AAPL)</h2>
@@ -186,6 +187,46 @@ display(createCollapsibleSection(collapsibleContent, "Show Data", "hide"));
   </script>
 </div>
 <!-- TradingView Widget END -->
+
+<br>
+
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+  {
+    "width": "100%",
+    "height": 800,
+    "symbol": "NASDAQ:AAPL",
+    "interval": "D",
+    "timezone": "exchange",
+    "theme": "dark",
+    "backgroundColor": "rgba(22, 26, 37, 1)",
+    "style": "1",
+    "withdateranges": true,
+    "hide_side_toolbar": false,
+    "allow_symbol_change": true,
+    "save_image": true,
+    "locale": "en",
+    "watchlist": [
+      "AAPL",
+      "GOOG",
+      "META",
+      "NFLX"
+    ],
+    "studies": [
+    "ROC@tv-basicstudies",
+    "StochasticRSI@tv-basicstudies",
+    "MASimple@tv-basicstudies"
+    ],
+    "locale": "en",
+    "show_popup_button": true,
+    "popup_width": "1000",
+    "popup_height": "650",
+    "calendar": true,
+    "support_host": "https://www.tradingview.com"
+  }
+  </script>
+</div>
 
 ---
 
@@ -263,62 +304,73 @@ display(createCollapsibleSection(collapsibleContent, "Show Data", "hide"));
 </div>
 <!-- TradingView Widget END -->
 
----
+<br>
 
-# TradingView
+<!-- # TradingView -->
 
-<div>
-  <button 
-    style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
-    onclick=${(e) => {
-      const iframe = e.target.parentElement.querySelector('iframe');
-      if (iframe.requestFullscreen) {
-        iframe.requestFullscreen();
-      } else if (iframe.webkitRequestFullscreen) {
-        iframe.webkitRequestFullscreen();
-      } else if (iframe.msRequestFullscreen) {
-        iframe.msRequestFullscreen();
-      }
-    }}>
-    Fullscreen
-  </button>
-  <div style="width: 100%; height: 1000px; position: relative;">
-    <iframe
-      src="https://trading-api-javascript.netlify.app"
-      style="width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0;"
-      allow="fullscreen"
-    ></iframe>
+```js
+const tradingChartSection = html`
+  <div>
+    <button 
+      style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+      onclick=${(e) => {
+        const iframe = e.target.parentElement.querySelector('iframe');
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+          iframe.msRequestFullscreen();
+        }
+      }}>
+      Fullscreen
+    </button>
+    <div style="width: 100%; height: 800px; position: relative;">
+      <iframe
+        src="https://trading-api-javascript.netlify.app"
+        style="width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0;"
+        allow="fullscreen"
+      ></iframe>
+    </div>
   </div>
-</div>
 `;
 
----
+display(tradingChartSection);
+```
 
-# GeckoTerminal
+<br>
 
-<div>
-  <button 
-    style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
-    onclick=${(e) => {
-      const iframe = e.target.parentElement.querySelector('iframe');
-      if (iframe.requestFullscreen) {
-        iframe.requestFullscreen();
-      } else if (iframe.webkitRequestFullscreen) {
-        iframe.webkitRequestFullscreen();
-      } else if (iframe.msRequestFullscreen) {
-        iframe.msRequestFullscreen();
-      }
-    }}>
-    Fullscreen
-  </button>
-  <div style="width: 100%; height: 1000px; position: relative;">
-  <iframe height="100%" width="100%" 
-      id="geckoterminal-embed" 
-      title="GeckoTerminal Embed"
-      src="https://www.geckoterminal.com/chain-rankings"
-      frameborder="0" allow="clipboard-write" allowfullscreen></iframe>
+<!-- # GeckoTerminal -->
+
+```js
+const geckoterminal = html`
+  <div>
+    <button 
+      style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+      onclick=${(e) => {
+        const iframe = e.target.parentElement.querySelector('iframe');
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+          iframe.msRequestFullscreen();
+        }
+      }}>
+      Fullscreen
+    </button>
+    <div style="width: 100%; height: 800px; position: relative;">
+    <iframe height="100%" width="100%" 
+        id="geckoterminal-embed" 
+        title="GeckoTerminal Embed"
+        src="https://www.geckoterminal.com/chain-rankings"
+        frameborder="0" allow="clipboard-write" allowfullscreen></iframe>
+    </div>
   </div>
-</div>
+`;
+
+display(geckoterminal);
+```
 
 <!-- ```js
 const geckoterminal = html`
