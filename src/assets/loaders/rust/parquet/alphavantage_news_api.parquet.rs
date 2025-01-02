@@ -116,20 +116,23 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 
                 // Convert time_published to timestamp
                 let timestamp = article.get("time_published")
-                    .and_then(|v| v.as_str())
-                    .and_then(|ts| {
-                        // Try parsing with chrono::DateTime
-                        DateTime::parse_from_str(ts, "%Y%m%dT%H%M%S")
-                            .or_else(|_| DateTime::parse_from_str(ts, "%Y-%m-%dT%H:%M:%S%.3fZ"))
-                            .or_else(|_| DateTime::parse_from_str(ts, "%Y-%m-%d %H:%M:%S"))
-                            .map(|dt| dt.timestamp_millis())
-                            .ok()
-                    })
-                    .unwrap_or_else(|| {
-                        eprintln!("Failed to parse timestamp: {:?}", 
-                            article.get("time_published").and_then(|v| v.as_str()));
-                        0
-                    });
+                .and_then(|v| v.as_str())
+                .and_then(|ts| {
+                    // First try the exact format YYYYMMDDTHHmmss
+                    DateTime::parse_from_str(ts, "%Y%m%dT%H%M%S")
+                        .or_else(|_| {
+                            // If that fails, try parsing with just minutes (no seconds)
+                            // by padding with "00" seconds
+                            DateTime::parse_from_str(&format!("{}00", ts), "%Y%m%dT%H%M%S")
+                        })
+                        .map(|dt| dt.timestamp_millis())
+                        .ok()
+                })
+                .unwrap_or_else(|| {
+                    eprintln!("Failed to parse timestamp: {:?}", 
+                        article.get("time_published").and_then(|v| v.as_str()));
+                    0
+                });
                 timestamps.push(timestamp);
                 
                 sentiment_scores.push(article.get("overall_sentiment_score")
