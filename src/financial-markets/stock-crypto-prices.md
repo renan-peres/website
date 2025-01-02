@@ -101,7 +101,7 @@ USE s3;
 SELECT 
     symbol,
     current_price AS price,
-    CAST(timestamp AS VARCHAR) as timestamp
+    CAST(CAST(timestamp AS DATETIME) - INTERVAL '5 hours' AS VARCHAR) as timestamp
 FROM quotes
 WHERE symbol IN ('META', 'AAPL', 'NFLX', 'GOOGL')
 ORDER BY symbol;
