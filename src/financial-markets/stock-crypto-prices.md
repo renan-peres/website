@@ -9,10 +9,34 @@ keywords: live real time data wss streaming stream socket
 
 ```js
 import { datetime } from "../assets/components/datetime.js";
+import {getDefaultClient} from "observablehq:stdlib/duckdb";
 import * as XLSX from "npm:xlsx";
 import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../assets/components/tableFormatting.js";
 import * as htl from "htl";
 import * as arrow from "apache-arrow";
+
+const db = await getDefaultClient();
+```
+
+```js
+function toLocaleTimeString(timestamp) {
+  try {
+    const date = typeof timestamp === 'string' 
+      ? new Date(timestamp)
+      : timestamp;
+      
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+      timeZone: 'America/New_York'  // Or your preferred timezone
+    });
+  } catch (error) {
+    console.error('Error formatting timestamp:', error);
+    return '--:--:-- --';
+  }
+}
 ```
 
 # Real-Time Stock & Crypto Prices
@@ -23,7 +47,7 @@ import * as arrow from "apache-arrow";
 
 # Stocks
 
-```js
+<!-- ```js
 const stock_quotes = await FileAttachment("../assets/loaders/rust/parquet/finnhub_stock_quotes_api.parquet").parquet()
   .then(table => Array.from(table, row => ({
     symbol: row.symbol,
@@ -37,13 +61,6 @@ const stock_quotes = await FileAttachment("../assets/loaders/rust/parquet/finnhu
     return [];
   });
 
-const initialStockPrices = {
-  'META': null,
-  'AAPL': null,
-  'NFLX': null,
-  'GOOGL': null
-};
-
 stock_quotes.forEach(quote => {
   const priceData = {
     price: Number(quote.current_price),
@@ -53,6 +70,59 @@ stock_quotes.forEach(quote => {
     initialStockPrices[quote.symbol] = priceData;
   }
 });
+
+const selectedStockData = stock_quotes.map(({ symbol, current_price, previous_close, change, percent_change }) => ({
+  symbol, current_price, previous_close, change, percent_change
+}));
+``` -->
+
+```sql id = stock_quotes display = false
+ATTACH 's3://aws-test-duckdb/duckdb/stock_quotes.db' AS s3;
+USE s3;
+
+SELECT 
+    symbol,
+    percent_change,
+    current_price,
+    previous_close,
+    open_price,
+    high_price,
+    low_price,
+    CAST(CAST(timestamp AS DATETIME) - INTERVAL '5 hours' AS VARCHAR) as timestamp
+FROM quotes
+ORDER BY percent_change DESC;
+```
+
+```js
+// Get tables
+const initial_stock_data = await db.sql`
+USE s3;
+
+SELECT 
+    symbol,
+    current_price AS price,
+    CAST(timestamp AS VARCHAR) as timestamp
+FROM quotes
+WHERE symbol IN ('META', 'AAPL', 'NFLX', 'GOOGL')
+ORDER BY symbol;
+`;
+
+const initialStockPrices = {
+  'META': null, 
+  'AAPL': null,
+  'NFLX': null,
+  'GOOGL': null
+};
+
+// Populate initial prices from SQL query results
+for (const row of initial_stock_data) {
+  if (initialStockPrices.hasOwnProperty(row.symbol)) {
+    initialStockPrices[row.symbol] = {
+      price: Number(row.price),
+      timestamp: toLocaleTimeString(row.timestamp)
+    };
+  }
+}
 ```
 
 ```js
@@ -88,6 +158,7 @@ const meta = createObserver('META', initialStockPrices.META);
 const aapl = createObserver('AAPL', initialStockPrices.AAPL);
 const nflx = createObserver('NFLX', initialStockPrices.NFLX);
 const googl = createObserver('GOOGL', initialStockPrices.GOOGL);
+
 const btc = createObserver('BINANCE:BTCUSDT');
 const eth = createObserver('BINANCE:ETHUSDT');
 const sol = createObserver('BINANCE:SOLUSDT');
@@ -99,11 +170,7 @@ invalidation.then(() => finnhubWs.close());
 ```
 
 ```js
-const selectedStockData = stock_quotes.map(({ symbol, current_price, previous_close, change, percent_change }) => ({
-  symbol, current_price, previous_close, change, percent_change
-}));
-
-const tableConfig = getCustomTableFormat(selectedStockData, {
+const tableConfig = getCustomTableFormat(stock_quotes, {
   ...DEFAULT_CONFIG,
   datasetName: 'stock_data'
 });
