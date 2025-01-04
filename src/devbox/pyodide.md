@@ -18,7 +18,7 @@ import {datetime} from "../assets/components/datetime.js";
 <div id="countdown"></div>
 
 ```js
-import { loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.mjs";
+import { py, loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.mjs";
 
 async function initializePyodide() {
   const countdownElement = document.getElementById('countdown');
@@ -39,7 +39,7 @@ async function initializePyodide() {
     countdownElement.textContent = 'Loading packages...';
     
     // Load core packages
-    await pyodide.loadPackage(["pyodide.http", "requests", "numpy", "pandas", "matplotlib", "scikit-learn"]);
+    await pyodide.loadPackage(["pyodide.http", "requests", "numpy", "pandas", "polars", "matplotlib", "scikit-learn"]);
     
     // Load micropip
     await pyodide.loadPackage("micropip");
@@ -184,20 +184,15 @@ display(result);
 
 ```js
 const pythonCode2 = view(Inputs.textarea({
-  value: `from pyodide.http import open_url
+  value: `import requests
 import polars as pl
 
-url = "https://raw.githubusercontent.com/pola-rs/polars/main/examples/datasets/foods1.csv"
-# Fetch the CSV file using open_url
-with open_url(url) as file:
-    df = pl.read_csv(file)
-
-result_str = f"""First 10 rows of data:
-{df.head(10)}"""
-
-result_str`,
+r = requests.get("https://raw.githubusercontent.com/pola-rs/polars/main/examples/datasets/foods1.csv")
+df = pl.read_csv(r.content)
+# df.write_csv()
+str(df.head(10))`,
   width: "100%",
-  rows: 10,
+  rows: 7,
   resize: "both",
   style: { fontSize: "16px" },
   onKeyDown: e => {
@@ -209,7 +204,5 @@ result_str`,
 ```js
 // Run the Python code in Pyodide
 const table = await pyodide.runPython(pythonCode2);
-
-// Display the styled output
 display(table);
 ```

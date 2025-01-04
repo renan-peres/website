@@ -23,6 +23,7 @@
     "finnhub": "^1.2.19",
     "node-fetch": "^3.2.0",
     "parquetjs": "^0.11.2",
+    "pyodide": "^0.27.0",
     "query-string": "^9.1.1",
     "realtime-newsapi": "^1.1.2",
     "recharts": "^2.14.1",
