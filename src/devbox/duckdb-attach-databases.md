@@ -66,7 +66,7 @@ FROM dim_SRDESC;
 ## <u>Remote</u> (GitHub)
 
 ```sql echo=true
-ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/duckdb/duckdb_database_sample.db' AS github;
+ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/loaders/duckdb/duckdb_database_sample.db' AS github;
 USE github;
 -- SHOW TABLES;
 
@@ -212,7 +212,7 @@ const db3 = DuckDBClient.of();
 ```js echo=true
 // Create the textarea that updates based on the selected query
 const prebuiltCode2 = view(Inputs.textarea({
-  value: `ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/duckdb/duckdb_database_sample.db' AS github;
+  value: `ATTACH 'https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/loaders/duckdb/duckdb_database_sample.db' AS github;
 
 USE github;
 

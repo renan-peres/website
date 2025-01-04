@@ -5,6 +5,9 @@ index: true
 toc: false
 source: https://finnhub.io/docs/api/websocket-trades | https://www.tradingview.com/widget-docs/widgets/charts/symbol-overview/ | https://www.coingecko.com/en/widgets | https://www.geckoterminal.com/solana/pools/22WrmyTj8x2TRVQen3fxxi2r4Rn6JDHWoMTpsSmn8RUd
 keywords: live real time data wss streaming stream socket
+sql:
+  stock_quotes: https://aws-test-duckdb.s3.us-east-2.amazonaws.com/finance/stock_quotes.parquet
+  company_profiles: https://aws-test-duckdb.s3.us-east-2.amazonaws.com/finance/company_profiles.parquet
 ---
 
 ```js
@@ -37,6 +40,7 @@ function toLocaleTimeString(timestamp) {
     return '--:--:-- --';
   }
 }
+
 ```
 
 # Real-Time Stock & Crypto Prices
@@ -47,62 +51,33 @@ function toLocaleTimeString(timestamp) {
 
 # Stocks
 
-<!-- ```js
-const stock_quotes = await FileAttachment("../assets/loaders/rust/parquet/finnhub_stock_quotes_api.parquet").parquet()
-  .then(table => Array.from(table, row => ({
-    symbol: row.symbol,
-    current_price: row.current_price,
-    previous_close: row.previous_close,
-    change: row.change,
-    percent_change: row.percent_change
-  })))
-  .catch(error => {
-    console.error("Error loading Parquet file:", error);
-    return [];
-  });
-
-stock_quotes.forEach(quote => {
-  const priceData = {
-    price: Number(quote.current_price),
-    timestamp: new Date().toLocaleTimeString()
-  };
-  if (initialStockPrices.hasOwnProperty(quote.symbol)) {
-    initialStockPrices[quote.symbol] = priceData;
-  }
-});
-
-const selectedStockData = stock_quotes.map(({ symbol, current_price, previous_close, change, percent_change }) => ({
-  symbol, current_price, previous_close, change, percent_change
-}));
-``` -->
-
 ```sql id = stock_quotes display = false
-ATTACH 's3://aws-test-duckdb/duckdb/stock_quotes.db' AS s3;
-USE s3;
+-- ATTACH 's3://aws-test-duckdb/duckdb/stock_quotes.db' AS s3;
+-- USE s3;
 
 SELECT 
-    symbol,
-    percent_change,
-    current_price,
-    previous_close,
-    open_price,
-    high_price,
-    low_price,
-    CAST(CAST(timestamp AS DATETIME) - INTERVAL '5 hours' AS VARCHAR) as timestamp
-FROM quotes
+    p.name,
+    q.symbol,
+    q.percent_change,
+    q.current_price,
+    q.previous_close,
+    q.open_price,
+    q.high_price,
+    q.low_price,
+    CAST(CAST(q.timestamp AS DATETIME) - INTERVAL '5 hours' AS VARCHAR) as timestamp
+FROM stock_quotes q
+LEFT JOIN company_profiles p ON q.symbol = p.symbol
 ORDER BY percent_change DESC;
 ```
 
 ```js
 // Get tables
 const initial_stock_data = await db.sql`
-USE s3;
-
 SELECT 
     symbol,
     current_price AS price,
     CAST(CAST(timestamp AS DATETIME) - INTERVAL '5 hours' AS VARCHAR) as timestamp
-FROM quotes
+FROM stock_quotes
 WHERE symbol IN ('META', 'AAPL', 'NFLX', 'GOOGL')
 ORDER BY symbol;
 `;

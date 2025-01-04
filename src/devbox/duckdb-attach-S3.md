@@ -40,7 +40,7 @@ const db = await getDefaultClient();
 *Please wait a few seconds for the database to load.*
 
 ```sql echo=true display=false
-ATTACH 's3://aws-test-duckdb/duckdb/data.db' AS s3;
+ATTACH 's3://aws-test-duckdb/datasets/data.db' AS s3;
 SHOW DATABASES;
 USE s3;
 ```
