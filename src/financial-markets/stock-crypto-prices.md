@@ -7,7 +7,7 @@ source: https://finnhub.io/docs/api/websocket-trades | https://www.tradingview.c
 keywords: live real time data wss streaming stream socket
 sql:
   stock_quotes: https://aws-test-duckdb.s3.us-east-2.amazonaws.com/finance/stock_quotes.parquet
-  company_profiles: https://aws-test-duckdb.s3.us-east-2.amazonaws.com/finance/company_profiles.parquet
+  company_profiles: https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/finance/stock_data/company_profiles_2025-01-04.parquet
 ---
 
 ```js

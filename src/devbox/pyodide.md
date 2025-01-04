@@ -18,7 +18,7 @@ import {datetime} from "../assets/components/datetime.js";
 <div id="countdown"></div>
 
 ```js
-import { loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.mjs";
+import { loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.mjs";
 
 async function initializePyodide() {
   const countdownElement = document.getElementById('countdown');
@@ -33,13 +33,13 @@ async function initializePyodide() {
 
   try {
     let pyodide = await loadPyodide({
-      indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/"
+      indexURL: "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/"
     });
     clearInterval(timer);
     countdownElement.textContent = 'Loading packages...';
     
     // Load core packages
-    await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "scikit-learn"]);
+    await pyodide.loadPackage(["pyodide.http", "requests", "numpy", "pandas", "matplotlib", "scikit-learn"]);
     
     // Load micropip
     await pyodide.loadPackage("micropip");
@@ -48,7 +48,6 @@ async function initializePyodide() {
       countdownElement.textContent = 'Installing polars...';
       
       // First load micropip
-      await pyodide.loadPackage("micropip");
       const micropip = pyodide.pyimport("micropip");
       
       // Install polars
@@ -114,7 +113,7 @@ plt.savefig(buf, format='png', dpi=80)
 buf.seek(0)
 img_str = base64.b64encode(buf.read()).decode('utf-8')
 img_str`,
-  width: "1200px",
+  width: "100%",
   rows: 8,
   resize: "both",
   style: { fontSize: "16px" },
@@ -138,7 +137,8 @@ display(canvas);
 
 ```js
 const pythonCode = view(Inputs.textarea({
-  value: `import pandas as pd
+  value: `import polars as pl
+import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
@@ -163,7 +163,7 @@ Coefficient: {model.coef_[0]:.4f}
 Intercept: {model.intercept_:.4f}"""
 
 result_str`,
-  width: "1200px",
+  width: "100%",
   rows: 10,
   resize: "both",
   style: { fontSize: "16px" },
@@ -176,4 +176,40 @@ result_str`,
 ```js
 const result = await pyodide.runPython(pythonCode);
 display(result);
+```
+
+---
+
+## Display Table
+
+```js
+const pythonCode2 = view(Inputs.textarea({
+  value: `from pyodide.http import open_url
+import polars as pl
+
+url = "https://raw.githubusercontent.com/pola-rs/polars/main/examples/datasets/foods1.csv"
+# Fetch the CSV file using open_url
+with open_url(url) as file:
+    df = pl.read_csv(file)
+
+result_str = f"""First 10 rows of data:
+{df.head(10)}"""
+
+result_str`,
+  width: "100%",
+  rows: 10,
+  resize: "both",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js
+// Run the Python code in Pyodide
+const table = await pyodide.runPython(pythonCode2);
+
+// Display the styled output
+display(table);
 ```
