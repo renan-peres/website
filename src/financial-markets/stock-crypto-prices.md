@@ -7,7 +7,7 @@ source: https://finnhub.io/docs/api/websocket-trades | https://www.tradingview.c
 keywords: live real time data wss streaming stream socket
 sql:
   stock_quotes: https://aws-test-duckdb.s3.us-east-2.amazonaws.com/finance/stock_quotes.parquet
-  company_profiles: https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/finance/stock_data/company_profiles_2025-01-04.parquet
+  company_profiles: https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/finance/company_profile.parquet
 ---
 
 ```js
@@ -56,7 +56,7 @@ function toLocaleTimeString(timestamp) {
 -- USE s3;
 
 SELECT 
-    p.name,
+    p.company_name,
     q.symbol,
     q.percent_change,
     q.current_price,

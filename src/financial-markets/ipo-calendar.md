@@ -5,16 +5,21 @@ title: IPO Calendar
 toc: false
 source: https://finnhub.io/docs/api/ipo-calendar
 keywords: 
+sql:
+  ipo_calendar: https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/finance/ipo_calendar.parquet
 ---
 
 # IPO Calendar
 
 ```js
 import { datetime } from "../assets/components/datetime.js";
+import {getDefaultClient} from "observablehq:stdlib/duckdb";
 import * as XLSX from "npm:xlsx";
 import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../assets/components/tableFormatting.js";
 import * as htl from "htl";
+import * as arrow from "apache-arrow";
 
+const db = await getDefaultClient();
 const datasetname = "ipo_data";
 ```
 
@@ -26,9 +31,11 @@ const datasetname = "ipo_data";
 
 ## IPO Listings
 
+```sql id=ipo display=false
+FROM ipo_calendar
+```
+
 ```js
-// Import and prepare data
-const ipo = await FileAttachment("../assets/loaders/rust/parquet/finnhub_ipo_calendar_api.parquet").parquet();
 
 // Create table configuration
 const tableConfig = getCustomTableFormat(ipo, {
