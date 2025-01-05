@@ -36,7 +36,6 @@ FROM ipo_calendar
 ```
 
 ```js
-
 // Create table configuration
 const tableConfig = getCustomTableFormat(ipo, {
   ...DEFAULT_CONFIG,
