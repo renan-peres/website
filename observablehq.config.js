@@ -85,6 +85,14 @@ export default {
     }
     
     ,{
+      name: "Coporate Finance",
+      open: true,
+      pages: [
+        {name: "Company DCF Analysis", path: "/coporate-finance/company-dcf"}
+      ]
+    }
+
+    ,{
       name: "MFIN",
       open: true,
       pages: [
