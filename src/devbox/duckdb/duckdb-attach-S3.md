@@ -21,10 +21,10 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 # Attach DuckDB Database from S3
 
 ```js
-import {datetime} from "../assets/components/datetime.js";
+import {datetime} from "../../assets/components/datetime.js";
 import * as vgplot from "npm:@uwdata/vgplot";
 import {getDefaultClient} from "observablehq:stdlib/duckdb";
-import { DEFAULT_CONFIG, getCustomTableFormat, createCollapsibleSection } from "../assets/components/tableFormatting.js";
+import { DEFAULT_CONFIG, getCustomTableFormat, createCollapsibleSection } from "../../assets/components/tableFormatting.js";
 import * as htl from "htl";
 import * as arrow from "apache-arrow";
 const db = await getDefaultClient();

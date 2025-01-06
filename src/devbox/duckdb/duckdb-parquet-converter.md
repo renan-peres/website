@@ -7,7 +7,7 @@ keywords: duckdb, wasm
 # Parquet Converter (DuckDB WASM)
 
 ```js
-import {datetime} from "../assets/components/datetime.js";
+import {datetime} from "../../assets/components/datetime.js";
 ```
 
 <div class="datetime-container">

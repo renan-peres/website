@@ -37,11 +37,13 @@ export default {
       open: true,
       pages: [
         {name: "Playground", path: "/devbox/devbox-playground"},
-        {name: "DuckDB: Parquet Converter", path: "/devbox/duckdb-parquet-converter"},
-        {name: "DuckDB: Attach Databases", path: "/devbox/duckdb-attach-databases"},
-        {name: "DuckDB: Attach S3", path: "/devbox/duckdb-attach-S3"},
+        {name: "DuckDB: Parquet Converter", path: "/devbox/duckdb/duckdb-parquet-converter"},
+        {name: "DuckDB: Attach Databases", path: "/devbox/duckdb/duckdb-attach-databases"},
+        {name: "DuckDB: Attach S3", path: "/devbox/duckdb/duckdb-attach-S3"},
         {name: "WebR", path: "/devbox/webr"},
-        {name: "Pyodide", path: "/devbox/pyodide"},
+        {name: "Pyodide", path: "/devbox/pyodide/pyodide"},
+        {name: "Pyodide: Terminal", path: "/devbox/pyodide/pyodide_console"},
+        {name: "Pyodide: Jupyter Lab", path: "/devbox/pyodide/pyodide_jupyterlab"},
         // {name: "S3 API", path: "/devbox/aws-s3-api-starter"},
         {name: "Excel/Google Sheets Connector", path: "/devbox/spreadsheet-connector"}
         // {name: "Excel Downloader", path: "/devbox/excel-downloader"}

@@ -8,7 +8,7 @@ keywords: Python, wasm
 # Pyodide (Python WASM)
 
 ```js
-import {datetime} from "../assets/components/datetime.js";
+import {datetime} from "../../assets/components/datetime.js";
 ```
 
 <div class="datetime-container">

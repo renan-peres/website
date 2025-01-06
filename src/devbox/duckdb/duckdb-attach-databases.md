@@ -6,13 +6,13 @@ toc: false
 source: https://observablehq.com/framework/lib/duckdb | https://duckdb.org/docs/api/wasm/overview.html | https://duckdb.org/docs/guides/network_cloud_storage/duckdb_over_https_or_s3.html | https://observablehq.com/@bayre/duckdb-s3 | https://talk.observablehq.com/t/loading-a-duckdb-database/8977/4 | https://tobilg.com/using-duckdb-wasm-for-in-browser-data-engineering | https://duckdb.org/docs/guides/network_cloud_storage/duckdb_over_https_or_s3
 keywords: 
 sql:
-  base: ../assets/loaders/duckdb/data.db
+  base: ../../assets/loaders/duckdb/data.db
 ---
 
 # Attach DuckDB Databases
 
 ```js
-import {datetime} from "../assets/components/datetime.js";
+import {datetime} from "../../assets/components/datetime.js";
 ```
 
 <div class="datetime-container">
@@ -38,7 +38,7 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 ```
 --- 
 sql:
-  base: ../assets/data/duckdb/data_sample.db
+  base: ../../assets/data/duckdb/data_sample.db
 ---
 ```
 
@@ -170,7 +170,7 @@ display(Inputs.table(prebuiltQueryResult, {
 
 ```js echo=true
 // Initialize DuckDB with predefined tables
-const db2 = await DuckDBClient.of({base: FileAttachment('../assets/loaders/duckdb/data.db')});
+const db2 = await DuckDBClient.of({base: FileAttachment('../../assets/loaders/duckdb/data.db')});
 ```
 
 ```js echo=true
@@ -254,7 +254,7 @@ display(Inputs.table(prebuiltQueryResult2, {
 import { MDConnection } from '@motherduck/wasm-client/with-arrow';
 import * as XLSX from "npm:xlsx";
 import * as vg from "@uwdata/vgplot";
-import { token } from "../assets/secrets/motherduck_token.js";
+import { token } from "../../assets/secrets/motherduck_token.js";
 import { html } from "@observablehq/stdlib";
 import { Inputs } from "@observablehq/inputs";
 
