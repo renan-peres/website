@@ -96,7 +96,7 @@ display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
 const prebuiltCode = view(Inputs.textarea({
   value: `SELECT *
 FROM ma_transactions;`,
-  width: "600px",
+  width: "100%",
   rows: 6,
   resize: "both",
   className: "sql-editor",

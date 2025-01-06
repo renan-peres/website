@@ -96,10 +96,10 @@ export default {
       name: "MFIN",
       open: true,
       pages: [
-        {name: "Portfolio Analysis (SQL & Tableau)", path: "/MFIN/Fall-24/Data-Extraction-Visualization/Individual/data-extraction-individual"},
-        // {name: "Data Extraction (Open Server)", path: "/MFIN/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
-        // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/MFIN/Fall-24/Data-Extraction/Team/data-extraction-team"}
-        {name: "Apple Financial Model (Excel)", path: "/MFIN/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
+        {name: "Portfolio Analysis (SQL & Tableau)", path: "/finance/MFIN/Fall-24/Data-Extraction-Visualization/Individual/data-extraction-individual"},
+        // {name: "Data Extraction (Open Server)", path: "/finance/MFIN/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
+        // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/finance/MFIN/Fall-24/Data-Extraction/Team/data-extraction-team"}
+        {name: "Apple Financial Model (Excel)", path: "/finance/MFIN/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
       ]
     }
     

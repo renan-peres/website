@@ -41,7 +41,7 @@ const returnInput = view(Inputs.range([0, 750], {
 # Covid Data Analysis (Team Assigment)
 
 ```js
-import {datetime} from "../../../../assets/components/datetime.js";
+import {datetime} from "../../../../../assets/components/datetime.js";
 ```
 
 <div class="datetime-container">

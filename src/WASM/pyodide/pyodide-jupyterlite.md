@@ -1,7 +1,7 @@
 ---
 theme: dashboard
 title: JupyterLite Shell
-index: true
+index: false
 toc: false
 footer: false
 source: https://jupyterlite.readthedocs.io/en/stable/ | https://github.com/jupyterlite/pyodide-kernel
