@@ -34,7 +34,7 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 
 # Apple Financial Model - Cost & Managerial Analysis (Fall 2024)
 
-This project presents a comprehensive financial and DCF model for Apple Inc., built using real financial data from their annual reports (10-K) for fiscal years 2022-2024. The model incorporates cost and managerial analysis frameworks to provide in-depth insights into Apple's financial performance and valuation.
+This project presents a comprehensive financial model for Apple Inc., built using real financial data from their annual reports (10-K) for fiscal years 2022-2024. The model incorporates cost and managerial analysis frameworks to provide in-depth insights into Apple's financial performance and valuation.
 
 ## Source Data
 The analysis is based on official SEC filings from Apple Inc.:
@@ -70,37 +70,6 @@ The financial model is structured into three main sections:
 
 # Model
 
-<!-- ## SharePoint -->
-
-<!-- ```js
-// Helper function to determine if URL is SharePoint and format iframe URL if needed
-function processUrl(url) {
-  if (url.includes('sharepoint.com')) {
-    // Add the necessary SharePoint embed parameters including download button
-    return `${url}&action=embedview&wdAllowInteractivity=True&wdHideGridlines=True&wdDownloadButton=True&wdInConfigurator=True&edesNext=false&resen=false`;
-  } else if (url.includes('docs.google.com')) {
-    const sheetId = url.match(/[-\w]{25,}/);
-    return sheetId 
-      ? `https://docs.google.com/spreadsheets/export?format=csv&id=${sheetId[0]}`
-      : url;
-  }
-  return url;
-}
-
-const spreadsheetUrl = view(Inputs.textarea({
-  value: "https://hultstudents-my.sharepoint.com/personal/rperes_student_hult_edu/_layouts/15/Doc.aspx?sourcedoc={29ffabe6-324a-4303-aeba-c924a5aca801}",
-  width: "800px",
-  rows: 2,
-  resize: "both",
-  style: { fontSize: "16px" },
-  onKeyDown: e => {
-    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
-  }
-}));
-``` -->
-
-<!-- ## OneDrive -->
-
 ```js
 // Helper function to determine if URL is SharePoint and format iframe URL if needed
 function processUrl(url) {
@@ -117,11 +86,14 @@ function processUrl(url) {
 }
 
 const spreadsheetUrl = view(Inputs.textarea({
+  // value: "https://hultstudents-my.sharepoint.com/personal/rperes_student_hult_edu/_layouts/15/Doc.aspx?sourcedoc={29ffabe6-324a-4303-aeba-c924a5aca801}",
   value: "https://1drv.ms/x/c/bde1a904e346bc6a/IQTKZtR9HeT2QLyimcyVE3o0ATEPdYRUgPo4ApHPb7DZgTs?em=2",
   width: "800px",
-  rows: 2,
+  rows: 1,
   resize: "both",
   style: { fontSize: "16px" },
+  display: false, // Key to Display the Model Corectly
+  disabled: true,
   onKeyDown: e => {
     if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
   }
