@@ -9,7 +9,7 @@ keywords: live real time data wss streaming stream socket
 
 # Real-Time Stock & Crypto Prices
 ```js
-import {datetime} from "../assets/components/datetime.js";
+import {datetime} from "../../assets/components/datetime.js";
 ```
 
 <div class="datetime-container">
