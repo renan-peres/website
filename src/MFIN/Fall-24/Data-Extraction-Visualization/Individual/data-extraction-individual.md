@@ -48,22 +48,14 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 ```
 
 ```js
-// Load predefined tables
-const security_masterlist = FileAttachment("./data/security_masterlist.csv").csv({typed: true});
-const account_dim = FileAttachment("./data/account_dim.csv").csv({typed: true});
-const customer_details = FileAttachment("./data/customer_details.csv").csv({typed: true});
-const holdings_current = FileAttachment("./data/holdings_current.csv").csv({typed: true});
-const pricing_daily_new = FileAttachment("./data/pricing_daily_new.csv").csv({typed: true});
+import {datetime} from "../../../../assets/components/datetime.js";
+import {getDefaultClient} from "observablehq:stdlib/duckdb";
+import * as XLSX from "npm:xlsx";
+import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../../../../assets/components/tableFormatting.js";
+import * as htl from "htl";
+import * as arrow from "apache-arrow";
 
-// Initialize DuckDB with predefined tables
-const predefinedDb = DuckDBClient.of({
-  security_masterlist,
-  account_dim,
-  customer_details,
-  holdings_current,
-  pricing_daily_new,
-});
-
+const predefinedDb = await getDefaultClient();
 // Helper function to download files
 function download(file) {
   const a = document.createElement("a");
@@ -95,9 +87,6 @@ const returnInput = view(Inputs.range([0, 750], {
 ``` -->
 
 # Portfolio Analysis - Data Extraction & Visualization (Fall 2024)
-```js
-import {datetime} from "../../../../assets/components/datetime.js";
-```
 
 <div class="datetime-container">
   <div id="datetime"></div>
@@ -224,9 +213,7 @@ const selectedTable = view(Inputs.select(tables, {
 const code = `SELECT *
 FROM ${selectedTable.table_name}
 LIMIT 10`;
-```
 
-```js
 // Execute and display query results
 const queryResult = predefinedDb.query(code);
 display(Inputs.table(queryResult));
@@ -276,7 +263,7 @@ if (queryResult) {
 
 ---
 
-## SQL View: (Customer# 128, Bojana Popovic) 
+## SQL View: Customer Portfolio
 - Step1: Identify your client (listed above) in your database - learn about your client and what they have. Create all required relationships between tables (joins) to better understand what assets your client has, asset classifications, asset types and prices.  
 
 - Step 2: Once you get that large joined table with all your client's assets and their prices (from Step1) - use that data to create a VIEW in the invest schema with data for your client.  This view should have the following information: asset classification (major and minor), asset names, asset types, prices with pricing information and dates and have ONLY the data related to your client. Make sure to add all necessary filters for your VIEW.
