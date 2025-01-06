@@ -42,7 +42,7 @@
 
 #     - name: Initialize R environment
 #       run: |
-#         cd src/quarto
+#         cd src/dev/quarto
 #         mkdir -p ~/.local/share/renv
 #         chmod -R 777 ~/.local/share/renv
 #         echo "RENV_PATHS_CACHE=~/.local/share/renv" >> $GITHUB_ENV
@@ -55,13 +55,13 @@
 #       with:
 #         python-version: '3.x'
 #         cache: 'pip'
-#         cache-dependency-path: 'src/quarto/requirements.txt'
+#         cache-dependency-path: 'src/dev/quarto/requirements.txt'
 
 #     - name: Run Quarto Render Script
 #       run: |
-#         cd src/quarto
+#         cd src/dev/quarto
 #         chmod +x quarto_render.sh
-#         ./quarto_render.sh
+#         ./dev/quarto_render.sh
 
 #     - name: Commit and Push Changes
 #       run: |

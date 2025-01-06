@@ -1,4 +1,0 @@
-knitr
-rmarkdown
-ggplot2
-dygraphs

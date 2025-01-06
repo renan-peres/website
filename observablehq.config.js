@@ -36,16 +36,25 @@ export default {
       name: "WASM",
       open: false,
       pages: [
-        {name: "CodeSanbox", path: "/WASM/code-sandbox"},
-        {name: "DuckDB: Shell", path: "/WASM/duckdb/duckdb-shell"},
-        {name: "Pyodide: Shell", path: "/WASM/pyodide/pyodide-shell"},
-        {name: "Pyodide: Jupyter Lite", path: "/WASM/pyodide/pyodide-jupyterlite"},
-        {name: "WebR: Shell", path: "/WASM/webr/webr-shell"},
-        {name: "DuckDB: Parquet Converter", path: "/WASM/duckdb/duckdb-parquet-converter"},
-        {name: "DuckDB: Attach Databases", path: "/WASM/duckdb/duckdb-attach-databases"},
-        {name: "DuckDB: Attach S3", path: "/WASM/duckdb/duckdb-attach-S3"},
-        {name: "Pyodide", path: "/WASM/pyodide/pyodide"},
-        {name: "WebR", path: "/WASM/webr/webr"}
+        {name: "CodeSanbox", path: "/dev/WASM/code-sandbox"},
+        {name: "DuckDB: Shell", path: "/dev/WASM/duckdb/duckdb-shell"},
+        {name: "Pyodide: Shell", path: "/dev/WASM/pyodide/pyodide-shell"},
+        {name: "Pyodide: Jupyter Lite", path: "/dev/WASM/pyodide/pyodide-jupyterlite"},
+        {name: "WebR: Shell", path: "/dev/WASM/webr/webr-shell"},
+        {name: "DuckDB: Parquet Converter", path: "/dev/WASM/duckdb/duckdb-parquet-converter"},
+        {name: "DuckDB: Attach Databases", path: "/dev/WASM/duckdb/duckdb-attach-databases"},
+        {name: "DuckDB: Attach S3", path: "/dev/WASM/duckdb/duckdb-attach-S3"},
+        {name: "Pyodide", path: "/dev/WASM/pyodide/pyodide"},
+        {name: "WebR", path: "/dev/WASM/webr/webr"}
+      ]
+    }
+    
+    ,{
+      name: "Quarto",
+      open: false,
+      pages: [
+        {name: "HTML Basics (Report)", path: "/dev/quarto/html-basics/quarto_html_basics"},
+        {name: "Stock Explorer (Dashboard)", path: "/dev/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
       ]
     }
 
@@ -113,15 +122,6 @@ export default {
     //     // {name: "Apple Financial Model (Excel)", path: "/MFIN/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
     //   ]
     // }
-    
-    ,{
-      name: "Quarto",
-      open: true,
-      pages: [
-        {name: "HTML Basics (Report)", path: "/quarto/html-basics/quarto_html_basics"},
-        {name: "Stock Explorer (Dashboard)", path: "/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
-      ]
-    }
 
   ],
 
