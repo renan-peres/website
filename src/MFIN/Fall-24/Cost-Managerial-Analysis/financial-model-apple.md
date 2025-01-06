@@ -70,7 +70,9 @@ The financial model is structured into three main sections:
 
 # Model
 
-```js
+<!-- ## SharePoint -->
+
+<!-- ```js
 // Helper function to determine if URL is SharePoint and format iframe URL if needed
 function processUrl(url) {
   if (url.includes('sharepoint.com')) {
@@ -95,13 +97,42 @@ const spreadsheetUrl = view(Inputs.textarea({
     if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
   }
 }));
+``` -->
+
+<!-- ## OneDrive -->
+
+```js
+// Helper function to determine if URL is SharePoint and format iframe URL if needed
+function processUrl(url) {
+  if (url.includes('sharepoint.com' | '1drv.ms')) {
+    // Add the necessary SharePoint embed parameters including download button
+    return `${url}&action=embedview&wdAllowInteractivity=True&wdHideGridlines=True&wdDownloadButton=True&wdInConfigurator=True&edesNext=false&resen=false`;
+  } else if (url.includes('docs.google.com')) {
+    const sheetId = url.match(/[-\w]{25,}/);
+    return sheetId 
+      ? `https://docs.google.com/spreadsheets/export?format=csv&id=${sheetId[0]}`
+      : url;
+  }
+  return url;
+}
+
+const spreadsheetUrl = view(Inputs.textarea({
+  value: "https://1drv.ms/x/c/bde1a904e346bc6a/IQTKZtR9HeT2QLyimcyVE3o0ATEPdYRUgPo4ApHPb7DZgTs?em=2",
+  width: "800px",
+  rows: 2,
+  resize: "both",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
 ```
 
 ```js
 // Display content based on URL type
 const url = processUrl(spreadsheetUrl);
 
-if (spreadsheetUrl.includes('sharepoint.com')) {
+if (spreadsheetUrl.includes('sharepoint.com' | '1drv.ms')) {
   // Create buttons container with flexbox
   const buttonsContainer = html`
     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
@@ -155,7 +186,7 @@ if (spreadsheetUrl.includes('sharepoint.com')) {
             window.open(url, '_blank');
           }
         }}>
-        Download Excel
+        View in Excel Web
       </button>
     </div>`;
   
