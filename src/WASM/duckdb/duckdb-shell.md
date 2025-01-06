@@ -1,11 +1,15 @@
 ---
 theme: dashboard
-title: DevBox Playground
+title: DuckDB Shell
+index: true
 toc: false
-pager: false
+footer: false
+source: https://duckdb.org/docs/api/wasm/overview.html | https://github.com/duckdb/duckdb-wasm
 ---
 
 ```js
+import {html} from "htl"
+
 const fullscreenBtn = htl.html`
 <button style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
  onclick=${(e) => {
@@ -27,14 +31,19 @@ const fullscreenBtn = htl.html`
 <div>
   ${fullscreenBtn}
   <div style="width: 100%; position: relative;">
-    <iframe 
-      src="https://codesandbox.io/embed/nn83ln??fontsize=16&hidenavigation=1"
-      style="width: 100vw; height: 100vh; border:0; border-radius: 4px; overflow:hidden;"
-      title="iframe"
-      allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-      sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-    ></iframe>
+<iframe 
+  src="https://shell.duckdb.org/"
+  style="
+    width: 100%;
+    height: 100vh;
+    border: none;
+    overflow: hidden;
+    display: block;
+    margin: 0;
+    padding: 0;
+  "
+  sandbox="allow-scripts allow-same-origin"
+></iframe>
   </div>
 </div>
 ```
-

@@ -33,31 +33,19 @@ export default {
   // lets you organize them into sections and have unlisted pages.
   pages: [
     {
-      name: "DevBox",
-      open: true,
+      name: "WASM",
+      open: false,
       pages: [
-        {name: "Playground", path: "/devbox/devbox-playground"},
-        {name: "DuckDB: Parquet Converter", path: "/devbox/duckdb/duckdb-parquet-converter"},
-        {name: "DuckDB: Attach Databases", path: "/devbox/duckdb/duckdb-attach-databases"},
-        {name: "DuckDB: Attach S3", path: "/devbox/duckdb/duckdb-attach-S3"},
-        {name: "WebR", path: "/devbox/webr"},
-        {name: "Pyodide", path: "/devbox/pyodide/pyodide"},
-        {name: "Pyodide: Terminal", path: "/devbox/pyodide/pyodide_console"},
-        {name: "Pyodide: Jupyter Lab", path: "/devbox/pyodide/pyodide_jupyterlab"},
-        // {name: "S3 API", path: "/devbox/aws-s3-api-starter"},
-        {name: "Excel/Google Sheets Connector", path: "/devbox/spreadsheet-connector"}
-        // {name: "Excel Downloader", path: "/devbox/excel-downloader"}
-      ]
-    }
-    
-    ,{
-      name: "Financial Markets",
-      open: true,
-      pages: [
-        {name: "Stock & Crypto Prices", path: "/financial-markets/stock-crypto-prices"},
-        {name: "Market News", path: "/financial-markets/market-news"},
-        // {name: "Real-Time Stock & Crypto Prices", path: "/financial-markets/stock-crypto-prices-old"},
-        {name: "IPO Calendar", path: "/financial-markets/ipo-calendar"}
+        {name: "CodeSanbox", path: "/WASM/code-sandbox"},
+        {name: "DuckDB: Shell", path: "/WASM/duckdb/duckdb-shell"},
+        {name: "Pyodide: Shell", path: "/WASM/pyodide/pyodide-shell"},
+        {name: "Pyodide: Jupyter Lite", path: "/WASM/pyodide/pyodide-jupyterlite"},
+        {name: "WebR: Shell", path: "/WASM/webr/webr-shell"},
+        {name: "DuckDB: Parquet Converter", path: "/WASM/duckdb/duckdb-parquet-converter"},
+        {name: "DuckDB: Attach Databases", path: "/WASM/duckdb/duckdb-attach-databases"},
+        {name: "DuckDB: Attach S3", path: "/WASM/duckdb/duckdb-attach-S3"},
+        {name: "Pyodide", path: "/WASM/pyodide/pyodide"},
+        {name: "WebR", path: "/WASM/webr/webr"}
       ]
     }
 
@@ -66,21 +54,21 @@ export default {
       open: true,
       pages: [
         {name: "Economic Calendar", path: "/economy/economic-calendar"},
-        {name: "U.S. Macro Indicators", path: "/economy/macro-indicators"},
-        {name: "U.S. Monetary Base", path: "/economy/monetary-base"},
         {name: "U.S. Mortgage Rates", path: "/economy/mortgage-rates"},
-        {name: "U.S. Foreign Exchange Rates", path: "/economy/fx-rates"}
+        {name: "U.S. Foreign Exchange Rates", path: "/economy/fx-rates"},
+        {name: "U.S. Macro Indicators", path: "/economy/macro-indicators"},
+        {name: "U.S. Monetary Base", path: "/economy/monetary-base"}
       ]
     }
 
     ,{
-      name: "Quantitative Finance",
+      name: "Financial Markets",
       open: true,
       pages: [
-        {name: "Bond Valuation", path: "/quantitative-finance/bond-valuation"},
-        {name: "Portfolio Builder & Optimization", path: "/quantitative-finance/portfolio-builder"},
-        {name: "Option Pricing Model", path: "/quantitative-finance/option-pricing-model"},
-        {name: "Naive Arbitrage for Trading", path: "/quantitative-finance/naive-arb-trading"}
+        {name: "Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices"},
+        {name: "Market News", path: "/finance/financial-markets/market-news"},
+        // {name: "Real-Time Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices-old"},
+        {name: "IPO Calendar", path: "/finance/financial-markets/ipo-calendar"}
       ]
     }
     
@@ -88,7 +76,19 @@ export default {
       name: "Coporate Finance",
       open: true,
       pages: [
-        {name: "Company DCF Analysis", path: "/coporate-finance/company-dcf"}
+        {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
+        {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"}
+      ]
+    }
+
+    ,{
+      name: "Quantitative Finance",
+      open: true,
+      pages: [
+        {name: "Bond Valuation", path: "/finance/quantitative-finance/bond-valuation"},
+        {name: "Portfolio Builder & Optimization", path: "/finance/quantitative-finance/portfolio-builder"},
+        {name: "Option Pricing Model", path: "/finance/quantitative-finance/option-pricing-model"},
+        {name: "Naive Arbitrage for Trading", path: "/finance/quantitative-finance/naive-arb-trading"}
       ]
     }
 

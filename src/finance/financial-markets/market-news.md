@@ -1,4 +1,5 @@
 ---
+theme: dashboard
 title: Market News & Word Count Analysis
 index: true
 toc: true
@@ -9,7 +10,7 @@ keywords: market news stocks crypto forex mergers real-time updates word-analysi
 # Market News & Word Count Analysis
 
 ```js
-import {datetime} from "../assets/components/datetime.js";
+import {datetime} from "../../assets/components/datetime.js";
 // Import d3 from Observable
 const d3 = await import("https://cdn.jsdelivr.net/npm/d3@7/+esm");
 ```

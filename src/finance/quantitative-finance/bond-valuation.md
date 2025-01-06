@@ -12,10 +12,10 @@ sql:
 # Bond Valuation
 
 ```js
-import { datetime } from "../assets/components/datetime.js";
+import { datetime } from "../../assets/components/datetime.js";
 import {getDefaultClient} from "observablehq:stdlib/duckdb";
 import * as XLSX from "npm:xlsx";
-import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../assets/components/tableFormatting.js";
+import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../../assets/components/tableFormatting.js";
 import * as htl from "htl";
 import * as arrow from "apache-arrow";
 

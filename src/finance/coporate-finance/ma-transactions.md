@@ -1,5 +1,5 @@
 ---
-title: Company DFC Analysis
+title: Historical M&A Transactions
 theme: dashboard
 index: true
 toc: false
@@ -7,7 +7,7 @@ source:
 keywords: 
 sql:
   company_profile: https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/finance/company_profile.parquet
-  company_dcf: https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/finance/company_dfc_advanced.parquet
+  ma_transactions: https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/finance/historical_ma_transactions.parquet
   
 ---
 
@@ -22,13 +22,13 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 </style>
 ```
 
-# Company DFC Analysis
+# Historical M&A Transactions
 
 ```js
-import {datetime} from "../assets/components/datetime.js";
+import {datetime} from "../../assets/components/datetime.js";
 import * as vgplot from "npm:@uwdata/vgplot";
 import {getDefaultClient} from "observablehq:stdlib/duckdb";
-import { DEFAULT_CONFIG, getCustomTableFormat, createCollapsibleSection } from "../assets/components/tableFormatting.js";
+import { DEFAULT_CONFIG, getCustomTableFormat, createCollapsibleSection } from "../../assets/components/tableFormatting.js";
 import * as htl from "htl";
 import * as arrow from "apache-arrow";
 const db = await getDefaultClient();
@@ -95,7 +95,7 @@ display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
 // Create the textarea that updates based on the selected query
 const prebuiltCode = view(Inputs.textarea({
   value: `SELECT *
-FROM company_dcf;`,
+FROM ma_transactions;`,
   width: "600px",
   rows: 6,
   resize: "both",
