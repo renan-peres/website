@@ -71,6 +71,10 @@ Feel free to connect with me on LinkedIn or via email.
 
 ---
 
+## Projects
+
+Here are some of the project I have deployed in this website.
+
 ```js
 import { ProjectShowcase } from "./assets/components/projectShowcase.js";
 display(ProjectShowcase());
@@ -83,7 +87,7 @@ display(ProjectShowcase());
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=renan-peres&layout=compact&hide=CSS,TeX,SCSS&langs_count=4&hide_border=true" alt="renan-peres" style="height: 160px; width: 30%;" />
 </div> -->
 
----
+<!-- ---
 
 ### Certifications
 <div style="display: flex; width: 200px; align-items: center; gap: 10px;">
@@ -150,4 +154,4 @@ display(ProjectShowcase());
   <img src="https://th.bing.com/th/id/R.4e0fa5da8edc46e91123dd12b0fa83a0?rik=2wcB7lzmzWzi5g&pid=ImgRaw&r=0" alt="Quarto" width="100">
   <img src="https://www.vectorlogo.zone/logos/netlify/netlify-ar21.svg" alt="Netlify" width="100">
   <img src="https://www.vectorlogo.zone/logos/w3_html5/w3_html5-ar21.svg" alt="HTML5" width="100">
-</div>
+</div> -->

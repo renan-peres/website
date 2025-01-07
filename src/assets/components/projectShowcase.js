@@ -2,28 +2,28 @@ import { html } from "htl";
 
 const projects = [
   {
-    title: "Economic Calendar",
-    description: "Track key economic events and indicators",
-    link: "/economy/economic-calendar",
-    imageSrc: "https://res.cloudinary.com/dqtnflaeh/image/upload/v1735574068/economic-calendar_xytrad.png"
+    title: "Market News",
+    description: "Track the lastest news reltated to Financial Markets",
+    link: "/finance/financial-markets/market-news",
+    imageSrc: "https://res.cloudinary.com/dqtnflaeh/image/upload/v1736278373/thumbnails/market-news_ghounz.png"
   },
   {
     title: "Stock & Crypto Prices", 
     description: "Real-time market data and analysis",
     link: "/finance/financial-markets/stock-crypto-prices",
-    imageSrc: "https://res.cloudinary.com/dqtnflaeh/image/upload/v1735574068/stock-crypto_yqxzff.png"
+    imageSrc: "https://res.cloudinary.com/dqtnflaeh/image/upload/v1736277448/thumbnails/stocks-crypto_lc2esm.png"
   },
   {
     title: "DCF Analysis",
     description: "Discounted Cash Flow valuation tool",  
     link: "/finance/coporate-finance/company-dcf",
-    imageSrc: "https://res.cloudinary.com/dqtnflaeh/image/upload/v1735574068/dcf_haitsh.png"
+    imageSrc: "../thumbnails/dcf.png"
   },
   {
     title: "Portfolio Builder",
     description: "Build and optimize investment portfolios",
     link: "/finance/quantitative-finance/portfolio-builder",
-    imageSrc: "https://res.cloudinary.com/dqtnflaeh/image/upload/v1735574068/portfolio_lwj4ab.png"
+    imageSrc: "../thumbnails/portfolio.png"
   }
 ];
 
@@ -37,21 +37,10 @@ export function ProjectShowcase() {
         padding: 2rem 0;
       }
       
-      .project-card {
-        border: 1px solid #eee;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
-      
-      .project-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      }
       
       .project-image {
         width: 100%;
-        height: 200px;
+        height: 300px;
         object-fit: cover;
       }
       
@@ -60,13 +49,12 @@ export function ProjectShowcase() {
       }
       
       .project-title {
-        margin: 0;
+        margin: -1rem;
         font-size: 1.25rem;
-        color: #333;
       }
       
       .project-description {
-        margin: 0.5rem 0 0;
+        margin: 1rem 0 0;
         color: #666;
         font-size: 0.9rem;
       }
