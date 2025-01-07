@@ -11,7 +11,7 @@ This notebook will focus on the Inference.
 
 The library runs on Node.js and browser environments and is available on npm [@huggingface/inference](https://www.npmjs.com/package/@huggingface/inference). To load it in a browser, you can use ES modules via [skypack.dev](https://skypack.dev)
 
-```js echo
+```js
 import { HfInference } from '@huggingface/inference';
 const hf = new HfInference('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');
 ```
@@ -23,7 +23,7 @@ Using an API key is optional to get started, however you will be rate limited ev
 
 ### Text to Image 
 
-```js
+```js echo
 const image = await hf.textToImage({
   inputs: 'award winning high resolution photo of a giant tortoise/((ladybird)) hybrid, [trending on artstation]',
   model: 'stabilityai/stable-diffusion-2',

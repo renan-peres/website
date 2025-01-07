@@ -18,8 +18,7 @@ const navigationPages = [
       {name: "DuckDB: Attach Databases", path: "/dev/WASM/duckdb/duckdb-attach-databases"},
       {name: "DuckDB: Attach S3", path: "/dev/WASM/duckdb/duckdb-attach-S3"},
       {name: "Pyodide", path: "/dev/WASM/pyodide/pyodide"},
-      {name: "WebR", path: "/dev/WASM/webr/webr"},
-      {name: "HugginFace Models", path: "/dev/hugginface/hello-huggingface-js-inference"}
+      {name: "WebR", path: "/dev/WASM/webr/webr"}
     ]
   }
   
