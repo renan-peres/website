@@ -1,8 +1,102 @@
 // See https://observablehq.com/framework/config for documentation.
 
 const EMOJI_FAVICON = "👋";
-const FOOTER_OBSERVABLE = "<a href='https://github.com/renan-peres' target='_blank'>Copyright 2024, Renan Peres</a>.";
+const FOOTER = "<a href='https://github.com/renan-peres' target='_blank'>Copyright 2024, Renan Peres</a>.";
 const SOURCE_REPO = "https://github.com/renan-peres/website/blob/main/src";
+
+const navigationPages = [
+  {
+    name: "WASM",
+    open: false,
+    pages: [
+      {name: "CodeSanbox", path: "/dev/WASM/code-sandbox"},
+      {name: "DuckDB: Shell", path: "/dev/WASM/duckdb/duckdb-shell"},
+      {name: "Pyodide: Shell", path: "/dev/WASM/pyodide/pyodide-shell"},
+      {name: "Pyodide: Jupyter Lite", path: "/dev/WASM/pyodide/pyodide-jupyterlite"},
+      {name: "WebR: Shell", path: "/dev/WASM/webr/webr-shell"},
+      {name: "DuckDB: Parquet Converter", path: "/dev/WASM/duckdb/duckdb-parquet-converter"},
+      {name: "DuckDB: Attach Databases", path: "/dev/WASM/duckdb/duckdb-attach-databases"},
+      {name: "DuckDB: Attach S3", path: "/dev/WASM/duckdb/duckdb-attach-S3"},
+      {name: "Pyodide", path: "/dev/WASM/pyodide/pyodide"},
+      {name: "WebR", path: "/dev/WASM/webr/webr"}
+    ]
+  }
+  
+  ,{
+    name: "Quarto",
+    open: false,
+    pages: [
+      {name: "HTML Basics (Report)", path: "/dev/quarto/html-basics/quarto_html_basics"},
+      {name: "Stock Explorer (Dashboard)", path: "/dev/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
+    ]
+  }
+
+  ,{
+    name: "Economy",
+    open: true,
+    pages: [
+      {name: "Economic Calendar", path: "/economy/economic-calendar"},
+      {name: "U.S. Mortgage Rates", path: "/economy/mortgage-rates"},
+      {name: "U.S. Foreign Exchange Rates", path: "/economy/fx-rates"},
+      {name: "U.S. Macro Indicators", path: "/economy/macro-indicators"},
+      {name: "U.S. Monetary Base", path: "/economy/monetary-base"}
+    ]
+  }
+
+  ,{
+    name: "Financial Markets",
+    open: true,
+    pages: [
+      {name: "Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices"},
+      {name: "Market News", path: "/finance/financial-markets/market-news"},
+      // {name: "Real-Time Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices-old"},
+      {name: "IPO Calendar", path: "/finance/financial-markets/ipo-calendar"}
+    ]
+  }
+  
+  ,{
+    name: "Coporate Finance",
+    open: true,
+    pages: [
+      {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
+      {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"}
+    ]
+  }
+
+  ,{
+    name: "Quantitative Finance",
+    open: true,
+    pages: [
+      {name: "Bond Valuation", path: "/finance/quantitative-finance/bond-valuation"},
+      {name: "Portfolio Builder & Optimization", path: "/finance/quantitative-finance/portfolio-builder"},
+      {name: "Option Pricing Model", path: "/finance/quantitative-finance/option-pricing-model"},
+      {name: "Naive Arbitrage for Trading", path: "/finance/quantitative-finance/naive-arb-trading"}
+    ]
+  }
+
+  ,{
+    name: "MFIN",
+    open: true,
+    pages: [
+      {name: "Portfolio Analysis (SQL & Tableau)", path: "/finance/MFIN/Fall-24/Data-Extraction-Visualization/Individual/data-extraction-individual"},
+      // {name: "Data Extraction (Open Server)", path: "/finance/MFIN/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
+      // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/finance/MFIN/Fall-24/Data-Extraction/Team/data-extraction-team"}
+      {name: "Apple Financial Model (Excel)", path: "/finance/MFIN/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
+    ]
+  }
+  
+  // ,{
+  //   name: "MBAN",
+  //   open: false,
+  //   pages: [
+  //     // {name: "Portfolio Analysis (SQL & Tableau)", path: "/MFIN/Fall-24/Data-Extraction-Visualization/Individual/data-extraction-individual"},
+  //     // // {name: "Data Extraction (Open Server)", path: "/MFIN/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
+  //     // // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/MFIN/Fall-24/Data-Extraction/Team/data-extraction-team"}
+  //     // {name: "Apple Financial Model (Excel)", path: "/MFIN/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
+  //   ]
+  // }
+
+];
 
 const VIEW_SOURCE = !SOURCE_REPO
   ? ""
@@ -24,116 +118,87 @@ a.setAttribute("href", a.getAttribute("href") + (
 </script>
 `;
 
+const HEADER =  `
+<div class="header-container">
+  <style>
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .navigation-links {
+      display: flex;
+      gap: 1rem;
+      margin: 0.5rem 0;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: #666;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: background-color 0.2s ease;
+    }
+    .nav-link:hover {
+      background-color: #161616;
+      color: #666;
+    }
+  </style>
+  
+  <div class="navigation-links">
+    <script>
+      function findNavPages() {
+        const currentPath = window.location.pathname;
+        let prevPath = null;
+        let nextPath = null;
+        let isFirstPage = false;
+        
+        // Flatten navigation structure
+        const allPages = ${JSON.stringify(navigationPages)}.flatMap(section => 
+          section.pages
+        );
+        
+        // Find current page index
+        const currentIndex = allPages.findIndex(page => page.path === currentPath);
+        
+        // Check if this is the first page
+        isFirstPage = currentIndex === 0;
+        
+        // Get previous and next paths if they exist
+        if (currentIndex > 0) {
+          prevPath = allPages[currentIndex - 1].path;
+        }
+        if (currentIndex < allPages.length - 1) {
+          nextPath = allPages[currentIndex + 1].path;
+        }
+        
+        return { prevPath, nextPath, isFirstPage };
+      }
+      
+      const { prevPath, nextPath, isFirstPage } = findNavPages();
+      document.write(
+        (isFirstPage ? '<a href="/" class="nav-link home-link"> Home</a>' : 
+         prevPath ? '<a href="' + prevPath + '" class="nav-link prev-link">← Previous</a>' : '') +
+        (nextPath ? '<a href="' + nextPath + '" class="nav-link next-link">Next →</a>' : '')
+      );
+    </script>
+  </div>
+  
+  <div class="view-source-container">
+    ${VIEW_SOURCE}
+  </div>
+</div>
+`;
+
 export default {
-  // The app’s title; used in the sidebar and webpage titles.
   title: "Home",
-
-  // The pages and sections in the sidebar. If you don’t specify this option,
-  // all pages will be listed in alphabetical order. Listing pages explicitly
-  // lets you organize them into sections and have unlisted pages.
-  pages: [
-    {
-      name: "WASM",
-      open: false,
-      pages: [
-        {name: "CodeSanbox", path: "/dev/WASM/code-sandbox"},
-        {name: "DuckDB: Shell", path: "/dev/WASM/duckdb/duckdb-shell"},
-        {name: "Pyodide: Shell", path: "/dev/WASM/pyodide/pyodide-shell"},
-        {name: "Pyodide: Jupyter Lite", path: "/dev/WASM/pyodide/pyodide-jupyterlite"},
-        {name: "WebR: Shell", path: "/dev/WASM/webr/webr-shell"},
-        {name: "DuckDB: Parquet Converter", path: "/dev/WASM/duckdb/duckdb-parquet-converter"},
-        {name: "DuckDB: Attach Databases", path: "/dev/WASM/duckdb/duckdb-attach-databases"},
-        {name: "DuckDB: Attach S3", path: "/dev/WASM/duckdb/duckdb-attach-S3"},
-        {name: "Pyodide", path: "/dev/WASM/pyodide/pyodide"},
-        {name: "WebR", path: "/dev/WASM/webr/webr"}
-      ]
-    }
-    
-    ,{
-      name: "Quarto",
-      open: false,
-      pages: [
-        {name: "HTML Basics (Report)", path: "/dev/quarto/html-basics/quarto_html_basics"},
-        {name: "Stock Explorer (Dashboard)", path: "/dev/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
-      ]
-    }
-
-    ,{
-      name: "Economy",
-      open: true,
-      pages: [
-        {name: "Economic Calendar", path: "/economy/economic-calendar"},
-        {name: "U.S. Mortgage Rates", path: "/economy/mortgage-rates"},
-        {name: "U.S. Foreign Exchange Rates", path: "/economy/fx-rates"},
-        {name: "U.S. Macro Indicators", path: "/economy/macro-indicators"},
-        {name: "U.S. Monetary Base", path: "/economy/monetary-base"}
-      ]
-    }
-
-    ,{
-      name: "Financial Markets",
-      open: true,
-      pages: [
-        {name: "Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices"},
-        {name: "Market News", path: "/finance/financial-markets/market-news"},
-        // {name: "Real-Time Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices-old"},
-        {name: "IPO Calendar", path: "/finance/financial-markets/ipo-calendar"}
-      ]
-    }
-    
-    ,{
-      name: "Coporate Finance",
-      open: true,
-      pages: [
-        {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
-        {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"}
-      ]
-    }
-
-    ,{
-      name: "Quantitative Finance",
-      open: true,
-      pages: [
-        {name: "Bond Valuation", path: "/finance/quantitative-finance/bond-valuation"},
-        {name: "Portfolio Builder & Optimization", path: "/finance/quantitative-finance/portfolio-builder"},
-        {name: "Option Pricing Model", path: "/finance/quantitative-finance/option-pricing-model"},
-        {name: "Naive Arbitrage for Trading", path: "/finance/quantitative-finance/naive-arb-trading"}
-      ]
-    }
-
-    ,{
-      name: "MFIN",
-      open: true,
-      pages: [
-        {name: "Portfolio Analysis (SQL & Tableau)", path: "/finance/MFIN/Fall-24/Data-Extraction-Visualization/Individual/data-extraction-individual"},
-        // {name: "Data Extraction (Open Server)", path: "/finance/MFIN/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
-        // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/finance/MFIN/Fall-24/Data-Extraction/Team/data-extraction-team"}
-        {name: "Apple Financial Model (Excel)", path: "/finance/MFIN/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
-      ]
-    }
-    
-    // ,{
-    //   name: "MBAN",
-    //   open: false,
-    //   pages: [
-    //     // {name: "Portfolio Analysis (SQL & Tableau)", path: "/MFIN/Fall-24/Data-Extraction-Visualization/Individual/data-extraction-individual"},
-    //     // // {name: "Data Extraction (Open Server)", path: "/MFIN/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
-    //     // // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/MFIN/Fall-24/Data-Extraction/Team/data-extraction-team"}
-    //     // {name: "Apple Financial Model (Excel)", path: "/MFIN/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
-    //   ]
-    // }
-
-  ],
-
-  // Content to add to the head of the page, e.g. for a favicon:
+  pages: navigationPages,
   head: `<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>${EMOJI_FAVICON}</text></svg>">`,
-  // The path to the source root.
-  header: `${VIEW_SOURCE}`,
-  footer: FOOTER_OBSERVABLE,
+  header: HEADER,
+  footer: FOOTER,
   root: "src",
-  // theme: 'dashboard',
   // Some additional configuration options and their defaults:
-  // theme: "default", // try "light", "dark", "slate", etc.
+  // theme: "default", // try 'dashboard', "light", "dark", "slate", etc.
   // sidebar: true, // whether to show the sidebar
   // toc: true, // whether to show the table of contents
   pager: false, // whether to show previous & next links in the footer
@@ -155,5 +220,6 @@ export default {
     duckdbConfig: {
       loadPath: 'https://app.motherduck.com'
     }
-  }
+  },
+  
 };

@@ -69,6 +69,12 @@ Feel free to connect with me on LinkedIn or via email.
   </a>
 </div>
 
+---
+
+```js
+import { ProjectShowcase } from "./assets/components/projectShowcase.js";
+display(ProjectShowcase());
+```
 
 <!-- <br>
 <div id="stats" align="center" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 0px;">
