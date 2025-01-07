@@ -177,8 +177,7 @@ const HEADER =  `
       
       const { prevPath, nextPath, isFirstPage } = findNavPages();
       document.write(
-        (isFirstPage ? '<a href="/" class="nav-link home-link"> Home</a>' : 
-         prevPath ? '<a href="' + prevPath + '" class="nav-link prev-link">← Previous</a>' : '') +
+        (prevPath ? '<a href="' + prevPath + '" class="nav-link prev-link">← Previous</a>' : '') +
         (nextPath ? '<a href="' + nextPath + '" class="nav-link next-link">Next →</a>' : '')
       );
     </script>
