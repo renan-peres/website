@@ -151,7 +151,6 @@ const HEADER =  `
         const currentPath = window.location.pathname;
         let prevPath = null;
         let nextPath = null;
-        let isFirstPage = false;
         
         // Flatten navigation structure
         const allPages = ${JSON.stringify(navigationPages)}.flatMap(section => 
@@ -161,9 +160,6 @@ const HEADER =  `
         // Find current page index
         const currentIndex = allPages.findIndex(page => page.path === currentPath);
         
-        // Check if this is the first page
-        isFirstPage = currentIndex === 0;
-        
         // Get previous and next paths if they exist
         if (currentIndex > 0) {
           prevPath = allPages[currentIndex - 1].path;
@@ -172,10 +168,10 @@ const HEADER =  `
           nextPath = allPages[currentIndex + 1].path;
         }
         
-        return { prevPath, nextPath, isFirstPage };
+        return { prevPath, nextPath };
       }
       
-      const { prevPath, nextPath, isFirstPage } = findNavPages();
+      const { prevPath, nextPath } = findNavPages();
       document.write(
         (prevPath ? '<a href="' + prevPath + '" class="nav-link prev-link">← Previous</a>' : '') +
         (nextPath ? '<a href="' + nextPath + '" class="nav-link next-link">Next →</a>' : '')
