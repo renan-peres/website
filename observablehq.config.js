@@ -145,37 +145,67 @@ const HEADER =  `
     }
   </style>
   
-  <div class="navigation-links">
+<div class="navigation-links">
     <script>
       function findNavPages() {
+        // Debug current path
         const currentPath = window.location.pathname;
+        console.log('Current path:', currentPath);
+        
         let prevPath = null;
         let nextPath = null;
+        let isFirstPage = false;
         
-        // Flatten navigation structure
-        const allPages = ${JSON.stringify(navigationPages)}.flatMap(section => 
-          section.pages
-        );
-        
-        // Find current page index
-        const currentIndex = allPages.findIndex(page => page.path === currentPath);
-        
-        // Get previous and next paths if they exist
-        if (currentIndex > 0) {
-          prevPath = allPages[currentIndex - 1].path;
+        try {
+          // Flatten and normalize navigation
+          const allPages = ${JSON.stringify(navigationPages)}
+            .flatMap(section => section.pages)
+            .map(page => ({
+              ...page,
+              path: page.path.endsWith('/') ? page.path.slice(0, -1) : page.path
+            }));
+            
+          console.log('Available pages:', allPages);
+          
+          // Improved path matching
+          const currentIndex = allPages.findIndex(page => 
+            currentPath === page.path || 
+            currentPath.endsWith(page.path)
+          );
+          
+          console.log('Found index:', currentIndex);
+          
+          isFirstPage = currentIndex === 0;
+          
+          if (currentIndex > 0) {
+            prevPath = allPages[currentIndex - 1].path;
+          }
+          if (currentIndex < allPages.length - 1) {
+            nextPath = allPages[currentIndex + 1].path;
+          }
+          
+          console.log('Navigation results:', { prevPath, nextPath, isFirstPage });
+        } catch (error) {
+          console.error('Navigation error:', error);
         }
-        if (currentIndex < allPages.length - 1) {
-          nextPath = allPages[currentIndex + 1].path;
-        }
         
-        return { prevPath, nextPath };
+        return { prevPath, nextPath, isFirstPage };
       }
       
-      const { prevPath, nextPath } = findNavPages();
-      document.write(
-        (prevPath ? '<a href="' + prevPath + '" class="nav-link prev-link">← Previous</a>' : '') +
-        (nextPath ? '<a href="' + nextPath + '" class="nav-link next-link">Next →</a>' : '')
-      );
+      const nav = findNavPages();
+      const navLinks = [];
+      
+      if (nav.isFirstPage) {
+        navLinks.push('<a href="/" class="nav-link home-link">← Home</a>');   
+      }
+      if (nav.prevPath) {
+        navLinks.push('<a href="' + nav.prevPath + '" class="nav-link prev-link">← Previous</a>');
+      }
+      if (nav.nextPath) {
+        navLinks.push('<a href="' + nav.nextPath + '" class="nav-link next-link">Next →</a>');
+      }
+      
+      document.write(navLinks.join(''));
     </script>
   </div>
   
