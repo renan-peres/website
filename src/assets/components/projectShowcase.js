@@ -2,16 +2,24 @@ import { html } from "htl";
 
 const projects = [
   {
-    title: "Market News",
-    description: "Track the lastest news reltated to Financial Markets",
-    link: "/finance/financial-markets/market-news",
-    // imageSrc: "https://res.cloudinary.com/dqtnflaeh/image/upload/v1736278373/thumbnails/market-news_ghounz.png"
-  },
-  {
     title: "Stock & Crypto Prices", 
     description: "Real-time market data and analysis",
     link: "/finance/financial-markets/stock-crypto-prices",
-    // imageSrc: "https://res.cloudinary.com/dqtnflaeh/image/upload/v1736277448/thumbnails/stocks-crypto_lc2esm.png"
+  },
+  {
+    title: "Portfolio Analysis",
+    description: "Portfolio Analysis combining SQL for Anaysis and Tableau for Visualization",
+    link: "/finance/mfin/Fall-24/Data-Extraction-Visualization/Individual/data-extraction-individual",
+  },
+  {
+    title: "Apple Financial Model",
+    description: "A comprehensive Financial Model for Apple Inc.",
+    link: "/finance/mfin/Fall-24/Cost-Managerial-Analysis/financial-model-apple",
+  },
+  {
+    title: "Market News",
+    description: "Track the lastest news reltated to Financial Markets",
+    link: "/finance/financial-markets/market-news",
   },
   {
     title: "DCF Analysis",
@@ -63,13 +71,14 @@ export function ProjectShowcase() {
     <div class="project-grid">
       ${projects.map(project => html`
         <a href="${project.link}" class="project-card" style="text-decoration: none;">
-          <div class="iframe-wrapper">
+        <div class="iframe-wrapper">
             <iframe 
               src="${project.link}"
               class="preview-iframe"
               title="${project.title} preview"
               loading="lazy"
-              sandbox="allow-same-origin"
+              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+              referrerpolicy="same-origin"
             ></iframe>
           </div>
           <div class="project-content">
