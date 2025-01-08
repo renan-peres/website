@@ -17,8 +17,10 @@ import * as XLSX from "npm:xlsx";
 import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../../assets/components/tableFormatting.js";
 import * as htl from "htl";
 import * as arrow from "apache-arrow";
-
 const db = await getDefaultClient();
+
+const secrets = await FileAttachment("../../assets/loaders/secrets.json").json();
+const FINNHUB_TOKEN = secrets.FINNHUB_TOKEN;
 ```
 
 ```js
@@ -101,7 +103,7 @@ for (const row of initial_stock_data) {
 ```
 
 ```js
-const finnhubWs = new WebSocket('wss://ws.finnhub.io?token=ctl0tnpr01qn6d7jqpj0ctl0tnpr01qn6d7jqpjg');
+const finnhubWs = new WebSocket(`wss://ws.finnhub.io?token=${FINNHUB_TOKEN}`);
 
 finnhubWs.onopen = () => {
   ['META', 'GOOGL', 'NFLX', 'AAPL', 'BINANCE:BTCUSDT', 'BINANCE:ETHUSDT', 'BINANCE:SOLUSDT', 'BINANCE:XRPUSDT'].forEach(symbol => {

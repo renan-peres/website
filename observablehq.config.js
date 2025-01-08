@@ -32,6 +32,14 @@ const navigationPages = [
   }
 
   ,{
+    name: "Hugging Face",
+    open: false,
+    pages: [
+      {name: "Serverless Inference API", path: "/dev/huggingface/serverless-model-inference"}
+    ]
+  }
+
+  ,{
     name: "Economy",
     open: true,
     pages: [

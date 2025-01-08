@@ -28,13 +28,14 @@ const d3 = await import("https://cdn.jsdelivr.net/npm/d3@7/+esm");
 ---
 
 ```js
-const API_KEY = 'ctl0tnpr01qn6d7jqpj0ctl0tnpr01qn6d7jqpjg';
+const secrets = await FileAttachment("../../assets/loaders/secrets.json").json();
+const FINNHUB_TOKEN = secrets.FINNHUB_TOKEN;
 const NEWS_CATEGORIES = ['general', 'forex', 'crypto', 'merger'];
 
 async function fetchNews(category) {
   try {
     const response = await fetch(
-      `https://finnhub.io/api/v1/news?category=${category}&token=${API_KEY}`
+      `https://finnhub.io/api/v1/news?category=${category}&token=${FINNHUB_TOKEN}`
     );
 
     if (!response.ok) {
