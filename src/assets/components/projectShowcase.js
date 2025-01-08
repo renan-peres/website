@@ -21,11 +21,11 @@ const projects = [
     description: "Track the lastest news reltated to Financial Markets",
     link: "/finance/financial-markets/market-news",
   },
-  {
-    title: "DCF Analysis",
-    description: "Discounted Cash Flow valuation tool",  
-    link: "/finance/coporate-finance/company-dcf"
-  },
+  // {
+  //   title: "DCF Analysis",
+  //   description: "Discounted Cash Flow valuation tool",  
+  //   link: "/finance/coporate-finance/company-dcf"
+  // },
   {
     title: "U.S. Mortgage Rates",
     description: "Current and Historical Mortgage Rates in the U.S.",
@@ -40,7 +40,7 @@ export function ProjectShowcase() {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 2rem;
-        padding: 2rem 0;
+        padding: 1rem 0;
       }
       
       .iframe-wrapper {
