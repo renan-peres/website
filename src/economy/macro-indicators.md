@@ -4,6 +4,8 @@ index: true
 toc: false
 source: https://fred.stlouisfed.org/
 keywords: macro economics indicators unemployment gdp inflation exchange rate
+sql:
+    fred_data: https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/finance/fred_macro_economy.parquet
 ---
 
 # Macro Indicators
@@ -19,81 +21,68 @@ import {datetime} from "../assets/components/datetime.js";
 
 ## Key Economic Indicators
 
+```sql id=economicData_historical
+FROM fred_data
+ORDER BY date DESC;
+```
+
+```sql id=economicData_mostRecent
+WITH ranked_data AS (
+    SELECT *,
+        ROW_NUMBER() OVER (PARTITION BY series_id ORDER BY date DESC) AS rn
+    FROM fred_data
+)
+
+SELECT 
+    date,
+    series_id,
+    series_description,
+    value
+FROM ranked_data
+WHERE rn = 1
+ORDER BY date DESC;
+```
+
 ```js
-// Load and process the data
-const economicData = await FileAttachment("../assets/loaders/js/fred_macro_api.csv").csv({typed: true});
+function formatTableData(data) {
+  // Create a mapping of series_id to friendly names
+  const seriesMapping = {
+    'UNRATE': 'unemployment',
+    'GDP': 'gdp',
+    'CPIAUCSL': 'inflation',
+    'FEDFUNDS': 'fedRate',
+    'DEXUSEU': 'exchangeRate'
+  };
 
-// Debug log to see the structure and first few rows
-console.log("CSV Column names:", Object.keys(economicData[0]));
-console.log("First three rows:", economicData.slice(0, 3));
+  // Initialize metrics object
+  const metrics = {};
+  
+  // Convert SQL results to metrics object
+  const rows = data.toArray();
+  rows.forEach(row => {
+    const metricName = seriesMapping[row.series_id];
+    if (metricName) {
+      metrics[metricName] = {
+        value: row.value,
+        date: new Date(row.date).toLocaleDateString(),
+        format: (val) => {
+          switch(metricName) {
+            case 'gdp':
+              return `$${Number(val).toLocaleString()} B`;
+            case 'exchangeRate':
+              return Number(val).toFixed(2);
+            default:
+              return `${Number(val).toFixed(1)}%`;
+          }
+        }
+      };
+    }
+  });
+  
+  return metrics;
+}
 
-// Make sure we have data and process it into the correct format
-const processedData = economicData.map(d => {
-    // Debug log raw values before processing
-    console.log("Raw values:", {
-        unemployment: d.unrate || d.unemployment_rate,
-        gdp: d.gdp || d.GDP,
-        inflation: d.inflation_rate || d.FPCPITOTLZGUSA,
-        fedRate: d.fed_funds_rate || d.DFF,
-        exchangeRate: d.exchange_rate_usd_eur || d.DEXUSEU
-    });
-    
-    return {
-        date: d.date,
-        unemployment_rate: d.unrate ? +d.unrate : (d.unemployment_rate ? +d.unemployment_rate : null),
-        gdp: d.gdp ? +d.gdp : (d.GDP ? +d.GDP : null),
-        inflation_rate: d.inflation_rate ? +d.inflation_rate : (d.FPCPITOTLZGUSA ? +d.FPCPITOTLZGUSA : null),
-        fed_funds_rate: d.fed_funds_rate ? +d.fed_funds_rate : (d.DFF ? +d.DFF : null),
-        exchange_rate_usd_eur: d.exchange_rate_usd_eur ? +d.exchange_rate_usd_eur : (d.DEXUSEU ? +d.DEXUSEU : null)
-    };
-}).sort((a, b) => new Date(b.date) - new Date(a.date));
-
-// Debug log processed data
-console.log("First row of processed data:", processedData[0]);
-
-// Make current metrics available globally
-const currentMetrics = processedData[0] || {
-  date: "No data",
-  unemployment_rate: null,
-  gdp: null,
-  inflation_rate: null,
-  fed_funds_rate: null,
-  exchange_rate_usd_eur: null
-};
-
-// Format functions with null checks
-const formatGDP = (value) => value != null ? `$${(value / 1000).toFixed(2)}T` : "--";
-const formatRate = (value) => value != null ? `${value.toFixed(2)}%` : "--";
-const formatExchange = (value) => value != null ? `€${value.toFixed(4)}` : "--";
-
-// Create observable variables for the metrics
-const metrics = {
-  unemployment: {
-    value: currentMetrics.unemployment_rate,
-    date: currentMetrics.date,
-    format: formatRate
-  },
-  gdp: {
-    value: currentMetrics.gdp,
-    date: currentMetrics.date,
-    format: formatGDP
-  },
-  inflation: {
-    value: currentMetrics.inflation_rate,
-    date: currentMetrics.date,
-    format: formatRate
-  },
-  fedRate: {
-    value: currentMetrics.fed_funds_rate,
-    date: currentMetrics.date,
-    format: formatRate
-  },
-  exchangeRate: {
-    value: currentMetrics.exchange_rate_usd_eur,
-    date: currentMetrics.date,
-    format: formatExchange
-  }
-};
+const metrics = formatTableData(economicData_mostRecent);
 ```
 
 ```html
@@ -101,37 +90,37 @@ const metrics = {
     <div class="card bg-gray-800 p-4 rounded-lg">
         <h2 class="text-gray-400">Unemployment Rate</h2>
         <div class="big text-xl font-bold my-2">
-            ${metrics.unemployment.format(metrics.unemployment.value)}
+            ${metrics.unemployment?.format(metrics.unemployment?.value) || 'N/A'}
         </div>
-        <div class="small text-gray-500">${metrics.unemployment.date}</div>
+        <div class="small text-gray-500">${metrics.unemployment?.date || ''}</div>
     </div>
     <div class="card bg-gray-800 p-4 rounded-lg">
         <h2 class="text-gray-400">GDP</h2>
         <div class="big text-xl font-bold my-2">
-            ${metrics.gdp.format(metrics.gdp.value)}
+            ${metrics.gdp?.format(metrics.gdp?.value) || 'N/A'}
         </div>
-        <div class="small text-gray-500">${metrics.gdp.date}</div>
+        <div class="small text-gray-500">${metrics.gdp?.date || ''}</div>
     </div>
     <div class="card bg-gray-800 p-4 rounded-lg">
         <h2 class="text-gray-400">Inflation Rate</h2>
         <div class="big text-xl font-bold my-2">
-            ${metrics.inflation.format(metrics.inflation.value)}
+            ${metrics.inflation?.format(metrics.inflation?.value) || 'N/A'}
         </div>
-        <div class="small text-gray-500">${metrics.inflation.date}</div>
+        <div class="small text-gray-500">${metrics.inflation?.date || ''}</div>
     </div>
     <div class="card bg-gray-800 p-4 rounded-lg">
         <h2 class="text-gray-400">Fed Funds Rate</h2>
         <div class="big text-xl font-bold my-2">
-            ${metrics.fedRate.format(metrics.fedRate.value)}
+            ${metrics.fedRate?.format(metrics.fedRate?.value) || 'N/A'}
         </div>
-        <div class="small text-gray-500">${metrics.fedRate.date}</div>
+        <div class="small text-gray-500">${metrics.fedRate?.date || ''}</div>
     </div>
     <div class="card bg-gray-800 p-4 rounded-lg">
         <h2 class="text-gray-400">USD/EUR Rate</h2>
         <div class="big text-xl font-bold my-2">
-            ${metrics.exchangeRate.format(metrics.exchangeRate.value)}
+            ${metrics.exchangeRate?.format(metrics.exchangeRate?.value) || 'N/A'}
         </div>
-        <div class="small text-gray-500">${metrics.exchangeRate.date}</div>
+        <div class="small text-gray-500">${metrics.exchangeRate?.date || ''}</div>
     </div>
 </div>
 ```

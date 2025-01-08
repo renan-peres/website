@@ -20,7 +20,7 @@ import * as arrow from "apache-arrow";
 const db = await getDefaultClient();
 
 const secrets = await FileAttachment("../../assets/loaders/secrets.json").json();
-const FINNHUB_TOKEN = secrets.FINNHUB_TOKEN;
+const FINNHUB_API_KEY = secrets.FINNHUB_API_KEY;
 ```
 
 ```js
@@ -103,7 +103,7 @@ for (const row of initial_stock_data) {
 ```
 
 ```js
-const finnhubWs = new WebSocket(`wss://ws.finnhub.io?token=${FINNHUB_TOKEN}`);
+const finnhubWs = new WebSocket(`wss://ws.finnhub.io?token=${FINNHUB_API_KEY}`);
 
 finnhubWs.onopen = () => {
   ['META', 'GOOGL', 'NFLX', 'AAPL', 'BINANCE:BTCUSDT', 'BINANCE:ETHUSDT', 'BINANCE:SOLUSDT', 'BINANCE:XRPUSDT'].forEach(symbol => {
