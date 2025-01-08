@@ -18,7 +18,9 @@ const navigationPages = [
       {name: "DuckDB: Attach Databases", path: "/dev/wasm/duckdb/duckdb-attach-databases"},
       {name: "DuckDB: Attach S3", path: "/dev/wasm/duckdb/duckdb-attach-s3"},
       {name: "Pyodide", path: "/dev/wasm/pyodide/pyodide"},
-      {name: "WebR", path: "/dev/wasm/webr/webr"}
+      {name: "WebR", path: "/dev/wasm/webr/webr"},
+      {name: "DuckDB: Line Chart", path: "/dev/duckdb-line"},
+      {name: "DuckDB: Choropleth (UUnemployment)", path: "/dev/duckdb-choropleth"},
     ]
   }
   
