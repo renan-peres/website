@@ -16,7 +16,7 @@ const navigationPages = [
       {name: "WebR: Shell", path: "/dev/wasm/webr/webr-shell"},
       {name: "DuckDB: Parquet Converter", path: "/dev/wasm/duckdb/duckdb-parquet-converter"},
       {name: "DuckDB: Attach Databases", path: "/dev/wasm/duckdb/duckdb-attach-databases"},
-      {name: "DuckDB: Attach S3", path: "/dev/wasm/duckdb/duckdb-attach-S3"},
+      {name: "DuckDB: Attach S3", path: "/dev/wasm/duckdb/duckdb-attach-s3"},
       {name: "Pyodide", path: "/dev/wasm/pyodide/pyodide"},
       {name: "WebR", path: "/dev/wasm/webr/webr"}
     ]
@@ -86,10 +86,10 @@ const navigationPages = [
     name: "MFIN",
     open: true,
     pages: [
-      {name: "Portfolio Analysis (SQL & Tableau)", path: "/finance/mfin/Fall-24/Data-Extraction-Visualization/Individual/data-extraction-individual"},
+      {name: "Portfolio Analysis (SQL & Tableau)", path: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual"},
       // {name: "Data Extraction (Open Server)", path: "/finance/mfin/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
       // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/finance/mfin/Fall-24/Data-Extraction/Team/data-extraction-team"}
-      {name: "Apple Financial Model (Excel)", path: "/finance/mfin/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
+      {name: "Apple Financial Model (Excel)", path: "/finance/mfin/fall-24/cost-managerial-analysis/financial-model-apple"}
     ]
   }
   

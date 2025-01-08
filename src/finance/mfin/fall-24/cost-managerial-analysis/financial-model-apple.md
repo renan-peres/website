@@ -88,7 +88,7 @@ function processUrl(url) {
 const spreadsheetUrl = view(Inputs.textarea({
   // value: "https://hultstudents-my.sharepoint.com/personal/rperes_student_hult_edu/_layouts/15/Doc.aspx?sourcedoc={29ffabe6-324a-4303-aeba-c924a5aca801}",
   value: "https://1drv.ms/x/c/bde1a904e346bc6a/IQTKZtR9HeT2QLyimcyVE3o0ASeRkL1v1AUyejtCeJUeqOE?em=2",
-  width: "800px",
+  width: "100%",
   rows: 1,
   resize: "both",
   style: { fontSize: "16px" },

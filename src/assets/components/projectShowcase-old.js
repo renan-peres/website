@@ -77,7 +77,7 @@ export function ProjectShowcase() {
               class="preview-iframe"
               title="${project.title} preview"
               loading="lazy"
-              sandbox="allow-same-origin allow-scripts"
+              sandbox="allow-same-origin"
             ></iframe>
           </div>
           <div class="project-content">
