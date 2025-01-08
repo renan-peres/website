@@ -168,3 +168,56 @@ const collapsibleContent = htl.html`
 
 display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
 ```
+
+```js
+const data = Array.from(await economicData_historical);
+
+// const series_id = ["All", ...new Set(data.map(d => d.series_id))].sort();
+const series_id = [...new Set(data.map(d => d.series_id))].sort();
+const selected = view(Inputs.select(series_id, {
+  label: "Filter by Series:",
+  value: "GDP"
+}));
+```
+
+```js
+const parse  = d3.timeParse('%Y-%m-%d');
+const format = d3.timeFormat("%b '%y");
+
+display(
+Plot.plot({
+  width: window.innerWidth - 100,
+  height: 600,
+  marginLeft: 80,
+  y: {
+    grid: true,
+    nice: true,
+    type: "linear",
+    tickFormat: d => d3.format(",.0f")(d)
+  },
+  marks: [
+    Plot.axisY({
+      label: "Value",
+      // label: null
+      labelOffset: 40
+    }),
+    Plot.axisX({
+      round: true, 
+      label: "Date", 
+      tickFormat: ymd => format(parse(ymd))
+      // tickFormat: d => d3.timeFormat("%b '%y")(new Date(d))
+    }),
+    Plot.line(await sql`
+      SELECT *
+      FROM fred_data
+      WHERE series_id = ${selected};
+    `, {
+      x: "date", 
+      y: "value", 
+      tip: true,
+      stroke: "steelblue",
+      sort: {y: "x", reverse: true}
+    })
+  ]
+}));
+```
