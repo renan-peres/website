@@ -20,7 +20,8 @@ const navigationPages = [
       {name: "Pyodide", path: "/dev/wasm/pyodide/pyodide"},
       {name: "WebR", path: "/dev/wasm/webr/webr"},
       {name: "DuckDB: Line Chart", path: "/dev/duckdb-line"},
-      {name: "DuckDB: Choropleth (UUnemployment)", path: "/dev/duckdb-choropleth"},
+      {name: "DuckDB: Choropleth", path: "/dev/duckdb-choropleth"},
+      {name: "DuckDB: Mosaic Cross-Filter", path: "/dev/duckdb-mosaic-flights"},
     ]
   }
   
@@ -45,11 +46,11 @@ const navigationPages = [
     name: "Economy",
     open: true,
     pages: [
-      {name: "Economic Calendar", path: "/economy/economic-calendar"},
-      {name: "U.S. Mortgage Rates", path: "/economy/mortgage-rates"},
-      {name: "U.S. Foreign Exchange Rates", path: "/economy/fx-rates"},
-      {name: "U.S. Macro Indicators", path: "/economy/macro-indicators"},
-      {name: "U.S. Monetary Base", path: "/economy/monetary-base"}
+      {name: "Economic Calendar", path: "/finance/economy/economic-calendar"},
+      {name: "U.S. Mortgage Rates", path: "/finance/economy/mortgage-rates"},
+      {name: "U.S. Foreign Exchange Rates", path: "/finance/economy/fx-rates"},
+      {name: "U.S. Macro Indicators", path: "/finance/economy/macro-indicators"},
+      {name: "U.S. Monetary Base", path: "/finance/economy/monetary-base"}
     ]
   }
 

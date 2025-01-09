@@ -29,7 +29,7 @@ const projects = [
   {
     title: "U.S. Mortgage Rates",
     description: "Current and Historical Mortgage Rates in the U.S.",
-    link: "/economy/mortgage-rates"
+    link: "/finance/economy/mortgage-rates"
   }
 ];
 
