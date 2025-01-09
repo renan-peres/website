@@ -4,6 +4,43 @@ index: false
 keywords: R, wasm
 ---
 
+```html
+<style>
+.observablehq textarea,
+.observablehq-input textarea,
+.sql-editor {
+  min-height: 25px !important;
+  max-height: 500px !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Header and container fixes */
+.observablehq article {
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.observablehq-markdown {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, li, ul, ol {
+  width: 100% !important;
+  max-width: none !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+</style>
+```
+
 # WebR (R WASM)
 ```js
 import {datetime} from "../../../assets/components/datetime.js";
@@ -55,8 +92,8 @@ const n = view(Inputs.range([1, 1e3], {step: 5, label: "Number of samples"}));
 ```js
 const Rcode = view(Inputs.textarea({
   value: "hist(rnorm(n))", 
-  width: "1200px",
-  rows: 2,
+  width: "100%",
+  rows: 1,
   resize: "both",
   style: { fontSize: "16px" },
   onKeyDown: e => {
@@ -84,8 +121,8 @@ model <- lm(mpg ~ wt, data = df)
 print(df |> head(10))
 print(summary(model))
 `,
-  width: "1200px",
-  rows: 8,
+  width: "100%",
+  rows: 5,
   resize: "both",
   style: { fontSize: "16px" },
   onKeyDown: e => {
