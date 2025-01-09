@@ -227,7 +227,7 @@ unemployment_chart
 
 ---
 
-## Historical Data
+## Historical Trends
 
 ```sql id=economicData_historical
 FROM fred_data
