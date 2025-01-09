@@ -76,8 +76,7 @@ function formatTableData(data) {
     'UNRATE': 'unemployment',
     'GDP': 'gdp',
     'FPCPITOTLZGUSA': 'inflation',
-    'DFF': 'fedRate',
-    'DEXUSEU': 'exchangeRate'
+    'DFF': 'fedRate'
   };
 
   // Initialize metrics object
@@ -95,8 +94,6 @@ function formatTableData(data) {
           switch(metricName) {
             case 'gdp':
               return `$${Number(val).toLocaleString()} T`;
-            case 'exchangeRate':
-              return Number(val).toFixed(2);
             default:
               return `${Number(val).toFixed(1)}%`;
           }
@@ -113,18 +110,18 @@ const metrics = formatTableData(economicData_mostRecent);
 
 <div class="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-5 gap-4 mt-4">
     <div class="card bg-gray-800 p-4 rounded-lg">
-        <h2 class="text-gray-400">Unemployment Rate</h2>
-        <div class="big text-xl font-bold my-2">
-            ${metrics.unemployment?.format(metrics.unemployment?.value) || 'N/A'}
-        </div>
-        <div class="small text-gray-500">${metrics.unemployment?.date || ''}</div>
-    </div>
-    <div class="card bg-gray-800 p-4 rounded-lg">
         <h2 class="text-gray-400">GDP</h2>
         <div class="big text-xl font-bold my-2">
             ${metrics.gdp?.format(metrics.gdp?.value) || 'N/A'}
         </div>
         <div class="small text-gray-500">${metrics.gdp?.date || ''}</div>
+    </div>
+    <div class="card bg-gray-800 p-4 rounded-lg">
+        <h2 class="text-gray-400">Unemployment Rate</h2>
+        <div class="big text-xl font-bold my-2">
+            ${metrics.unemployment?.format(metrics.unemployment?.value) || 'N/A'}
+        </div>
+        <div class="small text-gray-500">${metrics.unemployment?.date || ''}</div>
     </div>
     <div class="card bg-gray-800 p-4 rounded-lg">
         <h2 class="text-gray-400">Inflation Rate</h2>
@@ -139,13 +136,6 @@ const metrics = formatTableData(economicData_mostRecent);
             ${metrics.fedRate?.format(metrics.fedRate?.value) || 'N/A'}
         </div>
         <div class="small text-gray-500">${metrics.fedRate?.date || ''}</div>
-    </div>
-    <div class="card bg-gray-800 p-4 rounded-lg">
-        <h2 class="text-gray-400">USD/EUR Rate</h2>
-        <div class="big text-xl font-bold my-2">
-            ${metrics.exchangeRate?.format(metrics.exchangeRate?.value) || 'N/A'}
-        </div>
-        <div class="small text-gray-500">${metrics.exchangeRate?.date || ''}</div>
     </div>
 </div>
 
