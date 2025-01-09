@@ -5,79 +5,67 @@ source: https://pyodide.org/en/stable/usage/quickstart.html
 keywords: Python, wasm
 ---
 
-# Pyodide (Python WASM)
+
+```html
+<style>
+.observablehq textarea,
+.observablehq-input textarea,
+.sql-editor {
+  min-height: 50px !important;
+  max-height: 1000px !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Header and container fixes */
+.observablehq article {
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.observablehq-markdown {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, li, ul, ol {
+  width: 100% !important;
+  max-width: none !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+</style>
+```
 
 ```js
 import {datetime} from "../../../assets/components/datetime.js";
-```
-
-<div class="datetime-container">
-  <div id="datetime"></div>
-</div>
-
-<div id="countdown"></div>
-
-```js
 import { py, loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.mjs";
 
 async function initializePyodide() {
   const countdownElement = document.getElementById('countdown');
-  let secondsLeft = 5;
   
-  const timer = setInterval(() => {
-    if (secondsLeft > 0) {
-      countdownElement.textContent = `Initializing Pyodide... ${secondsLeft}`;
-      secondsLeft--;
-    }
-  }, 1000);
-
   try {
+    countdownElement.textContent = 'Initializing Pyodide...';
+    
     let pyodide = await loadPyodide({
       indexURL: "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/"
     });
-    clearInterval(timer);
+    
     countdownElement.textContent = 'Loading packages...';
     
     // Load core packages
     await pyodide.loadPackage(["pyodide.http", "requests", "numpy", "pandas", "polars", "matplotlib", "scikit-learn"]);
     
-    // Load micropip
-    await pyodide.loadPackage("micropip");
-    
-    try {
-      countdownElement.textContent = 'Installing polars...';
-      
-      // First load micropip
-      const micropip = pyodide.pyimport("micropip");
-      
-      // Install polars
-      console.log("Attempting to install polars...");
-      await micropip.install('polars');
-      
-      // Test the installation
-      const result = pyodide.runPython(`
-        import polars as pl
-        print(f"Successfully imported polars {pl.__version__}")
-        
-        # Create a test dataframe
-        df = pl.DataFrame({
-            "a": [1, 2, 3],
-            "b": ["x", "y", "z"]
-        })
-        print(df)
-      `);
-      
-      console.log('Polars installation completed');
-      countdownElement.textContent = 'Ready!';
-      
-    } catch (error) {
-      console.error('Installation error:', error);
-      countdownElement.textContent = 'Ready (without polars)';
-    }
-    
+    countdownElement.textContent = 'Ready!';
     return pyodide;
+    
   } catch (err) {
-    clearInterval(timer);
     countdownElement.textContent = 'Initialization failed';
     console.error('Pyodide initialization error:', err);
     throw err;
@@ -86,6 +74,14 @@ async function initializePyodide() {
 
 const pyodide = await initializePyodide();
 ```
+
+# Pyodide (Python WASM)
+
+<div class="datetime-container">
+  <div id="datetime"></div>
+</div>
+
+<div id="countdown"></div>
 
 ---
 
@@ -114,7 +110,7 @@ buf.seek(0)
 img_str = base64.b64encode(buf.read()).decode('utf-8')
 img_str`,
   width: "100%",
-  rows: 8,
+  rows: 16,
   resize: "both",
   style: { fontSize: "16px" },
   onKeyDown: e => {
@@ -133,7 +129,38 @@ image.src = `data:image/png;base64,${plotResult}`;
 display(canvas);
 ```
 
-## Code
+---
+
+## Read Data (GitHub)
+
+```js
+const pythonCode2 = view(Inputs.textarea({
+  value: `import requests
+import polars as pl
+
+r = requests.get("https://raw.githubusercontent.com/pola-rs/polars/main/examples/datasets/foods1.csv")
+df = pl.read_csv(r.content)
+# df.write_csv()
+str(df.head(10))`,
+  width: "100%",
+  rows: 7,
+  resize: "both",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js
+// Run the Python code in Pyodide
+const table = await pyodide.runPython(pythonCode2);
+display(table);
+```
+
+---
+
+## Linear Model
 
 ```js
 const pythonCode = view(Inputs.textarea({
@@ -164,7 +191,7 @@ Intercept: {model.intercept_:.4f}"""
 
 result_str`,
   width: "100%",
-  rows: 10,
+  rows: 25,
   resize: "both",
   style: { fontSize: "16px" },
   onKeyDown: e => {
@@ -180,19 +207,134 @@ display(result);
 
 ---
 
-## Display Table
+## Time Series Analysis
 
 ```js
-const pythonCode2 = view(Inputs.textarea({
-  value: `import requests
-import polars as pl
+const pythonCode3 = view(Inputs.textarea({
+  value: `import polars as pl
+import numpy as np
+from datetime import datetime, timedelta
 
-r = requests.get("https://raw.githubusercontent.com/pola-rs/polars/main/examples/datasets/foods1.csv")
-df = pl.read_csv(r.content)
-# df.write_csv()
-str(df.head(10))`,
+# Create sample time series data
+def create_sample_data(n_periods=100):
+    dates = [datetime.now() - timedelta(days=x) for x in range(n_periods)]
+    np.random.seed(42)
+    values = np.random.normal(100, 10, n_periods) + np.sin(np.arange(n_periods) * 0.1) * 20
+    
+    df = pl.DataFrame({
+        'date': dates,
+        'value': values
+    }).sort('date')
+    
+    return df
+
+# Time series analysis functions
+def analyze_time_series(df, value_col='value', date_col='date'):
+    """Comprehensive time series analysis using Polars"""
+    
+    # 1. Basic statistics over time
+    stats = df.select([
+        pl.col(value_col).mean().alias('mean'),
+        pl.col(value_col).std().alias('std'),
+        pl.col(value_col).min().alias('min'),
+        pl.col(value_col).max().alias('max'),
+    ])
+    
+    # 2. Rolling statistics
+    df_with_rolling = df.with_columns([
+        pl.col(value_col).rolling_mean(window_size=7).alias('rolling_mean_7d'),
+        pl.col(value_col).rolling_std(window_size=7).alias('rolling_std_7d'),
+    ])
+    
+    # 3. Year-over-year growth
+    df_with_yoy = df.with_columns([
+        pl.col(value_col).shift(365).alias('value_year_ago'),
+        ((pl.col(value_col) - pl.col(value_col).shift(365)) / pl.col(value_col).shift(365) * 100).alias('yoy_growth')
+    ])
+    
+    # 4. Seasonality detection (using month)
+    seasonal = df.with_columns([
+        pl.col(date_col).dt.month().alias('month')
+    ]).group_by('month').agg([
+        pl.col(value_col).mean().alias('monthly_avg'),
+        pl.col(value_col).std().alias('monthly_std')
+    ])
+    
+    # 5. Simple exponential smoothing
+    alpha = 0.1
+    df_with_ema = df.with_columns([
+        pl.col(value_col).ewm_mean(alpha=alpha).alias('exp_smoothing')
+    ])
+    
+    return {
+        'basic_stats': stats,
+        'rolling_stats': df_with_rolling,
+        'yoy_growth': df_with_yoy,
+        'seasonality': seasonal,
+        'smoothed': df_with_ema
+    }
+
+# Function to detect anomalies using Z-score method
+def detect_anomalies(df, value_col='value', threshold=3):
+    """Detect anomalies using Z-score method"""
+    mean = df[value_col].mean()
+    std = df[value_col].std()
+    
+    return df.with_columns(
+        is_anomaly=((pl.col(value_col) - mean) / std).abs() > threshold
+    )
+
+# Function to create forecasts using simple methods
+def simple_forecast(df, value_col='value', periods=7):
+    """Create simple forecasts using various methods"""
+    # Last value + trend
+    last_n = 30
+    recent_trend = (df[value_col][-1] - df[value_col][-last_n]) / last_n
+    
+    forecast_dates = [
+        df['date'][-1] + timedelta(days=x+1) 
+        for x in range(periods)
+    ]
+    
+    naive_forecast = df[value_col][-1] + recent_trend * np.arange(1, periods + 1)
+    
+    forecast_df = pl.DataFrame({
+        'date': forecast_dates,
+        'forecast_value': naive_forecast
+    })
+    
+    return forecast_df
+
+
+# Create sample data
+df = create_sample_data(365)
+
+# Perform analysis
+analysis = analyze_time_series(df)
+
+# Detect anomalies
+df_with_anomalies = detect_anomalies(df)
+
+# Create forecast
+forecast = simple_forecast(df)
+
+# Print some results
+output = ""
+output += str("Data:\\n")
+output += str(df)
+
+output += str("\\nBasic Statistics:\\n")
+output += str(analysis['basic_stats'])
+
+output += str("\\nSeasonality Analysis:\\n")
+output += str(analysis['seasonality'])
+ 
+output += str("\\nForecast for next 7 days:\\n")
+output += str(forecast)
+
+str(output)`,
   width: "100%",
-  rows: 7,
+  rows: 40,
   resize: "both",
   style: { fontSize: "16px" },
   onKeyDown: e => {
@@ -203,6 +345,6 @@ str(df.head(10))`,
 
 ```js
 // Run the Python code in Pyodide
-const table = await pyodide.runPython(pythonCode2);
-display(table);
+const displayPythonCode3 = await pyodide.runPython(pythonCode3);
+display(displayPythonCode3);
 ```

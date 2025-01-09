@@ -11,14 +11,14 @@ const navigationPages = [
     pages: [
       {name: "CodeSanbox", path: "/dev/wasm/code-sandbox"},
       {name: "DuckDB: Shell", path: "/dev/wasm/duckdb/duckdb-shell"},
-      {name: "Pyodide: Shell", path: "/dev/wasm/pyodide/pyodide-shell"},
-      {name: "Pyodide: Jupyter Lite", path: "/dev/wasm/pyodide/pyodide-jupyterlite"},
-      {name: "WebR: Shell", path: "/dev/wasm/webr/webr-shell"},
       {name: "DuckDB: Parquet Converter", path: "/dev/wasm/duckdb/duckdb-parquet-converter"},
       {name: "DuckDB: Attach Databases", path: "/dev/wasm/duckdb/duckdb-attach-databases"},
       {name: "DuckDB: Attach S3", path: "/dev/wasm/duckdb/duckdb-attach-s3"},
       {name: "Pyodide", path: "/dev/wasm/pyodide/pyodide"},
-      {name: "WebR", path: "/dev/wasm/webr/webr"}
+      {name: "Pyodide: Shell", path: "/dev/wasm/pyodide/pyodide-shell"},
+      {name: "Pyodide: Jupyter Lite", path: "/dev/wasm/pyodide/pyodide-jupyterlite"},
+      {name: "WebR", path: "/dev/wasm/webr/webr"},
+      {name: "WebR: Shell", path: "/dev/wasm/webr/webr-shell"},
     ]
   }
   
