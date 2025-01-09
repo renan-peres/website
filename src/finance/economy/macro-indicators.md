@@ -212,7 +212,7 @@ const collapsibleContent = htl.html`
   ${Inputs.table(tableConfig.dataArray, tableConfig)}
 `;
 
-display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
+display(createCollapsibleSection(collapsibleContent, "Show Data", "hide"));
 ```
 
 
