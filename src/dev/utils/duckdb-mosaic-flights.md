@@ -5,7 +5,7 @@ header: |
     <a target="_blank" href="https://github.com/uwdata/mosaic-framework-example/blob/main/docs/flight-delays.md?plain=1"><span>View source ↗</span></a>
   </div>
 sql:
-  flights: ../assets/data/flights-200k.parquet
+  flights: ../../assets/data/flights-200k.parquet
 ---
 
 ```html

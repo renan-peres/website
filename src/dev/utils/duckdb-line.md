@@ -2,7 +2,7 @@
 index: true
 title: M4 line simplification in DuckDB
 sql:
-  climate: ../assets/data/jena-climate.parquet
+  climate: ../../assets/data/jena-climate.parquet
 ---
 
 # M4 line simplification

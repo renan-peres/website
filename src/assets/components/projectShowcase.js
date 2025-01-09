@@ -2,33 +2,38 @@ import { html } from "htl";
 
 const projects = [
   {
-    title: "Stock & Crypto Prices", 
-    description: "Real-time market data and analysis",
+    title: "Stock & Crypto Prices",
+    description: "Live market quotes for stocks and cryptocurrencies",
     link: "/finance/financial-markets/stock-crypto-prices",
   },
   {
+    title: "Market News",
+    description: "Real-time financial market news aggregator",
+    link: "/finance/financial-markets/market-news",
+  },
+  {
+    title: "Macro Economy Indicators",
+    description: "Key U.S. macroeconomic metrics dashboard",
+    link: "/finance/economy/macro-indicators",
+  },
+  {
     title: "Portfolio Analysis",
-    description: "Portfolio Analysis combining SQL for Anaysis and Tableau for Visualization",
+    description: "SQL-powered portfolio analytics with Tableau visualizations",
     link: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual",
   },
   {
     title: "Apple Financial Model",
-    description: "A comprehensive Financial Model for Apple Inc.",
+    description: "Detailed financial modeling analysis of Apple Inc.",
     link: "/finance/mfin/fall-24/cost-managerial-analysis/financial-model-apple",
   },
-  {
-    title: "Market News",
-    description: "Track the lastest news reltated to Financial Markets",
-    link: "/finance/financial-markets/market-news",
-  },
   // {
-  //   title: "DCF Analysis",
-  //   description: "Discounted Cash Flow valuation tool",  
+  //   title: "DCF Analysis", 
+  //   description: "Discounted Cash Flow valuation tool",
   //   link: "/finance/coporate-finance/company-dcf"
   // },
   {
     title: "U.S. Mortgage Rates",
-    description: "Current and Historical Mortgage Rates in the U.S.",
+    description: "Historical and current U.S. mortgage rate trends",
     link: "/finance/economy/mortgage-rates"
   }
 ];

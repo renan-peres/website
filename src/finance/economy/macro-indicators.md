@@ -1,7 +1,8 @@
 ---
 theme: dashboard
+title: Macro Indicators
 index: true
-toc: false
+toc: true
 source: https://fred.stlouisfed.org/
 keywords: macro economics indicators unemployment gdp inflation exchange rate
 sql:
@@ -31,9 +32,11 @@ const FINNHUB_API_KEY = secrets.FINNHUB_API_KEY;
   <div id="datetime"></div>
 </div>
 
+* **Data Source**: [Federal Reserve Bank of St. Louis (FRED)](https://fred.stlouisfed.org/docs/api/fred/category_series.html)
+
 ---
 
-## Latest Economic Data
+## Latest Data
 
 ```sql id=economicData_mostRecent
 WITH ranked_data AS (
@@ -148,6 +151,92 @@ const metrics = formatTableData(economicData_mostRecent);
 
 ---
 
+## Unemployment by State/County
+
+```sql id=[counties]
+CREATE OR REPLACE TABLE counties AS FROM ST_Read(${url});
+```
+
+```sql id=locations 
+WITH dependencies AS (SELECT ${counties, 1})
+SELECT ST_AsGeoJSON(geom) AS "geom"
+     , counties."id"
+     , "rate"
+     , "state"
+     , "county"
+  FROM counties
+  LEFT JOIN unemployment
+    ON counties.id = unemployment.id
+  WHERE state IS NOT NULL
+  ORDER BY state;
+```
+
+```js
+const state_data = Array.from(await locations);
+
+// const state = [...new Set(state_data.map(d => d.state))].sort();
+const state = ["All", ...new Set(state_data.map(d => d.state))];
+const selected_state = view(Inputs.select(state, {
+  label: "Filter by State:",
+  value: "All"
+}));
+```
+
+```sql id=rates 
+WITH dependencies AS (SELECT ${counties, 1})
+SELECT ST_AsGeoJSON(geom) AS "geom"
+     , counties."id"
+     , "rate"
+     , "state"
+     , "county"
+  FROM counties
+  LEFT JOIN unemployment
+    ON counties.id = unemployment.id
+  WHERE 
+    state IS NOT NULL
+    AND CASE 
+      WHEN ${selected_state} = 'All' THEN TRUE
+      ELSE state = ${selected_state}
+    END;
+```
+
+
+```js
+const tableConfig = getCustomTableFormat(rates, {
+  ...DEFAULT_CONFIG,
+  datasetName: 'county_unemployment_data'
+});
+
+const collapsibleContent = htl.html`
+  ${tableConfig.container}
+  ${Inputs.table(tableConfig.dataArray, tableConfig)}
+`;
+
+display(createCollapsibleSection(collapsibleContent, "Show Data", "hide"));
+```
+
+
+
+```js
+const unemployment_chart = Plot.plot({
+  projection: "albers-usa",
+  color: {type: "quantize", n: 9, domain: [1, 10], scheme: "blues", label: "Unemployment rate (%)", legend: true},
+  marks: [
+    Plot.geo(rates, {
+      geometry: ({geom}) => JSON.parse(geom),
+      fill: "rate",
+      tip: {channels: {id: "id", state: "state", county: "county"}}
+    })
+  ]
+});
+```
+
+```js
+unemployment_chart
+```
+
+---
+
 ## Historical Data
 
 ```sql id=economicData_historical
@@ -233,54 +322,3 @@ Plot.plot({
   </div>
 </div>
 
----
-
-## Unemployement by County
-
-```sql id=[counties]
-CREATE OR REPLACE TABLE counties AS FROM ST_Read(${url});
-```
-
-```sql id=rates 
-WITH dependencies AS (SELECT ${counties, 1})
-SELECT ST_AsGeoJSON(geom) AS "geom"
-     , counties."id"
-     , "rate"
-     , "state"
-     , "county"
-  FROM counties
-  LEFT JOIN unemployment
-    ON counties.id = unemployment.id
-```
-
-```js
-const tableConfig = getCustomTableFormat(rates, {
-  ...DEFAULT_CONFIG,
-  datasetName: 'county_unemployment_data'
-});
-
-const collapsibleContent = htl.html`
-  ${tableConfig.container}
-  ${Inputs.table(tableConfig.dataArray, tableConfig)}
-`;
-
-display(createCollapsibleSection(collapsibleContent, "Show Data", "hide"));
-```
-
-```js
-const unemployment_chart = Plot.plot({
-  projection: "albers-usa",
-  color: {type: "quantize", n: 9, domain: [1, 10], scheme: "blues", label: "Unemployment rate (%)", legend: true},
-  marks: [
-    Plot.geo(rates, {
-      geometry: ({geom}) => JSON.parse(geom),
-      fill: "rate",
-      tip: {channels: {id: "id", state: "state", county: "county"}}
-    })
-  ]
-});
-```
-
-```js
-unemployment_chart
-```

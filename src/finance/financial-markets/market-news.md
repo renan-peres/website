@@ -1,13 +1,13 @@
 ---
 theme: dashboard
-title: Market News & Word Count Analysis
+title: Latest Market News
 index: true
 toc: true
 source: https://finnhub.io/docs/api/news
 keywords: market news stocks crypto forex mergers real-time updates word-analysis
 ---
 
-# Market News & Word Count Analysis
+# Latest Market News
 
 ```js
 import {datetime} from "../../assets/components/datetime.js";

@@ -86,7 +86,8 @@ const returnInput = view(Inputs.range([0, 750], {
 }));
 ``` -->
 
-# Portfolio Analysis - Data Extraction & Visualization (Fall 2024)
+# Portfolio Analysis
+## Data Extraction & Visualization (Fall 2024)
 
 <div class="datetime-container">
   <div id="datetime"></div>
@@ -94,7 +95,9 @@ const returnInput = view(Inputs.range([0, 750], {
 
 This project presents a comprehensive portfolio analysis tool combining SQL-based data extraction with Tableau visualization capabilities. The system analyzes financial portfolio data for customer #128 (Bojana Popovic), providing insights into investment performance, risk assessment, and potential portfolio optimization opportunities. By leveraging both SQL for complex calculations and Tableau for visualization, the project delivers a complete view of the client's investment portfolio.
 
-### Key Features
+---
+
+## Key Features
 - DuckDB integration for efficient data processing
 - Sequential query execution for streamlined analysis
 - Responsive full-width layout design

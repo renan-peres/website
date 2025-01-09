@@ -1,7 +1,7 @@
 ---
 index: true
 sql:
-  unemployment: ../assets/data/unemployment-by-county.csv
+  unemployment: ../../assets/data/unemployment-by-county.csv
 ---
 
 # DuckDB 🐤 Spatial 🌎

@@ -32,9 +32,12 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 </style>
 ```
 
-# Apple Financial Model - Cost & Managerial Analysis (Fall 2024)
+# Apple Financial Model
+## Cost & Managerial Analysis (Fall 2024)
 
 This project presents a comprehensive financial model for Apple Inc., built using real financial data from their annual reports (10-K) for fiscal years 2022-2024. The model incorporates cost and managerial analysis frameworks to provide in-depth insights into Apple's financial performance and valuation.
+
+---
 
 ## Source Data
 The analysis is based on official SEC filings from Apple Inc.:

@@ -18,13 +18,23 @@ const navigationPages = [
       {name: "DuckDB: Attach Databases", path: "/dev/wasm/duckdb/duckdb-attach-databases"},
       {name: "DuckDB: Attach S3", path: "/dev/wasm/duckdb/duckdb-attach-s3"},
       {name: "Pyodide", path: "/dev/wasm/pyodide/pyodide"},
-      {name: "WebR", path: "/dev/wasm/webr/webr"},
-      {name: "DuckDB: Line Chart", path: "/dev/duckdb-line"},
-      {name: "DuckDB: Choropleth", path: "/dev/duckdb-choropleth"},
-      {name: "DuckDB: Mosaic Cross-Filter", path: "/dev/duckdb-mosaic-flights"},
+      {name: "WebR", path: "/dev/wasm/webr/webr"}
     ]
   }
   
+  ,{
+    name: "Utils",
+    open: false,
+    pages: [
+      {name: "DuckDB: Line Chart", path: "/dev/utils/duckdb-line"},
+      {name: "DuckDB: Choropleth", path: "/dev/utils/duckdb-choropleth"},
+      {name: "DuckDB: Mosaic Cross-Filter", path: "/dev/utils/duckdb-mosaic-flights"},
+      {name: "Tabulator", path: "/dev/utils/tabulator"},
+      {name: "HuggingFace: Serverless API Inference", path: "/dev/utils/huggingface-serverless-api"},
+      // {name: "AG-Grid", path: "/dev/utils/ag-grid"},
+    ]
+   }  
+
   ,{
     name: "Quarto",
     open: false,
@@ -35,21 +45,13 @@ const navigationPages = [
   }
 
   ,{
-    name: "Hugging Face",
-    open: false,
-    pages: [
-      {name: "Serverless Inference API", path: "/dev/huggingface/serverless-model-inference"}
-    ]
-  }
-
-  ,{
     name: "Economy",
     open: true,
     pages: [
       {name: "Economic Calendar", path: "/finance/economy/economic-calendar"},
+      {name: "U.S. Macro Indicators", path: "/finance/economy/macro-indicators"},
       {name: "U.S. Mortgage Rates", path: "/finance/economy/mortgage-rates"},
       {name: "U.S. Foreign Exchange Rates", path: "/finance/economy/fx-rates"},
-      {name: "U.S. Macro Indicators", path: "/finance/economy/macro-indicators"},
       {name: "U.S. Monetary Base", path: "/finance/economy/monetary-base"}
     ]
   }
@@ -64,15 +66,6 @@ const navigationPages = [
       {name: "IPO Calendar", path: "/finance/financial-markets/ipo-calendar"}
     ]
   }
-  
-  ,{
-    name: "Coporate Finance",
-    open: true,
-    pages: [
-      {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
-      {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"}
-    ]
-  }
 
   ,{
     name: "Quantitative Finance",
@@ -82,6 +75,15 @@ const navigationPages = [
       {name: "Portfolio Builder & Optimization", path: "/finance/quantitative-finance/portfolio-builder"},
       {name: "Option Pricing Model", path: "/finance/quantitative-finance/option-pricing-model"},
       {name: "Naive Arbitrage for Trading", path: "/finance/quantitative-finance/naive-arb-trading"}
+    ]
+  }
+
+  ,{
+    name: "Coporate Finance",
+    open: true,
+    pages: [
+      {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
+      {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"}
     ]
   }
 
