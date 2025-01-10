@@ -61,7 +61,7 @@ jobs:
       run: |
         cd src/dev/quarto
         chmod +x quarto_render.sh
-        ./dev/quarto_render.sh
+        ./quarto_render.sh
 
     - name: Commit and Push Changes
       run: |
