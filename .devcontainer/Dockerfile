@@ -25,7 +25,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | b
     && . $NVM_DIR/nvm.sh \
     && nvm install --lts \
     && nvm use --lts \
-    && npm install -g npm@latest
+    && npm install -g npm@latest \
     && npm install 
 
 # Set up workspace and install Python Packages
