@@ -1,7 +1,7 @@
 [build]
 publish = "/"
 command = """
-  rustup toolchain install stable-msvc && \
+  rustup toolchain install 1.83.0 && \
   cargo install rust-script && \
   npm run build
 """
