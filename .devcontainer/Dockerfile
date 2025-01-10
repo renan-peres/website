@@ -4,6 +4,10 @@ FROM python:3.13.0
 # Update package lists and install system dependencies
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
+    sh -c "$(curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh)" "" \
+    nvm install --lts \
+    nvm use --lts \
+    npm install -g npm@latest \
     sudo \
     r-base-core \
     r-base \
