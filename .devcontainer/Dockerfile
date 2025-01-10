@@ -1,5 +1,5 @@
 # Python base image from Docker Hub
-FROM python:3.13.0
+FROM python:3.12.4
 
 # Update package lists and install system dependencies
 ENV DEBIAN_FRONTEND=noninteractive
