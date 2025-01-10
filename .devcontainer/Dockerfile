@@ -7,9 +7,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 # First install system packages
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
     sudo \
-    r-base-core \
-    r-base \
-    r-base-dev \
     unixodbc-dev \
     ca-certificates \
     curl \
@@ -29,6 +26,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | b
     && nvm install --lts \
     && nvm use --lts \
     && npm install -g npm@latest
+    && npm install 
 
 # Set up workspace and install Python Packages
 WORKDIR /workspace

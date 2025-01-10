@@ -14,14 +14,21 @@
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.linting.enabled": true,
         "python.linting.pylintEnabled": true,
-        "jupyter.notebook.defaultKernel": "python3"
+        "jupyter.notebook.defaultKernel": "python3",
+        "r.lsp.enabled": false,
+        "r.autoDetect": false,
+        "r.alwaysUseActiveTerminal": false
     },
     "extensions": [
         "ms-python.python",
-        "ms-toolsai.jupyter"
+        "ms-toolsai.jupyter",
+        "reditorsupport.r",
+        "quarto.quarto"
+
     ],
     "recommendations": [
-        "continue.continue"
+        "continue.continue",
+        "github.vscode-github-actions"
     ],
     "remoteEnv": {
         "EIA_KEY": "${localEnv:EIA_KEY}",
