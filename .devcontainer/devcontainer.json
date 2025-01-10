@@ -1,0 +1,40 @@
+{
+    "name": "Personal Website",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "."
+    },
+    "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+            "zsh": {
+                "path": "/bin/zsh"
+            }
+        },
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "jupyter.notebook.defaultKernel": "python3"
+    },
+    "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+    ],
+    "recommendations": [
+        "continue.continue"
+    ],
+    "remoteEnv": {
+        "EIA_KEY": "${localEnv:EIA_KEY}",
+        "FINNHUB_API_KEY": "${localEnv:FINNHUB_API_KEY}",
+        "TWELVE_DATA_API_KEY": "${localEnv:TWELVE_DATA_API_KEY}",
+        "HF_TOKEN": "${localEnv:HF_TOKEN}",
+        "AWS_ACCESS_KEY_ID": "${localEnv:AWS_ACCESS_KEY_ID}", 
+        "AWS_SECRET_ACCESS_KEY": "${localEnv:AWS_SECRET_ACCESS_KEY}",
+        "FMP_API_KEY": "${localEnv:FMP_API_KEY}",
+        "ALPHAVANTAGE_API_KEY": "${localEnv:ALPHAVANTAGE_API_KEY}",
+        "FINRA_CLIENT_ID": "${localEnv:FINRA_CLIENT_ID}",
+        "FINRA_CLIENT_SECRET": "${localEnv:FINRA_CLIENT_SECRET}",
+        "FRED_API_KEY": "${localEnv:FRED_API_KEY}"
+    },
+    "postCreateCommand": "python /workspace/set_env_vars.py"
+}
