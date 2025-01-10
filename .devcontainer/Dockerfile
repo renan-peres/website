@@ -26,7 +26,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | b
     && nvm install --lts \
     && nvm use --lts \
     && npm install -g npm@latest 
-    
+
 # Install Rust and cargo
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y \
     && . $HOME/.cargo/env \
@@ -34,14 +34,26 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y \
     && rustup default 1.83.0 \
     && cargo install rust-script
 
+# Install DuckDB
+RUN curl --fail --location --progress-bar --output duckdb_cli-linux-amd64.zip https://github.com/duckdb/duckdb/releases/download/v1.1.3/duckdb_cli-linux-amd64.zip \
+    && unzip duckdb_cli-linux-amd64.zip
+    
+# Install Quarto
+RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.6.40/quarto-1.6.40-linux-amd64.tar.gz \
+    && mkdir ~/opt \
+    && tar -C ~/opt -xvzf quarto-1.6.40-linux-amd64.tar.gz \
+    && mkdir ~/.local/bin \
+    && ln -s ~/opt/quarto-1.6.40/bin/quarto ~/.local/bin/quarto \
+    && ( echo ""; echo 'export PATH=$PATH:~/.local/bin\n' ; echo "" ) >> ~/.profile \
+    && source ~/.profile \
+    && quarto check
+
 # Set up workspace and install Python Packages
 WORKDIR /workspace
 COPY requirements.txt set_env_vars.py ./
 
 # Upgrade pip and install dependencies
 RUN pip install --upgrade pip \
-    && pip install quarto-cli \
-    && pip install duckdb --upgrade \
     && pip install --no-cache-dir -r requirements.txt \
     && pip install python-dotenv ipykernel \
     && python -m ipykernel install --user --name=python3

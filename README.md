@@ -1,59 +1,100 @@
-# Renan Peres's Portfolio
+<div align="center">
+  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1734902113/10_LinkedIn_Banner_Animated_nkpavy.gif" alt="LinkedIn Banner" width="100%" />
+</div>
 
-This is an [Observable Framework](https://observablehq.com/framework/) app. To install the required dependencies, run:
+<hr style="border:1px solid; width:100%;"/>
 
-```
-npm install
-```
+## Welcome to My GitHub Profile! 👋
 
-Then, to start the local preview server, run:
+Hi, I'm **Renan** - an Analytics Engineer and Finance professional passionate about **bridging the gap between data and financial decision-making**.
 
-```
-npm run dev
-```
+Feel free to connect with me on LinkedIn or via email.
 
-Then visit <http://localhost:3000> to preview your app.
+<div id="badges" align="left">
+  <a href="https://www.linkedin.com/in/renanperes/">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"/>
+  </a>
+  <a href="mailto:contact@renanperes.com">
+    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=mail.ru&logoColor=white" alt="Email Badge"/>
+  </a>
+  <a href="https://www.renanperes.com/">
+    <img src="https://img.shields.io/badge/Website-4285F4?style=for-the-badge&logo=safari&logoColor=white" alt="Website Badge"/>
+  </a>
+</div>
 
-For more, see <https://observablehq.com/framework/getting-started>.
 
-## Project structure
+<!-- <br>
+<div id="stats" align="center" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 0px;">
+  <img src="https://streak-stats.demolab.com?user=renan-peres&hide_border=true&hide_current_streak=true&hide_longest_streak=true" alt="renan-peres" style="height: 160px; width: 30%;" />
+  <img src="https://github-readme-stats.vercel.app/api?username=renan-peres&hide=prs,issues,contribs&show_icons=true&hide_rank=true&custom_title=&hide_border=true" alt="renan-peres" style="height: 160px; width: 30%;" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=renan-peres&layout=compact&hide=CSS,TeX,SCSS&langs_count=4&hide_border=true" alt="renan-peres" style="height: 160px; width: 30%;" />
+</div> -->
 
-A typical Framework project looks like this:
+<hr style="border:1px solid; width:100%;"/>
 
-```ini
-.
-├─ src
-│  ├─ components
-│  │  └─ timeline.js           # an importable module
-│  ├─ data
-│  │  ├─ launches.csv.js       # a data loader
-│  │  └─ events.json           # a static data file
-│  ├─ example-dashboard.md     # a page
-│  ├─ example-report.md        # another page
-│  └─ index.md                 # the home page
-├─ .gitignore
-├─ observablehq.config.js      # the app config file
-├─ package.json
-└─ README.md
-```
+### Certifications
+<div style="display: flex; width: 200px; align-items: center; gap: 10px;">
+  <a href="https://learn.microsoft.com/en-us/users/renanperes/credentials/11FF263357C970DA">
+    <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1718666740/PowerBI-DataAnalyst_vu86zn.png" alt="Power BI Data Analyst Badge" class="badge" width="100" />
+  </a>
+  <a href="https://learn.microsoft.com/en-us/users/renanperes/credentials/ba4fd516d92a81d3">
+    <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1718666724/Fabric-AnalyticsEngineer_evc52n.png" alt="Fabric Analytics Engineer Badge" class="badge" width="100" />
+  </a>
+  <a href="https://www.credential.net/a9e39718-df47-4779-9cdc-4dfa48fc254e">
+    <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1735050810/CFI-FMVACertification_znzph7.png" alt="CFI FMVA Badge" class="badge" width="100" />
+  </a>
+</div>
 
-**`src`** - This is the “source root” — where your source files live. Pages go here. Each page is a Markdown file. Observable Framework uses [file-based routing](https://observablehq.com/framework/project-structure#routing), which means that the name of the file controls where the page is served. You can create as many pages as you like. Use folders to organize your pages.
+### Programming Languages
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1718800618/powershell_oxhjff.svg" alt="PowerShell" width="40" />
+  <img src="https://cdn.iconscout.com/icon/premium/png-512-thumb/sql-10539439-8473936.png?f=webp&w=256" alt="SQL" width="40">
+  <img src="https://www.vectorlogo.zone/logos/r-project/r-project-icon.svg" alt="R" width="40">
+  <img src="https://www.vectorlogo.zone/logos/python/python-official.svg" alt="Python" width="100">
+  <img src="https://www.vectorlogo.zone/logos/apache_spark/apache_spark-ar21.svg" alt="Apache Spark" width="100">
+</div>
 
-**`src/index.md`** - This is the home page for your app. You can have as many additional pages as you’d like, but you should always have a home page, too.
+### Cloud Platforms
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://swimburger.net/media/ppnn3pcl/azure.png" alt="Azure" width="40">
+  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1718647187/Fabric_aieabk.svg" alt="Fabric" width="40">
+  <img src="https://img.icons8.com/?size=100&id=Ny0t2MYrJ70p&format=png&color=000000" alt="Power BI" width="45">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png" alt="Databricks" width="100">
+</div>
 
-**`src/data`** - You can put [data loaders](https://observablehq.com/framework/data-loaders) or static data files anywhere in your source root, but we recommend putting them here.
+### IDEs
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://code.visualstudio.com/assets/images/code-stable.png" alt="VSCode" width="50">
+  <img src="https://img.icons8.com/?size=100&id=YYhSxUUW8osK&format=png&color=000000" alt="R Studio" width="50">
+  <img src="https://www.vectorlogo.zone/logos/jupyter/jupyter-ar21.svg" alt="Jupyter" width="100">
+</div>
 
-**`src/components`** - You can put shared [JavaScript modules](https://observablehq.com/framework/imports) anywhere in your source root, but we recommend putting them here. This helps you pull code out of Markdown files and into JavaScript modules, making it easier to reuse code across pages, write tests and run linters, and even share code with vanilla web applications.
+### DevOps
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-ar21.svg" alt="Git" width="100">
+  <img src="https://pngimg.com/uploads/github/github_PNG20.png" alt="GitHub" width="50">
+  <img src="https://img.icons8.com/?size=100&id=lWL5zqQfa1pO&format=png&color=000000" alt="Azure DevOps" width="50">
+  <img src="https://ia902905.us.archive.org/11/items/github.com-actions-virtual-environments_-_2020-03-27_07-59-20/cover.jpg" alt="GitHub Actions" width="50">
+  <img src="https://logos-world.net/wp-content/uploads/2021/02/Docker-Emblem.png" alt="Docker" width="100">
+</div>
 
-**`observablehq.config.js`** - This is the [app configuration](https://observablehq.com/framework/config) file, such as the pages and sections in the sidebar navigation, and the app’s title.
+### Databases
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://img.icons8.com/?size=100&id=laYYF3dV0Iew&format=png&color=000000" alt="SQL Server" width="50">
+  <img src="https://img.icons8.com/?size=100&id=UFXRpPFebwa2&format=png&color=000000" alt="MySQL" width="50">
+  <img src="https://www.vectorlogo.zone/logos/postgresql/postgresql-ar21.svg" alt="PostgreSQL" width="100">
+  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1718646533/DuckDB_Logo_Yellow_Text_b20snd.png" alt="DuckDB" width="60">
+</div>
 
-## Command reference
+### Structured Tables
+<div style="display: flex; align-items: center; gap: 10px;">
+  <img src="https://www.databricks.com/wp-content/uploads/2019/05/delta-lake-square.png" alt="Delta Lake" width="60">
+  <img src="https://www.dremio.com/wp-content/uploads/2021/06/iceberg-logo-with-name.png" alt="Apache Iceberg" width="50">
+</div>
 
-| Command           | Description                                              |
-| ----------------- | -------------------------------------------------------- |
-| `npm install`            | Install or reinstall dependencies                        |
-| `npm run dev`        | Start local preview server                               |
-| `npm run build`      | Build your static site, generating `./dist`              |
-| `npm run deploy`     | Deploy your app to Observable                            |
-| `npm run clean`      | Clear the local data loader cache                        |
-| `npm run observable` | Run commands like `observable help`                      |
+### Web Development
+<div style="display: flex; align-items: center; justify-content: left; gap: 10px;">
+  <img src="https://th.bing.com/th/id/R.4e0fa5da8edc46e91123dd12b0fa83a0?rik=2wcB7lzmzWzi5g&pid=ImgRaw&r=0" alt="Quarto" width="100">
+  <img src="https://www.vectorlogo.zone/logos/netlify/netlify-ar21.svg" alt="Netlify" width="100">
+  <img src="https://www.vectorlogo.zone/logos/w3_html5/w3_html5-ar21.svg" alt="HTML5" width="100">
+</div>
