@@ -25,9 +25,8 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | b
     && . $NVM_DIR/nvm.sh \
     && nvm install --lts \
     && nvm use --lts \
-    && npm install -g npm@latest \
-    && npm install 
-
+    && npm install -g npm@latest 
+    
 # Install Rust and cargo
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y \
     && . $HOME/.cargo/env \
