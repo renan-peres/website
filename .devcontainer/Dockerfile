@@ -3,11 +3,9 @@ FROM python:3.13.0
 
 # Update package lists and install system dependencies
 ENV DEBIAN_FRONTEND=noninteractive
+
+# First install system packages
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
-    sh -c "$(curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh)" "" \
-    nvm install --lts \
-    nvm use --lts \
-    npm install -g npm@latest \
     sudo \
     r-base-core \
     r-base \
@@ -23,6 +21,14 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
     fonts-powerline \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install NVM, Node.js and npm
+ENV NVM_DIR=/root/.nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash \
+    && . $NVM_DIR/nvm.sh \
+    && nvm install --lts \
+    && nvm use --lts \
+    && npm install -g npm@latest
 
 # Set up workspace and install Python Packages
 WORKDIR /workspace
