@@ -28,6 +28,13 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | b
     && npm install -g npm@latest \
     && npm install 
 
+# Install Rust and cargo
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y \
+    && . $HOME/.cargo/env \
+    && rustup toolchain install 1.83.0 \
+    && rustup default 1.83.0 \
+    && cargo install rust-script
+
 # Set up workspace and install Python Packages
 WORKDIR /workspace
 COPY requirements.txt set_env_vars.py ./
