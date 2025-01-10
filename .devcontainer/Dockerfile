@@ -4,6 +4,7 @@ FROM python:3.13.0
 # Update package lists and install system dependencies
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
+    sudo apt install r-base-core r-base r-base-dev \
     unixodbc-dev \
     ca-certificates \
     curl \
@@ -22,8 +23,8 @@ COPY requirements.txt set_env_vars.py ./
 
 # Upgrade pip and install dependencies
 RUN pip install --upgrade pip \
+    && pip install quarto-cli \
     && pip install --no-cache-dir -r requirements.txt \
-    && pip install https://github.com/renan-peres/fabric-remote-tools/raw/main/fabric_remote_tools-0.1.1.tar.gz \
     && pip install python-dotenv ipykernel \
     && python -m ipykernel install --user --name=python3
 
