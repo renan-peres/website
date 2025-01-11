@@ -30,7 +30,8 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | b
     && . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION \
     && nvm alias default $NODE_VERSION \
-    && nvm use default
+    && nvm use --lts \
+    && npm install -g npm@latest 
 
 # Install Rust
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y \
@@ -56,7 +57,8 @@ RUN mkdir -p ~/.local/bin ~/opt \
 
 # Set up workspace and install Python Packages
 WORKDIR /workspace
-COPY requirements.txt set_env_vars.py ./
+COPY requirements.txt set_env_vars.py
+
 RUN pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt \
     && pip install python-dotenv ipykernel \
