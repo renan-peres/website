@@ -39,14 +39,14 @@ RUN curl --fail --location --progress-bar --output duckdb_cli-linux-amd64.zip ht
     && unzip duckdb_cli-linux-amd64.zip
     
 # Install Quarto
-RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.6.40/quarto-1.6.40-linux-amd64.tar.gz \
-    && mkdir ~/opt \
-    && tar -C ~/opt -xvzf quarto-1.6.40-linux-amd64.tar.gz \
-    && mkdir ~/.local/bin \
-    && ln -s ~/opt/quarto-1.6.40/bin/quarto ~/.local/bin/quarto \
-    && ( echo ""; echo 'export PATH=$PATH:~/.local/bin\n' ; echo "" ) >> ~/.profile \
-    && source ~/.profile \
-    && quarto check
+RUN mkdir -p ~/.local/bin ~/opt && \
+    wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.6.40/quarto-1.6.40-linux-amd64.tar.gz && \
+    tar -C ~/opt -xvzf quarto-1.6.40-linux-amd64.tar.gz && \
+    ln -s ~/opt/quarto-1.6.40/bin/quarto ~/.local/bin/quarto && \
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc && \
+    . ~/.bashrc && \
+    rm quarto-1.6.40-linux-amd64.tar.gz && \
+    quarto check
 
 # Set up workspace and install Python Packages
 WORKDIR /workspace

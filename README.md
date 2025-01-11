@@ -47,7 +47,7 @@ Feel free to connect with me on LinkedIn or via email.
 
 ### Programming Languages
 <div style="display: flex; align-items: center; gap: 10px;">
-  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1718800618/powershell_oxhjff.svg" alt="PowerShell" width="40" />
+  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1718800618/powershell_oxhjff.svg" alt="PowerShell" width="30" />
   <img src="https://cdn.iconscout.com/icon/premium/png-512-thumb/sql-10539439-8473936.png?f=webp&w=256" alt="SQL" width="40">
   <img src="https://www.vectorlogo.zone/logos/r-project/r-project-icon.svg" alt="R" width="40">
   <img src="https://www.vectorlogo.zone/logos/python/python-official.svg" alt="Python" width="100">
