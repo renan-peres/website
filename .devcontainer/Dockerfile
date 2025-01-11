@@ -57,8 +57,7 @@ RUN mkdir -p ~/.local/bin ~/opt \
 
 # Set up workspace and install Python Packages
 WORKDIR /workspace
-COPY requirements.txt set_env_vars.py
-
+COPY requirements.txt set_env_vars.py ./
 RUN pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt \
     && pip install python-dotenv ipykernel \
