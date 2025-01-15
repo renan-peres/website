@@ -45,7 +45,7 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 
 ```js
 import {datetime} from "../../../assets/components/datetime.js";
-import { py, loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.mjs";
+import { py, loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.27.1/full/pyodide.mjs";
 
 async function initializePyodide() {
   const countdownElement = document.getElementById('countdown');
@@ -54,13 +54,13 @@ async function initializePyodide() {
     countdownElement.textContent = 'Initializing Pyodide...';
     
     let pyodide = await loadPyodide({
-      indexURL: "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/"
+      indexURL: "https://cdn.jsdelivr.net/pyodide/v0.27.1/full/"
     });
     
     countdownElement.textContent = 'Loading packages...';
     
     // Load core packages
-    await pyodide.loadPackage(["pyodide.http", "requests", "numpy", "pandas", "polars", "matplotlib", "scikit-learn"]);
+    await pyodide.loadPackage(["micropip", "pyodide.http", "pyarrow", "requests", "numpy", "polars", "matplotlib"]);
     
     countdownElement.textContent = 'Ready!';
     return pyodide;
@@ -131,19 +131,23 @@ display(canvas);
 
 ---
 
-## Read Data (GitHub)
+## Read CSV Data (GitHub)
 
 ```js
 const pythonCode2 = view(Inputs.textarea({
   value: `import requests
 import polars as pl
+import json
 
+# Fetch CSV data
 r = requests.get("https://raw.githubusercontent.com/pola-rs/polars/main/examples/datasets/foods1.csv")
 df = pl.read_csv(r.content)
-# df.write_csv()
-str(df.head(10))`,
+# str(df.head(10))
+
+# Convert to list of dictionaries and serialize
+json.dumps(df.head(10).to_dicts())`,
   width: "100%",
-  rows: 7,
+  rows: 11,
   resize: "both",
   style: { fontSize: "16px" },
   onKeyDown: e => {
@@ -154,8 +158,54 @@ str(df.head(10))`,
 
 ```js
 // Run the Python code in Pyodide
-const table = await pyodide.runPython(pythonCode2);
-display(table);
+const result = await pyodide.runPython(pythonCode2);
+const tableData = JSON.parse(result);
+display(Inputs.table(tableData));
+```
+
+---
+
+## Read Parquet Data (GitHub)
+
+```js
+const pythonCode4 = view(Inputs.textarea({
+  value: `import io
+import requests
+import polars as pl
+import pyarrow.parquet as pq
+
+def read_parquet(url):
+    try:
+        response = requests.get(url)
+        buffer = io.BytesIO(response.content)
+        table = pq.read_table(buffer)
+        return pl.from_arrow(table)
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return None
+
+# Execute
+url = "https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/finance/historical_ma_transactions.parquet"
+df = read_parquet(url)
+# str(df.head(10))
+
+# Convert to list of dictionaries and serialize
+json.dumps(df.to_dicts())`,
+  width: "100%",
+  rows: 22,
+  resize: "both",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js
+// Run the Python code in Pyodide
+const result2 = await pyodide.runPython(pythonCode4);
+const tableData2 = JSON.parse(result2);
+display(Inputs.table(tableData2));
 ```
 
 ---

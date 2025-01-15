@@ -73,7 +73,7 @@
       }
 
       async function main() {
-        let indexURL = "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/";
+        let indexURL = "https://cdn.jsdelivr.net/pyodide/v0.27.1/full/";
         const urlParams = new URLSearchParams(window.location.search);
         const buildParam = urlParams.get("build");
         if (buildParam) {
@@ -101,7 +101,7 @@
             echo(result);
             return result;
           },
-          packages: ["micropip", "./wheels/duckdb-1.1.2-cp310-cp310-emscripten_3_1_27_wasm32.whl"]
+          packages: ["micropip", "pyarrow", "./wheels/duckdb-1.1.2-cp310-cp310-emscripten_3_1_27_wasm32.whl"]
         });
         let namespace = pyodide.globals.get("dict")();
         pyodide.runPython(
@@ -204,7 +204,26 @@
 
         term = $("body").terminal(interpreter, {
           greetings: banner,
-          prompt: ps1,
+          prompt: `import io
+from pyodide.http import pyfetch
+import polars as pl
+import pyarrow.parquet as pq
+
+async def read_parquet(url):
+    try:
+        response = await pyfetch(url)
+        buffer = io.BytesIO(await response.bytes())
+        table = pq.read_table(buffer)
+        return pl.from_arrow(table)
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return None
+
+# Execute
+url = "https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/finance/historical_ma_transactions.parquet"
+df = await read_parquet(url)
+print(df.head(10))
+>>> `,
           completionEscape: false,
           completion: function (command, callback) {
             callback(pyconsole.complete(command).toJs()[0]);
