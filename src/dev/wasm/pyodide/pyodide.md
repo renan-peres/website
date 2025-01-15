@@ -1,6 +1,8 @@
 ---
+title: Pyodide
 theme: dashboard
 index: false
+toc: false
 source: https://pyodide.org/en/stable/usage/quickstart.html
 keywords: Python, wasm
 ---
@@ -89,97 +91,6 @@ const pyodide = await initializePyodide();
 
 ---
 
-## Chart with Input
-
-```js
-const n = view(Inputs.range([1, 1e3], {step: 5, label: "Number of samples", value: 500}));
-```
-
-```js
-const plotCode = view(Inputs.textarea({
-  value: `import numpy as np
-import matplotlib.pyplot as plt
-
-# Create figure with specific dimensions
-plt.figure(figsize=(5, 3.75))  # 400px/300px at 80dpi
-plt.hist(np.random.normal(size=${n}))
-plt.title('Histogram of Normal Distribution')
-
-# Save to base64 string
-from io import BytesIO
-import base64
-buf = BytesIO()
-plt.savefig(buf, format='png', dpi=80)
-buf.seek(0)
-img_str = base64.b64encode(buf.read()).decode('utf-8')
-img_str`,
-  width: "100%",
-  rows: 16,
-  resize: "both",
-  style: { fontSize: "16px" },
-  onKeyDown: e => {
-    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
-  }
-}));
-```
-
-```js
-let plotResult = await pyodide.runPython(plotCode);
-const canvas = d3.create("canvas").attr("width", 400).attr("height", 300).node();
-const context = canvas.getContext("2d");
-const image = new Image();
-image.onload = () => context.drawImage(image, 0, 0, 400, 300);
-image.src = `data:image/png;base64,${plotResult}`;
-display(canvas);
-```
-
----
-
-## Read Data (CSV)
-
-```js
-const pythonCode2 = view(Inputs.textarea({
-  value: `import requests
-import json
-import polars as pl
-
-# Fetch CSV data
-r = requests.get("https://raw.githubusercontent.com/pola-rs/polars/main/examples/datasets/foods1.csv")
-df = pl.read_csv(r.content)
-# str(df.head(10))
-
-# Convert to list of dictionaries and serialize
-json.dumps(df.head(10).to_dicts())`,
-  width: "100%",
-  rows: 11,
-  resize: "both",
-  style: { fontSize: "16px" },
-  onKeyDown: e => {
-    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
-  }
-}));
-```
-
-```js
-// Run the Python code in Pyodide
-const result = await pyodide.runPython(pythonCode2);
-const tableData2 = JSON.parse(result);
-
-const tableConfig = getCustomTableFormat(tableData2, {
-  ...DEFAULT_CONFIG,
-  datasetName: 'results'
-});
-
-const collapsibleContent = htl.html`
-  ${tableConfig.container}
-  ${Inputs.table(tableConfig.dataArray, tableConfig)}
-`;
-
-display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
-```
-
----
-
 ## Read Data (Parquet)
 
 ```js
@@ -234,6 +145,97 @@ const collapsibleContent = htl.html`
 `;
 
 display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
+```
+
+---
+
+## Read Data (CSV)
+
+```js
+const pythonCode2 = view(Inputs.textarea({
+  value: `import requests
+import json
+import polars as pl
+
+# Fetch CSV data
+r = requests.get("https://raw.githubusercontent.com/pola-rs/polars/main/examples/datasets/foods1.csv")
+df = pl.read_csv(r.content)
+# str(df.head(10))
+
+# Convert to list of dictionaries and serialize
+json.dumps(df.head(10).to_dicts())`,
+  width: "100%",
+  rows: 11,
+  resize: "both",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js
+// Run the Python code in Pyodide
+const result = await pyodide.runPython(pythonCode2);
+const tableData2 = JSON.parse(result);
+
+const tableConfig = getCustomTableFormat(tableData2, {
+  ...DEFAULT_CONFIG,
+  datasetName: 'results'
+});
+
+const collapsibleContent = htl.html`
+  ${tableConfig.container}
+  ${Inputs.table(tableConfig.dataArray, tableConfig)}
+`;
+
+display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
+```
+
+---
+
+## Chart with Input
+
+```js
+const n = view(Inputs.range([1, 1e3], {step: 5, label: "Number of samples", value: 500}));
+```
+
+```js
+const plotCode = view(Inputs.textarea({
+  value: `import numpy as np
+import matplotlib.pyplot as plt
+
+# Create figure with specific dimensions
+plt.figure(figsize=(5, 3.75))  # 400px/300px at 80dpi
+plt.hist(np.random.normal(size=${n}))
+plt.title('Histogram of Normal Distribution')
+
+# Save to base64 string
+from io import BytesIO
+import base64
+buf = BytesIO()
+plt.savefig(buf, format='png', dpi=80)
+buf.seek(0)
+img_str = base64.b64encode(buf.read()).decode('utf-8')
+img_str`,
+  width: "100%",
+  rows: 16,
+  resize: "both",
+  style: { fontSize: "16px" },
+  onKeyDown: e => {
+    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
+  }
+}));
+```
+
+```js
+let plotResult = await pyodide.runPython(plotCode);
+const canvas = d3.create("canvas").attr("width", 400).attr("height", 300).node();
+const context = canvas.getContext("2d");
+const image = new Image();
+image.onload = () => context.drawImage(image, 0, 0, 400, 300);
+image.src = `data:image/png;base64,${plotResult}`;
+display(canvas);
 ```
 
 ---
