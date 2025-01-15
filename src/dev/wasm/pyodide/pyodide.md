@@ -45,6 +45,10 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 
 ```js
 import {datetime} from "../../../assets/components/datetime.js";
+import * as XLSX from "npm:xlsx";
+import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../../../assets/components/tableFormatting.js";
+import * as htl from "htl";
+import * as arrow from "apache-arrow";
 import { py, loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.27.1/full/pyodide.mjs";
 
 async function initializePyodide() {
@@ -131,13 +135,13 @@ display(canvas);
 
 ---
 
-## Read CSV Data (GitHub)
+## Read Data (CSV)
 
 ```js
 const pythonCode2 = view(Inputs.textarea({
   value: `import requests
-import polars as pl
 import json
+import polars as pl
 
 # Fetch CSV data
 r = requests.get("https://raw.githubusercontent.com/pola-rs/polars/main/examples/datasets/foods1.csv")
@@ -159,18 +163,31 @@ json.dumps(df.head(10).to_dicts())`,
 ```js
 // Run the Python code in Pyodide
 const result = await pyodide.runPython(pythonCode2);
-const tableData = JSON.parse(result);
-display(Inputs.table(tableData));
+const tableData2 = JSON.parse(result);
+
+const tableConfig = getCustomTableFormat(tableData2, {
+  ...DEFAULT_CONFIG,
+  datasetName: 'results'
+});
+
+const collapsibleContent = htl.html`
+  ${tableConfig.container}
+  ${Inputs.table(tableConfig.dataArray, tableConfig)}
+`;
+
+display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
 ```
 
 ---
 
-## Read Parquet Data (GitHub)
+## Read Data (Parquet)
 
 ```js
 const pythonCode4 = view(Inputs.textarea({
   value: `import io
 import requests
+import json
+
 import polars as pl
 import pyarrow.parquet as pq
 
@@ -192,7 +209,7 @@ df = read_parquet(url)
 # Convert to list of dictionaries and serialize
 json.dumps(df.to_dicts())`,
   width: "100%",
-  rows: 22,
+  rows: 24,
   resize: "both",
   style: { fontSize: "16px" },
   onKeyDown: e => {
@@ -205,7 +222,18 @@ json.dumps(df.to_dicts())`,
 // Run the Python code in Pyodide
 const result2 = await pyodide.runPython(pythonCode4);
 const tableData2 = JSON.parse(result2);
-display(Inputs.table(tableData2));
+
+const tableConfig = getCustomTableFormat(tableData2, {
+  ...DEFAULT_CONFIG,
+  datasetName: 'results'
+});
+
+const collapsibleContent = htl.html`
+  ${tableConfig.container}
+  ${Inputs.table(tableConfig.dataArray, tableConfig)}
+`;
+
+display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
 ```
 
 ---
