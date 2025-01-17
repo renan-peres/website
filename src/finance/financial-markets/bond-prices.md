@@ -1,7 +1,7 @@
 ---
 theme: dashboard
 index: true
-title: Bond Valuation
+title: Bond Prices
 toc: false
 source: https://developer.finra.org/docs/api-explorer/query_api-fixed_income-agency_debt_market_breadth
 keywords: 
@@ -9,7 +9,7 @@ sql:
   finra_treasury_bond_prices: https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/finance/treasury_bond_prices.parquet
 ---
 
-# Bond Valuation
+# Bond Prices
 
 ```js
 import { datetime } from "../../assets/components/datetime.js";

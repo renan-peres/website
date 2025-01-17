@@ -50,19 +50,20 @@ const navigationPages = [
     pages: [
       {name: "Economic Calendar", path: "/finance/economy/economic-calendar"},
       {name: "U.S. Macro Indicators", path: "/finance/economy/macro-indicators"},
-      {name: "U.S. Mortgage Rates", path: "/finance/economy/mortgage-rates"},
-      {name: "U.S. Foreign Exchange Rates", path: "/finance/economy/fx-rates"},
-      {name: "U.S. Monetary Base", path: "/finance/economy/monetary-base"}
+      {name: "U.S. Monetary Base", path: "/finance/economy/monetary-base"},
+      {name: "U.S. Mortgage Rates", path: "/finance/economy/mortgage-rates"}
     ]
   }
-
+  
   ,{
     name: "Financial Markets",
     open: true,
     pages: [
-      {name: "Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices"},
       {name: "Market News", path: "/finance/financial-markets/market-news"},
-      // {name: "Real-Time Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices-old"},
+      {name: "Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices"},
+      {name: "Foreign Exchange Rates", path: "/finance/financial-markets/fx-rates"},
+      {name: "Commodity Prices", path: "/finance/financial-markets/commodity-prices"},
+      {name: "Bond Prices", path: "/finance/financial-markets/bond-prices"},
       {name: "IPO Calendar", path: "/finance/financial-markets/ipo-calendar"}
     ]
   }
@@ -81,7 +82,6 @@ const navigationPages = [
     name: "Quantitative Finance",
     open: true,
     pages: [
-      {name: "Bond Valuation", path: "/finance/quantitative-finance/bond-valuation"},
       {name: "Portfolio Builder & Optimization", path: "/finance/quantitative-finance/portfolio-builder"},
       {name: "Option Pricing Model", path: "/finance/quantitative-finance/option-pricing-model"},
       {name: "Naive Arbitrage for Trading", path: "/finance/quantitative-finance/naive-arb-trading"}
