@@ -17,6 +17,7 @@
     "@observablehq/framework": "^1.13.0",
     "@uwdata/vgplot": "^0.7.1",
     "btoa": "^1.2.1",
+    "puppeteer": "^24.1.0",
     "d3-dsv": "^3.0.1",
     "d3-fetch": "^3.0.1",
     "d3-time-format": "^4.1.0",

@@ -68,6 +68,16 @@ const navigationPages = [
   }
 
   ,{
+    name: "Coporate Finance",
+    open: true,
+    pages: [
+      {name: "Financial Statements", path: "/finance/coporate-finance/financial-statements"},
+      {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
+      {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"}
+    ]
+  }
+
+  ,{
     name: "Quantitative Finance",
     open: true,
     pages: [
@@ -75,16 +85,6 @@ const navigationPages = [
       {name: "Portfolio Builder & Optimization", path: "/finance/quantitative-finance/portfolio-builder"},
       {name: "Option Pricing Model", path: "/finance/quantitative-finance/option-pricing-model"},
       {name: "Naive Arbitrage for Trading", path: "/finance/quantitative-finance/naive-arb-trading"}
-    ]
-  }
-
-  ,{
-    name: "Coporate Finance",
-    open: true,
-    pages: [
-      {name: "Financial Statements", path: "/finance/coporate-finance/financial-statements"},
-      {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
-      {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"}
     ]
   }
 
