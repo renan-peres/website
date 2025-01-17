@@ -82,6 +82,7 @@ const navigationPages = [
     name: "Coporate Finance",
     open: true,
     pages: [
+      {name: "Financial Statements", path: "/finance/coporate-finance/financial-statements"},
       {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
       {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"}
     ]
