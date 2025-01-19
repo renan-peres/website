@@ -66,7 +66,7 @@ async function initializePyodide() {
     countdownElement.textContent = 'Loading packages...';
     
     // Load core packages
-    await pyodide.loadPackage(["micropip", "pyodide.http", "pyarrow", "requests", "numpy", "polars", "matplotlib"]);
+    await pyodide.loadPackage(["micropip", "scikit-learn", "numpy", "polars", "matplotlib", "pandas"]);
     
     countdownElement.textContent = 'Ready!';
     return pyodide;
@@ -91,110 +91,7 @@ const pyodide = await initializePyodide();
 
 ---
 
-## Read Data (Parquet)
-
-```js
-const pythonCode4 = view(Inputs.textarea({
-  value: `import io
-import requests
-import json
-
-import polars as pl
-import pyarrow.parquet as pq
-
-def read_parquet(url):
-    try:
-        response = requests.get(url)
-        buffer = io.BytesIO(response.content)
-        table = pq.read_table(buffer)
-        return pl.from_arrow(table)
-    except Exception as e:
-        print(f"Error: {str(e)}")
-        return None
-
-# Execute
-url = "https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/finance/historical_ma_transactions.parquet"
-df = read_parquet(url)
-# str(df.head(10))
-
-# Convert to list of dictionaries and serialize
-json.dumps(df.to_dicts())`,
-  width: "100%",
-  rows: 24,
-  resize: "both",
-  style: { fontSize: "16px" },
-  onKeyDown: e => {
-    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
-  }
-}));
-```
-
-```js
-// Run the Python code in Pyodide
-const result2 = await pyodide.runPython(pythonCode4);
-const tableData2 = JSON.parse(result2);
-
-const tableConfig = getCustomTableFormat(tableData2, {
-  ...DEFAULT_CONFIG,
-  datasetName: 'results'
-});
-
-const collapsibleContent = htl.html`
-  ${tableConfig.container}
-  ${Inputs.table(tableConfig.dataArray, tableConfig)}
-`;
-
-display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
-```
-
----
-
-## Read Data (CSV)
-
-```js
-const pythonCode2 = view(Inputs.textarea({
-  value: `import requests
-import json
-import polars as pl
-
-# Fetch CSV data
-r = requests.get("https://raw.githubusercontent.com/pola-rs/polars/main/examples/datasets/foods1.csv")
-df = pl.read_csv(r.content)
-# str(df.head(10))
-
-# Convert to list of dictionaries and serialize
-json.dumps(df.head(10).to_dicts())`,
-  width: "100%",
-  rows: 11,
-  resize: "both",
-  style: { fontSize: "16px" },
-  onKeyDown: e => {
-    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
-  }
-}));
-```
-
-```js
-// Run the Python code in Pyodide
-const result = await pyodide.runPython(pythonCode2);
-const tableData2 = JSON.parse(result);
-
-const tableConfig = getCustomTableFormat(tableData2, {
-  ...DEFAULT_CONFIG,
-  datasetName: 'results'
-});
-
-const collapsibleContent = htl.html`
-  ${tableConfig.container}
-  ${Inputs.table(tableConfig.dataArray, tableConfig)}
-`;
-
-display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
-```
-
----
-
-## Chart with Input
+## Histogram with Input
 
 ```js
 const n = view(Inputs.range([1, 1e3], {step: 5, label: "Number of samples", value: 500}));
@@ -271,7 +168,7 @@ Intercept: {model.intercept_:.4f}"""
 
 result_str`,
   width: "100%",
-  rows: 25,
+  rows: 26,
   resize: "both",
   style: { fontSize: "16px" },
   onKeyDown: e => {
