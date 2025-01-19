@@ -81,7 +81,7 @@ async function initializePyodide() {
 const pyodide = await initializePyodide();
 ```
 
-# Pyodide (Python WASM)
+# Pyodide (Read Data)
 
 <div class="datetime-container">
   <div id="datetime"></div>
@@ -91,7 +91,7 @@ const pyodide = await initializePyodide();
 
 ---
 
-## Read Data (Parquet)
+## Read Parquet
 
 ```js
 const pythonCode4 = view(Inputs.textarea({
@@ -149,7 +149,7 @@ display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
 
 ---
 
-## Read Data (CSV)
+## Read CSV
 
 ```js
 const pythonCode2 = view(Inputs.textarea({

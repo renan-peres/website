@@ -81,7 +81,7 @@ async function initializePyodide() {
 const pyodide = await initializePyodide();
 ```
 
-# Pyodide (Python WASM)
+# Pyodide (Analytics)
 
 <div class="datetime-container">
   <div id="datetime"></div>
