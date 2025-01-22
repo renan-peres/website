@@ -10,6 +10,7 @@ const navigationPages = [
     open: false,
     pages: [
       {name: "CodeSanbox", path: "/dev/wasm/code-sandbox"},
+      {name: "DuckDB: SQL Playground", path: "/dev/wasm/duckdb/duckdb"},
       {name: "DuckDB: Shell", path: "/dev/wasm/duckdb/duckdb-shell"},
       {name: "DuckDB: Parquet Converter", path: "/dev/wasm/duckdb/duckdb-parquet-converter"},
       {name: "DuckDB: Attach Databases", path: "/dev/wasm/duckdb/duckdb-attach-databases"},

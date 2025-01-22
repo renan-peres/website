@@ -7,7 +7,6 @@ source: https://pyodide.org/en/stable/usage/quickstart.html
 keywords: Python, wasm
 ---
 
-
 ```html
 <style>
 .observablehq textarea,
