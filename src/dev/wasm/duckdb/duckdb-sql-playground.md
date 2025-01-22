@@ -56,15 +56,15 @@ import * as arrow from "apache-arrow";
 // const db = await getDefaultClient();
 ```
 
-<div class="datetime-container">
+<!-- <div class="datetime-container">
   <div id="datetime"></div>
-</div>
+</div> -->
 
-```sql echo=false display=false
-ATTACH 's3://aws-test-duckdb/datasets/data.db' AS s3;
-SHOW DATABASES;
-USE s3;
-```
+A quick way to query your data with SQL (using [DuckDB WASM](https://duckdb.org/docs/api/wasm/overview) under the hood).
+- Supported formats: CSV, Parquet, or Arrow
+- Single or multiple file upload supported
+- Maximum file size: 100MB per file
+- Files will be processed client-side
 
 ---
 
