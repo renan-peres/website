@@ -158,6 +158,7 @@ const result = await db.query(`SELECT * FROM ${selectedTable.table_name} LIMIT $
 // Get the configuration and buttons
 const tableConfig = getCustomTableFormat(result, {
   ...DEFAULT_CONFIG,
+  rows: 20,
   datasetName: `${selectedTable.table_name}`
 });
 
@@ -197,6 +198,7 @@ const prebuiltQueryResult = await db.query(schema);
 
 const tableConfig2 = getCustomTableFormat(prebuiltQueryResult, {
   ...DEFAULT_CONFIG,
+  rows: 20,
   datasetName: 'schema_profile'
 });
 
@@ -220,7 +222,7 @@ display(createCollapsibleSection(collapsibleContent2, "Show Data", "show"));
 const prebuiltCode = view(Inputs.textarea({
   value: `SELECT * FROM table_name LIMIT 100;`,
   width: "100%",
-  rows: 10,
+  rows: 21,
   resize: "both",
   className: "sql-editor",
   style: { fontSize: "16px" },
@@ -236,6 +238,7 @@ const prebuiltQueryResult = await db.query(prebuiltCode);
 
 const tableConfig2 = getCustomTableFormat(prebuiltQueryResult, {
   ...DEFAULT_CONFIG,
+  rows: 30,
   datasetName: 'query_result'
 });
 
