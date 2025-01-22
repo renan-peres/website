@@ -1,5 +1,5 @@
 ---
-title: Attach Remote DuckDB Databases
+title: SQL Playground
 theme: dashboard
 index: true
 toc: false
