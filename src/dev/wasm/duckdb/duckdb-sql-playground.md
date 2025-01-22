@@ -64,7 +64,6 @@ A quick way to query your data with SQL (using [DuckDB WASM](https://duckdb.org/
 - Supported formats: CSV, Parquet, or Arrow
 - Single or multiple file upload supported
 - Maximum file size: 100MB per file
-- Files will be processed client-side
 
 ---
 
