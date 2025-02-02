@@ -21,8 +21,13 @@ which R || echo "R not found"
 
 # If not found, install R
 if [ ! -x "$(command -v R)" ]; then
-    sudo apt update
-    sudo apt install r-base-core r-base r-base-dev
+    sudo apt-get update && sudo apt-get install -y && sudo apt install r-base-core r-base r-base-dev \
+    libudunits2-dev \
+    libgdal-dev \
+    libgeos-dev \
+    libproj-dev \
+    pandoc \
+    pandoc-citeproc
     which R
 fi
 
