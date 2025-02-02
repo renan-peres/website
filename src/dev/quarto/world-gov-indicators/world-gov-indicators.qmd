@@ -93,6 +93,23 @@ knitr::write_bib(file = "packages.bib")
 ```{ojs}
 //| echo: false
 
+// Get environment variable from Quarto front matter
+base_repo = "https://github.com/renan-peres/website/blob/main/src"
+
+// Set relative path and combine
+relative_path = "dev/quarto/world-gov-indicators"
+source_repo = `${base_repo}/${relative_path}`
+
+// Convert to raw content URL
+raw_url = source_repo.replace(
+  /https:\/\/github.com\/(.+)\/blob\//,
+  "https://raw.githack.com/$1/"
+)
+```
+
+```{ojs}
+//| echo: false
+
 htl = require('htl')
 
 // Button style definition
@@ -272,7 +289,8 @@ print(df)
 ```{ojs}
 //| echo: false
 
-makeFullscreen("widgets/WGI_DT.html")
+// makeFullscreen("widgets/WGI_DT.html")
+makeFullscreen(`${raw_url}/widgets/WGI_DT.html`)
 ```
 
 # Visualizations
@@ -422,7 +440,8 @@ print(df_2021)
 ```{ojs}
 //| echo: false
 
-makeFullscreen("widgets/WGI_2021.html")
+// makeFullscreen("widgets/WGI_2021.html")
+makeFullscreen(`${raw_url}/widgets/WGI_2021.html`)
 ```
 
 ### Comparison by Continent
@@ -519,7 +538,8 @@ print(top_3_2021)
 ```{ojs}
 //| echo: false
 
-makeFullscreen("widgets/Top_3_Comparison.html")
+// makeFullscreen("widgets/Top_3_Comparison.html")
+makeFullscreen(`${raw_url}/widgets/Top_3_Comparison.html`)
 ```
 
 ### USA progression over time
@@ -568,8 +588,10 @@ print(df_usa)
 ```{ojs}
 //| echo: false
 
-makeFullscreen("widgets/USA_Plotly.html")
+// makeFullscreen("widgets/USA_Plotly.html")
+makeFullscreen(`${raw_url}/widgets/USA_Plotly.html`)
 ```
+
 # Conclusion
 
 In conclusion, this was a very satisfying and exciting project, and I learned much from it. It highlighted the six governance indicators which determine how prosperous a country is compared to another and how they have progressed over time.
