@@ -41,6 +41,7 @@ const navigationPages = [
     name: "Quarto",
     open: false,
     pages: [
+      {name: "Governance Indicators", path: "/dev/quarto/world-gov-indicators/world-gov-indicators"},
       {name: "HTML Basics (Report)", path: "/dev/quarto/html-basics/quarto_html_basics"},
       {name: "Stock Explorer (Dashboard)", path: "/dev/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
     ]

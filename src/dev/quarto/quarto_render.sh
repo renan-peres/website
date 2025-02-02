@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Set variables
+## Set variables ======================================================
+
 QUARTO_VERSION="1.6.39"
 QUARTO_ARCH="linux-amd64"
 
@@ -13,6 +14,8 @@ PYTHON_PATH=$(which python3)
 # Check if Quarto is installed in the system PATH
 CURRENT_QUARTO=$(which quarto 2>/dev/null)
 
+## R Setup ======================================================
+
 # Check if R is installed
 which R || echo "R not found"
 
@@ -22,6 +25,39 @@ if [ ! -x "$(command -v R)" ]; then
     sudo apt install r-base-core r-base r-base-dev
     which R
 fi
+
+# Ensure that the renv package is available; install if needed.
+Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv', repos='https://cran.rstudio.com')"
+
+if [ ! -f "renv.lock" ]; then
+  echo "renv.lock not found. Installing packages from r_packages.txt..."
+
+  # Check if r_packages.txt exists
+  if [ ! -f "r_packages.txt" ]; then
+    echo "Error: r_packages.txt file not found."
+    exit 1
+  fi
+
+  # Read each package name from r_packages.txt and install it via renv.
+  while IFS= read -r pkg || [ -n "$pkg" ]; do
+    # Skip empty lines and lines starting with #
+    if [[ -z "$pkg" ]] || [[ "$pkg" =~ ^# ]]; then
+      continue
+    fi
+
+    echo "Installing package: $pkg"
+    Rscript -e "if (!requireNamespace('$pkg', quietly = TRUE)) renv::install('$pkg')"
+  done < r_packages.txt
+
+  # Snapshot the current state to create renv.lock
+  echo "Creating renv.lock file with renv::snapshot()..."
+  Rscript -e "renv::snapshot(confirm = FALSE)"
+else
+  echo "renv.lock found. Restoring renv environment..."
+  Rscript -e "renv::restore(confirm = FALSE)"
+fi
+
+## Python Setup ======================================================
 
 # Create and activate virtual environment
 if [ ! -d "venv" ]; then
@@ -50,6 +86,8 @@ if [ -f "requirements.txt" ]; then
        exit 1
    fi
 fi
+
+## Quarto Setup ======================================================
 
 # Install required packages for Quarto
 pip install jupyter pyyaml
