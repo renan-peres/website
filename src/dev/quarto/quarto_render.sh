@@ -26,8 +26,7 @@ if [ ! -x "$(command -v R)" ]; then
     libgdal-dev \
     libgeos-dev \
     libproj-dev \
-    pandoc \
-    pandoc-citeproc
+    pandoc
     which R
 fi
 
