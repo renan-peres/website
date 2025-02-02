@@ -1,4 +1,15 @@
 knitr
 rmarkdown
+tidyverse
+janitor
 ggplot2
 dygraphs
+GGally
+gganimate
+plotly
+htmlwidgets
+DT
+highcharter
+corrgram
+corrr
+countrycode
