@@ -31,10 +31,13 @@ execute:
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(here)
 
-# Set working directory using here package
-here::i_am("src/dev/quarto/world-governance-indicators/world-gov-indicators.qmd")
+# Set working directory based on file location
+current_file <- normalizePath(
+  file.path(dirname(knitr::current_input()), "world-gov-indicators.qmd")
+)
+setwd(dirname(current_file))
 
-# Use pacman to install/load all required packages
+# Load required packages
 pacman::p_load(
   dplyr,
   tidyr,
@@ -64,7 +67,7 @@ knitr::opts_chunk$set(
   fig.height = unit(10, "cm")
 )
 
-# Write bibliography
+# Write bibliography 
 knitr::write_bib(file = "packages.bib")
 ```
 
@@ -72,7 +75,7 @@ knitr::write_bib(file = "packages.bib")
 
 **Last Update:** `r format(lubridate::now('US/Eastern'), ' %B %d, %Y - %H:%M')`
 
-This report presents the results of six broad dimensions of governance over 215 countries and territories between 1996-2021.
+This report presents the results of six broad dimensions of governance over 215 countries and territories between 1996-2021. 
 
 # Table of Contents
 

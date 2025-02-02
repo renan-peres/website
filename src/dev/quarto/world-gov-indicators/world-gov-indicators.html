@@ -3133,7 +3133,7 @@ vertical-align: -.125em;
 
 
 <!-- <a class="header-title-link" href="http://renanperes.com" aria-label="Go to homepage">Home💻</a> -->
-<p><strong>Last Update:</strong> February 02, 2025 - 16:34</p>
+<p><strong>Last Update:</strong> February 02, 2025 - 16:43</p>
 <p>This report presents the results of six broad dimensions of governance over 215 countries and territories between 1996-2021.</p>
 <section id="table-of-contents" class="level1">
 <h1>Table of Contents</h1>
@@ -4255,497 +4255,500 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="in">if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)</span></span>
 <span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(here)</span></span>
 <span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="in"># Set working directory using here package</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="in">here::i_am(&quot;src/dev/quarto/world-governance-indicators/world-gov-indicators.qmd&quot;)</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="in"># Use pacman to install/load all required packages</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr,</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="in">  tidyr,</span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="in">  readr,</span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="in">  forcats,</span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="in">  stringr,</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="in">  janitor,</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="in">  plotly,</span></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="in">  cowplot,</span></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="in">  countrycode,</span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="in">  knitr,</span></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="in">  htmlwidgets,</span></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="in">  DT,</span></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="in">  highcharter,</span></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="in">  corrgram,</span></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="in">  corrr,</span></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="in">  GGally,</span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="in">  gganimate,</span></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="in">  gapminder</span></span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="in"># Setup chunk options</span></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::opts_chunk$set(</span></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="in">  collapse = TRUE,</span></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="in">  echo = TRUE,</span></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a><span class="in">  fig.width = unit(7.78, &quot;cm&quot;),</span></span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a><span class="in">  fig.height = unit(10, &quot;cm&quot;)</span></span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="in"># Write bibliography</span></span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::write_bib(file = &quot;packages.bib&quot;)</span></span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- &lt;a class=&quot;header-title-link&quot; href=&quot;http://renanperes.com&quot; aria-label=&quot;Go to homepage&quot;&gt;Home💻&lt;/a&gt; --&gt;</span></span>
-<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>**Last Update:** <span class="in">`r format(lubridate::now(&#39;US/Eastern&#39;), &#39; %B %d, %Y - %H:%M&#39;)`</span></span>
-<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>This report presents the results of six broad dimensions of governance over 215 countries and territories between 1996-2021.</span>
-<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a><span class="fu"># Table of Contents</span></span>
-<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span><span class="co">[</span><span class="ot">Introduction</span><span class="co">]</span></span>
-<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span><span class="co">[</span><span class="ot">Motivation</span><span class="co">]</span></span>
-<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span><span class="co">[</span><span class="ot">Dataset</span><span class="co">]</span></span>
-<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span><span class="co">[</span><span class="ot">Data Preparation</span><span class="co">]</span></span>
-<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span><span class="co">[</span><span class="ot">Visualizations</span><span class="co">]</span></span>
-<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="co">[</span><span class="ot">Correlation between Indicators</span><span class="co">]</span></span>
-<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="co">[</span><span class="ot">Most recent results 2021 by Country</span><span class="co">]</span></span>
-<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="co">[</span><span class="ot">Comparison by Continent</span><span class="co">]</span></span>
-<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="co">[</span><span class="ot">Comparison between the top 3 Countries of 2021</span><span class="co">]</span></span>
-<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="co">[</span><span class="ot">USA progression over time</span><span class="co">]</span></span>
-<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span><span class="co">[</span><span class="ot">Conclusion</span><span class="co">]</span></span>
-<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a><span class="ss">7.  </span><span class="co">[</span><span class="ot">References</span><span class="co">]</span></span>
-<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a><span class="fu"># Introduction</span></span>
-<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>Governance consists of the traditions and institutions by which authority in a country is exercised. This includes the process by which governments are selected, monitored, and replaced; the government&#39;s capacity to effectively formulate and implement sound policies; and the respect of citizens and the state for the institutions that govern economic and social interactions among them.</span>
-<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>This report is based on the data source <span class="co">[</span><span class="ot">*Worldwide-Governance-Indicators*</span><span class="co">](https://datacatalog.worldbank.org/search/dataset/0038026/Worldwide-Governance-Indicators)</span> (Sep 23, 2022), which highlights six broad indicators of a country&#39;s governance. The data includes results from 1996 to 2021.</span>
-<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a><span class="fu"># Motivation</span></span>
-<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>As a worldwide traveler who has just recently been in an almost 3-month study abroad program in Europe - traveling across 13 different countries, I have always been curious to understand the indicators that determine the success of a nation and how they are compared between one another. For that reason, when navigating through <span class="ot">&lt;https://www.worldbank.org/&gt;</span> looking for some dataset to perform analyses, I found the one on which this report is based, so I decided to explore it.</span>
-<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a><span class="fu"># Dataset</span></span>
-<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a>The dataset lists composite governance indicators based on over 30 underlying data sources. As mentioned in the introduction, it reports on six broad dimensions of governance for over 215 countries and territories over the period 1996-2021, which are:</span>
-<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Control of Corruption;</span>
-<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Government Effectiveness;</span>
-<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Political Stability and Absence of Violence;</span>
-<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Regulatory Quality;</span>
-<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Rule of Law;</span>
-<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span>Voice and Accountability.</span>
-<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>Feel free to download the raw data from the link below if you also want to explore it in-depth!</span>
-<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>**[[Download Raw Data](/WGIData.csv)]**</span>
-<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a><span class="fu"># Data Preparation</span></span>
-<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>For ease of understanding and to make our analyses more transparent, during the data preparation stage, I filtered the indicators by their estimates which give each country a score on the aggregate hand, in units of standard normal distribution, ranging from approximately -2.5 to 2.5.</span>
-<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a>I have attached below the prepared data that I used throughout this report. You are welcome to explore the code, manipulate the data, or download it in the format you wish from the table below.</span>
-<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a>**[[View Table in Full Screen](/widgets/WGI_DT.html)]**</span>
-<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{r prepare, echo=TRUE, message=FALSE, warning=FALSE}</span></span>
-<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a><span class="in"># 1_Importing</span></span>
-<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a><span class="in">  # url &lt;- &quot;https://databank.worldbank.org/data/download/WGI_csv.zip&quot;</span></span>
-<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a><span class="in">  # tf &lt;- tempfile(tmpdir = directory, fileext = &quot;.zip&quot;)</span></span>
-<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a><span class="in">  # download.file(url, tf)</span></span>
-<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a><span class="in">  # unzip(tf)</span></span>
-<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a><span class="in">df_data &lt;- read_csv(&quot;WGIData.csv&quot;)</span></span>
-<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a><span class="in">df_country &lt;- read_csv(&quot;WGICountry.csv&quot;)</span></span>
-<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a><span class="in">df_continent &lt;- countrycode::codelist %&gt;% select(continent, wb, country.name.en, iso2c, unicode.symbol)</span></span>
-<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a><span class="in"># 2_Cleaning</span></span>
-<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a><span class="in">  df_data &lt;- df_data %&gt;% </span></span>
-<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a><span class="in">                clean_names() %&gt;%</span></span>
-<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a><span class="in">                select(-c(&quot;indicator_code&quot;,&quot;x28&quot;)) %&gt;% </span></span>
-<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a><span class="in">                pivot_longer(-c(&quot;country_name&quot;, &quot;country_code&quot;, &quot;indicator_name&quot;), </span></span>
-<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a><span class="in">                             names_to = &quot;year&quot;, </span></span>
-<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a><span class="in">                             values_to = &quot;value&quot;) %&gt;% </span></span>
-<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(year = str_remove_all(year, pattern = &quot;x&quot;)) %&gt;% </span></span>
-<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a><span class="in">                filter(str_detect(indicator_name, &quot;Estimate&quot;)) %&gt;% </span></span>
-<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(indicator_name = str_extract(indicator_name, pattern = &quot;(.*):&quot;),</span></span>
-<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a><span class="in">                       indicator_name = str_remove_all(indicator_name, &quot;:&quot;)) %&gt;% </span></span>
-<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(year = as.integer(year),</span></span>
-<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a><span class="in">                       value = as.double(value))</span></span>
-<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
-<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a><span class="in">  df_country &lt;- df_country %&gt;% </span></span>
-<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a><span class="in">                  clean_names() %&gt;% </span></span>
-<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a><span class="in">                  select(country_code, table_name, region)</span></span>
-<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
-<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a><span class="in">  df_continent &lt;- df_continent %&gt;% </span></span>
-<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a><span class="in">                    clean_names() %&gt;% </span></span>
-<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a><span class="in">                    rename(country_code = wb,</span></span>
-<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a><span class="in">                           country_name = country_name_en)</span></span>
-<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
-<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a><span class="in"># 3_Creating_Master_Table</span></span>
-<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a><span class="in">  df &lt;- df_data %&gt;% </span></span>
-<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a><span class="in">          inner_join(df_country %&gt;% select(country_code, region), </span></span>
-<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a><span class="in">                     by = &quot;country_code&quot;) %&gt;% </span></span>
-<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a><span class="in">          inner_join(df_continent %&gt;% select(country_code, continent, iso2c, unicode_symbol),</span></span>
-<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a><span class="in">                     by = &quot;country_code&quot;) %&gt;% </span></span>
-<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a><span class="in">          mutate_all(~str_trim(., side = &quot;both&quot;)) %&gt;% </span></span>
-<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a><span class="in">          mutate(continent = case_when(region == &quot;Latin America &amp; Caribbean&quot; ~ &quot;South America&quot;,</span></span>
-<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a><span class="in">                                       region == &quot;North America&quot; ~ &quot;North America&quot;,</span></span>
-<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a><span class="in">                                       country_name == &quot;Greenland&quot; ~ &quot;North America&quot;,</span></span>
-<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a><span class="in">                                             T ~ continent)) %&gt;%</span></span>
-<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a><span class="in">          mutate(continent = case_when(country_name == &quot;Mexico&quot; ~ &quot;North America&quot;,</span></span>
-<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a><span class="in">                                       T ~ continent)) %&gt;% </span></span>
-<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a><span class="in">          mutate(indicator_name = case_when(indicator_name == &quot;Political Stability and Absence of Violence/Terrorism&quot; ~ &quot;Political Stability&quot;,</span></span>
-<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a><span class="in">                               T ~ indicator_name)) %&gt;% </span></span>
-<span id="cb7-177"><a href="#cb7-177" aria-hidden="true" tabindex="-1"></a><span class="in">          mutate(year = as.integer(year),</span></span>
-<span id="cb7-178"><a href="#cb7-178" aria-hidden="true" tabindex="-1"></a><span class="in">                 value = as.double(value),</span></span>
-<span id="cb7-179"><a href="#cb7-179" aria-hidden="true" tabindex="-1"></a><span class="in">                 value = round(value, 2)) %&gt;% </span></span>
-<span id="cb7-180"><a href="#cb7-180" aria-hidden="true" tabindex="-1"></a><span class="in">          filter(continent != &quot;&quot;) %&gt;% </span></span>
-<span id="cb7-181"><a href="#cb7-181" aria-hidden="true" tabindex="-1"></a><span class="in">          filter(value != &quot;&quot;) %&gt;% </span></span>
-<span id="cb7-182"><a href="#cb7-182" aria-hidden="true" tabindex="-1"></a><span class="in">          select(-region) %&gt;% </span></span>
-<span id="cb7-183"><a href="#cb7-183" aria-hidden="true" tabindex="-1"></a><span class="in">          arrange(year, country_name)</span></span>
-<span id="cb7-184"><a href="#cb7-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-185"><a href="#cb7-185" aria-hidden="true" tabindex="-1"></a><span class="in"># DATA TABLE</span></span>
-<span id="cb7-186"><a href="#cb7-186" aria-hidden="true" tabindex="-1"></a><span class="in">  # Preparing</span></span>
-<span id="cb7-187"><a href="#cb7-187" aria-hidden="true" tabindex="-1"></a><span class="in">    dt &lt;- df %&gt;% </span></span>
-<span id="cb7-188"><a href="#cb7-188" aria-hidden="true" tabindex="-1"></a><span class="in">            select(country_name,  country_code, continent, indicator_name, year, value) %&gt;% </span></span>
-<span id="cb7-189"><a href="#cb7-189" aria-hidden="true" tabindex="-1"></a><span class="in">            mutate_at(.vars = c(&quot;country_name&quot;, &quot;country_code&quot;, &quot;indicator_name&quot;, &quot;year&quot;) ,~as_factor(.)) %&gt;%</span></span>
-<span id="cb7-190"><a href="#cb7-190" aria-hidden="true" tabindex="-1"></a><span class="in">            arrange(continent) %&gt;% </span></span>
-<span id="cb7-191"><a href="#cb7-191" aria-hidden="true" tabindex="-1"></a><span class="in">            mutate(continent = as_factor(continent)) %&gt;%</span></span>
-<span id="cb7-192"><a href="#cb7-192" aria-hidden="true" tabindex="-1"></a><span class="in">            arrange(year, country_name) %&gt;% </span></span>
-<span id="cb7-193"><a href="#cb7-193" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
-<span id="cb7-194"><a href="#cb7-194" aria-hidden="true" tabindex="-1"></a><span class="in">  # Creating</span></span>
-<span id="cb7-195"><a href="#cb7-195" aria-hidden="true" tabindex="-1"></a><span class="in">          DT::datatable(rownames = FALSE,</span></span>
-<span id="cb7-196"><a href="#cb7-196" aria-hidden="true" tabindex="-1"></a><span class="in">                        width = &quot;100%&quot;,</span></span>
-<span id="cb7-197"><a href="#cb7-197" aria-hidden="true" tabindex="-1"></a><span class="in">                        filter = &quot;top&quot;,</span></span>
-<span id="cb7-198"><a href="#cb7-198" aria-hidden="true" tabindex="-1"></a><span class="in">                        colnames = c(&#39;Country&#39;,&#39;Code&#39;, &#39;Continent&#39;, &#39;Indicator&#39;, &quot;Year&quot;, &quot;Score&quot;),</span></span>
-<span id="cb7-199"><a href="#cb7-199" aria-hidden="true" tabindex="-1"></a><span class="in">                        class = &#39;cell-border stripe&#39;,</span></span>
-<span id="cb7-200"><a href="#cb7-200" aria-hidden="true" tabindex="-1"></a><span class="in">                        extensions = c(&quot;Responsive&quot;, &quot;Buttons&quot;),</span></span>
-<span id="cb7-201"><a href="#cb7-201" aria-hidden="true" tabindex="-1"></a><span class="in">                                      options = list(</span></span>
-<span id="cb7-202"><a href="#cb7-202" aria-hidden="true" tabindex="-1"></a><span class="in">                                                      autowidth = TRUE,</span></span>
-<span id="cb7-203"><a href="#cb7-203" aria-hidden="true" tabindex="-1"></a><span class="in">                                                      lengthMenu = c(6, 12, 25, 50),</span></span>
-<span id="cb7-204"><a href="#cb7-204" aria-hidden="true" tabindex="-1"></a><span class="in">                                                      dom = &quot;Blfrtip&quot;,</span></span>
-<span id="cb7-205"><a href="#cb7-205" aria-hidden="true" tabindex="-1"></a><span class="in">                                                      buttons = c(&quot;copy&quot;, &quot;csv&quot;, &quot;excel&quot;, &quot;print&quot;, &quot;pdf&quot;),</span></span>
-<span id="cb7-206"><a href="#cb7-206" aria-hidden="true" tabindex="-1"></a><span class="in">                                                      initComplete = JS(&quot;function(settings, json) {&quot;,</span></span>
-<span id="cb7-207"><a href="#cb7-207" aria-hidden="true" tabindex="-1"></a><span class="in">      &quot;$(this.api().table().header()).css({&#39;background-color&#39;: &#39;#c23d1d&#39;, &#39;color&#39;: &#39;#fff&#39;});&quot;,</span></span>
-<span id="cb7-208"><a href="#cb7-208" aria-hidden="true" tabindex="-1"></a><span class="in">      &quot;}&quot;)))</span></span>
-<span id="cb7-209"><a href="#cb7-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-210"><a href="#cb7-210" aria-hidden="true" tabindex="-1"></a><span class="in">htmlwidgets::saveWidget(dt, file = &quot;widgets/WGI_DT.html&quot;)</span></span>
-<span id="cb7-211"><a href="#cb7-211" aria-hidden="true" tabindex="-1"></a><span class="in"># write_csv(df, file = &quot;./WGI_cleaned.csv&quot;)</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="in"># Set working directory based on file location</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="in">current_file &lt;- normalizePath(</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="in">  file.path(dirname(knitr::current_input()), &quot;world-gov-indicators.qmd&quot;)</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="in">setwd(dirname(current_file))</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="in"># Load required packages</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="in">pacman::p_load(</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr,</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="in">  tidyr,</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="in">  readr,</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="in">  forcats,</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="in">  stringr,</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="in">  janitor,</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="in">  plotly,</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="in">  cowplot,</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="in">  countrycode,</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="in">  knitr,</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="in">  htmlwidgets,</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="in">  DT,</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="in">  highcharter,</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="in">  corrgram,</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="in">  corrr,</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="in">  GGally,</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="in">  gganimate,</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="in">  gapminder</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="in"># Setup chunk options</span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::opts_chunk$set(</span></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a><span class="in">  collapse = TRUE,</span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="in">  echo = TRUE,</span></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a><span class="in">  fig.width = unit(7.78, &quot;cm&quot;),</span></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="in">  fig.height = unit(10, &quot;cm&quot;)</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="in"># Write bibliography </span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::write_bib(file = &quot;packages.bib&quot;)</span></span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- &lt;a class=&quot;header-title-link&quot; href=&quot;http://renanperes.com&quot; aria-label=&quot;Go to homepage&quot;&gt;Home💻&lt;/a&gt; --&gt;</span></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>**Last Update:** <span class="in">`r format(lubridate::now(&#39;US/Eastern&#39;), &#39; %B %d, %Y - %H:%M&#39;)`</span></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>This report presents the results of six broad dimensions of governance over 215 countries and territories between 1996-2021. </span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a><span class="fu"># Table of Contents</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span><span class="co">[</span><span class="ot">Introduction</span><span class="co">]</span></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span><span class="co">[</span><span class="ot">Motivation</span><span class="co">]</span></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span><span class="co">[</span><span class="ot">Dataset</span><span class="co">]</span></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span><span class="co">[</span><span class="ot">Data Preparation</span><span class="co">]</span></span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span><span class="co">[</span><span class="ot">Visualizations</span><span class="co">]</span></span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="co">[</span><span class="ot">Correlation between Indicators</span><span class="co">]</span></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="co">[</span><span class="ot">Most recent results 2021 by Country</span><span class="co">]</span></span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="co">[</span><span class="ot">Comparison by Continent</span><span class="co">]</span></span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="co">[</span><span class="ot">Comparison between the top 3 Countries of 2021</span><span class="co">]</span></span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="co">[</span><span class="ot">USA progression over time</span><span class="co">]</span></span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span><span class="co">[</span><span class="ot">Conclusion</span><span class="co">]</span></span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a><span class="ss">7.  </span><span class="co">[</span><span class="ot">References</span><span class="co">]</span></span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a><span class="fu"># Introduction</span></span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>Governance consists of the traditions and institutions by which authority in a country is exercised. This includes the process by which governments are selected, monitored, and replaced; the government&#39;s capacity to effectively formulate and implement sound policies; and the respect of citizens and the state for the institutions that govern economic and social interactions among them.</span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>This report is based on the data source <span class="co">[</span><span class="ot">*Worldwide-Governance-Indicators*</span><span class="co">](https://datacatalog.worldbank.org/search/dataset/0038026/Worldwide-Governance-Indicators)</span> (Sep 23, 2022), which highlights six broad indicators of a country&#39;s governance. The data includes results from 1996 to 2021.</span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a><span class="fu"># Motivation</span></span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>As a worldwide traveler who has just recently been in an almost 3-month study abroad program in Europe - traveling across 13 different countries, I have always been curious to understand the indicators that determine the success of a nation and how they are compared between one another. For that reason, when navigating through <span class="ot">&lt;https://www.worldbank.org/&gt;</span> looking for some dataset to perform analyses, I found the one on which this report is based, so I decided to explore it.</span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a><span class="fu"># Dataset</span></span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a>The dataset lists composite governance indicators based on over 30 underlying data sources. As mentioned in the introduction, it reports on six broad dimensions of governance for over 215 countries and territories over the period 1996-2021, which are:</span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Control of Corruption;</span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Government Effectiveness;</span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Political Stability and Absence of Violence;</span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Regulatory Quality;</span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Rule of Law;</span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span>Voice and Accountability.</span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a>Feel free to download the raw data from the link below if you also want to explore it in-depth!</span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>**[[Download Raw Data](/WGIData.csv)]**</span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a><span class="fu"># Data Preparation</span></span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a>For ease of understanding and to make our analyses more transparent, during the data preparation stage, I filtered the indicators by their estimates which give each country a score on the aggregate hand, in units of standard normal distribution, ranging from approximately -2.5 to 2.5.</span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>I have attached below the prepared data that I used throughout this report. You are welcome to explore the code, manipulate the data, or download it in the format you wish from the table below.</span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a>**[[View Table in Full Screen](/widgets/WGI_DT.html)]**</span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r prepare, echo=TRUE, message=FALSE, warning=FALSE}</span></span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a><span class="in"># 1_Importing</span></span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a><span class="in">  # url &lt;- &quot;https://databank.worldbank.org/data/download/WGI_csv.zip&quot;</span></span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a><span class="in">  # tf &lt;- tempfile(tmpdir = directory, fileext = &quot;.zip&quot;)</span></span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a><span class="in">  # download.file(url, tf)</span></span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a><span class="in">  # unzip(tf)</span></span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a><span class="in">df_data &lt;- read_csv(&quot;WGIData.csv&quot;)</span></span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a><span class="in">df_country &lt;- read_csv(&quot;WGICountry.csv&quot;)</span></span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a><span class="in">df_continent &lt;- countrycode::codelist %&gt;% select(continent, wb, country.name.en, iso2c, unicode.symbol)</span></span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a><span class="in"># 2_Cleaning</span></span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a><span class="in">  df_data &lt;- df_data %&gt;% </span></span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a><span class="in">                clean_names() %&gt;%</span></span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a><span class="in">                select(-c(&quot;indicator_code&quot;,&quot;x28&quot;)) %&gt;% </span></span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a><span class="in">                pivot_longer(-c(&quot;country_name&quot;, &quot;country_code&quot;, &quot;indicator_name&quot;), </span></span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a><span class="in">                             names_to = &quot;year&quot;, </span></span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a><span class="in">                             values_to = &quot;value&quot;) %&gt;% </span></span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(year = str_remove_all(year, pattern = &quot;x&quot;)) %&gt;% </span></span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a><span class="in">                filter(str_detect(indicator_name, &quot;Estimate&quot;)) %&gt;% </span></span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(indicator_name = str_extract(indicator_name, pattern = &quot;(.*):&quot;),</span></span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a><span class="in">                       indicator_name = str_remove_all(indicator_name, &quot;:&quot;)) %&gt;% </span></span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(year = as.integer(year),</span></span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a><span class="in">                       value = as.double(value))</span></span>
+<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
+<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a><span class="in">  df_country &lt;- df_country %&gt;% </span></span>
+<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a><span class="in">                  clean_names() %&gt;% </span></span>
+<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a><span class="in">                  select(country_code, table_name, region)</span></span>
+<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
+<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a><span class="in">  df_continent &lt;- df_continent %&gt;% </span></span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a><span class="in">                    clean_names() %&gt;% </span></span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a><span class="in">                    rename(country_code = wb,</span></span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a><span class="in">                           country_name = country_name_en)</span></span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a><span class="in"># 3_Creating_Master_Table</span></span>
+<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a><span class="in">  df &lt;- df_data %&gt;% </span></span>
+<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a><span class="in">          inner_join(df_country %&gt;% select(country_code, region), </span></span>
+<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a><span class="in">                     by = &quot;country_code&quot;) %&gt;% </span></span>
+<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a><span class="in">          inner_join(df_continent %&gt;% select(country_code, continent, iso2c, unicode_symbol),</span></span>
+<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a><span class="in">                     by = &quot;country_code&quot;) %&gt;% </span></span>
+<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a><span class="in">          mutate_all(~str_trim(., side = &quot;both&quot;)) %&gt;% </span></span>
+<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a><span class="in">          mutate(continent = case_when(region == &quot;Latin America &amp; Caribbean&quot; ~ &quot;South America&quot;,</span></span>
+<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a><span class="in">                                       region == &quot;North America&quot; ~ &quot;North America&quot;,</span></span>
+<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a><span class="in">                                       country_name == &quot;Greenland&quot; ~ &quot;North America&quot;,</span></span>
+<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a><span class="in">                                             T ~ continent)) %&gt;%</span></span>
+<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a><span class="in">          mutate(continent = case_when(country_name == &quot;Mexico&quot; ~ &quot;North America&quot;,</span></span>
+<span id="cb7-177"><a href="#cb7-177" aria-hidden="true" tabindex="-1"></a><span class="in">                                       T ~ continent)) %&gt;% </span></span>
+<span id="cb7-178"><a href="#cb7-178" aria-hidden="true" tabindex="-1"></a><span class="in">          mutate(indicator_name = case_when(indicator_name == &quot;Political Stability and Absence of Violence/Terrorism&quot; ~ &quot;Political Stability&quot;,</span></span>
+<span id="cb7-179"><a href="#cb7-179" aria-hidden="true" tabindex="-1"></a><span class="in">                               T ~ indicator_name)) %&gt;% </span></span>
+<span id="cb7-180"><a href="#cb7-180" aria-hidden="true" tabindex="-1"></a><span class="in">          mutate(year = as.integer(year),</span></span>
+<span id="cb7-181"><a href="#cb7-181" aria-hidden="true" tabindex="-1"></a><span class="in">                 value = as.double(value),</span></span>
+<span id="cb7-182"><a href="#cb7-182" aria-hidden="true" tabindex="-1"></a><span class="in">                 value = round(value, 2)) %&gt;% </span></span>
+<span id="cb7-183"><a href="#cb7-183" aria-hidden="true" tabindex="-1"></a><span class="in">          filter(continent != &quot;&quot;) %&gt;% </span></span>
+<span id="cb7-184"><a href="#cb7-184" aria-hidden="true" tabindex="-1"></a><span class="in">          filter(value != &quot;&quot;) %&gt;% </span></span>
+<span id="cb7-185"><a href="#cb7-185" aria-hidden="true" tabindex="-1"></a><span class="in">          select(-region) %&gt;% </span></span>
+<span id="cb7-186"><a href="#cb7-186" aria-hidden="true" tabindex="-1"></a><span class="in">          arrange(year, country_name)</span></span>
+<span id="cb7-187"><a href="#cb7-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-188"><a href="#cb7-188" aria-hidden="true" tabindex="-1"></a><span class="in"># DATA TABLE</span></span>
+<span id="cb7-189"><a href="#cb7-189" aria-hidden="true" tabindex="-1"></a><span class="in">  # Preparing</span></span>
+<span id="cb7-190"><a href="#cb7-190" aria-hidden="true" tabindex="-1"></a><span class="in">    dt &lt;- df %&gt;% </span></span>
+<span id="cb7-191"><a href="#cb7-191" aria-hidden="true" tabindex="-1"></a><span class="in">            select(country_name,  country_code, continent, indicator_name, year, value) %&gt;% </span></span>
+<span id="cb7-192"><a href="#cb7-192" aria-hidden="true" tabindex="-1"></a><span class="in">            mutate_at(.vars = c(&quot;country_name&quot;, &quot;country_code&quot;, &quot;indicator_name&quot;, &quot;year&quot;) ,~as_factor(.)) %&gt;%</span></span>
+<span id="cb7-193"><a href="#cb7-193" aria-hidden="true" tabindex="-1"></a><span class="in">            arrange(continent) %&gt;% </span></span>
+<span id="cb7-194"><a href="#cb7-194" aria-hidden="true" tabindex="-1"></a><span class="in">            mutate(continent = as_factor(continent)) %&gt;%</span></span>
+<span id="cb7-195"><a href="#cb7-195" aria-hidden="true" tabindex="-1"></a><span class="in">            arrange(year, country_name) %&gt;% </span></span>
+<span id="cb7-196"><a href="#cb7-196" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
+<span id="cb7-197"><a href="#cb7-197" aria-hidden="true" tabindex="-1"></a><span class="in">  # Creating</span></span>
+<span id="cb7-198"><a href="#cb7-198" aria-hidden="true" tabindex="-1"></a><span class="in">          DT::datatable(rownames = FALSE,</span></span>
+<span id="cb7-199"><a href="#cb7-199" aria-hidden="true" tabindex="-1"></a><span class="in">                        width = &quot;100%&quot;,</span></span>
+<span id="cb7-200"><a href="#cb7-200" aria-hidden="true" tabindex="-1"></a><span class="in">                        filter = &quot;top&quot;,</span></span>
+<span id="cb7-201"><a href="#cb7-201" aria-hidden="true" tabindex="-1"></a><span class="in">                        colnames = c(&#39;Country&#39;,&#39;Code&#39;, &#39;Continent&#39;, &#39;Indicator&#39;, &quot;Year&quot;, &quot;Score&quot;),</span></span>
+<span id="cb7-202"><a href="#cb7-202" aria-hidden="true" tabindex="-1"></a><span class="in">                        class = &#39;cell-border stripe&#39;,</span></span>
+<span id="cb7-203"><a href="#cb7-203" aria-hidden="true" tabindex="-1"></a><span class="in">                        extensions = c(&quot;Responsive&quot;, &quot;Buttons&quot;),</span></span>
+<span id="cb7-204"><a href="#cb7-204" aria-hidden="true" tabindex="-1"></a><span class="in">                                      options = list(</span></span>
+<span id="cb7-205"><a href="#cb7-205" aria-hidden="true" tabindex="-1"></a><span class="in">                                                      autowidth = TRUE,</span></span>
+<span id="cb7-206"><a href="#cb7-206" aria-hidden="true" tabindex="-1"></a><span class="in">                                                      lengthMenu = c(6, 12, 25, 50),</span></span>
+<span id="cb7-207"><a href="#cb7-207" aria-hidden="true" tabindex="-1"></a><span class="in">                                                      dom = &quot;Blfrtip&quot;,</span></span>
+<span id="cb7-208"><a href="#cb7-208" aria-hidden="true" tabindex="-1"></a><span class="in">                                                      buttons = c(&quot;copy&quot;, &quot;csv&quot;, &quot;excel&quot;, &quot;print&quot;, &quot;pdf&quot;),</span></span>
+<span id="cb7-209"><a href="#cb7-209" aria-hidden="true" tabindex="-1"></a><span class="in">                                                      initComplete = JS(&quot;function(settings, json) {&quot;,</span></span>
+<span id="cb7-210"><a href="#cb7-210" aria-hidden="true" tabindex="-1"></a><span class="in">      &quot;$(this.api().table().header()).css({&#39;background-color&#39;: &#39;#c23d1d&#39;, &#39;color&#39;: &#39;#fff&#39;});&quot;,</span></span>
+<span id="cb7-211"><a href="#cb7-211" aria-hidden="true" tabindex="-1"></a><span class="in">      &quot;}&quot;)))</span></span>
 <span id="cb7-212"><a href="#cb7-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-213"><a href="#cb7-213" aria-hidden="true" tabindex="-1"></a><span class="in">print(df)</span></span>
-<span id="cb7-214"><a href="#cb7-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-213"><a href="#cb7-213" aria-hidden="true" tabindex="-1"></a><span class="in">htmlwidgets::saveWidget(dt, file = &quot;widgets/WGI_DT.html&quot;)</span></span>
+<span id="cb7-214"><a href="#cb7-214" aria-hidden="true" tabindex="-1"></a><span class="in"># write_csv(df, file = &quot;./WGI_cleaned.csv&quot;)</span></span>
 <span id="cb7-215"><a href="#cb7-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-216"><a href="#cb7-216" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb7-217"><a href="#cb7-217" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_url(&quot;widgets/WGI_DT.html&quot;, height = &quot;600px&quot;)</span></span>
-<span id="cb7-218"><a href="#cb7-218" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-219"><a href="#cb7-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-220"><a href="#cb7-220" aria-hidden="true" tabindex="-1"></a><span class="fu"># Visualizations</span></span>
-<span id="cb7-221"><a href="#cb7-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-222"><a href="#cb7-222" aria-hidden="true" tabindex="-1"></a>As this is a significant project involving many variables and records, I created five charts to understand the results better.</span>
-<span id="cb7-223"><a href="#cb7-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-224"><a href="#cb7-224" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Correlation between Indicators **(Correlation Matrix)**</span>
-<span id="cb7-225"><a href="#cb7-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-226"><a href="#cb7-226" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Most recent results 2021 by Country **(Interactive Map)**</span>
-<span id="cb7-227"><a href="#cb7-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-228"><a href="#cb7-228" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Comparison by Continent **(Box Plot)**</span>
-<span id="cb7-229"><a href="#cb7-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-230"><a href="#cb7-230" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Comparison between the top 3 Countries of 2021 **(Line Chart)**</span>
-<span id="cb7-231"><a href="#cb7-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-232"><a href="#cb7-232" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>USA progression over time **(Animated Line Chart)**</span>
-<span id="cb7-233"><a href="#cb7-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-234"><a href="#cb7-234" aria-hidden="true" tabindex="-1"></a>Most of the charts are interactive! If you see a ***[Full Screen]*** option next to a chart, it means the chart is interactive and you can view it in full screen.</span>
-<span id="cb7-235"><a href="#cb7-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-236"><a href="#cb7-236" aria-hidden="true" tabindex="-1"></a><span class="fu">### Correlation between Indicators</span></span>
-<span id="cb7-237"><a href="#cb7-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-238"><a href="#cb7-238" aria-hidden="true" tabindex="-1"></a>The correlation chart below shows the connection between indicators. </span>
-<span id="cb7-239"><a href="#cb7-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-240"><a href="#cb7-240" aria-hidden="true" tabindex="-1"></a>For purposes of text space in the chart below, I have shortened the indicator’s names:</span>
-<span id="cb7-241"><a href="#cb7-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-242"><a href="#cb7-242" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Corruption** = Control of Corruption;</span>
-<span id="cb7-243"><a href="#cb7-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-244"><a href="#cb7-244" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Effectiveness** = Government Effectiveness;</span>
-<span id="cb7-245"><a href="#cb7-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-246"><a href="#cb7-246" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Stability** = Political Stability and Absence of Violence;</span>
-<span id="cb7-247"><a href="#cb7-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-248"><a href="#cb7-248" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Regulations** = Regulatory Quality;</span>
-<span id="cb7-249"><a href="#cb7-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-250"><a href="#cb7-250" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Law** = Rule of Law;</span>
-<span id="cb7-251"><a href="#cb7-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-252"><a href="#cb7-252" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Voice** = Voice and Accountability.</span>
-<span id="cb7-253"><a href="#cb7-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-254"><a href="#cb7-254" aria-hidden="true" tabindex="-1"></a><span class="in">```{r indicators-correlation, fig.cap=&#39;Correlation between Indicators.&#39;, tidy=FALSE, fig.height= 6.2, out.width= &quot;100%&quot;}</span></span>
-<span id="cb7-255"><a href="#cb7-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-256"><a href="#cb7-256" aria-hidden="true" tabindex="-1"></a><span class="in"># Correlation Matrix</span></span>
-<span id="cb7-257"><a href="#cb7-257" aria-hidden="true" tabindex="-1"></a><span class="in">df_cor &lt;- df %&gt;% </span></span>
-<span id="cb7-258"><a href="#cb7-258" aria-hidden="true" tabindex="-1"></a><span class="in">            select(country_name:continent) %&gt;% </span></span>
-<span id="cb7-259"><a href="#cb7-259" aria-hidden="true" tabindex="-1"></a><span class="in">            pivot_wider(names_from = &quot;indicator_name&quot;,</span></span>
-<span id="cb7-260"><a href="#cb7-260" aria-hidden="true" tabindex="-1"></a><span class="in">                        values_from = &quot;value&quot;) %&gt;% </span></span>
-<span id="cb7-261"><a href="#cb7-261" aria-hidden="true" tabindex="-1"></a><span class="in">            select(5:10) %&gt;% </span></span>
-<span id="cb7-262"><a href="#cb7-262" aria-hidden="true" tabindex="-1"></a><span class="in">            rename(Corruption = 1,</span></span>
-<span id="cb7-263"><a href="#cb7-263" aria-hidden="true" tabindex="-1"></a><span class="in">                   Effectiveness = 2,</span></span>
-<span id="cb7-264"><a href="#cb7-264" aria-hidden="true" tabindex="-1"></a><span class="in">                   Stability = 3,</span></span>
-<span id="cb7-265"><a href="#cb7-265" aria-hidden="true" tabindex="-1"></a><span class="in">                   Regulations = 4,</span></span>
-<span id="cb7-266"><a href="#cb7-266" aria-hidden="true" tabindex="-1"></a><span class="in">                   Law = 5,</span></span>
-<span id="cb7-267"><a href="#cb7-267" aria-hidden="true" tabindex="-1"></a><span class="in">                   Voice = 6) %&gt;% </span></span>
-<span id="cb7-268"><a href="#cb7-268" aria-hidden="true" tabindex="-1"></a><span class="in">            corrr::correlate(quiet = TRUE) %&gt;% </span></span>
-<span id="cb7-269"><a href="#cb7-269" aria-hidden="true" tabindex="-1"></a><span class="in">            corrr::rearrange()</span></span>
-<span id="cb7-270"><a href="#cb7-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-271"><a href="#cb7-271" aria-hidden="true" tabindex="-1"></a><span class="in"># Correlation Plot</span></span>
-<span id="cb7-272"><a href="#cb7-272" aria-hidden="true" tabindex="-1"></a><span class="in">cor_plot &lt;- df_cor %&gt;% </span></span>
-<span id="cb7-273"><a href="#cb7-273" aria-hidden="true" tabindex="-1"></a><span class="in">              GGally::ggcorr(low = &quot;#abc3ff&quot;,</span></span>
-<span id="cb7-274"><a href="#cb7-274" aria-hidden="true" tabindex="-1"></a><span class="in">                             mid = &quot;#ff6432&quot;,</span></span>
-<span id="cb7-275"><a href="#cb7-275" aria-hidden="true" tabindex="-1"></a><span class="in">                             high = &quot;#0048ff&quot;,</span></span>
-<span id="cb7-276"><a href="#cb7-276" aria-hidden="true" tabindex="-1"></a><span class="in">                             label = TRUE,</span></span>
-<span id="cb7-277"><a href="#cb7-277" aria-hidden="true" tabindex="-1"></a><span class="in">                             label_round = 2,</span></span>
-<span id="cb7-278"><a href="#cb7-278" aria-hidden="true" tabindex="-1"></a><span class="in">                             label_color = &quot;white&quot;,</span></span>
-<span id="cb7-279"><a href="#cb7-279" aria-hidden="true" tabindex="-1"></a><span class="in">                             label_size = 6,</span></span>
-<span id="cb7-280"><a href="#cb7-280" aria-hidden="true" tabindex="-1"></a><span class="in">                             legend.size = 12,</span></span>
-<span id="cb7-281"><a href="#cb7-281" aria-hidden="true" tabindex="-1"></a><span class="in">                             digits = 2,</span></span>
-<span id="cb7-282"><a href="#cb7-282" aria-hidden="true" tabindex="-1"></a><span class="in">                             limits = c(0, 1),</span></span>
-<span id="cb7-283"><a href="#cb7-283" aria-hidden="true" tabindex="-1"></a><span class="in">                             midpoint = 0.4,</span></span>
-<span id="cb7-284"><a href="#cb7-284" aria-hidden="true" tabindex="-1"></a><span class="in">                             palette = NULL,</span></span>
-<span id="cb7-285"><a href="#cb7-285" aria-hidden="true" tabindex="-1"></a><span class="in">                             geom = &quot;tile&quot;,</span></span>
-<span id="cb7-286"><a href="#cb7-286" aria-hidden="true" tabindex="-1"></a><span class="in">                             hjust = 0.5,</span></span>
-<span id="cb7-287"><a href="#cb7-287" aria-hidden="true" tabindex="-1"></a><span class="in">                             vjust = 1,</span></span>
-<span id="cb7-288"><a href="#cb7-288" aria-hidden="true" tabindex="-1"></a><span class="in">                             size = 4.5,</span></span>
-<span id="cb7-289"><a href="#cb7-289" aria-hidden="true" tabindex="-1"></a><span class="in">                             angle = 0) +</span></span>
-<span id="cb7-290"><a href="#cb7-290" aria-hidden="true" tabindex="-1"></a><span class="in">              # ggtitle(&quot;Indicators Correlation&quot;) +</span></span>
-<span id="cb7-291"><a href="#cb7-291" aria-hidden="true" tabindex="-1"></a><span class="in">              cowplot::theme_cowplot() +</span></span>
-<span id="cb7-292"><a href="#cb7-292" aria-hidden="true" tabindex="-1"></a><span class="in">              theme(plot.title = element_text(size = 22, hjust = .5))</span></span>
-<span id="cb7-293"><a href="#cb7-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-294"><a href="#cb7-294" aria-hidden="true" tabindex="-1"></a><span class="in">print(df_cor)</span></span>
-<span id="cb7-295"><a href="#cb7-295" aria-hidden="true" tabindex="-1"></a><span class="in">print(cor_plot)</span></span>
-<span id="cb7-296"><a href="#cb7-296" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-297"><a href="#cb7-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-298"><a href="#cb7-298" aria-hidden="true" tabindex="-1"></a><span class="fu">### Most recent results 2021 by Country</span></span>
-<span id="cb7-299"><a href="#cb7-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-300"><a href="#cb7-300" aria-hidden="true" tabindex="-1"></a>**[[Full Screen](/widgets/WGI_2021.html)]**</span>
-<span id="cb7-301"><a href="#cb7-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-302"><a href="#cb7-302" aria-hidden="true" tabindex="-1"></a>The map below shows the **2021 results** for each country. </span>
-<span id="cb7-303"><a href="#cb7-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-304"><a href="#cb7-304" aria-hidden="true" tabindex="-1"></a>As this is an interactive map, for you to see the scores, you will need to hover the mouse over the country, and then you will see the results of all six indicators, including the mean.</span>
-<span id="cb7-305"><a href="#cb7-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-306"><a href="#cb7-306" aria-hidden="true" tabindex="-1"></a><span class="in">```{r wgi-2021}</span></span>
-<span id="cb7-307"><a href="#cb7-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-308"><a href="#cb7-308" aria-hidden="true" tabindex="-1"></a><span class="in">df_2021 &lt;- df %&gt;% </span></span>
-<span id="cb7-309"><a href="#cb7-309" aria-hidden="true" tabindex="-1"></a><span class="in">            mutate(value = round(value, 2)) %&gt;% </span></span>
-<span id="cb7-310"><a href="#cb7-310" aria-hidden="true" tabindex="-1"></a><span class="in">            filter(year == &quot;2021&quot;) %&gt;% </span></span>
-<span id="cb7-311"><a href="#cb7-311" aria-hidden="true" tabindex="-1"></a><span class="in">            select(country_name, country_code, indicator_name, value) %&gt;% </span></span>
-<span id="cb7-312"><a href="#cb7-312" aria-hidden="true" tabindex="-1"></a><span class="in">            pivot_wider(names_from = &quot;indicator_name&quot;,</span></span>
-<span id="cb7-313"><a href="#cb7-313" aria-hidden="true" tabindex="-1"></a><span class="in">                        values_from = &quot;value&quot;) %&gt;% </span></span>
-<span id="cb7-314"><a href="#cb7-314" aria-hidden="true" tabindex="-1"></a><span class="in">            clean_names() %&gt;% </span></span>
-<span id="cb7-315"><a href="#cb7-315" aria-hidden="true" tabindex="-1"></a><span class="in">            rowwise() %&gt;% </span></span>
-<span id="cb7-316"><a href="#cb7-316" aria-hidden="true" tabindex="-1"></a><span class="in">            mutate(mean = mean(c_across(3:8)),</span></span>
-<span id="cb7-317"><a href="#cb7-317" aria-hidden="true" tabindex="-1"></a><span class="in">                   mean = round(mean, 2))</span></span>
-<span id="cb7-318"><a href="#cb7-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-319"><a href="#cb7-319" aria-hidden="true" tabindex="-1"></a><span class="in"># Highcharter</span></span>
-<span id="cb7-320"><a href="#cb7-320" aria-hidden="true" tabindex="-1"></a><span class="in">map_df_2021 &lt;- hcmap(map = &quot;custom/world-robinson-lowres&quot;, </span></span>
-<span id="cb7-321"><a href="#cb7-321" aria-hidden="true" tabindex="-1"></a><span class="in">                     download_map_data = FALSE,</span></span>
-<span id="cb7-322"><a href="#cb7-322" aria-hidden="true" tabindex="-1"></a><span class="in">                     data = df_2021, </span></span>
-<span id="cb7-323"><a href="#cb7-323" aria-hidden="true" tabindex="-1"></a><span class="in">                     value = &quot;mean&quot;,</span></span>
-<span id="cb7-324"><a href="#cb7-324" aria-hidden="true" tabindex="-1"></a><span class="in">                     borderColor = &quot;black&quot;,</span></span>
-<span id="cb7-325"><a href="#cb7-325" aria-hidden="true" tabindex="-1"></a><span class="in">                     borderWidth = .7, </span></span>
-<span id="cb7-326"><a href="#cb7-326" aria-hidden="true" tabindex="-1"></a><span class="in">                     nullColor = &quot;#d3d3d3&quot;,</span></span>
-<span id="cb7-327"><a href="#cb7-327" aria-hidden="true" tabindex="-1"></a><span class="in">                     joinBy = c(&quot;iso-a3&quot;, &quot;country_code&quot;)) %&gt;% </span></span>
-<span id="cb7-328"><a href="#cb7-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-329"><a href="#cb7-329" aria-hidden="true" tabindex="-1"></a><span class="in">                hc_colorAxis(stops = color_stops(colors = viridisLite::mako(10, begin = 0.01))) %&gt;% </span></span>
-<span id="cb7-330"><a href="#cb7-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-331"><a href="#cb7-331" aria-hidden="true" tabindex="-1"></a><span class="in">                hc_title(text = &quot;&lt;b&gt;WGI Results 2021&lt;/b&gt;&lt;i&gt;(by Country)&lt;/i&gt;&quot;,</span></span>
-<span id="cb7-332"><a href="#cb7-332" aria-hidden="true" tabindex="-1"></a><span class="in">                         margin = 5,</span></span>
-<span id="cb7-333"><a href="#cb7-333" aria-hidden="true" tabindex="-1"></a><span class="in">                         floating= FALSE,</span></span>
-<span id="cb7-334"><a href="#cb7-334" aria-hidden="true" tabindex="-1"></a><span class="in">                         align = &quot;center&quot;,</span></span>
-<span id="cb7-335"><a href="#cb7-335" aria-hidden="true" tabindex="-1"></a><span class="in">                         style = list(fontSize = &quot;28px&quot;,</span></span>
-<span id="cb7-336"><a href="#cb7-336" aria-hidden="true" tabindex="-1"></a><span class="in">                                      color = &quot;#252223&quot;, </span></span>
-<span id="cb7-337"><a href="#cb7-337" aria-hidden="true" tabindex="-1"></a><span class="in">                                      useHTML = TRUE)) %&gt;% </span></span>
-<span id="cb7-338"><a href="#cb7-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-339"><a href="#cb7-339" aria-hidden="true" tabindex="-1"></a><span class="in">                # hc_subtitle(text = &quot;&lt;i&gt;2021&lt;/i&gt;&quot;,</span></span>
-<span id="cb7-340"><a href="#cb7-340" aria-hidden="true" tabindex="-1"></a><span class="in">                #             margin = 20,</span></span>
-<span id="cb7-341"><a href="#cb7-341" aria-hidden="true" tabindex="-1"></a><span class="in">                #             floating= FALSE,</span></span>
-<span id="cb7-342"><a href="#cb7-342" aria-hidden="true" tabindex="-1"></a><span class="in">                #             align = &quot;center&quot;,</span></span>
-<span id="cb7-343"><a href="#cb7-343" aria-hidden="true" tabindex="-1"></a><span class="in">                #             style = list(fontSize = &quot;28px&quot;,</span></span>
-<span id="cb7-344"><a href="#cb7-344" aria-hidden="true" tabindex="-1"></a><span class="in">                #                          color = &quot;#e1a615&quot;,</span></span>
-<span id="cb7-345"><a href="#cb7-345" aria-hidden="true" tabindex="-1"></a><span class="in">                #                          useHTML = TRUE)) %&gt;% </span></span>
-<span id="cb7-346"><a href="#cb7-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-347"><a href="#cb7-347" aria-hidden="true" tabindex="-1"></a><span class="in">                hc_mapNavigation(enabled = TRUE,</span></span>
-<span id="cb7-348"><a href="#cb7-348" aria-hidden="true" tabindex="-1"></a><span class="in">                                 enableMouseWheelZoom = TRUE,</span></span>
-<span id="cb7-349"><a href="#cb7-349" aria-hidden="true" tabindex="-1"></a><span class="in">                                 enableDoubleClickZoom = TRUE) %&gt;% </span></span>
-<span id="cb7-350"><a href="#cb7-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-351"><a href="#cb7-351" aria-hidden="true" tabindex="-1"></a><span class="in">                hc_exporting(enabled = TRUE,</span></span>
-<span id="cb7-352"><a href="#cb7-352" aria-hidden="true" tabindex="-1"></a><span class="in">                             filename = &quot;WGI_2021_Map&quot;) %&gt;% </span></span>
+<span id="cb7-216"><a href="#cb7-216" aria-hidden="true" tabindex="-1"></a><span class="in">print(df)</span></span>
+<span id="cb7-217"><a href="#cb7-217" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-218"><a href="#cb7-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-219"><a href="#cb7-219" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb7-220"><a href="#cb7-220" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_url(&quot;widgets/WGI_DT.html&quot;, height = &quot;600px&quot;)</span></span>
+<span id="cb7-221"><a href="#cb7-221" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-222"><a href="#cb7-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-223"><a href="#cb7-223" aria-hidden="true" tabindex="-1"></a><span class="fu"># Visualizations</span></span>
+<span id="cb7-224"><a href="#cb7-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-225"><a href="#cb7-225" aria-hidden="true" tabindex="-1"></a>As this is a significant project involving many variables and records, I created five charts to understand the results better.</span>
+<span id="cb7-226"><a href="#cb7-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-227"><a href="#cb7-227" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Correlation between Indicators **(Correlation Matrix)**</span>
+<span id="cb7-228"><a href="#cb7-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-229"><a href="#cb7-229" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Most recent results 2021 by Country **(Interactive Map)**</span>
+<span id="cb7-230"><a href="#cb7-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-231"><a href="#cb7-231" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Comparison by Continent **(Box Plot)**</span>
+<span id="cb7-232"><a href="#cb7-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-233"><a href="#cb7-233" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Comparison between the top 3 Countries of 2021 **(Line Chart)**</span>
+<span id="cb7-234"><a href="#cb7-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-235"><a href="#cb7-235" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>USA progression over time **(Animated Line Chart)**</span>
+<span id="cb7-236"><a href="#cb7-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-237"><a href="#cb7-237" aria-hidden="true" tabindex="-1"></a>Most of the charts are interactive! If you see a ***[Full Screen]*** option next to a chart, it means the chart is interactive and you can view it in full screen.</span>
+<span id="cb7-238"><a href="#cb7-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-239"><a href="#cb7-239" aria-hidden="true" tabindex="-1"></a><span class="fu">### Correlation between Indicators</span></span>
+<span id="cb7-240"><a href="#cb7-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-241"><a href="#cb7-241" aria-hidden="true" tabindex="-1"></a>The correlation chart below shows the connection between indicators. </span>
+<span id="cb7-242"><a href="#cb7-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-243"><a href="#cb7-243" aria-hidden="true" tabindex="-1"></a>For purposes of text space in the chart below, I have shortened the indicator’s names:</span>
+<span id="cb7-244"><a href="#cb7-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-245"><a href="#cb7-245" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Corruption** = Control of Corruption;</span>
+<span id="cb7-246"><a href="#cb7-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-247"><a href="#cb7-247" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Effectiveness** = Government Effectiveness;</span>
+<span id="cb7-248"><a href="#cb7-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-249"><a href="#cb7-249" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Stability** = Political Stability and Absence of Violence;</span>
+<span id="cb7-250"><a href="#cb7-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-251"><a href="#cb7-251" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Regulations** = Regulatory Quality;</span>
+<span id="cb7-252"><a href="#cb7-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-253"><a href="#cb7-253" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Law** = Rule of Law;</span>
+<span id="cb7-254"><a href="#cb7-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-255"><a href="#cb7-255" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Voice** = Voice and Accountability.</span>
+<span id="cb7-256"><a href="#cb7-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-257"><a href="#cb7-257" aria-hidden="true" tabindex="-1"></a><span class="in">```{r indicators-correlation, fig.cap=&#39;Correlation between Indicators.&#39;, tidy=FALSE, fig.height= 6.2, out.width= &quot;100%&quot;}</span></span>
+<span id="cb7-258"><a href="#cb7-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-259"><a href="#cb7-259" aria-hidden="true" tabindex="-1"></a><span class="in"># Correlation Matrix</span></span>
+<span id="cb7-260"><a href="#cb7-260" aria-hidden="true" tabindex="-1"></a><span class="in">df_cor &lt;- df %&gt;% </span></span>
+<span id="cb7-261"><a href="#cb7-261" aria-hidden="true" tabindex="-1"></a><span class="in">            select(country_name:continent) %&gt;% </span></span>
+<span id="cb7-262"><a href="#cb7-262" aria-hidden="true" tabindex="-1"></a><span class="in">            pivot_wider(names_from = &quot;indicator_name&quot;,</span></span>
+<span id="cb7-263"><a href="#cb7-263" aria-hidden="true" tabindex="-1"></a><span class="in">                        values_from = &quot;value&quot;) %&gt;% </span></span>
+<span id="cb7-264"><a href="#cb7-264" aria-hidden="true" tabindex="-1"></a><span class="in">            select(5:10) %&gt;% </span></span>
+<span id="cb7-265"><a href="#cb7-265" aria-hidden="true" tabindex="-1"></a><span class="in">            rename(Corruption = 1,</span></span>
+<span id="cb7-266"><a href="#cb7-266" aria-hidden="true" tabindex="-1"></a><span class="in">                   Effectiveness = 2,</span></span>
+<span id="cb7-267"><a href="#cb7-267" aria-hidden="true" tabindex="-1"></a><span class="in">                   Stability = 3,</span></span>
+<span id="cb7-268"><a href="#cb7-268" aria-hidden="true" tabindex="-1"></a><span class="in">                   Regulations = 4,</span></span>
+<span id="cb7-269"><a href="#cb7-269" aria-hidden="true" tabindex="-1"></a><span class="in">                   Law = 5,</span></span>
+<span id="cb7-270"><a href="#cb7-270" aria-hidden="true" tabindex="-1"></a><span class="in">                   Voice = 6) %&gt;% </span></span>
+<span id="cb7-271"><a href="#cb7-271" aria-hidden="true" tabindex="-1"></a><span class="in">            corrr::correlate(quiet = TRUE) %&gt;% </span></span>
+<span id="cb7-272"><a href="#cb7-272" aria-hidden="true" tabindex="-1"></a><span class="in">            corrr::rearrange()</span></span>
+<span id="cb7-273"><a href="#cb7-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-274"><a href="#cb7-274" aria-hidden="true" tabindex="-1"></a><span class="in"># Correlation Plot</span></span>
+<span id="cb7-275"><a href="#cb7-275" aria-hidden="true" tabindex="-1"></a><span class="in">cor_plot &lt;- df_cor %&gt;% </span></span>
+<span id="cb7-276"><a href="#cb7-276" aria-hidden="true" tabindex="-1"></a><span class="in">              GGally::ggcorr(low = &quot;#abc3ff&quot;,</span></span>
+<span id="cb7-277"><a href="#cb7-277" aria-hidden="true" tabindex="-1"></a><span class="in">                             mid = &quot;#ff6432&quot;,</span></span>
+<span id="cb7-278"><a href="#cb7-278" aria-hidden="true" tabindex="-1"></a><span class="in">                             high = &quot;#0048ff&quot;,</span></span>
+<span id="cb7-279"><a href="#cb7-279" aria-hidden="true" tabindex="-1"></a><span class="in">                             label = TRUE,</span></span>
+<span id="cb7-280"><a href="#cb7-280" aria-hidden="true" tabindex="-1"></a><span class="in">                             label_round = 2,</span></span>
+<span id="cb7-281"><a href="#cb7-281" aria-hidden="true" tabindex="-1"></a><span class="in">                             label_color = &quot;white&quot;,</span></span>
+<span id="cb7-282"><a href="#cb7-282" aria-hidden="true" tabindex="-1"></a><span class="in">                             label_size = 6,</span></span>
+<span id="cb7-283"><a href="#cb7-283" aria-hidden="true" tabindex="-1"></a><span class="in">                             legend.size = 12,</span></span>
+<span id="cb7-284"><a href="#cb7-284" aria-hidden="true" tabindex="-1"></a><span class="in">                             digits = 2,</span></span>
+<span id="cb7-285"><a href="#cb7-285" aria-hidden="true" tabindex="-1"></a><span class="in">                             limits = c(0, 1),</span></span>
+<span id="cb7-286"><a href="#cb7-286" aria-hidden="true" tabindex="-1"></a><span class="in">                             midpoint = 0.4,</span></span>
+<span id="cb7-287"><a href="#cb7-287" aria-hidden="true" tabindex="-1"></a><span class="in">                             palette = NULL,</span></span>
+<span id="cb7-288"><a href="#cb7-288" aria-hidden="true" tabindex="-1"></a><span class="in">                             geom = &quot;tile&quot;,</span></span>
+<span id="cb7-289"><a href="#cb7-289" aria-hidden="true" tabindex="-1"></a><span class="in">                             hjust = 0.5,</span></span>
+<span id="cb7-290"><a href="#cb7-290" aria-hidden="true" tabindex="-1"></a><span class="in">                             vjust = 1,</span></span>
+<span id="cb7-291"><a href="#cb7-291" aria-hidden="true" tabindex="-1"></a><span class="in">                             size = 4.5,</span></span>
+<span id="cb7-292"><a href="#cb7-292" aria-hidden="true" tabindex="-1"></a><span class="in">                             angle = 0) +</span></span>
+<span id="cb7-293"><a href="#cb7-293" aria-hidden="true" tabindex="-1"></a><span class="in">              # ggtitle(&quot;Indicators Correlation&quot;) +</span></span>
+<span id="cb7-294"><a href="#cb7-294" aria-hidden="true" tabindex="-1"></a><span class="in">              cowplot::theme_cowplot() +</span></span>
+<span id="cb7-295"><a href="#cb7-295" aria-hidden="true" tabindex="-1"></a><span class="in">              theme(plot.title = element_text(size = 22, hjust = .5))</span></span>
+<span id="cb7-296"><a href="#cb7-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-297"><a href="#cb7-297" aria-hidden="true" tabindex="-1"></a><span class="in">print(df_cor)</span></span>
+<span id="cb7-298"><a href="#cb7-298" aria-hidden="true" tabindex="-1"></a><span class="in">print(cor_plot)</span></span>
+<span id="cb7-299"><a href="#cb7-299" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-300"><a href="#cb7-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-301"><a href="#cb7-301" aria-hidden="true" tabindex="-1"></a><span class="fu">### Most recent results 2021 by Country</span></span>
+<span id="cb7-302"><a href="#cb7-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-303"><a href="#cb7-303" aria-hidden="true" tabindex="-1"></a>**[[Full Screen](/widgets/WGI_2021.html)]**</span>
+<span id="cb7-304"><a href="#cb7-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-305"><a href="#cb7-305" aria-hidden="true" tabindex="-1"></a>The map below shows the **2021 results** for each country. </span>
+<span id="cb7-306"><a href="#cb7-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-307"><a href="#cb7-307" aria-hidden="true" tabindex="-1"></a>As this is an interactive map, for you to see the scores, you will need to hover the mouse over the country, and then you will see the results of all six indicators, including the mean.</span>
+<span id="cb7-308"><a href="#cb7-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-309"><a href="#cb7-309" aria-hidden="true" tabindex="-1"></a><span class="in">```{r wgi-2021}</span></span>
+<span id="cb7-310"><a href="#cb7-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-311"><a href="#cb7-311" aria-hidden="true" tabindex="-1"></a><span class="in">df_2021 &lt;- df %&gt;% </span></span>
+<span id="cb7-312"><a href="#cb7-312" aria-hidden="true" tabindex="-1"></a><span class="in">            mutate(value = round(value, 2)) %&gt;% </span></span>
+<span id="cb7-313"><a href="#cb7-313" aria-hidden="true" tabindex="-1"></a><span class="in">            filter(year == &quot;2021&quot;) %&gt;% </span></span>
+<span id="cb7-314"><a href="#cb7-314" aria-hidden="true" tabindex="-1"></a><span class="in">            select(country_name, country_code, indicator_name, value) %&gt;% </span></span>
+<span id="cb7-315"><a href="#cb7-315" aria-hidden="true" tabindex="-1"></a><span class="in">            pivot_wider(names_from = &quot;indicator_name&quot;,</span></span>
+<span id="cb7-316"><a href="#cb7-316" aria-hidden="true" tabindex="-1"></a><span class="in">                        values_from = &quot;value&quot;) %&gt;% </span></span>
+<span id="cb7-317"><a href="#cb7-317" aria-hidden="true" tabindex="-1"></a><span class="in">            clean_names() %&gt;% </span></span>
+<span id="cb7-318"><a href="#cb7-318" aria-hidden="true" tabindex="-1"></a><span class="in">            rowwise() %&gt;% </span></span>
+<span id="cb7-319"><a href="#cb7-319" aria-hidden="true" tabindex="-1"></a><span class="in">            mutate(mean = mean(c_across(3:8)),</span></span>
+<span id="cb7-320"><a href="#cb7-320" aria-hidden="true" tabindex="-1"></a><span class="in">                   mean = round(mean, 2))</span></span>
+<span id="cb7-321"><a href="#cb7-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-322"><a href="#cb7-322" aria-hidden="true" tabindex="-1"></a><span class="in"># Highcharter</span></span>
+<span id="cb7-323"><a href="#cb7-323" aria-hidden="true" tabindex="-1"></a><span class="in">map_df_2021 &lt;- hcmap(map = &quot;custom/world-robinson-lowres&quot;, </span></span>
+<span id="cb7-324"><a href="#cb7-324" aria-hidden="true" tabindex="-1"></a><span class="in">                     download_map_data = FALSE,</span></span>
+<span id="cb7-325"><a href="#cb7-325" aria-hidden="true" tabindex="-1"></a><span class="in">                     data = df_2021, </span></span>
+<span id="cb7-326"><a href="#cb7-326" aria-hidden="true" tabindex="-1"></a><span class="in">                     value = &quot;mean&quot;,</span></span>
+<span id="cb7-327"><a href="#cb7-327" aria-hidden="true" tabindex="-1"></a><span class="in">                     borderColor = &quot;black&quot;,</span></span>
+<span id="cb7-328"><a href="#cb7-328" aria-hidden="true" tabindex="-1"></a><span class="in">                     borderWidth = .7, </span></span>
+<span id="cb7-329"><a href="#cb7-329" aria-hidden="true" tabindex="-1"></a><span class="in">                     nullColor = &quot;#d3d3d3&quot;,</span></span>
+<span id="cb7-330"><a href="#cb7-330" aria-hidden="true" tabindex="-1"></a><span class="in">                     joinBy = c(&quot;iso-a3&quot;, &quot;country_code&quot;)) %&gt;% </span></span>
+<span id="cb7-331"><a href="#cb7-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-332"><a href="#cb7-332" aria-hidden="true" tabindex="-1"></a><span class="in">                hc_colorAxis(stops = color_stops(colors = viridisLite::mako(10, begin = 0.01))) %&gt;% </span></span>
+<span id="cb7-333"><a href="#cb7-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-334"><a href="#cb7-334" aria-hidden="true" tabindex="-1"></a><span class="in">                hc_title(text = &quot;&lt;b&gt;WGI Results 2021&lt;/b&gt;&lt;i&gt;(by Country)&lt;/i&gt;&quot;,</span></span>
+<span id="cb7-335"><a href="#cb7-335" aria-hidden="true" tabindex="-1"></a><span class="in">                         margin = 5,</span></span>
+<span id="cb7-336"><a href="#cb7-336" aria-hidden="true" tabindex="-1"></a><span class="in">                         floating= FALSE,</span></span>
+<span id="cb7-337"><a href="#cb7-337" aria-hidden="true" tabindex="-1"></a><span class="in">                         align = &quot;center&quot;,</span></span>
+<span id="cb7-338"><a href="#cb7-338" aria-hidden="true" tabindex="-1"></a><span class="in">                         style = list(fontSize = &quot;28px&quot;,</span></span>
+<span id="cb7-339"><a href="#cb7-339" aria-hidden="true" tabindex="-1"></a><span class="in">                                      color = &quot;#252223&quot;, </span></span>
+<span id="cb7-340"><a href="#cb7-340" aria-hidden="true" tabindex="-1"></a><span class="in">                                      useHTML = TRUE)) %&gt;% </span></span>
+<span id="cb7-341"><a href="#cb7-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-342"><a href="#cb7-342" aria-hidden="true" tabindex="-1"></a><span class="in">                # hc_subtitle(text = &quot;&lt;i&gt;2021&lt;/i&gt;&quot;,</span></span>
+<span id="cb7-343"><a href="#cb7-343" aria-hidden="true" tabindex="-1"></a><span class="in">                #             margin = 20,</span></span>
+<span id="cb7-344"><a href="#cb7-344" aria-hidden="true" tabindex="-1"></a><span class="in">                #             floating= FALSE,</span></span>
+<span id="cb7-345"><a href="#cb7-345" aria-hidden="true" tabindex="-1"></a><span class="in">                #             align = &quot;center&quot;,</span></span>
+<span id="cb7-346"><a href="#cb7-346" aria-hidden="true" tabindex="-1"></a><span class="in">                #             style = list(fontSize = &quot;28px&quot;,</span></span>
+<span id="cb7-347"><a href="#cb7-347" aria-hidden="true" tabindex="-1"></a><span class="in">                #                          color = &quot;#e1a615&quot;,</span></span>
+<span id="cb7-348"><a href="#cb7-348" aria-hidden="true" tabindex="-1"></a><span class="in">                #                          useHTML = TRUE)) %&gt;% </span></span>
+<span id="cb7-349"><a href="#cb7-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-350"><a href="#cb7-350" aria-hidden="true" tabindex="-1"></a><span class="in">                hc_mapNavigation(enabled = TRUE,</span></span>
+<span id="cb7-351"><a href="#cb7-351" aria-hidden="true" tabindex="-1"></a><span class="in">                                 enableMouseWheelZoom = TRUE,</span></span>
+<span id="cb7-352"><a href="#cb7-352" aria-hidden="true" tabindex="-1"></a><span class="in">                                 enableDoubleClickZoom = TRUE) %&gt;% </span></span>
 <span id="cb7-353"><a href="#cb7-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-354"><a href="#cb7-354" aria-hidden="true" tabindex="-1"></a><span class="in">                hc_credits(enabled = FALSE) %&gt;% </span></span>
-<span id="cb7-355"><a href="#cb7-355" aria-hidden="true" tabindex="-1"></a><span class="in">                </span></span>
-<span id="cb7-356"><a href="#cb7-356" aria-hidden="true" tabindex="-1"></a><span class="in">                hc_tooltip(shared = TRUE,</span></span>
-<span id="cb7-357"><a href="#cb7-357" aria-hidden="true" tabindex="-1"></a><span class="in">                            useHTML = TRUE,</span></span>
-<span id="cb7-358"><a href="#cb7-358" aria-hidden="true" tabindex="-1"></a><span class="in">                            headerFormat = &#39;&lt;table&gt;&lt;tr&gt;&lt;th, colspan=&quot;2&quot;&gt;{point.key}&lt;/th&gt;&lt;/tr&gt;&#39;,</span></span>
-<span id="cb7-359"><a href="#cb7-359" aria-hidden="true" tabindex="-1"></a><span class="in">                            pointFormat = &#39;&lt;tr&gt;&lt;td style=&quot;color: {#252223}&quot;&gt;&lt;b&gt;{point.country_name}&lt;/b&gt;&lt;br&gt;Control of Corruption: {point.control_of_corruption}&lt;br&gt;Government Effectiveness: {point.government_effectiveness}&lt;br&gt;Political Stability: {point.political_stability}&lt;br&gt;Regulatory Quality: {point.regulatory_quality}&lt;br&gt;Rule of Law: {point.rule_of_law}&lt;br&gt;Voice and Accountability: {point.voice_and_accountability}&lt;br&gt;&lt;b&gt;Mean: {point.value}&lt;/b&gt;&#39;)</span></span>
-<span id="cb7-360"><a href="#cb7-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-361"><a href="#cb7-361" aria-hidden="true" tabindex="-1"></a><span class="in">htmlwidgets::saveWidget(map_df_2021, &quot;widgets/WGI_2021.html&quot;)</span></span>
-<span id="cb7-362"><a href="#cb7-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-363"><a href="#cb7-363" aria-hidden="true" tabindex="-1"></a><span class="in">print(df_2021)</span></span>
-<span id="cb7-364"><a href="#cb7-364" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-354"><a href="#cb7-354" aria-hidden="true" tabindex="-1"></a><span class="in">                hc_exporting(enabled = TRUE,</span></span>
+<span id="cb7-355"><a href="#cb7-355" aria-hidden="true" tabindex="-1"></a><span class="in">                             filename = &quot;WGI_2021_Map&quot;) %&gt;% </span></span>
+<span id="cb7-356"><a href="#cb7-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-357"><a href="#cb7-357" aria-hidden="true" tabindex="-1"></a><span class="in">                hc_credits(enabled = FALSE) %&gt;% </span></span>
+<span id="cb7-358"><a href="#cb7-358" aria-hidden="true" tabindex="-1"></a><span class="in">                </span></span>
+<span id="cb7-359"><a href="#cb7-359" aria-hidden="true" tabindex="-1"></a><span class="in">                hc_tooltip(shared = TRUE,</span></span>
+<span id="cb7-360"><a href="#cb7-360" aria-hidden="true" tabindex="-1"></a><span class="in">                            useHTML = TRUE,</span></span>
+<span id="cb7-361"><a href="#cb7-361" aria-hidden="true" tabindex="-1"></a><span class="in">                            headerFormat = &#39;&lt;table&gt;&lt;tr&gt;&lt;th, colspan=&quot;2&quot;&gt;{point.key}&lt;/th&gt;&lt;/tr&gt;&#39;,</span></span>
+<span id="cb7-362"><a href="#cb7-362" aria-hidden="true" tabindex="-1"></a><span class="in">                            pointFormat = &#39;&lt;tr&gt;&lt;td style=&quot;color: {#252223}&quot;&gt;&lt;b&gt;{point.country_name}&lt;/b&gt;&lt;br&gt;Control of Corruption: {point.control_of_corruption}&lt;br&gt;Government Effectiveness: {point.government_effectiveness}&lt;br&gt;Political Stability: {point.political_stability}&lt;br&gt;Regulatory Quality: {point.regulatory_quality}&lt;br&gt;Rule of Law: {point.rule_of_law}&lt;br&gt;Voice and Accountability: {point.voice_and_accountability}&lt;br&gt;&lt;b&gt;Mean: {point.value}&lt;/b&gt;&#39;)</span></span>
+<span id="cb7-363"><a href="#cb7-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-364"><a href="#cb7-364" aria-hidden="true" tabindex="-1"></a><span class="in">htmlwidgets::saveWidget(map_df_2021, &quot;widgets/WGI_2021.html&quot;)</span></span>
 <span id="cb7-365"><a href="#cb7-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-366"><a href="#cb7-366" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, fig.cap=&#39;WGI 2021 Results.&#39;, tidy=FALSE}</span></span>
-<span id="cb7-367"><a href="#cb7-367" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_url(&quot;widgets/WGI_2021.html&quot;, height = &quot;600px&quot;)</span></span>
-<span id="cb7-368"><a href="#cb7-368" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-369"><a href="#cb7-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-370"><a href="#cb7-370" aria-hidden="true" tabindex="-1"></a><span class="fu">### Comparison by Continent</span></span>
-<span id="cb7-371"><a href="#cb7-371" aria-hidden="true" tabindex="-1"></a>The box plot below is based on the **2021 results** and demonstrates how a continent is compared to each other within each indicator.</span>
+<span id="cb7-366"><a href="#cb7-366" aria-hidden="true" tabindex="-1"></a><span class="in">print(df_2021)</span></span>
+<span id="cb7-367"><a href="#cb7-367" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-368"><a href="#cb7-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-369"><a href="#cb7-369" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, fig.cap=&#39;WGI 2021 Results.&#39;, tidy=FALSE}</span></span>
+<span id="cb7-370"><a href="#cb7-370" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_url(&quot;widgets/WGI_2021.html&quot;, height = &quot;600px&quot;)</span></span>
+<span id="cb7-371"><a href="#cb7-371" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-372"><a href="#cb7-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-373"><a href="#cb7-373" aria-hidden="true" tabindex="-1"></a><span class="in">```{r 2021-continent-comparison, fig.cap=&#39;Comparison by Continent.&#39;, tidy=FALSE, fig.height= 7, out.width= &quot;100%&quot;}</span></span>
-<span id="cb7-374"><a href="#cb7-374" aria-hidden="true" tabindex="-1"></a><span class="in">cont_df_2021_plot &lt;- df %&gt;% </span></span>
-<span id="cb7-375"><a href="#cb7-375" aria-hidden="true" tabindex="-1"></a><span class="in">                      filter(year == 2021) %&gt;% </span></span>
-<span id="cb7-376"><a href="#cb7-376" aria-hidden="true" tabindex="-1"></a><span class="in">                      ggplot(aes(x = year, y = value, fill = continent)) +</span></span>
-<span id="cb7-377"><a href="#cb7-377" aria-hidden="true" tabindex="-1"></a><span class="in">                      geom_boxplot(na.rm = T) +</span></span>
-<span id="cb7-378"><a href="#cb7-378" aria-hidden="true" tabindex="-1"></a><span class="in">                      scale_fill_manual(values = c(&quot;#3b7f39&quot;, &quot;#edbe48&quot;, &quot;#52a8b7&quot;, &quot;#c23c2b&quot;, &quot;#e48223&quot;, &quot;#39bd4b&quot;)) +</span></span>
-<span id="cb7-379"><a href="#cb7-379" aria-hidden="true" tabindex="-1"></a><span class="in">                      coord_flip() +</span></span>
-<span id="cb7-380"><a href="#cb7-380" aria-hidden="true" tabindex="-1"></a><span class="in">                      facet_wrap(~indicator_name, scales = &quot;free&quot;) +</span></span>
-<span id="cb7-381"><a href="#cb7-381" aria-hidden="true" tabindex="-1"></a><span class="in">                      # geom_hline(yintercept =-2, linetype = &quot;dotted&quot;, size = .7, color = &quot;black&quot;) +</span></span>
-<span id="cb7-382"><a href="#cb7-382" aria-hidden="true" tabindex="-1"></a><span class="in">                      # geom_hline(yintercept = -1, linetype = &quot;dotted&quot;, size = .7, color = &quot;black&quot;) +</span></span>
-<span id="cb7-383"><a href="#cb7-383" aria-hidden="true" tabindex="-1"></a><span class="in">                      geom_hline(yintercept = 0, linetype = &quot;dotted&quot;, size = .7, color = &quot;black&quot;) +</span></span>
-<span id="cb7-384"><a href="#cb7-384" aria-hidden="true" tabindex="-1"></a><span class="in">                      # geom_hline(yintercept = 1, linetype = &quot;dotted&quot;, size = .7, color = &quot;black&quot;) +</span></span>
-<span id="cb7-385"><a href="#cb7-385" aria-hidden="true" tabindex="-1"></a><span class="in">                      # geom_hline(yintercept = 2, linetype = &quot;dotted&quot;, size = .7, color = &quot;black&quot;) +</span></span>
-<span id="cb7-386"><a href="#cb7-386" aria-hidden="true" tabindex="-1"></a><span class="in">                      labs(x = element_blank(),</span></span>
-<span id="cb7-387"><a href="#cb7-387" aria-hidden="true" tabindex="-1"></a><span class="in">                           y = element_blank(),</span></span>
-<span id="cb7-388"><a href="#cb7-388" aria-hidden="true" tabindex="-1"></a><span class="in">                           fill = &quot;&quot;) +</span></span>
-<span id="cb7-389"><a href="#cb7-389" aria-hidden="true" tabindex="-1"></a><span class="in">                      theme_bw() +</span></span>
-<span id="cb7-390"><a href="#cb7-390" aria-hidden="true" tabindex="-1"></a><span class="in">                      theme(axis.text.y = element_blank(),</span></span>
-<span id="cb7-391"><a href="#cb7-391" aria-hidden="true" tabindex="-1"></a><span class="in">                            axis.text.x = element_text(size = 10),</span></span>
-<span id="cb7-392"><a href="#cb7-392" aria-hidden="true" tabindex="-1"></a><span class="in">                            legend.text = element_text(size = 12), </span></span>
-<span id="cb7-393"><a href="#cb7-393" aria-hidden="true" tabindex="-1"></a><span class="in">                            panel.grid = element_blank(),</span></span>
-<span id="cb7-394"><a href="#cb7-394" aria-hidden="true" tabindex="-1"></a><span class="in">                            # strip.background = element_rect(fill = &quot;#6e2b0e&quot;),</span></span>
-<span id="cb7-395"><a href="#cb7-395" aria-hidden="true" tabindex="-1"></a><span class="in">                            strip.text = element_text(size = 11)) +</span></span>
-<span id="cb7-396"><a href="#cb7-396" aria-hidden="true" tabindex="-1"></a><span class="in">                      guides(fill = guide_legend(reverse = TRUE))</span></span>
-<span id="cb7-397"><a href="#cb7-397" aria-hidden="true" tabindex="-1"></a><span class="in">print(cont_df_2021_plot)</span></span>
-<span id="cb7-398"><a href="#cb7-398" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-399"><a href="#cb7-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-400"><a href="#cb7-400" aria-hidden="true" tabindex="-1"></a><span class="fu">### Comparison between the top 3 Countries of 2021</span></span>
-<span id="cb7-401"><a href="#cb7-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-402"><a href="#cb7-402" aria-hidden="true" tabindex="-1"></a>**[[Full Screen](/widgets/Top_3_Comparison.html)]**</span>
-<span id="cb7-403"><a href="#cb7-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-404"><a href="#cb7-404" aria-hidden="true" tabindex="-1"></a>The line chart below represents a progression of the top 3 countries of 2021 since 1996. By the way, the calculation of the top 3 countries was based on the average(mean) of the six indicators combined.</span>
-<span id="cb7-405"><a href="#cb7-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-406"><a href="#cb7-406" aria-hidden="true" tabindex="-1"></a><span class="in">```{r top-3-2021}</span></span>
-<span id="cb7-407"><a href="#cb7-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-408"><a href="#cb7-408" aria-hidden="true" tabindex="-1"></a><span class="in">top_3_2021 &lt;- df %&gt;% </span></span>
-<span id="cb7-409"><a href="#cb7-409" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(value = round(value, 2)) %&gt;%  </span></span>
-<span id="cb7-410"><a href="#cb7-410" aria-hidden="true" tabindex="-1"></a><span class="in">                select(country_name, country_code, indicator_name, year, value) %&gt;% </span></span>
-<span id="cb7-411"><a href="#cb7-411" aria-hidden="true" tabindex="-1"></a><span class="in">                pivot_wider(names_from = &quot;indicator_name&quot;,</span></span>
-<span id="cb7-412"><a href="#cb7-412" aria-hidden="true" tabindex="-1"></a><span class="in">                            values_from = &quot;value&quot;) %&gt;% </span></span>
-<span id="cb7-413"><a href="#cb7-413" aria-hidden="true" tabindex="-1"></a><span class="in">                clean_names() %&gt;% </span></span>
-<span id="cb7-414"><a href="#cb7-414" aria-hidden="true" tabindex="-1"></a><span class="in">                rowwise() %&gt;% </span></span>
-<span id="cb7-415"><a href="#cb7-415" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(mean = mean(c_across(4:9)),</span></span>
-<span id="cb7-416"><a href="#cb7-416" aria-hidden="true" tabindex="-1"></a><span class="in">                       mean = round(mean, 2)) %&gt;% </span></span>
-<span id="cb7-417"><a href="#cb7-417" aria-hidden="true" tabindex="-1"></a><span class="in">                group_by(year) %&gt;% </span></span>
-<span id="cb7-418"><a href="#cb7-418" aria-hidden="true" tabindex="-1"></a><span class="in">                arrange(year, desc(mean)) %&gt;% </span></span>
-<span id="cb7-419"><a href="#cb7-419" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(rank = row_number()) %&gt;% </span></span>
-<span id="cb7-420"><a href="#cb7-420" aria-hidden="true" tabindex="-1"></a><span class="in">                ungroup() %&gt;% </span></span>
-<span id="cb7-421"><a href="#cb7-421" aria-hidden="true" tabindex="-1"></a><span class="in">                filter(year == 2021,</span></span>
-<span id="cb7-422"><a href="#cb7-422" aria-hidden="true" tabindex="-1"></a><span class="in">                       rank &lt;= 3)</span></span>
-<span id="cb7-423"><a href="#cb7-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-424"><a href="#cb7-424" aria-hidden="true" tabindex="-1"></a><span class="in">top_3_plot &lt;- df %&gt;% </span></span>
-<span id="cb7-425"><a href="#cb7-425" aria-hidden="true" tabindex="-1"></a><span class="in">                filter(country_name %in% c(top_3_2021$country_name)) %&gt;% </span></span>
-<span id="cb7-426"><a href="#cb7-426" aria-hidden="true" tabindex="-1"></a><span class="in">                select(Country = country_name, </span></span>
-<span id="cb7-427"><a href="#cb7-427" aria-hidden="true" tabindex="-1"></a><span class="in">                       Code = country_code, </span></span>
-<span id="cb7-428"><a href="#cb7-428" aria-hidden="true" tabindex="-1"></a><span class="in">                       Continent = continent, </span></span>
-<span id="cb7-429"><a href="#cb7-429" aria-hidden="true" tabindex="-1"></a><span class="in">                       Indicator = indicator_name, </span></span>
-<span id="cb7-430"><a href="#cb7-430" aria-hidden="true" tabindex="-1"></a><span class="in">                       Year = year, </span></span>
-<span id="cb7-431"><a href="#cb7-431" aria-hidden="true" tabindex="-1"></a><span class="in">                       Score = value) %&gt;%</span></span>
-<span id="cb7-432"><a href="#cb7-432" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(Indicator = case_when(Indicator == &quot;Government Effectiveness&quot; ~ &quot;Effectiveness&quot;,</span></span>
-<span id="cb7-433"><a href="#cb7-433" aria-hidden="true" tabindex="-1"></a><span class="in">                                             T ~ Indicator)) %&gt;% </span></span>
-<span id="cb7-434"><a href="#cb7-434" aria-hidden="true" tabindex="-1"></a><span class="in">                ggplot(aes(x = Year, y = Score, color = Country)) +</span></span>
-<span id="cb7-435"><a href="#cb7-435" aria-hidden="true" tabindex="-1"></a><span class="in">                geom_line(size = .7) +</span></span>
-<span id="cb7-436"><a href="#cb7-436" aria-hidden="true" tabindex="-1"></a><span class="in">                geom_point(color = &quot;black&quot;, size = .5) +</span></span>
-<span id="cb7-437"><a href="#cb7-437" aria-hidden="true" tabindex="-1"></a><span class="in">                facet_wrap(~Indicator, scales = &quot;free&quot;) +</span></span>
-<span id="cb7-438"><a href="#cb7-438" aria-hidden="true" tabindex="-1"></a><span class="in">                scale_x_continuous(breaks = seq(1995, 2020, 10)) +</span></span>
-<span id="cb7-439"><a href="#cb7-439" aria-hidden="true" tabindex="-1"></a><span class="in">                scale_colour_brewer(palette = &quot;Dark2&quot;) +</span></span>
-<span id="cb7-440"><a href="#cb7-440" aria-hidden="true" tabindex="-1"></a><span class="in">                labs(title = &quot;&quot;, </span></span>
-<span id="cb7-441"><a href="#cb7-441" aria-hidden="true" tabindex="-1"></a><span class="in">                     color = &quot;&quot;,</span></span>
-<span id="cb7-442"><a href="#cb7-442" aria-hidden="true" tabindex="-1"></a><span class="in">                     y = element_blank(),</span></span>
-<span id="cb7-443"><a href="#cb7-443" aria-hidden="true" tabindex="-1"></a><span class="in">                     x = element_blank()) +</span></span>
-<span id="cb7-444"><a href="#cb7-444" aria-hidden="true" tabindex="-1"></a><span class="in">                theme_bw() +</span></span>
-<span id="cb7-445"><a href="#cb7-445" aria-hidden="true" tabindex="-1"></a><span class="in">                theme(legend.text = element_text(size = 10), </span></span>
-<span id="cb7-446"><a href="#cb7-446" aria-hidden="true" tabindex="-1"></a><span class="in">                      # strip.background = element_rect(fill = &quot;#bcdefc&quot;),</span></span>
-<span id="cb7-447"><a href="#cb7-447" aria-hidden="true" tabindex="-1"></a><span class="in">                      strip.text = element_text(size = 10, color = &quot;black&quot;))</span></span>
-<span id="cb7-448"><a href="#cb7-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-449"><a href="#cb7-449" aria-hidden="true" tabindex="-1"></a><span class="in">top_3_plotly &lt;- ggplotly(top_3_plot, tooltip = c(&quot;Year&quot;, &quot;Score&quot;)) %&gt;%</span></span>
-<span id="cb7-450"><a href="#cb7-450" aria-hidden="true" tabindex="-1"></a><span class="in">                          config(displaylogo = FALSE,</span></span>
-<span id="cb7-451"><a href="#cb7-451" aria-hidden="true" tabindex="-1"></a><span class="in">                                 modeBarButtonsToRemove = c(&quot;zoom2d&quot;,&quot;zoomIn2d&quot;, &quot;zoomOut2d&quot;,</span></span>
-<span id="cb7-452"><a href="#cb7-452" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;select&quot;,</span></span>
-<span id="cb7-453"><a href="#cb7-453" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;lasso2d&quot;,</span></span>
-<span id="cb7-454"><a href="#cb7-454" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;pan2d&quot;),</span></span>
-<span id="cb7-455"><a href="#cb7-455" aria-hidden="true" tabindex="-1"></a><span class="in">                                 toImageButtonOptions = list(format = &quot;svg&quot;,</span></span>
-<span id="cb7-456"><a href="#cb7-456" aria-hidden="true" tabindex="-1"></a><span class="in">                                                             filename = &quot;North_America_Results&quot;))</span></span>
-<span id="cb7-457"><a href="#cb7-457" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-458"><a href="#cb7-458" aria-hidden="true" tabindex="-1"></a><span class="in">htmlwidgets::saveWidget(top_3_plotly, file = &quot;widgets/Top_3_Comparison.html&quot;)</span></span>
-<span id="cb7-459"><a href="#cb7-459" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-460"><a href="#cb7-460" aria-hidden="true" tabindex="-1"></a><span class="in">print(top_3_2021)</span></span>
-<span id="cb7-461"><a href="#cb7-461" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-373"><a href="#cb7-373" aria-hidden="true" tabindex="-1"></a><span class="fu">### Comparison by Continent</span></span>
+<span id="cb7-374"><a href="#cb7-374" aria-hidden="true" tabindex="-1"></a>The box plot below is based on the **2021 results** and demonstrates how a continent is compared to each other within each indicator.</span>
+<span id="cb7-375"><a href="#cb7-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-376"><a href="#cb7-376" aria-hidden="true" tabindex="-1"></a><span class="in">```{r 2021-continent-comparison, fig.cap=&#39;Comparison by Continent.&#39;, tidy=FALSE, fig.height= 7, out.width= &quot;100%&quot;}</span></span>
+<span id="cb7-377"><a href="#cb7-377" aria-hidden="true" tabindex="-1"></a><span class="in">cont_df_2021_plot &lt;- df %&gt;% </span></span>
+<span id="cb7-378"><a href="#cb7-378" aria-hidden="true" tabindex="-1"></a><span class="in">                      filter(year == 2021) %&gt;% </span></span>
+<span id="cb7-379"><a href="#cb7-379" aria-hidden="true" tabindex="-1"></a><span class="in">                      ggplot(aes(x = year, y = value, fill = continent)) +</span></span>
+<span id="cb7-380"><a href="#cb7-380" aria-hidden="true" tabindex="-1"></a><span class="in">                      geom_boxplot(na.rm = T) +</span></span>
+<span id="cb7-381"><a href="#cb7-381" aria-hidden="true" tabindex="-1"></a><span class="in">                      scale_fill_manual(values = c(&quot;#3b7f39&quot;, &quot;#edbe48&quot;, &quot;#52a8b7&quot;, &quot;#c23c2b&quot;, &quot;#e48223&quot;, &quot;#39bd4b&quot;)) +</span></span>
+<span id="cb7-382"><a href="#cb7-382" aria-hidden="true" tabindex="-1"></a><span class="in">                      coord_flip() +</span></span>
+<span id="cb7-383"><a href="#cb7-383" aria-hidden="true" tabindex="-1"></a><span class="in">                      facet_wrap(~indicator_name, scales = &quot;free&quot;) +</span></span>
+<span id="cb7-384"><a href="#cb7-384" aria-hidden="true" tabindex="-1"></a><span class="in">                      # geom_hline(yintercept =-2, linetype = &quot;dotted&quot;, size = .7, color = &quot;black&quot;) +</span></span>
+<span id="cb7-385"><a href="#cb7-385" aria-hidden="true" tabindex="-1"></a><span class="in">                      # geom_hline(yintercept = -1, linetype = &quot;dotted&quot;, size = .7, color = &quot;black&quot;) +</span></span>
+<span id="cb7-386"><a href="#cb7-386" aria-hidden="true" tabindex="-1"></a><span class="in">                      geom_hline(yintercept = 0, linetype = &quot;dotted&quot;, size = .7, color = &quot;black&quot;) +</span></span>
+<span id="cb7-387"><a href="#cb7-387" aria-hidden="true" tabindex="-1"></a><span class="in">                      # geom_hline(yintercept = 1, linetype = &quot;dotted&quot;, size = .7, color = &quot;black&quot;) +</span></span>
+<span id="cb7-388"><a href="#cb7-388" aria-hidden="true" tabindex="-1"></a><span class="in">                      # geom_hline(yintercept = 2, linetype = &quot;dotted&quot;, size = .7, color = &quot;black&quot;) +</span></span>
+<span id="cb7-389"><a href="#cb7-389" aria-hidden="true" tabindex="-1"></a><span class="in">                      labs(x = element_blank(),</span></span>
+<span id="cb7-390"><a href="#cb7-390" aria-hidden="true" tabindex="-1"></a><span class="in">                           y = element_blank(),</span></span>
+<span id="cb7-391"><a href="#cb7-391" aria-hidden="true" tabindex="-1"></a><span class="in">                           fill = &quot;&quot;) +</span></span>
+<span id="cb7-392"><a href="#cb7-392" aria-hidden="true" tabindex="-1"></a><span class="in">                      theme_bw() +</span></span>
+<span id="cb7-393"><a href="#cb7-393" aria-hidden="true" tabindex="-1"></a><span class="in">                      theme(axis.text.y = element_blank(),</span></span>
+<span id="cb7-394"><a href="#cb7-394" aria-hidden="true" tabindex="-1"></a><span class="in">                            axis.text.x = element_text(size = 10),</span></span>
+<span id="cb7-395"><a href="#cb7-395" aria-hidden="true" tabindex="-1"></a><span class="in">                            legend.text = element_text(size = 12), </span></span>
+<span id="cb7-396"><a href="#cb7-396" aria-hidden="true" tabindex="-1"></a><span class="in">                            panel.grid = element_blank(),</span></span>
+<span id="cb7-397"><a href="#cb7-397" aria-hidden="true" tabindex="-1"></a><span class="in">                            # strip.background = element_rect(fill = &quot;#6e2b0e&quot;),</span></span>
+<span id="cb7-398"><a href="#cb7-398" aria-hidden="true" tabindex="-1"></a><span class="in">                            strip.text = element_text(size = 11)) +</span></span>
+<span id="cb7-399"><a href="#cb7-399" aria-hidden="true" tabindex="-1"></a><span class="in">                      guides(fill = guide_legend(reverse = TRUE))</span></span>
+<span id="cb7-400"><a href="#cb7-400" aria-hidden="true" tabindex="-1"></a><span class="in">print(cont_df_2021_plot)</span></span>
+<span id="cb7-401"><a href="#cb7-401" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-402"><a href="#cb7-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-403"><a href="#cb7-403" aria-hidden="true" tabindex="-1"></a><span class="fu">### Comparison between the top 3 Countries of 2021</span></span>
+<span id="cb7-404"><a href="#cb7-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-405"><a href="#cb7-405" aria-hidden="true" tabindex="-1"></a>**[[Full Screen](/widgets/Top_3_Comparison.html)]**</span>
+<span id="cb7-406"><a href="#cb7-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-407"><a href="#cb7-407" aria-hidden="true" tabindex="-1"></a>The line chart below represents a progression of the top 3 countries of 2021 since 1996. By the way, the calculation of the top 3 countries was based on the average(mean) of the six indicators combined.</span>
+<span id="cb7-408"><a href="#cb7-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-409"><a href="#cb7-409" aria-hidden="true" tabindex="-1"></a><span class="in">```{r top-3-2021}</span></span>
+<span id="cb7-410"><a href="#cb7-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-411"><a href="#cb7-411" aria-hidden="true" tabindex="-1"></a><span class="in">top_3_2021 &lt;- df %&gt;% </span></span>
+<span id="cb7-412"><a href="#cb7-412" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(value = round(value, 2)) %&gt;%  </span></span>
+<span id="cb7-413"><a href="#cb7-413" aria-hidden="true" tabindex="-1"></a><span class="in">                select(country_name, country_code, indicator_name, year, value) %&gt;% </span></span>
+<span id="cb7-414"><a href="#cb7-414" aria-hidden="true" tabindex="-1"></a><span class="in">                pivot_wider(names_from = &quot;indicator_name&quot;,</span></span>
+<span id="cb7-415"><a href="#cb7-415" aria-hidden="true" tabindex="-1"></a><span class="in">                            values_from = &quot;value&quot;) %&gt;% </span></span>
+<span id="cb7-416"><a href="#cb7-416" aria-hidden="true" tabindex="-1"></a><span class="in">                clean_names() %&gt;% </span></span>
+<span id="cb7-417"><a href="#cb7-417" aria-hidden="true" tabindex="-1"></a><span class="in">                rowwise() %&gt;% </span></span>
+<span id="cb7-418"><a href="#cb7-418" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(mean = mean(c_across(4:9)),</span></span>
+<span id="cb7-419"><a href="#cb7-419" aria-hidden="true" tabindex="-1"></a><span class="in">                       mean = round(mean, 2)) %&gt;% </span></span>
+<span id="cb7-420"><a href="#cb7-420" aria-hidden="true" tabindex="-1"></a><span class="in">                group_by(year) %&gt;% </span></span>
+<span id="cb7-421"><a href="#cb7-421" aria-hidden="true" tabindex="-1"></a><span class="in">                arrange(year, desc(mean)) %&gt;% </span></span>
+<span id="cb7-422"><a href="#cb7-422" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(rank = row_number()) %&gt;% </span></span>
+<span id="cb7-423"><a href="#cb7-423" aria-hidden="true" tabindex="-1"></a><span class="in">                ungroup() %&gt;% </span></span>
+<span id="cb7-424"><a href="#cb7-424" aria-hidden="true" tabindex="-1"></a><span class="in">                filter(year == 2021,</span></span>
+<span id="cb7-425"><a href="#cb7-425" aria-hidden="true" tabindex="-1"></a><span class="in">                       rank &lt;= 3)</span></span>
+<span id="cb7-426"><a href="#cb7-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-427"><a href="#cb7-427" aria-hidden="true" tabindex="-1"></a><span class="in">top_3_plot &lt;- df %&gt;% </span></span>
+<span id="cb7-428"><a href="#cb7-428" aria-hidden="true" tabindex="-1"></a><span class="in">                filter(country_name %in% c(top_3_2021$country_name)) %&gt;% </span></span>
+<span id="cb7-429"><a href="#cb7-429" aria-hidden="true" tabindex="-1"></a><span class="in">                select(Country = country_name, </span></span>
+<span id="cb7-430"><a href="#cb7-430" aria-hidden="true" tabindex="-1"></a><span class="in">                       Code = country_code, </span></span>
+<span id="cb7-431"><a href="#cb7-431" aria-hidden="true" tabindex="-1"></a><span class="in">                       Continent = continent, </span></span>
+<span id="cb7-432"><a href="#cb7-432" aria-hidden="true" tabindex="-1"></a><span class="in">                       Indicator = indicator_name, </span></span>
+<span id="cb7-433"><a href="#cb7-433" aria-hidden="true" tabindex="-1"></a><span class="in">                       Year = year, </span></span>
+<span id="cb7-434"><a href="#cb7-434" aria-hidden="true" tabindex="-1"></a><span class="in">                       Score = value) %&gt;%</span></span>
+<span id="cb7-435"><a href="#cb7-435" aria-hidden="true" tabindex="-1"></a><span class="in">                mutate(Indicator = case_when(Indicator == &quot;Government Effectiveness&quot; ~ &quot;Effectiveness&quot;,</span></span>
+<span id="cb7-436"><a href="#cb7-436" aria-hidden="true" tabindex="-1"></a><span class="in">                                             T ~ Indicator)) %&gt;% </span></span>
+<span id="cb7-437"><a href="#cb7-437" aria-hidden="true" tabindex="-1"></a><span class="in">                ggplot(aes(x = Year, y = Score, color = Country)) +</span></span>
+<span id="cb7-438"><a href="#cb7-438" aria-hidden="true" tabindex="-1"></a><span class="in">                geom_line(size = .7) +</span></span>
+<span id="cb7-439"><a href="#cb7-439" aria-hidden="true" tabindex="-1"></a><span class="in">                geom_point(color = &quot;black&quot;, size = .5) +</span></span>
+<span id="cb7-440"><a href="#cb7-440" aria-hidden="true" tabindex="-1"></a><span class="in">                facet_wrap(~Indicator, scales = &quot;free&quot;) +</span></span>
+<span id="cb7-441"><a href="#cb7-441" aria-hidden="true" tabindex="-1"></a><span class="in">                scale_x_continuous(breaks = seq(1995, 2020, 10)) +</span></span>
+<span id="cb7-442"><a href="#cb7-442" aria-hidden="true" tabindex="-1"></a><span class="in">                scale_colour_brewer(palette = &quot;Dark2&quot;) +</span></span>
+<span id="cb7-443"><a href="#cb7-443" aria-hidden="true" tabindex="-1"></a><span class="in">                labs(title = &quot;&quot;, </span></span>
+<span id="cb7-444"><a href="#cb7-444" aria-hidden="true" tabindex="-1"></a><span class="in">                     color = &quot;&quot;,</span></span>
+<span id="cb7-445"><a href="#cb7-445" aria-hidden="true" tabindex="-1"></a><span class="in">                     y = element_blank(),</span></span>
+<span id="cb7-446"><a href="#cb7-446" aria-hidden="true" tabindex="-1"></a><span class="in">                     x = element_blank()) +</span></span>
+<span id="cb7-447"><a href="#cb7-447" aria-hidden="true" tabindex="-1"></a><span class="in">                theme_bw() +</span></span>
+<span id="cb7-448"><a href="#cb7-448" aria-hidden="true" tabindex="-1"></a><span class="in">                theme(legend.text = element_text(size = 10), </span></span>
+<span id="cb7-449"><a href="#cb7-449" aria-hidden="true" tabindex="-1"></a><span class="in">                      # strip.background = element_rect(fill = &quot;#bcdefc&quot;),</span></span>
+<span id="cb7-450"><a href="#cb7-450" aria-hidden="true" tabindex="-1"></a><span class="in">                      strip.text = element_text(size = 10, color = &quot;black&quot;))</span></span>
+<span id="cb7-451"><a href="#cb7-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-452"><a href="#cb7-452" aria-hidden="true" tabindex="-1"></a><span class="in">top_3_plotly &lt;- ggplotly(top_3_plot, tooltip = c(&quot;Year&quot;, &quot;Score&quot;)) %&gt;%</span></span>
+<span id="cb7-453"><a href="#cb7-453" aria-hidden="true" tabindex="-1"></a><span class="in">                          config(displaylogo = FALSE,</span></span>
+<span id="cb7-454"><a href="#cb7-454" aria-hidden="true" tabindex="-1"></a><span class="in">                                 modeBarButtonsToRemove = c(&quot;zoom2d&quot;,&quot;zoomIn2d&quot;, &quot;zoomOut2d&quot;,</span></span>
+<span id="cb7-455"><a href="#cb7-455" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;select&quot;,</span></span>
+<span id="cb7-456"><a href="#cb7-456" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;lasso2d&quot;,</span></span>
+<span id="cb7-457"><a href="#cb7-457" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;pan2d&quot;),</span></span>
+<span id="cb7-458"><a href="#cb7-458" aria-hidden="true" tabindex="-1"></a><span class="in">                                 toImageButtonOptions = list(format = &quot;svg&quot;,</span></span>
+<span id="cb7-459"><a href="#cb7-459" aria-hidden="true" tabindex="-1"></a><span class="in">                                                             filename = &quot;North_America_Results&quot;))</span></span>
+<span id="cb7-460"><a href="#cb7-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-461"><a href="#cb7-461" aria-hidden="true" tabindex="-1"></a><span class="in">htmlwidgets::saveWidget(top_3_plotly, file = &quot;widgets/Top_3_Comparison.html&quot;)</span></span>
 <span id="cb7-462"><a href="#cb7-462" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-463"><a href="#cb7-463" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, fig.cap=&#39;Comparison between the top 3 Countries of 2021.&#39;, tidy=FALSE}</span></span>
-<span id="cb7-464"><a href="#cb7-464" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_url(&quot;widgets/Top_3_Comparison.html&quot;, height = &quot;600px&quot;)</span></span>
-<span id="cb7-465"><a href="#cb7-465" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-466"><a href="#cb7-466" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-467"><a href="#cb7-467" aria-hidden="true" tabindex="-1"></a><span class="fu">### USA progression over time</span></span>
-<span id="cb7-468"><a href="#cb7-468" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-469"><a href="#cb7-469" aria-hidden="true" tabindex="-1"></a>**[[Full Screen](/widgets/USA_Plotly.html)]**</span>
-<span id="cb7-470"><a href="#cb7-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-471"><a href="#cb7-471" aria-hidden="true" tabindex="-1"></a><span class="in">```{r usa-timeline-animated, echo=TRUE, message=FALSE, warning=FALSE}</span></span>
-<span id="cb7-472"><a href="#cb7-472" aria-hidden="true" tabindex="-1"></a><span class="in">df_usa &lt;- df %&gt;% </span></span>
-<span id="cb7-473"><a href="#cb7-473" aria-hidden="true" tabindex="-1"></a><span class="in">            filter(country_code == &quot;USA&quot;) %&gt;% </span></span>
-<span id="cb7-474"><a href="#cb7-474" aria-hidden="true" tabindex="-1"></a><span class="in">            select(country_name:value) %&gt;% </span></span>
-<span id="cb7-475"><a href="#cb7-475" aria-hidden="true" tabindex="-1"></a><span class="in">            rename(Year = year,</span></span>
-<span id="cb7-476"><a href="#cb7-476" aria-hidden="true" tabindex="-1"></a><span class="in">                   Score = value)</span></span>
-<span id="cb7-477"><a href="#cb7-477" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-478"><a href="#cb7-478" aria-hidden="true" tabindex="-1"></a><span class="in">usa_plot &lt;- df_usa %&gt;% </span></span>
-<span id="cb7-479"><a href="#cb7-479" aria-hidden="true" tabindex="-1"></a><span class="in">              ggplot(aes(Year, Score)) +</span></span>
-<span id="cb7-480"><a href="#cb7-480" aria-hidden="true" tabindex="-1"></a><span class="in">              geom_point(aes(frame = Year, color = indicator_name)) +</span></span>
-<span id="cb7-481"><a href="#cb7-481" aria-hidden="true" tabindex="-1"></a><span class="in">              geom_line(aes(color = indicator_name), size = 1, alpha = 0.8) +</span></span>
-<span id="cb7-482"><a href="#cb7-482" aria-hidden="true" tabindex="-1"></a><span class="in">              theme_bw() +</span></span>
-<span id="cb7-483"><a href="#cb7-483" aria-hidden="true" tabindex="-1"></a><span class="in">              labs(color = &quot; &quot;) +</span></span>
-<span id="cb7-484"><a href="#cb7-484" aria-hidden="true" tabindex="-1"></a><span class="in">              # ggtitle(&quot;USA Governance Indicators&quot;) +</span></span>
-<span id="cb7-485"><a href="#cb7-485" aria-hidden="true" tabindex="-1"></a><span class="in">              scale_color_viridis_d(option = &quot;turbo&quot;) +</span></span>
-<span id="cb7-486"><a href="#cb7-486" aria-hidden="true" tabindex="-1"></a><span class="in">              # gganimate::transition_reveal(Year) +</span></span>
-<span id="cb7-487"><a href="#cb7-487" aria-hidden="true" tabindex="-1"></a><span class="in">              # coord_cartesian(clip = &#39;off&#39;) +</span></span>
-<span id="cb7-488"><a href="#cb7-488" aria-hidden="true" tabindex="-1"></a><span class="in">              theme(axis.title = element_blank(),</span></span>
-<span id="cb7-489"><a href="#cb7-489" aria-hidden="true" tabindex="-1"></a><span class="in">                    legend.text = element_text(size = 12),</span></span>
-<span id="cb7-490"><a href="#cb7-490" aria-hidden="true" tabindex="-1"></a><span class="in">                    plot.title = element_text(size = 18, hjust = .5),</span></span>
-<span id="cb7-491"><a href="#cb7-491" aria-hidden="true" tabindex="-1"></a><span class="in">                    axis.text = element_text(size = 12))</span></span>
-<span id="cb7-492"><a href="#cb7-492" aria-hidden="true" tabindex="-1"></a><span class="in">              </span></span>
-<span id="cb7-493"><a href="#cb7-493" aria-hidden="true" tabindex="-1"></a><span class="in"># usa_animation &lt;- animate(usa_plot, fps = 10, width = 600, height = 400)</span></span>
-<span id="cb7-494"><a href="#cb7-494" aria-hidden="true" tabindex="-1"></a><span class="in"># anim_save(&quot;usa_animation.gif&quot;, usa_animation)</span></span>
-<span id="cb7-495"><a href="#cb7-495" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-496"><a href="#cb7-496" aria-hidden="true" tabindex="-1"></a><span class="in">usa_plotly &lt;- ggplotly(usa_plot, tooltip = c(&quot;Year&quot;, &quot;Score&quot;)) %&gt;%</span></span>
-<span id="cb7-497"><a href="#cb7-497" aria-hidden="true" tabindex="-1"></a><span class="in">                animation_opts(1000, ) %&gt;% </span></span>
-<span id="cb7-498"><a href="#cb7-498" aria-hidden="true" tabindex="-1"></a><span class="in">                animation_button(label = &quot;Animate&quot;) %&gt;% </span></span>
-<span id="cb7-499"><a href="#cb7-499" aria-hidden="true" tabindex="-1"></a><span class="in">                config(displaylogo = FALSE,</span></span>
-<span id="cb7-500"><a href="#cb7-500" aria-hidden="true" tabindex="-1"></a><span class="in">                                 modeBarButtonsToRemove = c(&quot;zoom2d&quot;,&quot;zoomIn2d&quot;, &quot;zoomOut2d&quot;,</span></span>
-<span id="cb7-501"><a href="#cb7-501" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;select&quot;,</span></span>
-<span id="cb7-502"><a href="#cb7-502" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;lasso2d&quot;,</span></span>
-<span id="cb7-503"><a href="#cb7-503" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;pan2d&quot;,</span></span>
-<span id="cb7-504"><a href="#cb7-504" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;autoScale&quot;),</span></span>
-<span id="cb7-505"><a href="#cb7-505" aria-hidden="true" tabindex="-1"></a><span class="in">                                 toImageButtonOptions = list(format = &quot;svg&quot;,</span></span>
-<span id="cb7-506"><a href="#cb7-506" aria-hidden="true" tabindex="-1"></a><span class="in">                                                             filename = &quot;North_America_Results&quot;))</span></span>
-<span id="cb7-507"><a href="#cb7-507" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-508"><a href="#cb7-508" aria-hidden="true" tabindex="-1"></a><span class="in">htmlwidgets::saveWidget(usa_plotly, &quot;widgets/USA_Plotly.html&quot;)</span></span>
-<span id="cb7-509"><a href="#cb7-509" aria-hidden="true" tabindex="-1"></a><span class="in">print(df_usa)</span></span>
-<span id="cb7-510"><a href="#cb7-510" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-511"><a href="#cb7-511" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-512"><a href="#cb7-512" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, fig.cap=&#39;USA progression over time.&#39;, tidy=FALSE}</span></span>
-<span id="cb7-513"><a href="#cb7-513" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_url(&quot;widgets/USA_Plotly.html&quot;, height = &quot;500px&quot;)</span></span>
-<span id="cb7-514"><a href="#cb7-514" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-515"><a href="#cb7-515" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-516"><a href="#cb7-516" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span>
-<span id="cb7-517"><a href="#cb7-517" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-518"><a href="#cb7-518" aria-hidden="true" tabindex="-1"></a>In conclusion, this was a very satisfying and exciting project, and I learned much from it. It highlighted the six governance indicators which determine how prosperous a country is compared to another and how they have progressed over time.</span>
-<span id="cb7-519"><a href="#cb7-519" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-520"><a href="#cb7-520" aria-hidden="true" tabindex="-1"></a>As this is an open-source project, you are welcome to edit this content and send me a pull request through the GitHub edit button I embedded in the footer of this page. Also, in the comment section, let me know your thoughts on this project and which comparisons and charts you wish you saw. I will be reiterating it and adding more content throughout the time and, of course, always keep it updated with the most recent data.</span>
-<span id="cb7-521"><a href="#cb7-521" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-522"><a href="#cb7-522" aria-hidden="true" tabindex="-1"></a>Thank you!</span>
-<span id="cb7-523"><a href="#cb7-523" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-524"><a href="#cb7-524" aria-hidden="true" tabindex="-1"></a><span class="fu"># References</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
+<span id="cb7-463"><a href="#cb7-463" aria-hidden="true" tabindex="-1"></a><span class="in">print(top_3_2021)</span></span>
+<span id="cb7-464"><a href="#cb7-464" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-465"><a href="#cb7-465" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-466"><a href="#cb7-466" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, fig.cap=&#39;Comparison between the top 3 Countries of 2021.&#39;, tidy=FALSE}</span></span>
+<span id="cb7-467"><a href="#cb7-467" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_url(&quot;widgets/Top_3_Comparison.html&quot;, height = &quot;600px&quot;)</span></span>
+<span id="cb7-468"><a href="#cb7-468" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-469"><a href="#cb7-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-470"><a href="#cb7-470" aria-hidden="true" tabindex="-1"></a><span class="fu">### USA progression over time</span></span>
+<span id="cb7-471"><a href="#cb7-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-472"><a href="#cb7-472" aria-hidden="true" tabindex="-1"></a>**[[Full Screen](/widgets/USA_Plotly.html)]**</span>
+<span id="cb7-473"><a href="#cb7-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-474"><a href="#cb7-474" aria-hidden="true" tabindex="-1"></a><span class="in">```{r usa-timeline-animated, echo=TRUE, message=FALSE, warning=FALSE}</span></span>
+<span id="cb7-475"><a href="#cb7-475" aria-hidden="true" tabindex="-1"></a><span class="in">df_usa &lt;- df %&gt;% </span></span>
+<span id="cb7-476"><a href="#cb7-476" aria-hidden="true" tabindex="-1"></a><span class="in">            filter(country_code == &quot;USA&quot;) %&gt;% </span></span>
+<span id="cb7-477"><a href="#cb7-477" aria-hidden="true" tabindex="-1"></a><span class="in">            select(country_name:value) %&gt;% </span></span>
+<span id="cb7-478"><a href="#cb7-478" aria-hidden="true" tabindex="-1"></a><span class="in">            rename(Year = year,</span></span>
+<span id="cb7-479"><a href="#cb7-479" aria-hidden="true" tabindex="-1"></a><span class="in">                   Score = value)</span></span>
+<span id="cb7-480"><a href="#cb7-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-481"><a href="#cb7-481" aria-hidden="true" tabindex="-1"></a><span class="in">usa_plot &lt;- df_usa %&gt;% </span></span>
+<span id="cb7-482"><a href="#cb7-482" aria-hidden="true" tabindex="-1"></a><span class="in">              ggplot(aes(Year, Score)) +</span></span>
+<span id="cb7-483"><a href="#cb7-483" aria-hidden="true" tabindex="-1"></a><span class="in">              geom_point(aes(frame = Year, color = indicator_name)) +</span></span>
+<span id="cb7-484"><a href="#cb7-484" aria-hidden="true" tabindex="-1"></a><span class="in">              geom_line(aes(color = indicator_name), size = 1, alpha = 0.8) +</span></span>
+<span id="cb7-485"><a href="#cb7-485" aria-hidden="true" tabindex="-1"></a><span class="in">              theme_bw() +</span></span>
+<span id="cb7-486"><a href="#cb7-486" aria-hidden="true" tabindex="-1"></a><span class="in">              labs(color = &quot; &quot;) +</span></span>
+<span id="cb7-487"><a href="#cb7-487" aria-hidden="true" tabindex="-1"></a><span class="in">              # ggtitle(&quot;USA Governance Indicators&quot;) +</span></span>
+<span id="cb7-488"><a href="#cb7-488" aria-hidden="true" tabindex="-1"></a><span class="in">              scale_color_viridis_d(option = &quot;turbo&quot;) +</span></span>
+<span id="cb7-489"><a href="#cb7-489" aria-hidden="true" tabindex="-1"></a><span class="in">              # gganimate::transition_reveal(Year) +</span></span>
+<span id="cb7-490"><a href="#cb7-490" aria-hidden="true" tabindex="-1"></a><span class="in">              # coord_cartesian(clip = &#39;off&#39;) +</span></span>
+<span id="cb7-491"><a href="#cb7-491" aria-hidden="true" tabindex="-1"></a><span class="in">              theme(axis.title = element_blank(),</span></span>
+<span id="cb7-492"><a href="#cb7-492" aria-hidden="true" tabindex="-1"></a><span class="in">                    legend.text = element_text(size = 12),</span></span>
+<span id="cb7-493"><a href="#cb7-493" aria-hidden="true" tabindex="-1"></a><span class="in">                    plot.title = element_text(size = 18, hjust = .5),</span></span>
+<span id="cb7-494"><a href="#cb7-494" aria-hidden="true" tabindex="-1"></a><span class="in">                    axis.text = element_text(size = 12))</span></span>
+<span id="cb7-495"><a href="#cb7-495" aria-hidden="true" tabindex="-1"></a><span class="in">              </span></span>
+<span id="cb7-496"><a href="#cb7-496" aria-hidden="true" tabindex="-1"></a><span class="in"># usa_animation &lt;- animate(usa_plot, fps = 10, width = 600, height = 400)</span></span>
+<span id="cb7-497"><a href="#cb7-497" aria-hidden="true" tabindex="-1"></a><span class="in"># anim_save(&quot;usa_animation.gif&quot;, usa_animation)</span></span>
+<span id="cb7-498"><a href="#cb7-498" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-499"><a href="#cb7-499" aria-hidden="true" tabindex="-1"></a><span class="in">usa_plotly &lt;- ggplotly(usa_plot, tooltip = c(&quot;Year&quot;, &quot;Score&quot;)) %&gt;%</span></span>
+<span id="cb7-500"><a href="#cb7-500" aria-hidden="true" tabindex="-1"></a><span class="in">                animation_opts(1000, ) %&gt;% </span></span>
+<span id="cb7-501"><a href="#cb7-501" aria-hidden="true" tabindex="-1"></a><span class="in">                animation_button(label = &quot;Animate&quot;) %&gt;% </span></span>
+<span id="cb7-502"><a href="#cb7-502" aria-hidden="true" tabindex="-1"></a><span class="in">                config(displaylogo = FALSE,</span></span>
+<span id="cb7-503"><a href="#cb7-503" aria-hidden="true" tabindex="-1"></a><span class="in">                                 modeBarButtonsToRemove = c(&quot;zoom2d&quot;,&quot;zoomIn2d&quot;, &quot;zoomOut2d&quot;,</span></span>
+<span id="cb7-504"><a href="#cb7-504" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;select&quot;,</span></span>
+<span id="cb7-505"><a href="#cb7-505" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;lasso2d&quot;,</span></span>
+<span id="cb7-506"><a href="#cb7-506" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;pan2d&quot;,</span></span>
+<span id="cb7-507"><a href="#cb7-507" aria-hidden="true" tabindex="-1"></a><span class="in">                                                            &quot;autoScale&quot;),</span></span>
+<span id="cb7-508"><a href="#cb7-508" aria-hidden="true" tabindex="-1"></a><span class="in">                                 toImageButtonOptions = list(format = &quot;svg&quot;,</span></span>
+<span id="cb7-509"><a href="#cb7-509" aria-hidden="true" tabindex="-1"></a><span class="in">                                                             filename = &quot;North_America_Results&quot;))</span></span>
+<span id="cb7-510"><a href="#cb7-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-511"><a href="#cb7-511" aria-hidden="true" tabindex="-1"></a><span class="in">htmlwidgets::saveWidget(usa_plotly, &quot;widgets/USA_Plotly.html&quot;)</span></span>
+<span id="cb7-512"><a href="#cb7-512" aria-hidden="true" tabindex="-1"></a><span class="in">print(df_usa)</span></span>
+<span id="cb7-513"><a href="#cb7-513" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-514"><a href="#cb7-514" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-515"><a href="#cb7-515" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, fig.cap=&#39;USA progression over time.&#39;, tidy=FALSE}</span></span>
+<span id="cb7-516"><a href="#cb7-516" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_url(&quot;widgets/USA_Plotly.html&quot;, height = &quot;500px&quot;)</span></span>
+<span id="cb7-517"><a href="#cb7-517" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-518"><a href="#cb7-518" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-519"><a href="#cb7-519" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span>
+<span id="cb7-520"><a href="#cb7-520" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-521"><a href="#cb7-521" aria-hidden="true" tabindex="-1"></a>In conclusion, this was a very satisfying and exciting project, and I learned much from it. It highlighted the six governance indicators which determine how prosperous a country is compared to another and how they have progressed over time.</span>
+<span id="cb7-522"><a href="#cb7-522" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-523"><a href="#cb7-523" aria-hidden="true" tabindex="-1"></a>As this is an open-source project, you are welcome to edit this content and send me a pull request through the GitHub edit button I embedded in the footer of this page. Also, in the comment section, let me know your thoughts on this project and which comparisons and charts you wish you saw. I will be reiterating it and adding more content throughout the time and, of course, always keep it updated with the most recent data.</span>
+<span id="cb7-524"><a href="#cb7-524" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-525"><a href="#cb7-525" aria-hidden="true" tabindex="-1"></a>Thank you!</span>
+<span id="cb7-526"><a href="#cb7-526" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-527"><a href="#cb7-527" aria-hidden="true" tabindex="-1"></a><span class="fu"># References</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
