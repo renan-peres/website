@@ -26,12 +26,13 @@ jobs:
 
     - name: Set up Linux Dependencies
       run: |
-        sudo apt-get install \
+        sudo apt-get update && sudo apt-get install -y \
+        libudunits2-dev \
         libgdal-dev \
-        gdal-bin \
         libgeos-dev \
         libproj-dev \
-        libsqlite3-dev      
+        pandoc \
+        pandoc-citeproc
 
     - name: Set up R
       uses: r-lib/actions/setup-r@v2
