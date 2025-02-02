@@ -22,20 +22,10 @@ execute:
   warning: false
 ---
 
-```{r setup, echo=FALSE, message=FALSE}
-# Set working directory in RStudio
-# directory <- dirname(rstudioapi::getSourceEditorContext()$path)
-# setwd(directory)
-
+```{r load, echo=FALSE, message=FALSE}
 # First ensure required packages are installed
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(here)
-
-# Set working directory based on file location
-current_file <- normalizePath(
-  file.path(dirname(knitr::current_input()), "world-gov-indicators.qmd")
-)
-setwd(dirname(current_file))
+pacman::p_load(here, httr)
 
 # Load required packages
 pacman::p_load(
@@ -58,6 +48,35 @@ pacman::p_load(
   gganimate,
   gapminder
 )
+```
+
+```{r setup, echo=FALSE, message=FALSE}
+# Set working directory in RStudio
+# directory <- dirname(rstudioapi::getSourceEditorContext()$path)
+# setwd(directory)
+
+# Set working directory based on file location
+current_file <- normalizePath(
+  file.path(dirname(knitr::current_input()), "world-gov-indicators.qmd")
+)
+setwd(dirname(current_file))
+
+# Get base SOURCE_REPO and combine with current directory
+base_repo <- Sys.getenv("SOURCE_REPO")
+if (base_repo == "") {
+  stop("SOURCE_REPO environment variable is not set")
+}
+
+# Extract relative path from current directory
+relative_path <- "dev/quarto/world-gov-indicators"
+source_repo <- file.path(base_repo, relative_path)
+
+# Convert GitHub URL to raw content URL format
+raw_url <- gsub(
+  "https://github.com/(.+)/blob/",
+  "https://raw.githack.com/\\1/",
+  source_repo
+)
 
 # Setup chunk options
 knitr::opts_chunk$set(
@@ -69,6 +88,42 @@ knitr::opts_chunk$set(
 
 # Write bibliography 
 knitr::write_bib(file = "packages.bib")
+```
+
+```{ojs}
+//| echo: false
+
+htl = require('htl')
+
+// Button style definition
+btnStyle = `
+  margin-bottom: 10px;
+  padding: 8px 16px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`
+
+// Fullscreen handler
+makeFullscreen = (iframeSrc) => {
+  return htl.html`
+    <div>
+      <button style="${btnStyle}" onclick=${e => {
+        const iframe = e.target.parentElement.querySelector('iframe');
+        if (iframe) iframe.requestFullscreen();
+      }}>Fullscreen</button>
+      <div style="width: 100%; position: relative;">
+        <iframe 
+          src="${iframeSrc}"
+          style="width: 100%; height: 600px; border:0; border-radius: 4px; overflow:hidden;"
+        ></iframe>
+      </div>
+    </div>
+  `
+}
+
 ```
 
 <!-- <a class="header-title-link" href="http://renanperes.com" aria-label="Go to homepage">Home💻</a> -->
@@ -126,8 +181,6 @@ Feel free to download the raw data from the link below if you also want to explo
 For ease of understanding and to make our analyses more transparent, during the data preparation stage, I filtered the indicators by their estimates which give each country a score on the aggregate hand, in units of standard normal distribution, ranging from approximately -2.5 to 2.5.
 
 I have attached below the prepared data that I used throughout this report. You are welcome to explore the code, manipulate the data, or download it in the format you wish from the table below.
-
-**[[View Table in Full Screen](/widgets/WGI_DT.html)]**
 
 ```{r prepare, echo=TRUE, message=FALSE, warning=FALSE}
 # 1_Importing
@@ -216,8 +269,10 @@ htmlwidgets::saveWidget(dt, file = "widgets/WGI_DT.html")
 print(df)
 ```
 
-```{r, echo=FALSE}
-knitr::include_url("widgets/WGI_DT.html", height = "600px")
+```{ojs}
+//| echo: false
+
+makeFullscreen("widgets/WGI_DT.html")
 ```
 
 # Visualizations
@@ -300,8 +355,6 @@ print(cor_plot)
 
 ### Most recent results 2021 by Country
 
-**[[Full Screen](/widgets/WGI_2021.html)]**
-
 The map below shows the **2021 results** for each country. 
 
 As this is an interactive map, for you to see the scores, you will need to hover the mouse over the country, and then you will see the results of all six indicators, including the mean.
@@ -366,8 +419,10 @@ htmlwidgets::saveWidget(map_df_2021, "widgets/WGI_2021.html")
 print(df_2021)
 ```
 
-```{r, echo=FALSE, fig.cap='WGI 2021 Results.', tidy=FALSE}
-knitr::include_url("widgets/WGI_2021.html", height = "600px")
+```{ojs}
+//| echo: false
+
+makeFullscreen("widgets/WGI_2021.html")
 ```
 
 ### Comparison by Continent
@@ -401,8 +456,6 @@ print(cont_df_2021_plot)
 ```
 
 ### Comparison between the top 3 Countries of 2021
-
-**[[Full Screen](/widgets/Top_3_Comparison.html)]**
 
 The line chart below represents a progression of the top 3 countries of 2021 since 1996. By the way, the calculation of the top 3 countries was based on the average(mean) of the six indicators combined.
 
@@ -463,13 +516,13 @@ htmlwidgets::saveWidget(top_3_plotly, file = "widgets/Top_3_Comparison.html")
 print(top_3_2021)
 ```
 
-```{r, echo=FALSE, fig.cap='Comparison between the top 3 Countries of 2021.', tidy=FALSE}
-knitr::include_url("widgets/Top_3_Comparison.html", height = "600px")
+```{ojs}
+//| echo: false
+
+makeFullscreen("widgets/Top_3_Comparison.html")
 ```
 
 ### USA progression over time
-
-**[[Full Screen](/widgets/USA_Plotly.html)]**
 
 ```{r usa-timeline-animated, echo=TRUE, message=FALSE, warning=FALSE}
 df_usa <- df %>% 
@@ -512,10 +565,11 @@ htmlwidgets::saveWidget(usa_plotly, "widgets/USA_Plotly.html")
 print(df_usa)
 ```
 
-```{r, echo=FALSE, fig.cap='USA progression over time.', tidy=FALSE}
-knitr::include_url("widgets/USA_Plotly.html", height = "500px")
-```
+```{ojs}
+//| echo: false
 
+makeFullscreen("widgets/USA_Plotly.html")
+```
 # Conclusion
 
 In conclusion, this was a very satisfying and exciting project, and I learned much from it. It highlighted the six governance indicators which determine how prosperous a country is compared to another and how they have progressed over time.
