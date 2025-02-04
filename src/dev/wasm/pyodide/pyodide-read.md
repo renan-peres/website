@@ -106,7 +106,7 @@ def read_parquet(url):
         response = requests.get(url)
         buffer = io.BytesIO(response.content)
         table = pq.read_table(buffer)
-        return pl.from_arrow(table)
+        return pl.DataFrame(table)
     except Exception as e:
         print(f"Error: {str(e)}")
         return None
