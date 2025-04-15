@@ -16,7 +16,7 @@
         "    page-layout: full\n",
         "---"
       ],
-      "id": "5b59bc16"
+      "id": "127c7ccb"
     },
     {
       "cell_type": "code",
@@ -31,7 +31,7 @@
         "\n",
         "tickers = [\"BA\", \"AAPL\", \"GOOG\"]"
       ],
-      "id": "e6882bc5",
+      "id": "8d67c737",
       "execution_count": null,
       "outputs": []
     },
@@ -43,7 +43,7 @@
         "stocks = {ticker: helpers.get_stock(ticker) for ticker in tickers}\n",
         "data = {ticker: helpers.get_data(stocks[ticker]) for ticker in tickers}"
       ],
-      "id": "8788855f",
+      "id": "3ad501f4",
       "execution_count": null,
       "outputs": []
     },
@@ -53,7 +53,7 @@
       "source": [
         "## Row\n"
       ],
-      "id": "06e8eedd"
+      "id": "d1a10853"
     },
     {
       "cell_type": "code",
@@ -66,7 +66,7 @@
         "    change = helpers.get_change(data)\n",
         "    ohlc = helpers.make_OHLC_table(data)"
       ],
-      "id": "af150ac6",
+      "id": "3cfcb684",
       "execution_count": null,
       "outputs": []
     },
@@ -76,7 +76,7 @@
       "source": [
         "## Row\n"
       ],
-      "id": "05684b3c"
+      "id": "6b410803"
     },
     {
       "cell_type": "code",
@@ -91,7 +91,7 @@
         "    value = helpers.get_price(data)\n",
         ")"
       ],
-      "id": "d068aea5",
+      "id": "86d7a45e",
       "execution_count": null,
       "outputs": []
     },
@@ -109,7 +109,7 @@
         "    color = change['color']\n",
         ") "
       ],
-      "id": "8c2571aa",
+      "id": "e8a20fde",
       "execution_count": null,
       "outputs": []
     },
@@ -126,7 +126,7 @@
         "    value = change['percent'],\n",
         ") "
       ],
-      "id": "69159d5d",
+      "id": "9a0a283c",
       "execution_count": null,
       "outputs": []
     },
@@ -138,7 +138,7 @@
         "\n",
         "### Column {width=75%}\n"
       ],
-      "id": "43854617"
+      "id": "66a3ff33"
     },
     {
       "cell_type": "code",
@@ -149,7 +149,7 @@
       "source": [
         "helpers.make_candlestick_chart(data, ticker.upper())"
       ],
-      "id": "cc16caf8",
+      "id": "4424b821",
       "execution_count": null,
       "outputs": []
     },
@@ -159,7 +159,7 @@
       "source": [
         "### Column {width=25%}\n"
       ],
-      "id": "8e3cf4bb"
+      "id": "562c9171"
     },
     {
       "cell_type": "code",
@@ -167,7 +167,7 @@
       "source": [
         "ohlc = helpers.make_OHLC_table(data)"
       ],
-      "id": "b938520b",
+      "id": "b2a83a75",
       "execution_count": null,
       "outputs": []
     },
@@ -187,7 +187,7 @@
         "| Volume | `{python} ohlc['volume']` |\n",
         ": {.striped}"
       ],
-      "id": "11278083"
+      "id": "949b3895"
     }
   ],
   "metadata": {
