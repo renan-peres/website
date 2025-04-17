@@ -85,20 +85,21 @@ const navigationPages = [
     name: "Quantitative Finance",
     open: true,
     pages: [
-      {name: "Portfolio Builder & Optimization", path: "/finance/quantitative-finance/portfolio-builder"},
       {name: "Option Pricing Model", path: "/finance/quantitative-finance/option-pricing-model"},
       {name: "Naive Arbitrage for Trading", path: "/finance/quantitative-finance/naive-arb-trading"}
     ]
   }
-
+  
   ,{
     name: "MFIN",
     open: true,
     pages: [
+      {name: "Apple Financial Model (Excel)", path: "/finance/mfin/fall-24/cost-managerial-analysis/financial-model-apple"},
+      {name: "Equity Research (GRMN)", path: "/finance/mfin/spring-25/investments/equity-research"},
       {name: "Portfolio Analysis (SQL & Tableau)", path: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual"},
+      {name: "Portfolio Management", path: "/finance/mfin/spring-25/portfolio-management/portfolio-builder"}
       // {name: "Data Extraction (Open Server)", path: "/finance/mfin/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
       // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/finance/mfin/Fall-24/Data-Extraction/Team/data-extraction-team"}
-      {name: "Apple Financial Model (Excel)", path: "/finance/mfin/fall-24/cost-managerial-analysis/financial-model-apple"}
     ]
   }
   
