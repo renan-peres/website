@@ -41,6 +41,7 @@ const navigationPages = [
     name: "Quarto",
     open: false,
     pages: [
+      {name: "CAPM Modern Portfolio Theory (Python)", path: "/dev/quarto/CAPM-modern-portfolio-theory/CAPM_modern_portfolio_theory"},
       {name: "Governance Indicators (R)", path: "/dev/quarto/world-gov-indicators/world-gov-indicators"},
       {name: "HTML Basics (R)", path: "/dev/quarto/html-basics/quarto_html_basics"},
       {name: "Stock Explorer (Python)", path: "/dev/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
