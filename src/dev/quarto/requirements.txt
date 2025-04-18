@@ -25,3 +25,6 @@ click==8.1.7
 pyyaml
 seaborn
 country_converter
+plotnine
+openpyxl
+adjustText
