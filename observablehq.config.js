@@ -94,8 +94,8 @@ const navigationPages = [
     name: "MFIN",
     open: true,
     pages: [
-      {name: "Financial Model (AAPL) ", path: "/finance/mfin/fall-24/cost-managerial-analysis/financial-model-apple"},
       {name: "Equity Research (GRMN)", path: "/finance/mfin/spring-25/investments/equity-research"},
+      {name: "Financial Model (AAPL) ", path: "/finance/mfin/fall-24/cost-managerial-analysis/financial-model-apple"},
       {name: "Portfolio Analysis (SQL & Tableau)", path: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual"},
       {name: "Portfolio Management", path: "/finance/mfin/spring-25/portfolio-management/portfolio-builder"}
       // {name: "Data Extraction (Open Server)", path: "/finance/mfin/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
