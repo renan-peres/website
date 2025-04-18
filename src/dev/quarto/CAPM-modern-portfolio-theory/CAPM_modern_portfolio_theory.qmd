@@ -1,5 +1,15 @@
 ---
-title: The Capital Asset Pricing Model
+title: "The Capital Asset Pricing Model"
+format:
+  html:
+    html-math-method: katex
+    code-tools: true
+    code-fold: show
+    self-contained: true
+    embed-resources: true
+    page-layout: full
+execute:
+  warning: false
 metadata:
   pagetitle: The CAPM with Python
   description-meta: Learn how to use the programming language Python for estimating the CAPM for asset evaluation.
