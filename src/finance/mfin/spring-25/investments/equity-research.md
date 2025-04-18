@@ -67,8 +67,8 @@ function processUrl(url) {
 }
 
 const spreadsheetUrl = view(Inputs.textarea({
-  // value: "https://hultstudents-my.sharepoint.com/personal/rperes_student_hult_edu/_layouts/15/Doc.aspx?sourcedoc={29ffabe6-324a-4303-aeba-c924a5aca801}",
-  value: "https://hultstudents-my.sharepoint.com/:x:/g/personal/rperes_student_hult_edu/Ecv0g2sD67lFr88JSxUQEOEBq1wvzM4rGuDzhW_AskNLgg?e=oVcpXk",
+  // value: "https://hultstudents-my.sharepoint.com/:x:/g/personal/rperes_student_hult_edu/Ec_vSJKHErhLg-_2aAPnM_IBNU2FcRmVLvCDKy0Wp-COsw?e=6AXrNb",
+  value: "https://1drv.ms/x/c/bde1a904e346bc6a/IQQuTns2LF_MQ6ZohtFYPhXGAQRKvMCl8r7gU-DlrvNVhrw?em=2",
   width: "100%",
   rows: 1,
   resize: "both",
