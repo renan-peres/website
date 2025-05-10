@@ -1,7 +1,7 @@
 // See https://observablehq.com/framework/config for documentation.
 
 const EMOJI_FAVICON = "👋";
-const FOOTER = "<a href='https://github.com/renan-peres' target='_blank'>Copyright 2024, Renan Peres</a>.";
+const FOOTER = `<style>#observablehq-footer { margin-top: 1rem; }</style><a href='https://github.com/renan-peres' target='_blank'>Copyright 2025, Renan Peres</a>.`;
 const SOURCE_REPO = "https://github.com/renan-peres/website/blob/main/src";
 
 const navigationPages = [
@@ -95,10 +95,10 @@ const navigationPages = [
     name: "MFIN",
     open: true,
     pages: [
+      {name: "Portfolio Management", path: "/finance/mfin/spring-25/portfolio-management/portfolio-models"},
       {name: "Equity Research (GRMN)", path: "/finance/mfin/spring-25/investments/equity-research"},
       {name: "Financial Model (AAPL) ", path: "/finance/mfin/fall-24/cost-managerial-analysis/financial-model-apple"},
-      {name: "Portfolio Analysis (SQL & Tableau)", path: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual"},
-      {name: "Portfolio Management", path: "/finance/mfin/spring-25/portfolio-management/portfolio-builder"}
+      {name: "Portfolio Analysis (SQL & Tableau)", path: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual"}
       // {name: "Data Extraction (Open Server)", path: "/finance/mfin/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
       // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/finance/mfin/Fall-24/Data-Extraction/Team/data-extraction-team"}
     ]
@@ -227,7 +227,7 @@ export default {
   // typographer: false, // smart quotes and other typographic improvements
   // preserveExtension: false, // drop .html from URLs
   // preserveIndex: false, // drop /index from URLs
-  duckdb: {extensions: ["spatial", "h3", "pivot_table"]},
+  // duckdb: {extensions: ["spatial", "h3", "pivot_table"]},
   server: {
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin',
