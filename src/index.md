@@ -40,9 +40,9 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 Hi, I'm **Renan** - an Analytics Engineer and Finance professional passionate about **bridging the gap between data and financial decision-making**.
 
 🎓 **Education**
-- Master's in Finance (Expected 2026)
-- Master's in Business Analytics (Expected 2026)
-- Bachelor's in Business Management (2022)
+- Master's in Finance 
+- Master's in Business Analytics 
+- Bachelor's in Business Management
 
 💼 **Core Expertise**
 - Data Engineering

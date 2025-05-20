@@ -47,10 +47,10 @@ const navigationPages = [
       {name: "Stock Explorer (Python)", path: "/dev/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
     ]
   }
-
+  
   ,{
     name: "Economy",
-    open: true,
+    open: false,
     pages: [
       {name: "Economic Calendar", path: "/finance/economy/economic-calendar"},
       {name: "U.S. Macro Indicators", path: "/finance/economy/macro-indicators"},
@@ -61,7 +61,7 @@ const navigationPages = [
   
   ,{
     name: "Financial Markets",
-    open: true,
+    open: false,
     pages: [
       {name: "Market News", path: "/finance/financial-markets/market-news"},
       {name: "Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices"},
@@ -71,31 +71,22 @@ const navigationPages = [
       {name: "IPO Calendar", path: "/finance/financial-markets/ipo-calendar"}
     ]
   }
-
-  ,{
-    name: "Coporate Finance",
-    open: true,
-    pages: [
-      {name: "Financial Statements", path: "/finance/coporate-finance/financial-statements"},
-      {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
-      {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"}
-    ]
-  }
-
-  // ,{
-  //   name: "Quantitative Finance",
-  //   open: true,
-  //   pages: [
-  //     {name: "Option Pricing Model", path: "/finance/quantitative-finance/option-pricing-model"},
-  //     {name: "Naive Arbitrage for Trading", path: "/finance/quantitative-finance/naive-arb-trading"}
-  //   ]
-  // }
+  
+    ,{
+      name: "Coporate Finance",
+      open: false,
+      pages: [
+        {name: "Financial Statements", path: "/finance/coporate-finance/financial-statements"},
+        {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
+        {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"}
+      ]
+    }
   
   ,{
     name: "MFIN",
     open: true,
     pages: [
-      {name: "Portfolio Management", path: "/finance/mfin/spring-25/portfolio-management/portfolio-models"},
+      {name: "Portfolio Management", path: "/finance/mfin/spring-25/portfolio-management/portfolio-construction"},
       {name: "Equity Research (GRMN)", path: "/finance/mfin/spring-25/investments/equity-research"},
       {name: "Financial Model (AAPL) ", path: "/finance/mfin/fall-24/cost-managerial-analysis/financial-model-apple"},
       {name: "Portfolio Analysis (SQL & Tableau)", path: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual"}
@@ -103,6 +94,15 @@ const navigationPages = [
       // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/finance/mfin/Fall-24/Data-Extraction/Team/data-extraction-team"}
     ]
   }
+  
+    // ,{
+    //   name: "Quantitative Finance",
+    //   open: true,
+    //   pages: [
+    //     {name: "Option Pricing Model", path: "/finance/quantitative-finance/option-pricing-model"},
+    //     {name: "Naive Arbitrage for Trading", path: "/finance/quantitative-finance/naive-arb-trading"}
+    //   ]
+    // }
   
   // ,{
   //   name: "MBAN",

@@ -1,6 +1,7 @@
 ---
 title: Investment Portfolio Models
-toc: true
+toc: false
+description: "Explore the interactive dashboard and quantitative models driving the portfolio construction process."
 ---
 
 ```js
@@ -40,7 +41,7 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 </style>
 ```
 
-# Investment Portfolio Models
+# Portfolio Construction
 ## Portfolio Management (Spring 2025)
 
 ```js
@@ -55,22 +56,22 @@ const formattedDate = new Date().toLocaleDateString('en-US', {
 display(html`<div style="font-size: 0.9em; margin-bottom: 10px;">Date: ${formattedDate}</div>`);
 ```
 
-This interactive report a comprehensive framework for modern portfolio management, implementing theoretical concepts from Modern Portfolio Theory (MPT) and the Capital Asset Pricing Model (CAPM). The analysis spans from high-level asset allocation to security-specific selection, with optimization centered on the Sharpe ratio.
-- [Dashboard](#dashboard)
-- [Excel Models](#excel-models)
-- [Investment Policy Statement](#investment-policy-statement)
+View Dashboard: [Portfolio Construction & Optimization](https://portfolio-management.renanperes.com/)
 
----
+
+<!-- ---
 ## Dashboard
-The interactive dashboard below provides a holistic view of the portfolio construction process. It demonstrates the systematic application of portfolio theory across multiple dimensions:
+View Dashboard: [Portfolio Construction & Optimization](https://portfolio-management.renanperes.com/) -->
+
+<!-- The interactive dashboard provides a holistic view of the portfolio construction process. It demonstrates the systematic application of portfolio theory across multiple dimensions:
 - Capital Allocation: Visualizes the optimal allocation between risky assets and risk-free investments based on risk preferences 
 - Asset Class Allocation: Applies efficient frontier analysis to determine optimal weights between major asset classes
 - Security Selection: Implements quantitative models for security selection within each asset class
 - Performance Analysis: Compares portfolio performance against relevant benchmarks
 
-Use the fullscreen button for a more immersive analysis experience.
+Use the fullscreen button for a more immersive analysis experience. -->
 
-```js
+<!-- ```js
 const investmentPortfolioDashboard = html`
   <div>
     <button 
@@ -98,13 +99,13 @@ const investmentPortfolioDashboard = html`
 `;
 
 display(investmentPortfolioDashboard);
-```
+``` -->
 
----
-## Excel Models
+<!-- --- -->
+<!-- ## Excel Models
 This section provides access to the underlying quantitative models driving the portfolio construction process. The spreadsheet includes:
 
-Portfolio optimization calculations based on historical return data Risk metrics including standard deviation, Value at Risk (VaR), and drawdown analysis Asset correlation matrices demonstrating diversification benefits Scenario analysis and stress testing for various market conditions. These models implement the mathematical framework described in academic literature while maintaining practical applicability for real-world investment decisions.
+Portfolio optimization calculations based on historical return data Risk metrics including standard deviation, Value at Risk (VaR), and drawdown analysis Asset correlation matrices demonstrating diversification benefits Scenario analysis and stress testing for various market conditions. These models implement the mathematical framework described in academic literature while maintaining practical applicability for real-world investment decisions. -->
 
 <!-- 
 ```js
@@ -158,14 +159,14 @@ display(embedSpreadsheet(spreadsheetUrl));
 -->
 
 ---
-## Investment Policy Statement
+<!-- ## Investment Policy Statement
 The Investment Policy Statement (IPS) establishes the strategic framework for portfolio management, outlining:
 - Investment objectives and risk tolerance parameters
 - Asset allocation guidelines and rebalancing protocols
 - Performance evaluation benchmarks and measurement criteria
 - Investment constraints and regulatory considerations
 
-This document serves as the foundational governance framework for all investment activities and ensures alignment between strategies employed and investor objectives.
+This document serves as the foundational governance framework for all investment activities and ensures alignment between strategies employed and investor objectives. -->
 
 <!-- ```js
 const oneDrivePath = "https://1drv.ms/b/c/bde1a904e346bc6a/EY-k0gdHz5BJms-NY7B5AK8B62B7MKz13IHndFdhL_SZEg";
