@@ -13,7 +13,6 @@
   "dependencies": {
     "@duckdb/node-api": "^1.1.3-alpha.8",
     "@huggingface/inference": "^2.8.1",
-    "@motherduck/wasm-client": "latest",
     "@observablehq/framework": "^1.13.0",
     "@uwdata/vgplot": "^0.7.1",
     "btoa": "^1.2.1",
@@ -50,7 +49,6 @@
     "formidable": "^3.5.1",
     "superagent": "^9.0.1",
     "inflight": "^2.0.1",
-    "q": "npm:@endo/eventual-send@^1.0.1",
     "esbuild": "^0.20.0"
   }
 }

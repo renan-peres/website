@@ -86,7 +86,7 @@ const navigationPages = [
     name: "MFIN",
     open: true,
     pages: [
-      {name: "Portfolio Management", path: "/finance/mfin/spring-25/portfolio-management/portfolio-construction"},
+      {name: "Portfolio Construction", path: "/finance/mfin/spring-25/portfolio-management/portfolio-construction"},
       {name: "Equity Research (GRMN)", path: "/finance/mfin/spring-25/investments/equity-research"},
       {name: "Financial Model (AAPL) ", path: "/finance/mfin/fall-24/cost-managerial-analysis/financial-model-apple"},
       {name: "Portfolio Analysis (SQL & Tableau)", path: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual"}
@@ -232,12 +232,6 @@ export default {
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin',
       'Cross-Origin-Embedder-Policy': 'require-corp'
-    }
-  },
-  build: {
-    base: '/',
-    duckdbConfig: {
-      loadPath: 'https://app.motherduck.com'
     }
   },
   
