@@ -150,7 +150,7 @@ const fullscreenBtn = htl.html`
 
 <div>
   ${fullscreenBtn}
-  <div style="width: 100%; position: relative;">
+  <div style="width: 100%; height: 600px; position: relative;">
     <div class='tableauPlaceholder' id='viz1734447659946' style='position: relative'>
       <noscript>
         <a href='#'>
@@ -178,13 +178,13 @@ const fullscreenBtn = htl.html`
       var vizElement = divElement.getElementsByTagName('object')[0];
       if (divElement.offsetWidth > 800) {
         vizElement.style.width = '100%';
-        vizElement.style.height = (divElement.offsetWidth * 0.30) + 'px';
+        vizElement.style.height = '100%';
       } else if (divElement.offsetWidth > 500) {
         vizElement.style.width = '100%';
-        vizElement.style.height = (divElement.offsetWidth * 0.30) + 'px';
+        vizElement.style.height = '100%';
       } else {
         vizElement.style.width = '100%';
-        vizElement.style.height = '1327px';
+        vizElement.style.height = '100%';
       }
       var scriptElement = document.createElement('script');
       scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';

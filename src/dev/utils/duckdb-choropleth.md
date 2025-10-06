@@ -10,7 +10,7 @@ sql:
 chart
 ```
 
-To make this [choropleth](/plot/choropleth), let’s start by adding the unemployment dataset in the front-matter:
+<!-- To make this [choropleth](/plot/choropleth), let’s start by adding the unemployment dataset in the front-matter: -->
 
 
 We have configured DuckDB’s [SPATIAL](https://duckdb.org/docs/extensions/spatial/overview.html) [extension](https://observablehq.com/framework/lib/duckdb#extensions), so it’s available directly in `sql`.

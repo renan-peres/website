@@ -104,16 +104,16 @@ const navigationPages = [
     //   ]
     // }
   
-  // ,{
-  //   name: "MBAN",
-  //   open: false,
-  //   pages: [
-  //     // {name: "Portfolio Analysis (SQL & Tableau)", path: "/mfin/Fall-24/Data-Extraction-Visualization/Individual/data-extraction-individual"},
-  //     // // {name: "Data Extraction (Open Server)", path: "/mfin/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
-  //     // // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/mfin/Fall-24/Data-Extraction/Team/data-extraction-team"}
-  //     // {name: "Apple Financial Model (Excel)", path: "/mfin/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
-  //   ]
-  // }
+  ,{
+    name: "MBAN",
+    open: true,
+    pages: [
+      // {name: "Portfolio Analysis (SQL & Tableau)", path: "/mfin/Fall-24/Data-Extraction-Visualization/Individual/data-extraction-individual"},
+      // // {name: "Data Extraction (Open Server)", path: "/mfin/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
+      // // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/mfin/Fall-24/Data-Extraction/Team/data-extraction-team"}
+      // {name: "Apple Financial Model (Excel)", path: "/mfin/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
+    ]
+  }
 
 ];
 
