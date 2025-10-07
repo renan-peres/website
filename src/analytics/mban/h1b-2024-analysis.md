@@ -71,93 +71,20 @@ async function toParquet(duckDbClient, {table = "data", originalName = table, na
 }
 ```
 
-<!-- ```js
-// Create the dropdown for pre-built queries
-const returnInput = view(Inputs.range([0, 750], {
-  step: 25, 
-  value: 0, // Set initial value
-  placeholder: "1-750"
-}));
-``` -->
-
-# Portfolio Analysis
-## Data Extraction & Visualization (Fall 2024)
-
-<div class="datetime-container">
-  <div id="datetime"></div>
-</div>
-
-This project presents a comprehensive portfolio analysis tool combining SQL-based data extraction with Tableau visualization capabilities. The system analyzes financial portfolio data for customer #128 (Bojana Popovic), providing insights into investment performance, risk assessment, and potential portfolio optimization opportunities. By leveraging both SQL for complex calculations and Tableau for visualization, the project delivers a complete view of the client's investment portfolio.
-
----
-
-## Key Features
-- DuckDB integration for efficient data processing
-- Sequential query execution for streamlined analysis
-- Responsive full-width layout design
-- Interactive data visualization
-- Export functionality in CSV and Parquet formats
-- Automated data processing and handling
-- Real-time data extraction capabilities
-
-### [Part 1: Data Extraction (SQL)](#part-1-data-extraction-sql-1)
-The SQL component integrates multiple data sources including account dimensions, customer details, holdings, and pricing information. It processes this data through a series of analytical queries:
-
-- **SQL View**: Creates a comprehensive view consolidating all client portfolio data with relevant dimensions and metrics
-- **Query 1**: Analyzes portfolio performance through 12, 24, and 36-month return calculations for individual securities and the overall portfolio
-- **Query 2**: Evaluates investment risk through sigma (volatility) calculations and average daily returns
-- **Query 3**: Identifies potential investment opportunities by analyzing securities not currently in the portfolio
-- **Query 4**: Calculates risk-adjusted returns (Sharpe-like ratio) to determine optimal investment efficiency
-
-### [Part 2: Interactive Dashboard (Tableau)](#part-2-interactive-dashboard-tableau-1)
-The Tableau dashboard provides an interactive visualization layer that transforms the SQL analysis into actionable insights:
-
-- Asset allocation breakdown and portfolio composition
-- Historical performance trends and comparisons
-- Risk-return relationship visualization
-- Dynamic filtering and drill-down capabilities
-- Fullscreen viewing mode for detailed analysis
-- Real-time metric updates and portfolio monitoring
-
-This dual-approach methodology combines the computational power of SQL with the visual analytics of Tableau, providing a robust platform for comprehensive portfolio analysis and decision-making support.
-
----
-
 # Power BI Dashboard
 
-```js
-const dashboard = html`
-  <div>
-    <button 
-      style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
-      onclick=${(e) => {
-        const iframe = e.target.parentElement.querySelector('iframe');
-        if (iframe.requestFullscreen) {
-          iframe.requestFullscreen();
-        } else if (iframe.webkitRequestFullscreen) {
-          iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) {
-          iframe.msRequestFullscreen();
-        }
-      }}>
-      Fullscreen
-    </button>
-    <div style="width: 100%; height: 800px; position: relative;">
-      <iframe 
-        height="100%" 
-        width="100%" 
-        id="dashboard-embed" 
-        title="H1B 2024 Dashboard"
-        src="https://app.fabric.microsoft.com/view?r=eyJrIjoiZGJlM2YyYmItNmJmMC00N2I5LTgzMzMtNmUxMTI4NDcxYzE5IiwidCI6IjdiMDVjYmU0LTI1OWItNGFlZS1hMGRkLWRiM2JlZTVkYTFjYSIsImMiOjJ9&pageName=ec72ca4620ba8e04d898"
-        style="border: none;"
-        allow="clipboard-write" 
-        allowfullscreen>
-      </iframe>
-    </div>
-  </div>
-`;
-
-display(dashboard);
+```html
+<div style="width: 100%; height: 800px; position: relative;">
+  <iframe 
+    title="H1B 2024" 
+    width="100%" 
+    height="800" 
+    src="https://app.fabric.microsoft.com/view?r=eyJrIjoiNzAxYjUwNjEtMzExNy00NWQ4LTlmMDgtMDA2Y2UwMWFkNTgxIiwidCI6IjdiMDVjYmU0LTI1OWItNGFlZS1hMGRkLWRiM2JlZTVkYTFjYSIsImMiOjJ9" 
+    frameborder="0" 
+    allowFullScreen="true">
+  </iframe>
+</div>
 ```
+
 
 ---
