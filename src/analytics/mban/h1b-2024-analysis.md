@@ -123,7 +123,7 @@ This dual-approach methodology combines the computational power of SQL with the 
 
 ---
 
-## Power BI Dashboard
+# Power BI Dashboard
 
 ```js
 const fullscreenBtn = htl.html`
@@ -142,13 +142,17 @@ const fullscreenBtn = htl.html`
 </button>`
 ```
 
-<div id="h1b-viz-container" style="width: 100%; height: 600px; position: relative; background: #f5f5f5;">
-<iframe 
-    title="H1B 2024" 
-    src="https://app.fabric.microsoft.com/reportEmbed?reportId=cc6a1f2d-6a3e-4a8b-99af-16d832adb0c7&autoAuth=true&ctid=d525a3c0-a9d8-4d28-9e59-40358f774f09" 
-    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
-    allowFullScreen="true">
-</iframe>
+<div>
+  ${fullscreenBtn}
+  <div id="h1b-viz-container" style="width: 100%; height: 600px; position: relative; background: #f5f5f5;">
+    <iframe 
+      title="H1B 2024" 
+      src="https://app.fabric.microsoft.com/reportEmbed?reportId=cc6a1f2d-6a3e-4a8b-99af-16d832adb0c7&autoAuth=true&ctid=d525a3c0-a9d8-4d28-9e59-40358f774f09" 
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+      allowFullScreen="true">
+    </iframe>
+  </div>
 </div>
+
 
 ---
