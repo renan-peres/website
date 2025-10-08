@@ -2,6 +2,11 @@ import { html } from "htl";
 
 const projects = [
   {
+    title: "H1-B Visa Analysis",
+    description: "H1-B 2024 Lottery Data Analysis in Power BI",
+    link: "/analytics/mban/h1b-2024-analysis",
+  },
+  {
     title: "Stock & Crypto Prices",
     description: "Live market quotes for stocks and cryptocurrencies",
     link: "/finance/financial-markets/stock-crypto-prices",
