@@ -35,6 +35,23 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 
 <br>
 
+<div class="social-links" style="display: flex; gap: 10px; margin: 20px 0;">
+  <a href="https://www.linkedin.com/in/renanperes/">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
+  </a>
+  <a href="mailto:contact@renanperes.com">
+    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=mail.ru&logoColor=white" alt="Email"/>
+  </a>
+  <a href="https://github.com/renan-peres">
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
+  </a>
+  <a href="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4" target="_blank">
+      <img src="https://img.shields.io/badge/Resume-4285F4?style=for-the-badge&logo=googledocs&logoColor=white" alt="Resume"/>
+  </a>
+</div>
+
+---
+
 ## Welcome to My Project Portfolio! 👋
 
 Hi, I'm **Renan** - an Analytics Engineer and Finance professional passionate about **bridging the gap between data and financial decision-making**.
@@ -54,23 +71,6 @@ Hi, I'm **Renan** - an Analytics Engineer and Finance professional passionate ab
 - Portuguese (Native)
 - English (Fluent)
 - Spanish (Fluent)
-
-Feel free to connect with me on LinkedIn or via email.
-
-<div class="social-links" style="display: flex; gap: 10px; margin: 20px 0;">
-  <a href="https://www.linkedin.com/in/renanperes/">
-    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
-  </a>
-  <a href="mailto:contact@renanperes.com">
-    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=mail.ru&logoColor=white" alt="Email"/>
-  </a>
-  <a href="https://github.com/renan-peres">
-    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
-  </a>
-  <a href="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4" target="_blank">
-      <img src="https://img.shields.io/badge/Resume-4285F4?style=for-the-badge&logo=googledocs&logoColor=white" alt="Resume"/>
-  </a>
-</div>
 
 ---
 
