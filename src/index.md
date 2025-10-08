@@ -67,6 +67,9 @@ Feel free to connect with me on LinkedIn or via email.
   <a href="https://github.com/renan-peres">
     <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
   </a>
+  <a href="./assets/RenanPeres_Resume_2025.pdf" target="_blank">
+      <img src="https://img.shields.io/badge/Resume-4285F4?style=for-the-badge&logo=googledocs&logoColor=white" alt="Resume"/>
+  </a>
 </div>
 
 ---
