@@ -2,7 +2,7 @@ import { html } from "htl";
 
 const projects = [
   {
-    title: "H1-B Visa Analysis",
+    title: "H1-B Visa Analysis (Power BI)",
     description: "H1-B 2024 Lottery Data Analysis in Power BI",
     link: "/analytics/mban/h1b-2024-analysis",
   },
@@ -22,7 +22,7 @@ const projects = [
     link: "/finance/economy/macro-indicators",
   },
   {
-    title: "Portfolio Analysis",
+    title: "Portfolio Analysis (Tableau",
     description: "SQL-powered portfolio analytics with Tableau visualizations",
     link: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual",
   },
