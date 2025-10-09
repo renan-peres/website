@@ -22,7 +22,7 @@ jobs:
         TARGET_REPO: renan-peres/renan-peres
         TARGET_FILE: README.md
         SOURCE_FILE: README.md
-        GH_TOKEN: ${{ secrets.PROFILE_SYNC_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         # Verify token is set
         if [ -z "$GH_TOKEN" ]; then
