@@ -9,7 +9,7 @@ const projects = [
   {
     title: "Portfolio Construction & Optimization",
     description: "Dashboard showcasing the process used for building and optimizing investment portfolios",
-    link: "/finance/mfin/spring-25/portfolio-management/portfolio-construction",
+    link: "https://portfolio-management.renanperes.com/",
   },
   {
     title: "Portfolio Analysis (Tableau & SQL)",
@@ -36,11 +36,11 @@ const projects = [
     description: "Detailed financial modeling analysis of Apple Inc.",
     link: "/finance/mfin/fall-24/cost-managerial-analysis/financial-model-apple",
   },
-  // {
-  //   title: "DCF Analysis", 
-  //   description: "Discounted Cash Flow valuation tool",
-  //   link: "/finance/coporate-finance/company-dcf"
-  // },
+  {
+    title: "Garmin Equity Research", 
+    description: "Comprehensive research of Garmin Ltd.",
+    link: "/finance/mfin/spring-25/investments/equity-research"
+  },
   {
     title: "U.S. Mortgage Rates",
     description: "Historical and current U.S. mortgage rate trends",
@@ -53,17 +53,35 @@ export function ProjectShowcase() {
     <style>
       .project-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         gap: 2rem;
         padding: 1rem 0;
       }
       
+      .project-card {
+        text-decoration: none;
+        border-radius: 12px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      
+      .project-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+      }
+      
       .iframe-wrapper {
         width: 100%;
-        height: 300px;
+        height: 240px;
         overflow: hidden;
         pointer-events: none;
         position: relative;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       }
       
       .preview-iframe {
@@ -72,20 +90,46 @@ export function ProjectShowcase() {
         border: none;
         transform: scale(0.5);
         transform-origin: 0 0;
+        opacity: 0.9;
+      }
+      
+      .project-content {
+        padding: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
       }
       
       .project-title {
-        margin: 1rem 0 0;
+        margin: 0 0 0.75rem 0;
         font-size: 1.25rem;
+        color: #1a1a1a;
+        font-weight: 600;
       }
 
       .project-description {
+        margin: 0;
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        flex: 1;
+      }
+      
+      .project-card:hover .project-title {
+        color: #1a73e8;
+      }
+      
+      @media (max-width: 768px) {
+        .project-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
       }
     </style>
     
     <div class="project-grid">
       ${projects.map(project => html`
-        <a href="${project.link}" class="project-card" style="text-decoration: none;">
+        <a href="${project.link}" class="project-card">
           <div class="iframe-wrapper">
             <iframe 
               src="${project.link}"
