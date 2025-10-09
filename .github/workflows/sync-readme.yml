@@ -26,7 +26,7 @@ jobs:
       run: |
         # Verify token is set
         if [ -z "$GH_TOKEN" ]; then
-          echo "Error: PROFILE_SYNC_TOKEN secret is not set"
+          echo "Error: GH_PERSONAL_ACCESS_KEY secret is not set"
           exit 1
         fi
         
