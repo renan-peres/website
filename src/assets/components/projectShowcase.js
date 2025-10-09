@@ -4,7 +4,7 @@ const projects = [
   {
     title: "H1-B Visa Analysis (Power BI)",
     description: "H1-B 2024 Lottery Data Analysis in Power BI",
-    link: "/analytics/h1b-2024-analysis",
+    link: "/mban/h1b-2024-analysis",
   },
   {
     title: "Portfolio Construction & Optimization",
@@ -14,37 +14,37 @@ const projects = [
   {
     title: "Portfolio Analysis (Tableau & SQL)",
     description: "SQL-powered portfolio analytics with Tableau visualizations",
-    link: "/analytics/data-extraction-individual",
+    link: "/mban/data-extraction-individual",
   },
   {
     title: "Stock & Crypto Prices",
     description: "Live market quotes for stocks and cryptocurrencies",
-    link: "/finance/financial-markets/stock-crypto-prices",
+    link: "/mfin/financial-markets/stock-crypto-prices",
   },
   {
     title: "Market News",
     description: "Real-time financial market news aggregator",
-    link: "/finance/financial-markets/market-news",
+    link: "/mfin/financial-markets/market-news",
   },
   {
     title: "Macro Economy Indicators",
     description: "Key U.S. macroeconomic metrics dashboard",
-    link: "/finance/economy/macro-indicators",
+    link: "/mfin/economy/macro-indicators",
   },
   {
     title: "Apple Financial Model",
     description: "Detailed financial modeling analysis of Apple Inc.",
-    link: "/finance/cost-managerial-analysis/financial-model-apple",
+    link: "/mfin/cost-managerial-analysis/financial-model-apple",
   },
   {
     title: "Garmin Equity Research", 
     description: "Comprehensive research of Garmin Ltd.",
-    link: "/finance/investments/equity-research"
+    link: "/mfin/investments/equity-research"
   },
   {
     title: "U.S. Mortgage Rates",
     description: "Historical and current U.S. mortgage rate trends",
-    link: "/finance/economy/mortgage-rates"
+    link: "/mfin/economy/mortgage-rates"
   }
 ];
 

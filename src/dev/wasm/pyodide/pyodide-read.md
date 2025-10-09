@@ -112,7 +112,7 @@ def read_parquet(url):
         return None
 
 # Execute
-url = "https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/finance/historical_ma_transactions.parquet"
+url = "https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/mfin/historical_ma_transactions.parquet"
 df = read_parquet(url)
 # str(df.head(10))
 

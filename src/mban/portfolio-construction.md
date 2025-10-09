@@ -6,9 +6,9 @@ description: "Explore the interactive dashboard and quantitative models driving 
 
 ```js
 import * as vgplot from "npm:@uwdata/vgplot";
-import {datetime} from "../../../../assets/components/datetime.js";
+import {datetime} from "../assets/components/datetime.js";
 import {getDefaultClient} from "observablehq:stdlib/duckdb";
-import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../../../../assets//components/tableFormatting.js";
+import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../assets/components/tableFormatting.js";
 import * as htl from "htl";
 import * as arrow from "apache-arrow";
 const db = await getDefaultClient();

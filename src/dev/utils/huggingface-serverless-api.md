@@ -6,8 +6,8 @@ toc: false
 source: https://observablehq.com/@huggingface/hello-huggingface-js-inference | https://huggingface.co/learn/cookbook/enterprise_hub_serverless_inference_api | https://huggingface.co/docs/huggingface.js/hub/README | https://huggingface.co/docs/huggingface.js/inference/README
 keywords: 
 sql:
-  stock_quotes: https://aws-test-duckdb.s3.us-east-2.amazonaws.com/finance/stock_quotes.parquet
-  company_profiles: https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/finance/company_profile.parquet
+  stock_quotes: https://aws-test-duckdb.s3.us-east-2.amazonaws.com/mfin/stock_quotes.parquet
+  company_profiles: https://raw.githubusercontent.com/renan-peres/datasets/refs/heads/master/data/mfin/company_profile.parquet
 ---
 
 ```js

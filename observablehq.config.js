@@ -52,29 +52,29 @@ const navigationPages = [
     name: "Economy",
     open: false,
     pages: [
-      {name: "Economic Calendar", path: "/finance/economy/economic-calendar"},
-      {name: "U.S. Macro Indicators", path: "/finance/economy/macro-indicators"},
-      {name: "U.S. Monetary Base", path: "/finance/economy/monetary-base"},
-      {name: "U.S. Mortgage Rates", path: "/finance/economy/mortgage-rates"}
+      {name: "Economic Calendar", path: "/mfin/economy/economic-calendar"},
+      {name: "U.S. Macro Indicators", path: "/mfin/economy/macro-indicators"},
+      {name: "U.S. Monetary Base", path: "/mfin/economy/monetary-base"},
+      {name: "U.S. Mortgage Rates", path: "/mfin/economy/mortgage-rates"}
     ]
   }   
   ,{
     name: "MFIN",
     open: true,
     pages: [
-      {name: "Equity Research (GRMN)", path: "/finance/investments/equity-research"},
-      {name: "Financial Modeling (AAPL) ", path: "/finance/cost-managerial-analysis/financial-model-apple"},
-      {name: "Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices"},
-      {name: "Market News", path: "/finance/financial-markets/market-news"},
-      {name: "Financial Statements", path: "/finance/coporate-finance/financial-statements"},
-      {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
-      {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"},
-      {name: "Foreign Exchange Rates", path: "/finance/financial-markets/fx-rates"},
-      {name: "Commodity Prices", path: "/finance/financial-markets/commodity-prices"},
-      {name: "Bond Prices", path: "/finance/financial-markets/bond-prices"},
-      {name: "IPO Calendar", path: "/finance/financial-markets/ipo-calendar"}
-      // {name: "Data Extraction (Open Server)", path: "/finance/Data-Extraction/Individual/data-extraction-sql"},
-      // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/finance/Data-Extraction/Team/data-extraction-team"}
+      {name: "Equity Research (GRMN)", path: "/mfin/investments/equity-research"},
+      {name: "Financial Modeling (AAPL) ", path: "/mfin/cost-managerial-analysis/financial-model-apple"},
+      {name: "Stock & Crypto Prices", path: "/mfin/financial-markets/stock-crypto-prices"},
+      {name: "Market News", path: "/mfin/financial-markets/market-news"},
+      {name: "Financial Statements", path: "/mfin/coporate-finance/financial-statements"},
+      {name: "DCF Analysis", path: "/mfin/coporate-finance/company-dcf"},
+      {name: "M&A Transactions", path: "/mfin/coporate-finance/ma-transactions"},
+      {name: "Foreign Exchange Rates", path: "/mfin/financial-markets/fx-rates"},
+      {name: "Commodity Prices", path: "/mfin/financial-markets/commodity-prices"},
+      {name: "Bond Prices", path: "/mfin/financial-markets/bond-prices"},
+      {name: "IPO Calendar", path: "/mfin/financial-markets/ipo-calendar"}
+      // {name: "Data Extraction (Open Server)", path: "/mfin/Data-Extraction/Individual/data-extraction-sql"},
+      // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/mfin/Data-Extraction/Team/data-extraction-team"}
     ]
   }
   
@@ -82,8 +82,8 @@ const navigationPages = [
     //   name: "Quantitative Finance",
     //   open: true,
     //   pages: [
-      //     {name: "Option Pricing Model", path: "/finance/quantitative-finance/option-pricing-model"},
-      //     {name: "Naive Arbitrage for Trading", path: "/finance/quantitative-finance/naive-arb-trading"}
+      //     {name: "Option Pricing Model", path: "/mfin/quantitative-mfin/option-pricing-model"},
+      //     {name: "Naive Arbitrage for Trading", path: "/mfin/quantitative-mfin/naive-arb-trading"}
     //   ]
     // }
     
@@ -91,9 +91,9 @@ const navigationPages = [
       name: "MBAN",
       open: true,
       pages: [
-        {name: "H1-B 2024 Lottery (Power BI)", path: "/analytics/h1b-2024-analysis"},
-        {name: "Portfolio Construction/Optimization", path: "/analytics/portfolio-construction"},
-        {name: "Portfolio Analysis (SQL & Tableau)", path: "/analytics/data-extraction-individual"}
+        {name: "H1-B 2024 Lottery (Power BI)", path: "/mban/h1b-2024-analysis"},
+        {name: "Portfolio Construction/Optimization", path: "/mban/portfolio-construction"},
+        {name: "Portfolio Analysis (SQL & Tableau)", path: "/mban/data-extraction-individual"}
       // // {name: "Data Extraction (Open Server)", path: "/Data-Extraction/Individual/data-extraction-sql"},
       // // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/Data-Extraction/Team/data-extraction-team"}
       // {name: "Apple Financial Model (Excel)", path: "/Cost-Managerial-Analysis/financial-model-apple"}
