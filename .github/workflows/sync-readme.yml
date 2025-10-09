@@ -1,0 +1,48 @@
+name: Sync README to Profile
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'README.md'
+  workflow_dispatch:
+
+jobs:
+  sync-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+    - name: Checkout source repository
+      uses: actions/checkout@v4
+
+    - name: Push README to profile repository
+      env:
+        TARGET_REPO: renan-peres/renan-peres
+        TARGET_FILE: README.md
+        SOURCE_FILE: README.md
+        GH_TOKEN: ${{ secrets.PROFILE_SYNC_TOKEN }}
+      run: |
+        # Configure git
+        git config --global user.email "github@renanperes.com"
+        git config --global user.name "renan-peres"
+        
+        # Clone the target repository
+        git clone https://x-access-token:${GH_TOKEN}@github.com/${TARGET_REPO}.git target-repo
+        
+        # Copy the README file
+        cp ${SOURCE_FILE} target-repo/${TARGET_FILE}
+        
+        # Commit and push changes
+        cd target-repo
+        git add ${TARGET_FILE}
+        
+        # Only commit if there are changes
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Sync README from website repository"
+          git push
+          echo "README synced successfully"
+        fi
