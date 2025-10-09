@@ -150,6 +150,7 @@ const HEADER =  `
       display: flex;
       gap: 1rem;
       margin: 0.5rem 0;
+      align-items: center;
     }
     .nav-link {
       text-decoration: none;
@@ -161,6 +162,45 @@ const HEADER =  `
     .nav-link:hover {
       background-color: #161616;
       color: #666;
+    }
+    .social-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-left: 1rem;
+    }
+    .social-links a {
+      position: relative;
+    }
+    .social-links a img {
+      height: 24px;
+    }
+    .resume-preview {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 10px;
+      width: 600px;
+      height: 800px;
+      background: white;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+      overflow: hidden;
+    }
+    .resume-preview iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .social-links a.resume-link:hover .resume-preview {
+      opacity: 1;
+      pointer-events: auto;
     }
   </style>
   
@@ -200,6 +240,32 @@ const HEADER =  `
          prevPath ? '<a href="' + prevPath + '" class="nav-link prev-link">← Previous</a>' : '') +
         (nextPath ? '<a href="' + nextPath + '" class="nav-link next-link">Next →</a>' : '')
       );
+    </script>
+    
+    <script>
+      // Only show social links on index page
+      const isIndexPage = window.location.pathname === '/' || window.location.pathname === '/index';
+      if (isIndexPage) {
+        document.write(\`
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/renanperes/">
+              <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
+            </a>
+            <a href="mailto:contact@renanperes.com">
+              <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=mail.ru&logoColor=white" alt="Email"/>
+            </a>
+            <a href="https://github.com/renan-peres">
+              <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
+            </a>
+            <a href="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4" target="_blank" class="resume-link">
+              <img src="https://img.shields.io/badge/Resume-4285F4?style=for-the-badge&logo=googledocs&logoColor=white" alt="Resume"/>
+              <div class="resume-preview">
+                <iframe src="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4?embed=true"></iframe>
+              </div>
+            </a>
+          </div>
+        \`);
+      }
     </script>
   </div>
   

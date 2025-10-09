@@ -7,6 +7,16 @@ const projects = [
     link: "/analytics/mban/h1b-2024-analysis",
   },
   {
+    title: "Portfolio Construction & Optimization",
+    description: "Dashboard showcasing the process used for building and optimizing investment portfolios",
+    link: "/finance/mfin/spring-25/portfolio-management/portfolio-construction",
+  },
+  {
+    title: "Portfolio Analysis (Tableau & SQL)",
+    description: "SQL-powered portfolio analytics with Tableau visualizations",
+    link: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual",
+  },
+  {
     title: "Stock & Crypto Prices",
     description: "Live market quotes for stocks and cryptocurrencies",
     link: "/finance/financial-markets/stock-crypto-prices",
@@ -20,11 +30,6 @@ const projects = [
     title: "Macro Economy Indicators",
     description: "Key U.S. macroeconomic metrics dashboard",
     link: "/finance/economy/macro-indicators",
-  },
-  {
-    title: "Portfolio Analysis (Tableau",
-    description: "SQL-powered portfolio analytics with Tableau visualizations",
-    link: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual",
   },
   {
     title: "Apple Financial Model",

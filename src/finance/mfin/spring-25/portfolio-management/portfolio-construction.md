@@ -44,7 +44,7 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 # Portfolio Construction
 ## Portfolio Management (Spring 2025)
 
-```js
+<!-- ```js
 // Simple date display
 const formattedDate = new Date().toLocaleDateString('en-US', {
   weekday: 'long',
@@ -54,14 +54,9 @@ const formattedDate = new Date().toLocaleDateString('en-US', {
 });
 
 display(html`<div style="font-size: 0.9em; margin-bottom: 10px;">Date: ${formattedDate}</div>`);
-```
+``` -->
 
 View Dashboard: [Portfolio Construction & Optimization](https://portfolio-management.renanperes.com/)
-
-
-<!-- ---
-## Dashboard
-View Dashboard: [Portfolio Construction & Optimization](https://portfolio-management.renanperes.com/) -->
 
 <!-- The interactive dashboard provides a holistic view of the portfolio construction process. It demonstrates the systematic application of portfolio theory across multiple dimensions:
 - Capital Allocation: Visualizes the optimal allocation between risky assets and risk-free investments based on risk preferences 
@@ -71,7 +66,7 @@ View Dashboard: [Portfolio Construction & Optimization](https://portfolio-manage
 
 Use the fullscreen button for a more immersive analysis experience. -->
 
-<!-- ```js
+```js
 const investmentPortfolioDashboard = html`
   <div>
     <button 
@@ -99,7 +94,7 @@ const investmentPortfolioDashboard = html`
 `;
 
 display(investmentPortfolioDashboard);
-``` -->
+```
 
 <!-- --- -->
 <!-- ## Excel Models

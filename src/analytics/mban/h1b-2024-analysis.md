@@ -73,7 +73,7 @@ async function toParquet(duckDbClient, {table = "data", originalName = table, na
 
 # Power BI Dashboard
 
-```html
+<!-- ```html
 <div style="width: 100%; height: 800px; position: relative;">
   <iframe 
     title="H1B 2024" 
@@ -84,7 +84,41 @@ async function toParquet(duckDbClient, {table = "data", originalName = table, na
     allowFullScreen="true">
   </iframe>
 </div>
-```
+``` -->
 
+---
+
+```js
+const dashboard = html`
+  <div>
+    <button 
+      style="margin-bottom: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+      onclick=${(e) => {
+        const iframe = e.target.parentElement.querySelector('iframe');
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+          iframe.msRequestFullscreen();
+        }
+      }}>
+      Fullscreen
+    </button>
+    <div style="width: 100%; height: 800x; position: relative;">
+      <iframe 
+        title="H1B 2024" 
+        width="100%" 
+        height="800" 
+        src="https://app.fabric.microsoft.com/view?r=eyJrIjoiNzAxYjUwNjEtMzExNy00NWQ4LTlmMDgtMDA2Y2UwMWFkNTgxIiwidCI6IjdiMDVjYmU0LTI1OWItNGFlZS1hMGRkLWRiM2JlZTVkYTFjYSIsImMiOjJ9" 
+        frameborder="0" 
+        allowFullScreen="true">
+      </iframe>
+    </div>
+  </div>
+`;
+
+display(dashboard);
+```
 
 ---
