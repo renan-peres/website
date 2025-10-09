@@ -22,14 +22,18 @@ jobs:
         TARGET_REPO: renan-peres/renan-peres
         TARGET_FILE: README.md
         SOURCE_FILE: README.md
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.PROFILE_SYNC_TOKEN }}
       run: |
         # Configure git
         git config --global user.email "github@renanperes.com"
         git config --global user.name "renan-peres"
         
-        # Clone the target repository using GITHUB_TOKEN
-        git clone https://$GITHUB_TOKEN@github.com/${TARGET_REPO}.git target-repo
+        # Set up git credential helper to use the token
+        git config --global credential.helper store
+        echo "https://oauth2:${GH_TOKEN}@github.com" > ~/.git-credentials
+        
+        # Clone the target repository
+        git clone https://github.com/${TARGET_REPO}.git target-repo
         
         # Copy the README file
         cp ${SOURCE_FILE} target-repo/${TARGET_FILE}
@@ -43,6 +47,9 @@ jobs:
           echo "No changes to commit"
         else
           git commit -m "Sync README from website repository"
-          git push https://$GITHUB_TOKEN@github.com/${TARGET_REPO}.git
+          git push
           echo "README synced successfully"
         fi
+        
+        # Clean up credentials
+        rm -f ~/.git-credentials
