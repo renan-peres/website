@@ -28,9 +28,7 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 
 /* Fixed header container */
 .fixed-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  position: relative;
   padding-bottom: 0rem;
 }
 
@@ -55,8 +53,8 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin: 1rem 0;
-  padding: 0.2rem 0;
+  margin: 0rem 0;
+  padding: 1rem 0;
   flex-wrap: wrap;
 }
 
@@ -118,7 +116,7 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 </style>
 ```
 
-<div class="fixed-header">
+<div class="">
   <div class="hero-banner">
     <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1759764982/11_LinkedIn_Banner_Animated_yo066k.gif" alt="Renan Peres - Finance & Analytics Professional" loading="eager" />
   </div>
