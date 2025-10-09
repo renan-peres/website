@@ -48,10 +48,10 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 ```
 
 ```js
-import {datetime} from "../../../../../assets/components/datetime.js";
+import {datetime} from "../assets/components/datetime.js";
 import {getDefaultClient} from "observablehq:stdlib/duckdb";
 import * as XLSX from "npm:xlsx";
-import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../../../../../assets/components/tableFormatting.js";
+import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../assets/components/tableFormatting.js";
 import * as htl from "htl";
 import * as arrow from "apache-arrow";
 
@@ -93,11 +93,11 @@ const returnInput = view(Inputs.range([0, 750], {
   <div id="datetime"></div>
 </div>
 
-This project presents a comprehensive portfolio analysis tool combining SQL-based data extraction with Tableau visualization capabilities. The system analyzes financial portfolio data for customer #128 (Bojana Popovic), providing insights into investment performance, risk assessment, and potential portfolio optimization opportunities. By leveraging both SQL for complex calculations and Tableau for visualization, the project delivers a complete view of the client's investment portfolio.
+This project presents a comprehensive portfolio analysis tool combining SQL-based data extraction with Tableau visualization capabilities. The system analyzes financial portfolio data for an individual client, providing insights into investment performance, risk assessment, and potential portfolio optimization opportunities.
 
 ---
 
-## Key Features
+## Features
 - DuckDB integration for efficient data processing
 - Sequential query execution for streamlined analysis
 - Responsive full-width layout design
@@ -106,7 +106,7 @@ This project presents a comprehensive portfolio analysis tool combining SQL-base
 - Automated data processing and handling
 - Real-time data extraction capabilities
 
-### [Part 1: Data Extraction (SQL)](#part-1-data-extraction-sql-1)
+### [Part 1: Data Extraction (SQL)](#data-extraction-sql-1)
 The SQL component integrates multiple data sources including account dimensions, customer details, holdings, and pricing information. It processes this data through a series of analytical queries:
 
 - **SQL View**: Creates a comprehensive view consolidating all client portfolio data with relevant dimensions and metrics
@@ -115,7 +115,7 @@ The SQL component integrates multiple data sources including account dimensions,
 - **Query 3**: Identifies potential investment opportunities by analyzing securities not currently in the portfolio
 - **Query 4**: Calculates risk-adjusted returns (Sharpe-like ratio) to determine optimal investment efficiency
 
-### [Part 2: Interactive Dashboard (Tableau)](#part-2-interactive-dashboard-tableau-1)
+### [Part 2: Interactive Dashboard (Tableau)](#interactive-dashboard-tableau-1)
 The Tableau dashboard provides an interactive visualization layer that transforms the SQL analysis into actionable insights:
 
 - Asset allocation breakdown and portfolio composition
@@ -129,7 +129,7 @@ This dual-approach methodology combines the computational power of SQL with the 
 
 ---
 
-# Part 2: Interactive Dashboard (Tableau) 
+# Interactive Dashboard (Tableau) 
 
 ```js
 const fullscreenBtn = htl.html`
@@ -195,7 +195,7 @@ const fullscreenBtn = htl.html`
 
 ---
 
-# Part 1: Data Extraction (SQL)
+# Data Extraction (SQL)
 
 ```sql id=tables
 SELECT DISTINCT table_name 
@@ -218,56 +218,27 @@ FROM ${selectedTable.table_name}
 LIMIT 10`;
 
 // Execute and display query results
-const queryResult = predefinedDb.query(code);
-display(Inputs.table(queryResult));
+const queryResult = await predefinedDb.query(code);
 
-// Display download buttons if we have results
-if (queryResult) {
-  display(html`
-    <div class="flex gap-6 mt-4">
-      <button
-        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
-        onclick=${async function() {
-          this.disabled = true;
-          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${code}`);
-          await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
-          const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
-          const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
-          download(file);
-          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
-          this.disabled = false;
-        }}
-      >
-        Download Result as CSV
-      </button>
-      <button
-        class="px-6 py-2 ml-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-green-400"
-        onclick=${async function() {
-          this.disabled = true;
-          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${code}`);
-          const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
-          const parquetFile = await toParquet(predefinedDb, {
-            table: tmpTable,
-            name: `result_${timestamp}.parquet`
-          });
-          download(parquetFile);
-          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
-          this.disabled = false;
-        }}
-      >
-        Download Result as Parquet
-      </button>
-    </div>
-  `);
-}
+const tableConfig = getCustomTableFormat(queryResult, {
+  ...DEFAULT_CONFIG,
+  datasetName: 'query_result'
+});
+
+// Create collapsible content with download buttons
+const collapsibleContent = htl.html`
+  ${tableConfig.container}
+  ${Inputs.table(tableConfig.dataArray, tableConfig)}
+`;
+
+// Display the collapsible section
+display(createCollapsibleSection(collapsibleContent, "Show Data", "show"));
 ```
 
 ---
 
 ## SQL View: Customer Portfolio
-- Step1: Identify your client (listed above) in your database - learn about your client and what they have. Create all required relationships between tables (joins) to better understand what assets your client has, asset classifications, asset types and prices.  
+- Step 1: Identify your client (listed above) in your database - learn about your client and what they have. Create all required relationships between tables (joins) to better understand what assets your client has, asset classifications, asset types and prices.  
 
 - Step 2: Once you get that large joined table with all your client's assets and their prices (from Step1) - use that data to create a VIEW in the invest schema with data for your client.  This view should have the following information: asset classification (major and minor), asset names, asset types, prices with pricing information and dates and have ONLY the data related to your client. Make sure to add all necessary filters for your VIEW.
 
@@ -283,12 +254,12 @@ SQL VIEW: This VIEW below contains the daily pricing (adjusted) details for the 
 */
 
 SELECT 
-	pd.date,
+    pd.date,
     cd.customer_id,
     cd.full_name,
     ad.account_id,
     ad.main_account AS main_account_id,
-	hc.ticker,
+    hc.ticker,
     sm.security_name,
     sm.sec_type,
     sm.major_asset_class,
@@ -321,50 +292,22 @@ FROM RenanPeres`,
 
 ```js
 // Execute and display pre-built query results
-const prebuiltQueryResult = predefinedDb.query(prebuiltCode);
-display(Inputs.table(prebuiltQueryResult));
+const prebuiltQueryResult = await predefinedDb.query(prebuiltCode);
 
-// Display download buttons if we have results
-if (prebuiltQueryResult) {
-  display(html`
-    <div class="flex gap-6 mt-4">
-      <button
-        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
-        onclick=${async function() {
-          this.disabled = true;
-          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${prebuiltCode}`);
-          await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
-          const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
-          const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
-          download(file);
-          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
-          this.disabled = false;
-        }}
-      >
-        Download Result as CSV
-      </button>
-      <button
-        class="px-6 py-2 ml-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-green-400"
-        onclick=${async function() {
-          this.disabled = true;
-          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${prebuiltCode}`);
-          const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
-          const parquetFile = await toParquet(predefinedDb, {
-            table: tmpTable,
-            name: `result_${timestamp}.parquet`
-          });
-          download(parquetFile);
-          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
-          this.disabled = false;
-        }}
-      >
-        Download Result as Parquet
-      </button>
-    </div>
-  `);
-}
+const tableConfig1 = getCustomTableFormat(prebuiltQueryResult, {
+  ...DEFAULT_CONFIG,
+  datasetName: 'sql_view_result',
+  db: predefinedDb
+});
+
+// Create collapsible content
+const collapsibleContent1 = htl.html`
+  ${tableConfig1.container}
+  ${Inputs.table(tableConfig1.dataArray, tableConfig1)}
+`;
+
+// Display the collapsible section
+display(createCollapsibleSection(collapsibleContent1, "Show Data", "show"));
 ```
 
 ---
@@ -430,16 +373,6 @@ FROM sec_ror;`,
     if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
   }
 }));
-
-// Execute query and trigger next one
-const rorQueryResult = predefinedDb.query(rorCode);
-display(Inputs.table(rorQueryResult));
-setTimeout(() => {
-  const riskCode1Element = document.querySelector('#risk-code-1');
-  if (riskCode1Element) {
-    riskCode1Element.dispatchEvent(new Event('input'));
-  }
-}, 1000);
 ```
 
 ```js
@@ -488,6 +421,8 @@ if (rorQueryResult) {
     </div>
   `);
 }
+
+// Note: Auto-execution removed to prevent iframe navigation issues
 ```
 
 ---
@@ -552,64 +487,26 @@ JOIN std ON std.ticker = ror.ticker;`,
     if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
   }
 }));
-
-// Execute query and trigger next one
-const riskQueryResult1 = predefinedDb.query(riskCode1);
-display(Inputs.table(riskQueryResult1));
-setTimeout(() => {
-  const question3Element = document.querySelector('#question-3');
-  if (question3Element) {
-    question3Element.dispatchEvent(new Event('input'));
-  }
-}, 1000);
 ```
 
 ```js
 // Execute and display pre-built query results
-const riskQueryResult1 = predefinedDb.query(riskCode1);
-display(Inputs.table(riskQueryResult1));
+const riskQueryResult1 = await predefinedDb.query(riskCode1);
 
-// Display download buttons if we have results
-if (riskQueryResult1) {
-  display(html`
-    <div class="flex gap-6 mt-4">
-      <button
-        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
-        onclick=${async function() {
-          this.disabled = true;
-          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${riskCode1}`);
-          await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
-          const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
-          const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
-          download(file);
-          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
-          this.disabled = false;
-        }}
-      >
-        Download Result as CSV
-      </button>
-      <button
-        class="px-6 py-2 ml-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-green-400"
-        onclick=${async function() {
-          this.disabled = true;
-          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${riskCode1}`);
-          const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
-          const parquetFile = await toParquet(predefinedDb, {
-            table: tmpTable,
-            name: `result_${timestamp}.parquet`
-          });
-          download(parquetFile);
-          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
-          this.disabled = false;
-        }}
-      >
-        Download Result as Parquet
-      </button>
-    </div>
-  `);
-}
+const tableConfig2 = getCustomTableFormat(riskQueryResult1, {
+  ...DEFAULT_CONFIG,
+  datasetName: 'risk_analysis_result',
+  db: predefinedDb
+});
+
+// Create collapsible content
+const collapsibleContent2 = htl.html`
+  ${tableConfig2.container}
+  ${Inputs.table(tableConfig2.dataArray, tableConfig2)}
+`;
+
+// Display the collapsible section
+display(createCollapsibleSection(collapsibleContent2, "Show Data", "show"));
 ```
 
 ---
@@ -706,64 +603,26 @@ ORDER BY
     if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
   }
 }));
-
-// Execute query and trigger next one
-const question3Result = predefinedDb.query(question3);
-display(Inputs.table(question3Result));
-setTimeout(() => {
-  const riskCode2Element = document.querySelector('#risk-code-2');
-  if (riskCode2Element) {
-    riskCode2Element.dispatchEvent(new Event('input'));
-  }
-}, 1000);
 ```
 
 ```js
 // Execute and display pre-built query results
-const question3Result = predefinedDb.query(question3);
-display(Inputs.table(question3Result));
+const question3Result = await predefinedDb.query(question3);
 
-// Display download buttons if we have results
-if (question3Result) {
-  display(html`
-    <div class="flex gap-6 mt-4">
-      <button
-        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
-        onclick=${async function() {
-          this.disabled = true;
-          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${question3}`);
-          await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
-          const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
-          const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
-          download(file);
-          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
-          this.disabled = false;
-        }}
-      >
-        Download Result as CSV
-      </button>
-      <button
-        class="px-6 py-2 ml-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-green-400"
-        onclick=${async function() {
-          this.disabled = true;
-          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${question3}`);
-          const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
-          const parquetFile = await toParquet(predefinedDb, {
-            table: tmpTable,
-            name: `result_${timestamp}.parquet`
-          });
-          download(parquetFile);
-          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
-          this.disabled = false;
-        }}
-      >
-        Download Result as Parquet
-      </button>
-    </div>
-  `);
-}
+const tableConfig3 = getCustomTableFormat(question3Result, {
+  ...DEFAULT_CONFIG,
+  datasetName: 'investment_suggestion_result',
+  db: predefinedDb
+});
+
+// Create collapsible content
+const collapsibleContent3 = htl.html`
+  ${tableConfig3.container}
+  ${Inputs.table(tableConfig3.dataArray, tableConfig3)}
+`;
+
+// Display the collapsible section
+display(createCollapsibleSection(collapsibleContent3, "Show Data", "show"));
 ```
 
 ---
@@ -827,48 +686,20 @@ display(Inputs.table(riskQueryResult2));
 
 ```js
 // Execute and display pre-built query results
-const riskQueryResult2 = predefinedDb.query(riskCode2);
-display(Inputs.table(riskQueryResult2));
+const riskQueryResult2 = await predefinedDb.query(riskCode2);
 
-// Display download buttons if we have results
-if (riskQueryResult2) {
-  display(html`
-    <div class="flex gap-6 mt-4">
-      <button
-        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400"
-        onclick=${async function() {
-          this.disabled = true;
-          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${riskCode2}`);
-          await predefinedDb.query(`COPY ${tmpTable} TO '${tmpTable}.csv' WITH (FORMAT CSV, HEADER)`);
-          const buffer = await predefinedDb._db.copyFileToBuffer(`${tmpTable}.csv`);
-          const file = new File([buffer], `result_${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}.csv`, { type: "text/csv" });
-          download(file);
-          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
-          this.disabled = false;
-        }}
-      >
-        Download Result as CSV
-      </button>
-      <button
-        class="px-6 py-2 ml-4 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-green-400"
-        onclick=${async function() {
-          this.disabled = true;
-          const tmpTable = "query_result_" + (Math.random() * 1e16).toString(16);
-          await predefinedDb.query(`CREATE TABLE ${tmpTable} AS ${riskCode2}`);
-          const timestamp = `${new Date().toISOString().split('T')[0]}_${new Date().toTimeString().split(' ')[0].replace(/:/g, '-')}`;
-          const parquetFile = await toParquet(predefinedDb, {
-            table: tmpTable,
-            name: `result_${timestamp}.parquet`
-          });
-          download(parquetFile);
-          await predefinedDb.query(`DROP TABLE ${tmpTable}`);
-          this.disabled = false;
-        }}
-      >
-        Download Result as Parquet
-      </button>
-    </div>
-  `);
-}
+const tableConfig4 = getCustomTableFormat(riskQueryResult2, {
+  ...DEFAULT_CONFIG,
+  datasetName: 'risk_adjusted_returns_result',
+  db: predefinedDb
+});
+
+// Create collapsible content
+const collapsibleContent4 = htl.html`
+  ${tableConfig4.container}
+  ${Inputs.table(tableConfig4.dataArray, tableConfig4)}
+`;
+
+// Display the collapsible section
+display(createCollapsibleSection(collapsibleContent4, "Show Data", "show"));
 ```

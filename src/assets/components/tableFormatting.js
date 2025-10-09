@@ -6,7 +6,7 @@ const DEFAULT_CONFIG = {
   rows: 15,
   datasetName: "data",
   dateColumns: ['Date', 'date', 'created_date', 'updated_date', 'date_of_birth', 'time', 'pickup', 
-              'dropoff', 'birthday', 'First Inauguration Date', 'last_updated', 'retrieved_time'],
+              'dropoff', 'birthday', 'First Inauguration Date', 'last_updated', 'retrieved_time', 'acct_open_date'],
   dateFormat: d3.timeFormat("%Y-%m-%d"),
   decimalColumns: [],
   formatSpecifiers: {},

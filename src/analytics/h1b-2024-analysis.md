@@ -42,10 +42,10 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 ```
 
 ```js
-import {datetime} from "../../assets/components/datetime.js";
+import {datetime} from "../assets/components/datetime.js";
 import {getDefaultClient} from "observablehq:stdlib/duckdb";
 import * as XLSX from "npm:xlsx";
-import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../../assets/components/tableFormatting.js";
+import { DEFAULT_CONFIG, getCustomTableFormat, formatUrl, createCollapsibleSection } from "../assets/components/tableFormatting.js";
 import * as htl from "htl";
 import * as arrow from "apache-arrow";
 

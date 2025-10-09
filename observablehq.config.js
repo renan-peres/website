@@ -57,61 +57,46 @@ const navigationPages = [
       {name: "U.S. Monetary Base", path: "/finance/economy/monetary-base"},
       {name: "U.S. Mortgage Rates", path: "/finance/economy/mortgage-rates"}
     ]
-  }
-  
-  ,{
-    name: "Financial Markets",
-    open: false,
-    pages: [
-      {name: "Market News", path: "/finance/financial-markets/market-news"},
-      {name: "Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices"},
-      {name: "Foreign Exchange Rates", path: "/finance/financial-markets/fx-rates"},
-      {name: "Commodity Prices", path: "/finance/financial-markets/commodity-prices"},
-      {name: "Bond Prices", path: "/finance/financial-markets/bond-prices"},
-      {name: "IPO Calendar", path: "/finance/financial-markets/ipo-calendar"}
-    ]
-  }
-  
-    ,{
-      name: "Coporate Finance",
-      open: false,
-      pages: [
-        {name: "Financial Statements", path: "/finance/coporate-finance/financial-statements"},
-        {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
-        {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"}
-      ]
-    }
-  
+  }   
   ,{
     name: "MFIN",
     open: true,
     pages: [
-      {name: "Portfolio Construction", path: "/finance/mfin/spring-25/portfolio-management/portfolio-construction"},
-      {name: "Equity Research (GRMN)", path: "/finance/mfin/spring-25/investments/equity-research"},
-      {name: "Financial Model (AAPL) ", path: "/finance/mfin/fall-24/cost-managerial-analysis/financial-model-apple"},
-      {name: "Portfolio Analysis (SQL & Tableau)", path: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual"}
-      // {name: "Data Extraction (Open Server)", path: "/finance/mfin/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
-      // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/finance/mfin/Fall-24/Data-Extraction/Team/data-extraction-team"}
+      {name: "Equity Research (GRMN)", path: "/finance/investments/equity-research"},
+      {name: "Financial Modeling (AAPL) ", path: "/finance/cost-managerial-analysis/financial-model-apple"},
+      {name: "Stock & Crypto Prices", path: "/finance/financial-markets/stock-crypto-prices"},
+      {name: "Market News", path: "/finance/financial-markets/market-news"},
+      {name: "Financial Statements", path: "/finance/coporate-finance/financial-statements"},
+      {name: "DCF Analysis", path: "/finance/coporate-finance/company-dcf"},
+      {name: "M&A Transactions", path: "/finance/coporate-finance/ma-transactions"},
+      {name: "Foreign Exchange Rates", path: "/finance/financial-markets/fx-rates"},
+      {name: "Commodity Prices", path: "/finance/financial-markets/commodity-prices"},
+      {name: "Bond Prices", path: "/finance/financial-markets/bond-prices"},
+      {name: "IPO Calendar", path: "/finance/financial-markets/ipo-calendar"}
+      // {name: "Data Extraction (Open Server)", path: "/finance/Data-Extraction/Individual/data-extraction-sql"},
+      // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/finance/Data-Extraction/Team/data-extraction-team"}
     ]
   }
   
-    // ,{
+  // ,{
     //   name: "Quantitative Finance",
     //   open: true,
     //   pages: [
-    //     {name: "Option Pricing Model", path: "/finance/quantitative-finance/option-pricing-model"},
-    //     {name: "Naive Arbitrage for Trading", path: "/finance/quantitative-finance/naive-arb-trading"}
+      //     {name: "Option Pricing Model", path: "/finance/quantitative-finance/option-pricing-model"},
+      //     {name: "Naive Arbitrage for Trading", path: "/finance/quantitative-finance/naive-arb-trading"}
     //   ]
     // }
-  
-  ,{
-    name: "MBAN",
-    open: true,
-    pages: [
-      {name: "H1-B 2024 Lottery", path: "/analytics/mban/h1b-2024-analysis"},
-      // // {name: "Data Extraction (Open Server)", path: "/mfin/Fall-24/Data-Extraction/Individual/data-extraction-sql"},
-      // // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/mfin/Fall-24/Data-Extraction/Team/data-extraction-team"}
-      // {name: "Apple Financial Model (Excel)", path: "/mfin/Fall-24/Cost-Managerial-Analysis/financial-model-apple"}
+    
+    ,{
+      name: "MBAN",
+      open: true,
+      pages: [
+        {name: "H1-B 2024 Lottery (Power BI)", path: "/analytics/h1b-2024-analysis"},
+        {name: "Portfolio Construction/Optimization", path: "/analytics/portfolio-construction"},
+        {name: "Portfolio Analysis (SQL & Tableau)", path: "/analytics/data-extraction-individual"}
+      // // {name: "Data Extraction (Open Server)", path: "/Data-Extraction/Individual/data-extraction-sql"},
+      // // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/Data-Extraction/Team/data-extraction-team"}
+      // {name: "Apple Financial Model (Excel)", path: "/Cost-Managerial-Analysis/financial-model-apple"}
     ]
   }
 

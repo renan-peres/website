@@ -4,7 +4,7 @@ const projects = [
   {
     title: "H1-B Visa Analysis (Power BI)",
     description: "H1-B 2024 Lottery Data Analysis in Power BI",
-    link: "/analytics/mban/h1b-2024-analysis",
+    link: "/analytics/h1b-2024-analysis",
   },
   {
     title: "Portfolio Construction & Optimization",
@@ -14,7 +14,7 @@ const projects = [
   {
     title: "Portfolio Analysis (Tableau & SQL)",
     description: "SQL-powered portfolio analytics with Tableau visualizations",
-    link: "/finance/mfin/fall-24/data-extraction-visualization/individual/data-extraction-individual",
+    link: "/analytics/data-extraction-individual",
   },
   {
     title: "Stock & Crypto Prices",
@@ -34,12 +34,12 @@ const projects = [
   {
     title: "Apple Financial Model",
     description: "Detailed financial modeling analysis of Apple Inc.",
-    link: "/finance/mfin/fall-24/cost-managerial-analysis/financial-model-apple",
+    link: "/finance/cost-managerial-analysis/financial-model-apple",
   },
   {
     title: "Garmin Equity Research", 
     description: "Comprehensive research of Garmin Ltd.",
-    link: "/finance/mfin/spring-25/investments/equity-research"
+    link: "/finance/investments/equity-research"
   },
   {
     title: "U.S. Mortgage Rates",
