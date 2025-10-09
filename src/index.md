@@ -26,11 +26,19 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
   padding-right: 0 !important;
 }
 
+/* Fixed header container */
+.fixed-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding-bottom: 0rem;
+}
+
 /* Hero section styling */
 .hero-banner {
   position: relative;
   width: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
@@ -47,7 +55,8 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin: 2rem 0;
+  margin: 1rem 0;
+  padding: 0.2rem 0;
   flex-wrap: wrap;
 }
 
@@ -109,31 +118,33 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 </style>
 ```
 
-<div class="hero-banner">
-  <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1759764982/11_LinkedIn_Banner_Animated_yo066k.gif" alt="Renan Peres - Finance & Analytics Professional" loading="eager" />
-</div>
+<div class="fixed-header">
+  <div class="hero-banner">
+    <img src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1759764982/11_LinkedIn_Banner_Animated_yo066k.gif" alt="Renan Peres - Finance & Analytics Professional" loading="eager" />
+  </div>
 
-<div class="social-links-container">
-  <a href="https://www.linkedin.com/in/renanperes/" aria-label="LinkedIn Profile">
-    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
-  </a>
-  <a href="mailto:contact@renanperes.com" aria-label="Email Contact">
-    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=mail.ru&logoColor=white" alt="Email"/>
-  </a>
-  <a href="https://github.com/renan-peres" aria-label="GitHub Profile">
-    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
-  </a>
-  <a href="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4" target="_blank" class="resume-link" aria-label="View Resume">
-    <img src="https://img.shields.io/badge/Resume-4285F4?style=for-the-badge&logo=googledocs&logoColor=white" alt="Resume"/>
-    <div class="resume-preview">
-      <iframe src="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4?embed=true" title="Resume Preview"></iframe>
-    </div>
-  </a>
+  <div class="social-links-container">
+    <a href="https://www.linkedin.com/in/renanperes/" aria-label="LinkedIn Profile">
+      <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
+    </a>
+    <a href="mailto:contact@renanperes.com" aria-label="Email Contact">
+      <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=mail.ru&logoColor=white" alt="Email"/>
+    </a>
+    <a href="https://github.com/renan-peres" aria-label="GitHub Profile">
+      <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
+    </a>
+    <a href="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4" target="_blank" class="resume-link" aria-label="View Resume">
+      <img src="https://img.shields.io/badge/Resume-4285F4?style=for-the-badge&logo=googledocs&logoColor=white" alt="Resume"/>
+      <div class="resume-preview">
+        <iframe src="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4?embed=true" title="Resume Preview"></iframe>
+      </div>
+    </a>
+  </div>
 </div>
-
----
 
 ## About Me
+
+---
 
 Hi, I'm **Renan Peres** — a multilingual **Finance & Analytics** professional with expertise in transforming complex financial data into actionable insights and strategic investment decisions.
 
@@ -395,8 +406,6 @@ Experience includes developing cloud analytics environments, ETL pipelines, auto
   </div>
 </div>
 
----
-
 <!-- ## 🛠️ Technical Skills & Technologies
 
 <div class="skills-section">
@@ -465,6 +474,8 @@ Experience includes developing cloud analytics environments, ETL pipelines, auto
 --- -->
 
 ## Featured Projects
+
+---
 
 ```js
 import { ProjectShowcase } from "./assets/components/projectShowcase.js";

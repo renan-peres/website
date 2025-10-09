@@ -6,58 +6,28 @@ const SOURCE_REPO = "https://github.com/renan-peres/website/blob/main/src";
 
 const navigationPages = [
   {
-    name: "WASM",
+    name: "Dev",
     open: false,
     pages: [
       {name: "CodeSanbox", path: "/dev/wasm/code-sandbox"},
+      {name: "WebR", path: "/dev/wasm/webr/webr"},
+      {name: "WebR: Shell", path: "/dev/wasm/webr/webr-shell"},
+      {name: "Pyodide: Read Data", path: "/dev/wasm/pyodide/pyodide-read"},
+      {name: "Pyodide: Analytics", path: "/dev/wasm/pyodide/pyodide-analytics"},
+      {name: "Pyodide: Shell", path: "/dev/wasm/pyodide/pyodide-shell"},
+      {name: "Pyodide: Jupyter Lite", path: "/dev/wasm/pyodide/pyodide-jupyterlite"},
       {name: "DuckDB: SQL Playground", path: "/dev/wasm/duckdb/duckdb-sql-playground"},
       {name: "DuckDB: Shell", path: "/dev/wasm/duckdb/duckdb-shell"},
       {name: "DuckDB: Parquet Converter", path: "/dev/wasm/duckdb/duckdb-parquet-converter"},
       {name: "DuckDB: Attach Databases", path: "/dev/wasm/duckdb/duckdb-attach-databases"},
       {name: "DuckDB: Attach S3", path: "/dev/wasm/duckdb/duckdb-attach-s3"},
-      {name: "Pyodide: Read Data", path: "/dev/wasm/pyodide/pyodide-read"},
-      {name: "Pyodide: Analytics", path: "/dev/wasm/pyodide/pyodide-analytics"},
-      {name: "Pyodide: Shell", path: "/dev/wasm/pyodide/pyodide-shell"},
-      {name: "Pyodide: Jupyter Lite", path: "/dev/wasm/pyodide/pyodide-jupyterlite"},
-      {name: "WebR", path: "/dev/wasm/webr/webr"},
-      {name: "WebR: Shell", path: "/dev/wasm/webr/webr-shell"},
-    ]
-  }
-  
-  ,{
-    name: "Utils",
-    open: false,
-    pages: [
       {name: "DuckDB: Line Chart", path: "/dev/utils/duckdb-line"},
       {name: "DuckDB: Choropleth", path: "/dev/utils/duckdb-choropleth"},
       {name: "DuckDB: Mosaic Cross-Filter", path: "/dev/utils/duckdb-mosaic-flights"},
       {name: "Tabulator", path: "/dev/utils/tabulator"},
       {name: "HuggingFace: Serverless API Inference", path: "/dev/utils/huggingface-serverless-api"},
-      // {name: "AG-Grid", path: "/dev/utils/ag-grid"},
-    ]
-   }  
-
-  ,{
-    name: "Quarto",
-    open: false,
-    pages: [
-      {name: "CAPM Modern Portfolio Theory (Python)", path: "/dev/quarto/CAPM-modern-portfolio-theory/CAPM_modern_portfolio_theory"},
-      {name: "Governance Indicators (R)", path: "/dev/quarto/world-gov-indicators/world-gov-indicators"},
-      {name: "HTML Basics (R)", path: "/dev/quarto/html-basics/quarto_html_basics"},
-      {name: "Stock Explorer (Python)", path: "/dev/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
     ]
   }
-  
-  ,{
-    name: "Economy",
-    open: false,
-    pages: [
-      {name: "Economic Calendar", path: "/mfin/economy/economic-calendar"},
-      {name: "U.S. Macro Indicators", path: "/mfin/economy/macro-indicators"},
-      {name: "U.S. Monetary Base", path: "/mfin/economy/monetary-base"},
-      {name: "U.S. Mortgage Rates", path: "/mfin/economy/mortgage-rates"}
-    ]
-  }   
   ,{
     name: "MFIN",
     open: true,
@@ -66,13 +36,17 @@ const navigationPages = [
       {name: "Financial Modeling (AAPL) ", path: "/mfin/cost-managerial-analysis/financial-model-apple"},
       {name: "Stock & Crypto Prices", path: "/mfin/financial-markets/stock-crypto-prices"},
       {name: "Market News", path: "/mfin/financial-markets/market-news"},
+      {name: "Economic Calendar", path: "/mfin/economy/economic-calendar"},
       {name: "Financial Statements", path: "/mfin/coporate-finance/financial-statements"},
       {name: "DCF Analysis", path: "/mfin/coporate-finance/company-dcf"},
       {name: "M&A Transactions", path: "/mfin/coporate-finance/ma-transactions"},
       {name: "Foreign Exchange Rates", path: "/mfin/financial-markets/fx-rates"},
       {name: "Commodity Prices", path: "/mfin/financial-markets/commodity-prices"},
       {name: "Bond Prices", path: "/mfin/financial-markets/bond-prices"},
-      {name: "IPO Calendar", path: "/mfin/financial-markets/ipo-calendar"}
+      {name: "IPO Calendar", path: "/mfin/financial-markets/ipo-calendar"},
+      {name: "U.S. Macro Indicators", path: "/mfin/economy/macro-indicators"},
+      {name: "U.S. Monetary Base", path: "/mfin/economy/monetary-base"},
+      {name: "U.S. Mortgage Rates", path: "/mfin/economy/mortgage-rates"},
       // {name: "Data Extraction (Open Server)", path: "/mfin/Data-Extraction/Individual/data-extraction-sql"},
       // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/mfin/Data-Extraction/Team/data-extraction-team"}
     ]
@@ -84,17 +58,21 @@ const navigationPages = [
     //   pages: [
       //     {name: "Option Pricing Model", path: "/mfin/quantitative-mfin/option-pricing-model"},
       //     {name: "Naive Arbitrage for Trading", path: "/mfin/quantitative-mfin/naive-arb-trading"}
-    //   ]
-    // }
-    
-    ,{
+      //   ]
+      // }
+      
+      ,{
       name: "MBAN",
       open: true,
       pages: [
-        {name: "H1-B 2024 Lottery (Power BI)", path: "/mban/h1b-2024-analysis"},
-        {name: "Portfolio Construction/Optimization", path: "/mban/portfolio-construction"},
-        {name: "Portfolio Analysis (SQL & Tableau)", path: "/mban/data-extraction-individual"}
-      // // {name: "Data Extraction (Open Server)", path: "/Data-Extraction/Individual/data-extraction-sql"},
+        {name: "Power BI: H1-B 2024 Lottery", path: "/mban/h1b-2024-analysis"},
+        {name: "Tableau: Portfolio Analysis", path: "/mban/data-extraction-individual"},
+        {name: "Quarto: Portfolio Construction/Optimization", path: "/mban/portfolio-construction"},
+        {name: "Quarto: CAPM Modern Portfolio Theory (Python)", path: "/dev/quarto/CAPM-modern-portfolio-theory/CAPM_modern_portfolio_theory"},
+        {name: "Quarto: Governance Indicators (R)", path: "/dev/quarto/world-gov-indicators/world-gov-indicators"},
+        {name: "Quarto: HTML Basics (R)", path: "/dev/quarto/html-basics/quarto_html_basics"},
+        {name: "Quarto: Stock Explorer (Python)", path: "/dev/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
+        // // {name: "Data Extraction (Open Server)", path: "/Data-Extraction/Individual/data-extraction-sql"},
       // // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/Data-Extraction/Team/data-extraction-team"}
       // {name: "Apple Financial Model (Excel)", path: "/Cost-Managerial-Analysis/financial-model-apple"}
     ]
@@ -232,23 +210,7 @@ const HEADER =  `
       const isIndexPage = window.location.pathname === '/' || window.location.pathname === '/index';
       if (isIndexPage) {
         document.write(\`
-          <div class="social-links">
-            <a href="https://www.linkedin.com/in/renanperes/">
-              <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
-            </a>
-            <a href="mailto:contact@renanperes.com">
-              <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=mail.ru&logoColor=white" alt="Email"/>
-            </a>
-            <a href="https://github.com/renan-peres">
-              <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
-            </a>
-            <a href="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4" target="_blank" class="resume-link">
-              <img src="https://img.shields.io/badge/Resume-4285F4?style=for-the-badge&logo=googledocs&logoColor=white" alt="Resume"/>
-              <div class="resume-preview">
-                <iframe src="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4?embed=true"></iframe>
-              </div>
-            </a>
-          </div>
+
         \`);
       }
     </script>
