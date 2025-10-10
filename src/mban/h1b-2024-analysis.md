@@ -72,9 +72,6 @@ async function toParquet(duckDbClient, {table = "data", originalName = table, na
 ```
 
 # H1-B Visa 2024 Lottery Analysis
-
-## Overview
-
 The H-1B visa program allows U.S. employers to temporarily employ foreign workers in specialty occupations. Due to high demand exceeding the annual cap of 85,000 visas (65,000 regular cap + 20,000 advanced degree exemption), USCIS conducts a lottery system to select beneficiaries.
 
 This interactive dashboard provides a comprehensive analysis of the **H1-B 2024 lottery results**, offering insights into:
@@ -86,25 +83,108 @@ This interactive dashboard provides a comprehensive analysis of the **H1-B 2024 
 - **Salary ranges** and compensation patterns for selected positions
 - **Industry breakdown** of H1-B sponsoring employers
 
-### Key Statistics (2024)
+---
 
-- **Total Registrations:** ~780,000+ submissions
-- **Available Visas:** 85,000 (including advanced degree cap)
-- **Overall Selection Rate:** ~10-15% (varies by category)
-- **Peak Filing Period:** March 2024
-- **Results Announced:** March-April 2024
+## Key Insights
 
-### How to Use This Dashboard
+### 1. 📊 **Demand & Certification Outcomes**
+Over 461,000 H1-B applications were submitted, with approximately 427,000 certified (~93% certification rate), yet only ~85,000 visa slots are available annually.
 
+**Business Insight:** The massive demand creates significant lottery risk. Firms must compete aggressively for scarce visa hires and develop contingency strategies for talent acquisition.
+
+---
+
+### 2. 🎯 **Top Job Roles: IT/STEM vs. Finance**
+
+**IT/STEM Dominance:** ~65% of petitions
+- Software Engineers & Developers
+- Data Scientists & Analysts
+- Systems Engineers
+- Technical Architects
+
+**Finance Sector:** ~6% of petitions
+- Accountants & Auditors
+- Financial Analysts
+- Quantitative Analysts
+- Risk Specialists
+- Financial Managers
+
+**Business Insight:** While IT dominates the H1-B landscape, finance professionals provide crucial analytical and regulatory support essential for business operations, compliance, and risk management.
+
+---
+
+### 3. 💰 **Salaries & Talent Pipeline**
+
+**Compensation Benchmarks:**
+- **IT/STEM Median:** ~$118,000
+- **Finance Median:** ~$91,000
+
+**Demographic Profile:**
+- Both sectors attract prime talent aged **25–34 years**
+- Salaries significantly exceed U.S. average wages
+- Candidates positioned for long-term career growth and leadership
+
+**Business Insight:** H1-B hires demonstrate salary outperformance and align perfectly with firms' growth trajectories and compliance pipelines, offering high ROI on talent investment.
+
+---
+
+### 4. 🔄 **Employer Strategy Shift: New Visa Economics**
+
+The **new $100K visa fee** is fundamentally changing hiring strategies:
+- Increased prioritization of **domestic talent** and **OPT candidates**
+- H1-B reserved for **specialized, high-impact roles** only
+- Greater selectivity in petition submissions
+
+**Business Insight:** Critical positions in IT, finance analytics, compliance, and risk management become even more competitive. Organizations must invest in:
+- Internal upskilling programs
+- Diverse talent pipeline development
+- Strategic workforce planning
+- Alternative visa pathways (O-1, L-1, etc.)
+
+---
+
+### 5. 🌍 **Geographic Focus & Talent Clusters**
+
+**Tech Hubs (IT/STEM):**
+- San Francisco Bay Area
+- Seattle
+- Austin
+- Boston
+
+**Finance Centers:**
+- New York City
+- Chicago
+- Bay Area (FinTech)
+- Texas (Dallas, Houston)
+- New Jersey
+
+**Business Insight:** Roles concentrate in cities where global competition for expertise is highest, requiring location-specific recruitment strategies and compensation packages.
+
+---
+
+### 6. 🎯 **Strategic Takeaway: H1-B as Business Enabler**
+
+**Dual Function:**
+- **Workforce Accelerator:** Fueling innovation and technical capabilities (STEM/IT)
+- **Regulatory Safeguard:** Strengthening compliance, risk management, and financial controls (Finance)
+
+**Adaptation Strategies:**
+- Use dashboard insights to fine-tune talent pipeline strategies
+- Maximize salary competitiveness and leverage
+- Adapt to new visa economics for sustainable growth
+- Strengthen compliance and risk capabilities
+- Innovate talent sourcing beyond traditional H1-B reliance
+
+**Bottom Line:** Increasing costs and lottery uncertainty push business leaders to evolve their talent acquisition models while maintaining access to specialized global expertise critical for competitive advantage.
+
+---
+
+## Interactive Power BI Dashboard
 The Power BI dashboard below is fully interactive. You can:
 - **Filter by country, employer, job title, or salary range** using the slicers
 - **Click on visualizations** to cross-filter and drill down into specific segments
 - **Use the fullscreen button** below for a better viewing experience
 - **Explore trends** by hovering over charts to see detailed tooltips
-
----
-
-## Interactive Power BI Dashboard
 
 <!-- ```html
 <div style="width: 100%; height: 800px; position: relative;">
@@ -118,8 +198,6 @@ The Power BI dashboard below is fully interactive. You can:
   </iframe>
 </div>
 ``` -->
-
----
 
 ```js
 const dashboard = html`
@@ -154,60 +232,6 @@ const dashboard = html`
 
 display(dashboard);
 ```
-
----
-
-## Understanding the H1-B Lottery Process
-
-### Registration Phase
-1. **Employers submit electronic registrations** during the designated filing period (typically in March)
-2. **Each registration** includes basic information about the beneficiary and the position
-3. **Registration fee:** $10 per beneficiary
-
-### Selection Process
-USCIS uses a **computer-generated random selection process**:
-1. **First round:** Selections from the advanced degree pool for the 20,000 cap
-2. **Second round:** Remaining advanced degree registrations are added to the regular pool
-3. **Final selection:** Random selection for the 65,000 regular cap from the combined pool
-
-### Post-Selection
-- Selected registrations have **90 days** to file a complete H1-B petition
-- Multiple registrations for the same beneficiary by related entities may be **denied**
-- Approval is not guaranteed; petitions must meet all eligibility requirements
-
----
-
-## Data Sources & Methodology
-
-This analysis is based on publicly available data from:
-- **USCIS Official Statistics** - H1-B lottery results and selection notices
-- **DOL Disclosure Data** - Labor Condition Applications (LCA) containing salary and job information
-- **USCIS Case Status Data** - Petition approval and processing information
-
-**Data Processing:**
-- Data cleaned and normalized using DuckDB and Python
-- Visualizations created in Power BI with DAX measures
-- Updated as of: **April 2024**
-
----
-
-## Key Insights
-
-### 📊 **Selection Rate Challenges**
-The H1-B lottery has become increasingly competitive over the years, with selection rates dropping from ~40% in 2014 to ~10-15% in 2024 due to surging demand.
-
-### 🏢 **Top Sponsoring Industries**
-- Technology & IT Services
-- Consulting & Business Services  
-- Healthcare & Life Sciences
-- Finance & Banking
-- Higher Education
-
-### 🌍 **Geographic Patterns**
-The majority of beneficiaries come from India and China, while sponsoring employers are concentrated in tech hubs like California, Texas, New York, and Washington.
-
-### 💰 **Salary Trends**
-Advanced degree cap positions typically command higher salaries, with median wages ranging from $90,000 to $150,000+ depending on role and location.
 
 ---
 
