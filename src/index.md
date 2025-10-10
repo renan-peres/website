@@ -392,9 +392,9 @@ Experience includes developing cloud analytics environments, ETL pipelines, auto
 - Process Automation
 
 ### 🌐 Languages
-- English (Fluent)
-- Portuguese (Native)
-- Spanish (Fluent)
+- English
+- Portuguese
+- Spanish
 
 </div>
   <div class="profile-images-container">
