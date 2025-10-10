@@ -400,6 +400,7 @@ Experience includes developing cloud analytics environments, ETL pipelines, auto
   <div class="profile-images-container">
     <img class="profile-image" src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1760019498/50413116_00201_0296_XLarge_dhikcc.jpg" alt="Professional Headshot" loading="lazy" />
     <img class="profile-image" src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1760020115/IMG_4437_1_mqkd2t.jpg" alt="Renan Peres" loading="lazy" />
+    <img class="profile-image" src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1760095581/IMG_5228_bull85.jpg" alt="Microsoft Event" loading="lazy" />
     <img class="profile-image" src="https://res.cloudinary.com/dqtnflaeh/image/upload/v1760024106/IMG_8992_svfopo.jpg" alt="Personal Photo" loading="lazy" />
   </div>
 </div>
