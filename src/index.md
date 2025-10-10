@@ -131,10 +131,11 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
     <a href="https://github.com/renan-peres" aria-label="GitHub Profile">
       <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
     </a>
-    <a href="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4" target="_blank" class="resume-link" aria-label="View Resume">
+    <a href="https://1drv.ms/b/c/bde1a904e346bc6a/EWNhumTsc1hDhGQeX311wXMBQR-1IrvFTe0utmmbtzfVdw?e=WcIyXT&download=1" class="resume-link" aria-label="Download Resume">
       <img src="https://img.shields.io/badge/Resume-4285F4?style=for-the-badge&logo=googledocs&logoColor=white" alt="Resume"/>
       <div class="resume-preview">
-        <iframe src="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4?embed=true" title="Resume Preview"></iframe>
+        <iframe src="https://1drv.ms/b/c/bde1a904e346bc6a/IQRjYbpk7HNYQ4RkHl99dcFzAYhHMkomxaJvva0IOKn0P-4?embed=true" title="Resume Preview">
+        </iframe>
       </div>
     </a>
   </div>
