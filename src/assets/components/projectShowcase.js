@@ -3,7 +3,7 @@ import { html } from "htl";
 const projects = [
   {
     title: "H1-B Visa Analysis (Power BI)",
-    description: "H1-B 2024 Lottery Data Analysis in Power BI",
+    description: "H1-B 2024 Lottery Data Analysis in Power BI with insights on trends in the Finance & Banking industry",
     link: "/mban/h1b-2024-analysis",
   },
   {

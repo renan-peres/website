@@ -99,17 +99,16 @@ async function toParquet(duckDbClient, {table = "data", originalName = table, na
 }
 ```
 
-# H1-B Visa 2024 Lottery Analysis
+# H1-B Visa 2024 Lottery: Analysis on the Finance & Banking Industry
 The H-1B visa program allows U.S. employers to temporarily employ foreign workers in specialty occupations. Due to high demand exceeding the annual cap of 85,000 visas (65,000 regular cap + 20,000 advanced degree exemption), USCIS conducts a lottery system to select beneficiaries.
 
 This interactive dashboard provides a comprehensive analysis of the **H1-B 2024 lottery results**, offering insights into:
 
+- **Industry breakdown** of H1-B sponsoring employers
 - **Selection rates** across different registration types and categories
 - **Geographic distribution** of selected applicants by country and employer location
 - **Employer trends** showing which companies received the most selections
-- **Degree-level analysis** comparing regular cap vs. advanced degree selections
 - **Salary ranges** and compensation patterns for selected positions
-- **Industry breakdown** of H1-B sponsoring employers
 
 ---
 
