@@ -127,7 +127,7 @@ const insight1 = createCollapsibleInsight(
 );
 
 const insight2 = createCollapsibleInsight(
-  "2. 🎯 Top Job Roles: IT/STEM vs. Finance",
+  "2. 💰 Top Job Roles: IT/STEM vs. Finance",
   htl.html`
     <p><strong>IT/STEM Dominance:</strong> ~65% of petitions</p>
     <ul>
@@ -151,7 +151,7 @@ const insight2 = createCollapsibleInsight(
 );
 
 const insight3 = createCollapsibleInsight(
-  "3. 💰 Salaries & Talent Pipeline",
+  "3. 🌍 Finance Centers & Salaries",
   htl.html`
     <p><strong>Compensation Benchmarks:</strong></p>
     <ul>
@@ -167,11 +167,21 @@ const insight3 = createCollapsibleInsight(
     </ul>
 
     <p><strong>Business Insight:</strong> H1-B hires demonstrate salary outperformance and align perfectly with firms' growth trajectories and compliance pipelines, offering high ROI on talent investment.</p>
+
+    <ul>
+      <li>New York City</li>
+      <li>Chicago</li>
+      <li>Bay Area (FinTech)</li>
+      <li>Texas (Dallas, Houston)</li>
+      <li>New Jersey</li>
+    </ul>
+
+    <p><strong>Business Insight:</strong> Roles concentrate in cities where global competition for expertise is highest, requiring location-specific recruitment strategies and compensation packages.</p>
   `
 );
 
 const insight4 = createCollapsibleInsight(
-  "4. 🔄 Employer Strategy Shift: New Visa Economics",
+  "4. 🎯 Strategic Takeaway: H1-B as Business Enabler",
   htl.html`
     <p>The <strong>new $100K visa fee</strong> is fundamentally changing hiring strategies:</p>
     <ul>
@@ -187,36 +197,7 @@ const insight4 = createCollapsibleInsight(
       <li>Strategic workforce planning</li>
       <li>Alternative visa pathways (O-1, L-1, etc.)</li>
     </ul>
-  `
-);
 
-const insight5 = createCollapsibleInsight(
-  "5. 🌍 Geographic Focus & Talent Clusters",
-  htl.html`
-    <p><strong>Tech Hubs (IT/STEM):</strong></p>
-    <ul>
-      <li>San Francisco Bay Area</li>
-      <li>Seattle</li>
-      <li>Austin</li>
-      <li>Boston</li>
-    </ul>
-
-    <p><strong>Finance Centers:</strong></p>
-    <ul>
-      <li>New York City</li>
-      <li>Chicago</li>
-      <li>Bay Area (FinTech)</li>
-      <li>Texas (Dallas, Houston)</li>
-      <li>New Jersey</li>
-    </ul>
-
-    <p><strong>Business Insight:</strong> Roles concentrate in cities where global competition for expertise is highest, requiring location-specific recruitment strategies and compensation packages.</p>
-  `
-);
-
-const insight6 = createCollapsibleInsight(
-  "6. 🎯 Strategic Takeaway: H1-B as Business Enabler",
-  htl.html`
     <p><strong>Dual Function:</strong></p>
     <ul>
       <li><strong>Workforce Accelerator:</strong> Fueling innovation and technical capabilities (STEM/IT)</li>
@@ -240,8 +221,6 @@ display(insight1);
 display(insight2);
 display(insight3);
 display(insight4);
-display(insight5);
-display(insight6);
 ```
 
 ---
@@ -303,9 +282,6 @@ display(dashboard);
 ---
 
 ## Resources
-
-- [USCIS H1-B Program](https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations)
-- [DOL Foreign Labor Certification](https://www.dol.gov/agencies/eta/foreign-labor)
 - [H1-B Data Hub](https://www.uscis.gov/tools/reports-and-studies/h-1b-employer-data-hub)
 
 ---
