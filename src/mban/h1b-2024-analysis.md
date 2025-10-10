@@ -50,6 +50,34 @@ import * as htl from "htl";
 import * as arrow from "apache-arrow";
 
 const predefinedDb = await getDefaultClient();
+
+// Custom collapsible section function for insights
+function createCollapsibleInsight(title, content, defaultOpen = false) {
+  return htl.html`
+    <div style="border: 1px solid var(--theme-foreground-faint, #e5e7eb); border-radius: 8px; margin-bottom: 16px; overflow: hidden; background: var(--theme-background, #ffffff);">
+      <button 
+        style="width: 100%; padding: 16px; background: var(--theme-background-alt, #f9fafb); border: none; cursor: pointer; text-align: left; font-size: 18px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; color: var(--theme-foreground, #000000);"
+        onmouseover="this.style.background='var(--theme-foreground-faintest, #f3f4f6)'"
+        onmouseout="this.style.background='var(--theme-background-alt, #f9fafb)'"
+        onclick=${(e) => {
+          const contentDiv = e.target.nextElementSibling;
+          const arrow = e.target.querySelector('.arrow');
+          const isHidden = contentDiv.style.display === 'none';
+          
+          contentDiv.style.display = isHidden ? 'block' : 'none';
+          arrow.style.transform = isHidden ? 'rotate(90deg)' : 'rotate(0deg)';
+        }}
+      >
+        <span>${title}</span>
+        <span class="arrow" style="transition: transform 0.3s; transform: rotate(${defaultOpen ? '90deg' : '0deg'}); color: var(--theme-foreground-muted, #6b7280);">▶</span>
+      </button>
+      
+      <div style="display: ${defaultOpen ? 'block' : 'none'}; padding: 20px; background: var(--theme-background, #ffffff); color: var(--theme-foreground, #000000);">
+        ${content}
+      </div>
+    </div>
+  `;
+}
 // Helper function to download files
 function download(file) {
   const a = document.createElement("a");
@@ -87,99 +115,138 @@ This interactive dashboard provides a comprehensive analysis of the **H1-B 2024 
 
 ## Key Insights
 
-### 1. 📊 **Demand & Certification Outcomes**
-Over 461,000 H1-B applications were submitted, with approximately 427,000 certified (~93% certification rate), yet only ~85,000 visa slots are available annually.
+```js
+const insight1 = createCollapsibleInsight(
+  "1. 📊 Demand & Certification Outcomes",
+  htl.html`
+    <p>Over 461,000 H1-B applications were submitted, with approximately 427,000 certified (~93% certification rate), yet only ~85,000 visa slots are available annually.</p>
+    
+    <p><strong>Business Insight:</strong> The massive demand creates significant lottery risk. Firms must compete aggressively for scarce visa hires and develop contingency strategies for talent acquisition.</p>
+  `,
+  true
+);
 
-**Business Insight:** The massive demand creates significant lottery risk. Firms must compete aggressively for scarce visa hires and develop contingency strategies for talent acquisition.
+const insight2 = createCollapsibleInsight(
+  "2. 🎯 Top Job Roles: IT/STEM vs. Finance",
+  htl.html`
+    <p><strong>IT/STEM Dominance:</strong> ~65% of petitions</p>
+    <ul>
+      <li>Software Engineers & Developers</li>
+      <li>Data Scientists & Analysts</li>
+      <li>Systems Engineers</li>
+      <li>Technical Architects</li>
+    </ul>
+
+    <p><strong>Finance Sector:</strong> ~6% of petitions</p>
+    <ul>
+      <li>Accountants & Auditors</li>
+      <li>Financial Analysts</li>
+      <li>Quantitative Analysts</li>
+      <li>Risk Specialists</li>
+      <li>Financial Managers</li>
+    </ul>
+
+    <p><strong>Business Insight:</strong> While IT dominates the H1-B landscape, finance professionals provide crucial analytical and regulatory support essential for business operations, compliance, and risk management.</p>
+  `
+);
+
+const insight3 = createCollapsibleInsight(
+  "3. 💰 Salaries & Talent Pipeline",
+  htl.html`
+    <p><strong>Compensation Benchmarks:</strong></p>
+    <ul>
+      <li><strong>IT/STEM Median:</strong> ~$118,000</li>
+      <li><strong>Finance Median:</strong> ~$91,000</li>
+    </ul>
+
+    <p><strong>Demographic Profile:</strong></p>
+    <ul>
+      <li>Both sectors attract prime talent aged <strong>25–34 years</strong></li>
+      <li>Salaries significantly exceed U.S. average wages</li>
+      <li>Candidates positioned for long-term career growth and leadership</li>
+    </ul>
+
+    <p><strong>Business Insight:</strong> H1-B hires demonstrate salary outperformance and align perfectly with firms' growth trajectories and compliance pipelines, offering high ROI on talent investment.</p>
+  `
+);
+
+const insight4 = createCollapsibleInsight(
+  "4. 🔄 Employer Strategy Shift: New Visa Economics",
+  htl.html`
+    <p>The <strong>new $100K visa fee</strong> is fundamentally changing hiring strategies:</p>
+    <ul>
+      <li>Increased prioritization of <strong>domestic talent</strong> and <strong>OPT candidates</strong></li>
+      <li>H1-B reserved for <strong>specialized, high-impact roles</strong> only</li>
+      <li>Greater selectivity in petition submissions</li>
+    </ul>
+
+    <p><strong>Business Insight:</strong> Critical positions in IT, finance analytics, compliance, and risk management become even more competitive. Organizations must invest in:</p>
+    <ul>
+      <li>Internal upskilling programs</li>
+      <li>Diverse talent pipeline development</li>
+      <li>Strategic workforce planning</li>
+      <li>Alternative visa pathways (O-1, L-1, etc.)</li>
+    </ul>
+  `
+);
+
+const insight5 = createCollapsibleInsight(
+  "5. 🌍 Geographic Focus & Talent Clusters",
+  htl.html`
+    <p><strong>Tech Hubs (IT/STEM):</strong></p>
+    <ul>
+      <li>San Francisco Bay Area</li>
+      <li>Seattle</li>
+      <li>Austin</li>
+      <li>Boston</li>
+    </ul>
+
+    <p><strong>Finance Centers:</strong></p>
+    <ul>
+      <li>New York City</li>
+      <li>Chicago</li>
+      <li>Bay Area (FinTech)</li>
+      <li>Texas (Dallas, Houston)</li>
+      <li>New Jersey</li>
+    </ul>
+
+    <p><strong>Business Insight:</strong> Roles concentrate in cities where global competition for expertise is highest, requiring location-specific recruitment strategies and compensation packages.</p>
+  `
+);
+
+const insight6 = createCollapsibleInsight(
+  "6. 🎯 Strategic Takeaway: H1-B as Business Enabler",
+  htl.html`
+    <p><strong>Dual Function:</strong></p>
+    <ul>
+      <li><strong>Workforce Accelerator:</strong> Fueling innovation and technical capabilities (STEM/IT)</li>
+      <li><strong>Regulatory Safeguard:</strong> Strengthening compliance, risk management, and financial controls (Finance)</li>
+    </ul>
+
+    <p><strong>Adaptation Strategies:</strong></p>
+    <ul>
+      <li>Use dashboard insights to fine-tune talent pipeline strategies</li>
+      <li>Maximize salary competitiveness and leverage</li>
+      <li>Adapt to new visa economics for sustainable growth</li>
+      <li>Strengthen compliance and risk capabilities</li>
+      <li>Innovate talent sourcing beyond traditional H1-B reliance</li>
+    </ul>
+
+    <p><strong>Bottom Line:</strong> Increasing costs and lottery uncertainty push business leaders to evolve their talent acquisition models while maintaining access to specialized global expertise critical for competitive advantage.</p>
+  `
+);
+
+display(insight1);
+display(insight2);
+display(insight3);
+display(insight4);
+display(insight5);
+display(insight6);
+```
 
 ---
 
-### 2. 🎯 **Top Job Roles: IT/STEM vs. Finance**
-
-**IT/STEM Dominance:** ~65% of petitions
-- Software Engineers & Developers
-- Data Scientists & Analysts
-- Systems Engineers
-- Technical Architects
-
-**Finance Sector:** ~6% of petitions
-- Accountants & Auditors
-- Financial Analysts
-- Quantitative Analysts
-- Risk Specialists
-- Financial Managers
-
-**Business Insight:** While IT dominates the H1-B landscape, finance professionals provide crucial analytical and regulatory support essential for business operations, compliance, and risk management.
-
----
-
-### 3. 💰 **Salaries & Talent Pipeline**
-
-**Compensation Benchmarks:**
-- **IT/STEM Median:** ~$118,000
-- **Finance Median:** ~$91,000
-
-**Demographic Profile:**
-- Both sectors attract prime talent aged **25–34 years**
-- Salaries significantly exceed U.S. average wages
-- Candidates positioned for long-term career growth and leadership
-
-**Business Insight:** H1-B hires demonstrate salary outperformance and align perfectly with firms' growth trajectories and compliance pipelines, offering high ROI on talent investment.
-
----
-
-### 4. 🔄 **Employer Strategy Shift: New Visa Economics**
-
-The **new $100K visa fee** is fundamentally changing hiring strategies:
-- Increased prioritization of **domestic talent** and **OPT candidates**
-- H1-B reserved for **specialized, high-impact roles** only
-- Greater selectivity in petition submissions
-
-**Business Insight:** Critical positions in IT, finance analytics, compliance, and risk management become even more competitive. Organizations must invest in:
-- Internal upskilling programs
-- Diverse talent pipeline development
-- Strategic workforce planning
-- Alternative visa pathways (O-1, L-1, etc.)
-
----
-
-### 5. 🌍 **Geographic Focus & Talent Clusters**
-
-**Tech Hubs (IT/STEM):**
-- San Francisco Bay Area
-- Seattle
-- Austin
-- Boston
-
-**Finance Centers:**
-- New York City
-- Chicago
-- Bay Area (FinTech)
-- Texas (Dallas, Houston)
-- New Jersey
-
-**Business Insight:** Roles concentrate in cities where global competition for expertise is highest, requiring location-specific recruitment strategies and compensation packages.
-
----
-
-### 6. 🎯 **Strategic Takeaway: H1-B as Business Enabler**
-
-**Dual Function:**
-- **Workforce Accelerator:** Fueling innovation and technical capabilities (STEM/IT)
-- **Regulatory Safeguard:** Strengthening compliance, risk management, and financial controls (Finance)
-
-**Adaptation Strategies:**
-- Use dashboard insights to fine-tune talent pipeline strategies
-- Maximize salary competitiveness and leverage
-- Adapt to new visa economics for sustainable growth
-- Strengthen compliance and risk capabilities
-- Innovate talent sourcing beyond traditional H1-B reliance
-
-**Bottom Line:** Increasing costs and lottery uncertainty push business leaders to evolve their talent acquisition models while maintaining access to specialized global expertise critical for competitive advantage.
-
----
-
-## Interactive Power BI Dashboard
+## Power BI Dashboard
 The Power BI dashboard below is fully interactive. You can:
 - **Filter by country, employer, job title, or salary range** using the slicers
 - **Click on visualizations** to cross-filter and drill down into specific segments
