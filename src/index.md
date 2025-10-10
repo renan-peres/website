@@ -146,7 +146,7 @@ h1, h2, h3, h4, h5, h6, p, li, ul, ol {
 
 Hi, I'm **Renan Peres** — a multilingual **Finance & Analytics** professional with expertise in transforming complex financial data into actionable insights and strategic investment decisions.
 
-Experience includes atchitecting enterprise-scale analytics environments, developing ETL pipelines, building sophisticated financial models, and constructing optimized multi-asset portfolios tailored to client objectives and market dynamics.
+Experience includes architecting enterprise-scale analytics environments, developing ETL pipelines, building sophisticated financial models, and constructing optimized multi-asset portfolios tailored to client objectives and market dynamics.
 
 <!-- **What I Bring:**
 - 🚀 **Data-Driven Solutions**: Cloud analytics platforms, ETL pipelines, and automated workflows
