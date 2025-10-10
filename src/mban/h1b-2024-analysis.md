@@ -113,7 +113,7 @@ This interactive dashboard provides a comprehensive analysis of the **H1-B 2024 
 
 ---
 
-## Key Insights
+## Reflection/Insights
 
 ```js
 const insight1 = createCollapsibleInsight(
