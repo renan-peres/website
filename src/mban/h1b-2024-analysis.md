@@ -190,22 +190,7 @@ const insight4 = createCollapsibleInsight(
       <li>Strategic workforce planning</li>
       <li>Alternative visa pathways (O-1, L-1, etc.)</li>
     </ul>
-
-    <p><strong>Dual Function:</strong></p>
-    <ul>
-      <li><strong>Workforce Accelerator:</strong> Fueling innovation and technical capabilities (STEM/IT)</li>
-      <li><strong>Regulatory Safeguard:</strong> Strengthening compliance, risk management, and financial controls (Finance)</li>
-    </ul>
-
-    <p><strong>Adaptation Strategies:</strong></p>
-    <ul>
-      <li>Use dashboard insights to fine-tune talent pipeline strategies</li>
-      <li>Maximize salary competitiveness and leverage</li>
-      <li>Adapt to new visa economics for sustainable growth</li>
-      <li>Strengthen compliance and risk capabilities</li>
-      <li>Innovate talent sourcing beyond traditional H1-B reliance</li>
-    </ul>
-
+    
     <p><strong>Bottom Line:</strong> Increasing costs and lottery uncertainty push business leaders to evolve their talent acquisition models while maintaining access to specialized global expertise critical for competitive advantage.</p>
   `
 );
