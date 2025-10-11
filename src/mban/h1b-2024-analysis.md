@@ -52,7 +52,7 @@ import * as arrow from "apache-arrow";
 const predefinedDb = await getDefaultClient();
 
 // Custom collapsible section function for insights
-function createCollapsibleInsight(title, content, defaultOpen = false) {
+function createCollapsibleInsight(title, content, defaultOpen = true) {
   return htl.html`
     <div style="border: 1px solid var(--theme-foreground-faint, #e5e7eb); border-radius: 8px; margin-bottom: 16px; overflow: hidden; background: var(--theme-background, #ffffff);">
       <button 
@@ -99,22 +99,16 @@ async function toParquet(duckDbClient, {table = "data", originalName = table, na
 }
 ```
 
-# H1-B Visa 2024 Lottery: Analysis on the Finance & Banking Industry
+# H1-B Visa 2024 Lottery: Finance & Banking Analysis
 The H-1B visa program allows U.S. employers to temporarily employ foreign workers in specialty occupations. Due to high demand exceeding the annual cap of 85,000 visas (65,000 regular cap + 20,000 advanced degree exemption), USCIS conducts a lottery system to select beneficiaries.
-
-This interactive dashboard provides a comprehensive analysis of the **H1-B 2024 lottery results**, offering insights into:
-
-- **Industry breakdown** of H1-B sponsoring employers
-- **Selection rates** across different registration types and categories
-- **Geographic distribution** of selected applicants by country and employer location
-- **Employer trends** showing which companies received the most selections
-- **Salary ranges** and compensation patterns for selected positions
 
 ---
 
 ## Reflection/Insights
 
 ```js
+// ...existing code...
+
 const insight1 = createCollapsibleInsight(
   "1. 📊 Demand & Certification Outcomes",
   htl.html`
@@ -216,6 +210,41 @@ const insight4 = createCollapsibleInsight(
   `
 );
 
+// Add toggle all button
+const toggleAllButton = htl.html`
+  <div style="margin-bottom: 16px; text-align: left;">
+    <button 
+      id="toggleAllInsights"
+      style="padding: 10px 20px; background: var(--theme-foreground-focus, #2563eb); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: background 0.2s;"
+      onmouseover="this.style.background='var(--theme-foreground-faint, #1d4ed8)'"
+      onmouseout="this.style.background='var(--theme-foreground-focus, #2563eb)'"
+      onclick=${function() {
+        // Check if any are expanded
+        const anyExpanded = Array.from(document.querySelectorAll('.arrow'))
+          .some(arrow => arrow.parentElement.nextElementSibling.style.display !== 'none');
+        
+        // Toggle all to opposite state
+        document.querySelectorAll('.arrow').forEach(arrow => {
+          const contentDiv = arrow.parentElement.nextElementSibling;
+          if (anyExpanded) {
+            contentDiv.style.display = 'none';
+            arrow.style.transform = 'rotate(0deg)';
+          } else {
+            contentDiv.style.display = 'block';
+            arrow.style.transform = 'rotate(90deg)';
+          }
+        });
+        
+        // Update button text
+        this.textContent = anyExpanded ? '📂 Expand All' : '📁 Collapse All';
+      }}
+    >
+      📁 Collapse All
+    </button>
+  </div>
+`;
+
+display(toggleAllButton);
 display(insight1);
 display(insight2);
 display(insight3);
@@ -225,6 +254,15 @@ display(insight4);
 ---
 
 ## Power BI Dashboard
+
+This interactive dashboard provides a comprehensive analysis of the **H1-B 2024 lottery results**, offering insights into:
+
+- **Industry breakdown** of H1-B sponsoring employers
+- **Selection rates** across different registration types and categories
+- **Geographic distribution** of selected applicants by country and employer location
+- **Employer trends** showing which companies received the most selections
+- **Salary ranges** and compensation patterns for selected positions
+
 The Power BI dashboard below is fully interactive. You can:
 - **Filter by country, employer, job title, or salary range** using the slicers
 - **Click on visualizations** to cross-filter and drill down into specific segments
