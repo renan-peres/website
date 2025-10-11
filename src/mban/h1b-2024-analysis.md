@@ -176,7 +176,7 @@ const insight3 = createCollapsibleInsight(
 );
 
 const insight4 = createCollapsibleInsight(
-  "4. 🎯 Strategic Takeaway: H1-B as Business Enabler",
+  "4. 🎯 Strategic Takeaway: New $100K fee as Business Enabler",
   htl.html`
     <p>The <strong>new $100K visa fee</strong> is fundamentally changing hiring strategies:</p>
     <ul>
