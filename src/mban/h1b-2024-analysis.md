@@ -246,12 +246,12 @@ This interactive dashboard provides a comprehensive analysis of the **H1-B 2024 
 
 - **Industry breakdown** of H1-B sponsoring employers
 - **Selection rates** across different registration types and categories
-- **Geographic distribution** of selected applicants by country and employer location
+- **Geographic distribution** of selected applicants by state and employer location
 - **Employer trends** showing which companies received the most selections
 - **Salary ranges** and compensation patterns for selected positions
 
 The Power BI dashboard below is fully interactive. You can:
-- **Filter by country, employer, job title, or salary range** using the slicers
+- **Filter by state, employer, job title, or salary range** using the slicers
 - **Click on visualizations** to cross-filter and drill down into specific segments
 - **Use the fullscreen button** below for a better viewing experience
 - **Explore trends** by hovering over charts to see detailed tooltips
