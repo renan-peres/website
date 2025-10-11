@@ -121,9 +121,9 @@ const insight1 = createCollapsibleInsight(
 );
 
 const insight2 = createCollapsibleInsight(
-  "2. 💰 Top Job Roles: IT/STEM vs. Finance",
+  "2. 💰 Top Job Roles: Technology/IT vs. Finance",
   htl.html`
-    <p><strong>IT/STEM Dominance:</strong> ~65% of petitions</p>
+    <p><strong>Technology/IT Dominance:</strong> ~65% of petitions</p>
     <ul>
       <li>Software Engineers & Developers</li>
       <li>Data Scientists & Analysts</li>
@@ -149,7 +149,7 @@ const insight3 = createCollapsibleInsight(
   htl.html`
     <p><strong>Compensation Benchmarks:</strong></p>
     <ul>
-      <li><strong>IT/STEM Median:</strong> ~$118,000</li>
+      <li><strong>Technology/IT Median:</strong> ~$104,000</li>
       <li><strong>Finance Median:</strong> ~$91,000</li>
     </ul>
 
@@ -162,12 +162,13 @@ const insight3 = createCollapsibleInsight(
 
     <p><strong>Business Insight:</strong> H1-B hires demonstrate salary outperformance and align perfectly with firms' growth trajectories and compliance pipelines, offering high ROI on talent investment.</p>
 
+    <p><strong>Finance Centers:</strong></p>
     <ul>
-      <li>New York City</li>
-      <li>Chicago</li>
-      <li>Bay Area (FinTech)</li>
-      <li>Texas (Dallas, Houston)</li>
-      <li>New Jersey</li>
+      <li>1. New York City</li>
+      <li>2. Bay Area (FinTech)</li>
+      <li>3. Texas (Dallas, Houston)</li>
+      <li>4. Chicago</li>
+      <li>5. New Jersey</li>
     </ul>
 
     <p><strong>Business Insight:</strong> Roles concentrate in cities where global competition for expertise is highest, requiring location-specific recruitment strategies and compensation packages.</p>
