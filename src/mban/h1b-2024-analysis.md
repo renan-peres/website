@@ -1,7 +1,7 @@
 ---
 theme: dashboard
 index: true
-toc: false
+toc: true
 keywords: duckdb, wasm
 ---
 
@@ -100,6 +100,7 @@ async function toParquet(duckDbClient, {table = "data", originalName = table, na
 ```
 
 # H1-B Visa 2024 Lottery: Finance & Banking Analysis
+## Dual Degree Skills Immersion (Fall 2025)
 The H-1B visa program allows U.S. employers to temporarily employ foreign workers in specialty occupations. Due to high demand exceeding the annual cap of 85,000 visas (65,000 regular cap + 20,000 advanced degree exemption), USCIS conducts a lottery system to select beneficiaries.
 
 ---

@@ -9,7 +9,7 @@ const projects = [
   {
     title: "Portfolio Construction & Optimization",
     description: "Dashboard showcasing the process used for building and optimizing investment portfolios",
-    link: "https://portfolio-management.renanperes.com/",
+    link: "/mban/portfolio-construction",
   },
   {
     title: "Portfolio Analysis (Tableau & SQL)",

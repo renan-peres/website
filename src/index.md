@@ -197,10 +197,9 @@ Experience includes developing cloud analytics environments, ETL pipelines, auto
 }
 
 .profile-details h3 {
-  color: #1a73e8;
-  margin-top: 1.5rem;
+  margin-top: 1.0rem;
   margin-bottom: 0.5rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .profile-details ul {
@@ -218,7 +217,6 @@ Experience includes developing cloud analytics environments, ETL pipelines, auto
   content: "▹";
   position: absolute;
   left: 0;
-  color: #1a73e8;
   font-weight: bold;
 }
 
@@ -244,88 +242,6 @@ Experience includes developing cloud analytics environments, ETL pipelines, auto
   }
 }
 
-/* Skills Section Styling */
-.skills-section {
-  margin: 3rem 0;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-}
-
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 1.5rem;
-}
-
-.skill-category {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.skill-category:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-}
-
-.skill-category h3 {
-  color: #1a73e8;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.skill-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.skill-tag {
-  background: #e8f0fe;
-  color: #1967d2;
-  padding: 0.4rem 0.8rem;
-  border-radius: 16px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: background 0.2s ease;
-}
-
-.skill-tag:hover {
-  background: #d2e3fc;
-}
-
-/* CTA Section */
-.cta-section {
-  margin: 3rem 0;
-  padding: 3rem 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 12px;
-  text-align: center;
-  color: white;
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
-}
-
-.cta-section h2 {
-  color: white;
-  margin-top: 0;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.cta-section p {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-  opacity: 0.95;
-}
 
 .cta-buttons {
   display: flex;
@@ -334,19 +250,6 @@ Experience includes developing cloud analytics environments, ETL pipelines, auto
   flex-wrap: wrap;
 }
 
-.cta-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1rem 2rem;
-  background: white;
-  color: #667eea;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
 
 .cta-button:hover {
   transform: translateY(-2px);
