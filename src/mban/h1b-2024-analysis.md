@@ -113,7 +113,7 @@ The H-1B visa program allows U.S. employers to temporarily employ foreign worker
 const insight1 = createCollapsibleInsight(
   "1. 📊 Demand & Certification Outcomes",
   htl.html`
-    <p>Over 461,000 H1-B applications were submitted, with approximately 427,000 certified (~93% certification rate), yet only ~85,000 visa slots are available annually.</p>
+    <p>In the 2024 lottery, over 461,000 H1-B applications were submitted, with approximately 427,000 certified (~93% certification rate), yet only ~85,000 visa slots are available annually.</p>
     
     <p><strong>Business Insight:</strong> The massive demand creates significant lottery risk. Firms must compete aggressively for scarce visa hires and develop contingency strategies for talent acquisition.</p>
   `,
