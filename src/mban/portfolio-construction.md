@@ -1,5 +1,6 @@
 ---
 title: Investment Portfolio Models
+theme: dashboard
 toc: false
 description: "Explore the interactive dashboard and quantitative models driving the portfolio construction process."
 ---
@@ -56,7 +57,7 @@ const formattedDate = new Date().toLocaleDateString('en-US', {
 display(html`<div style="font-size: 0.9em; margin-bottom: 10px;">Date: ${formattedDate}</div>`);
 ``` -->
 
-View Dashboard: [Portfolio Construction & Optimization](https://portfolio-management.renanperes.com/)
+#### View: [Portfolio Construction & Optimization Dashboard](https://portfolio-management.renanperes.com/)
 
 <!-- The interactive dashboard provides a holistic view of the portfolio construction process. It demonstrates the systematic application of portfolio theory across multiple dimensions:
 - Capital Allocation: Visualizes the optimal allocation between risky assets and risk-free investments based on risk preferences 

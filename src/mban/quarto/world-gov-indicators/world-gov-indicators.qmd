@@ -68,7 +68,7 @@ if (base_repo == "") {
 }
 
 # Extract relative path from current directory
-relative_path <- "dev/quarto/world-gov-indicators"
+relative_path <- "mban/quarto/world-gov-indicators"
 source_repo <- file.path(base_repo, relative_path)
 
 # Convert GitHub URL to raw content URL format
@@ -97,7 +97,7 @@ knitr::write_bib(file = "packages.bib")
 base_repo = "https://github.com/renan-peres/website/blob/main/src"
 
 // Set relative path and combine
-relative_path = "dev/quarto/world-gov-indicators"
+relative_path = "mban/quarto/world-gov-indicators"
 source_repo = `${base_repo}/${relative_path}`
 
 // Convert to raw content URL

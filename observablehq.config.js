@@ -29,7 +29,7 @@ const navigationPages = [
     ]
   }
   ,{
-    name: "MFIN",
+    name: "Finance (MFIN)",
     open: true,
     pages: [
       {name: "Equity Research (GRMN)", path: "/mfin/investments/equity-research"},
@@ -62,16 +62,15 @@ const navigationPages = [
       // }
       
       ,{
-      name: "MBAN",
+      name: "Analytics (MBAN)",
       open: true,
       pages: [
-        {name: "Power BI: H1-B 2024 Lottery", path: "/mban/h1b-2024-analysis"},
-        {name: "Tableau: Portfolio Analysis", path: "/mban/data-extraction-individual"},
-        {name: "Quarto: Portfolio Construction/Optimization", path: "/mban/portfolio-construction"},
-        {name: "Quarto: CAPM Modern Portfolio Theory (Python)", path: "/dev/quarto/CAPM-modern-portfolio-theory/CAPM_modern_portfolio_theory"},
-        {name: "Quarto: Governance Indicators (R)", path: "/dev/quarto/world-gov-indicators/world-gov-indicators"},
-        {name: "Quarto: HTML Basics (R)", path: "/dev/quarto/html-basics/quarto_html_basics"},
-        {name: "Quarto: Stock Explorer (Python)", path: "/dev/quarto/stock-explorer-dashboard/stock_explorer_dashboard"}
+        {name: "H1-B 2024 Lottery (Power BI)", path: "/mban/h1b-2024-analysis"},
+        {name: "Portfolio Analysis (Tableau & SQL)", path: "/mban/data-extraction-individual"},
+        {name: "Portfolio Construction (Python)", path: "/mban/portfolio-construction"},
+        {name: "CAPM Modern Portfolio Theory (Python)", path: "/mban/quarto/CAPM-modern-portfolio-theory/CAPM_modern_portfolio_theory"},
+        {name: "Governance Indicators (R)", path: "/mban/quarto/world-gov-indicators/world-gov-indicators"},
+        {name: "Stock Explorer (Python)", path: "/mban/quarto/stock-explorer-dashboard/stock_explorer_dashboard"},
         // // {name: "Data Extraction (Open Server)", path: "/Data-Extraction/Individual/data-extraction-sql"},
       // // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/Data-Extraction/Team/data-extraction-team"}
       // {name: "Apple Financial Model (Excel)", path: "/Cost-Managerial-Analysis/financial-model-apple"}

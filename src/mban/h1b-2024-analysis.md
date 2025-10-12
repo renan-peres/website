@@ -243,6 +243,7 @@ display(insight4);
 ## Power BI Dashboard
 
 This interactive dashboard provides a comprehensive analysis of the **H1-B 2024 lottery results**, offering insights into:
+#### **View:** [H1-B 2024 Dashboard](https://app.fabric.microsoft.com/view?r=eyJrIjoiNzAxYjUwNjEtMzExNy00NWQ4LTlmMDgtMDA2Y2UwMWFkNTgxIiwidCI6IjdiMDVjYmU0LTI1OWItNGFlZS1hMGRkLWRiM2JlZTVkYTFjYSIsImMiOjJ9)
 
 - **Industry breakdown** of H1-B sponsoring employers
 - **Selection rates** across different registration types and categories
@@ -256,18 +257,6 @@ The Power BI dashboard below is fully interactive. You can:
 - **Use the fullscreen button** below for a better viewing experience
 - **Explore trends** by hovering over charts to see detailed tooltips
 
-<!-- ```html
-<div style="width: 100%; height: 800px; position: relative;">
-  <iframe 
-    title="H1B 2024" 
-    width="100%" 
-    height="800" 
-    src="https://app.fabric.microsoft.com/view?r=eyJrIjoiNzAxYjUwNjEtMzExNy00NWQ4LTlmMDgtMDA2Y2UwMWFkNTgxIiwidCI6IjdiMDVjYmU0LTI1OWItNGFlZS1hMGRkLWRiM2JlZTVkYTFjYSIsImMiOjJ9" 
-    frameborder="0" 
-    allowFullScreen="true">
-  </iframe>
-</div>
-``` -->
 
 ```js
 const dashboard = html`

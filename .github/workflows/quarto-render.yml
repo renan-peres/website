@@ -66,7 +66,7 @@ jobs:
       with:
         python-version: '3.11' 
         cache: 'pip'
-        cache-dependency-path: 'src/dev/quarto/requirements.txt'
+        cache-dependency-path: 'src/mban/quarto/requirements.txt'
 
     - name: Run Quarto Render Script
       run: |
