@@ -562,7 +562,7 @@
     },
     "ggplot2": {
       "Package": "ggplot2",
-      "Version": "3.5.1",
+      "Version": "3.5.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -583,7 +583,7 @@
         "vctrs",
         "withr"
       ],
-      "Hash": "44c6a2f8202d5b7e878ea274b1092426"
+      "Hash": "14b7a5e10f7adb4d6218bc77cfc76eeb"
     },
     "ggrepel": {
       "Package": "ggrepel",

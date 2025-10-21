@@ -41,15 +41,6 @@ jobs:
         path: ~/.local/share/renv
         key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
         restore-keys: ${{ runner.os }}-renv-
-    
-    - name: Cache system dependencies
-      uses: actions/cache@v4
-      with:
-        path: |
-          /var/cache/apt
-          /var/lib/apt
-        key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/quarto-render.yml') }}
-        restore-keys: ${{ runner.os }}-apt-
 
     - name: Initialize R environment
       working-directory: src/mban/quarto
