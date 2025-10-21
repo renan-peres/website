@@ -26485,7 +26485,7 @@ initializeRuntime();
 </div>
 </div>
 <!-- <a class="header-title-link" href="http://renanperes.com" aria-label="Go to homepage">Home💻</a> -->
-<p><strong>Last Update:</strong> October 21, 2025 - 10:25</p>
+<p><strong>Last Update:</strong> October 21, 2025 - 11:35</p>
 <p>This report presents the results of six broad dimensions of governance over 215 countries and territories between 1996-2021.</p>
 <section id="table-of-contents" class="level1">
 <h1>Table of Contents</h1>
@@ -27074,12 +27074,6 @@ Pedersen, Thomas Lin, and David Robinson. 2025. <em>Gganimate: A Grammar of Anim
 <div id="ref-R-base" class="csl-entry" role="listitem">
 R Core Team. 2024. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
 </div>
-<div id="ref-pacman2018" class="csl-entry" role="listitem">
-Rinker, Tyler W., and Dason Kurkiewicz. 2018. <em><span class="nocase">pacman</span>: <span>P</span>ackage Management for <span>R</span></em>. Buffalo, New York. <a href="http://github.com/trinker/pacman">http://github.com/trinker/pacman</a>.
-</div>
-<div id="ref-R-pacman" class="csl-entry" role="listitem">
-Rinker, Tyler, and Dason Kurkiewicz. 2019. <em>Pacman: Package Management Tool</em>. <a href="https://github.com/trinker/pacman">https://github.com/trinker/pacman</a>.
-</div>
 <div id="ref-R-GGally" class="csl-entry" role="listitem">
 Schloerke, Barret, Di Cook, Joseph Larmarange, Francois Briatte, Moritz Marbach, Edwin Thoen, Amos Elberg, and Jason Crowley. 2025. <em>GGally: Extension to Ggplot2</em>. <a href="https://ggobi.github.io/ggally/">https://ggobi.github.io/ggally/</a>.
 </div>
@@ -27627,12 +27621,12 @@ window._ojs.runtime.interpretFromScriptTags();
 <span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="in">```{r load, echo=FALSE, message=FALSE}</span></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="co"># First ensure required packages are installed</span></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;pacman&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;pacman&quot;</span>)</span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(here, httr)</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Load required packages using pacman for efficient package management</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="co"># pacman::p_load only installs if package is missing, then loads it</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;pacman&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;pacman&quot;</span>)</span>
 <span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Load required packages</span></span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>  here, httr,</span>
 <span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>  dplyr,</span>
 <span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>  tidyr,</span>
 <span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  readr,</span>

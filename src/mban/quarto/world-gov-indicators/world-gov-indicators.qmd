@@ -23,12 +23,12 @@ execute:
 ---
 
 ```{r load, echo=FALSE, message=FALSE}
-# First ensure required packages are installed
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(here, httr)
+# Load required packages using pacman for efficient package management
+# pacman::p_load only installs if package is missing, then loads it
+if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
 
-# Load required packages
 pacman::p_load(
+  here, httr,
   dplyr,
   tidyr,
   readr,

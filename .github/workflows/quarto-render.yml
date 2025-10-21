@@ -21,13 +21,15 @@ jobs:
       with:
         version: 1.8.25
 
-    - name: Install Linux dependencies
+    - name: Set up Linux Dependencies
       run: |
         sudo apt-get update && sudo apt-get install -y \
-        libudunits2-dev libgdal-dev gdal-bin libgeos-dev libproj-dev \
-        libssl-dev libcurl4-openssl-dev libxml2-dev cmake \
-        libfontconfig1-dev libharfbuzz-dev libfribidi-dev \
-        libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
+        libudunits2-dev \
+        libgdal-dev \
+        gdal-bin \
+        libgeos-dev \
+        libproj-dev \
+        pandoc
 
     - uses: r-lib/actions/setup-r@v2
       with:
