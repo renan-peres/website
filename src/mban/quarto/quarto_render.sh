@@ -78,7 +78,6 @@ if ! . venv/bin/activate; then
 fi
 
 ACTIVE_PYTHON=$(which python3)
-cd src/dev/quarto
 if [[ "$ACTIVE_PYTHON" != *"venv"* ]]; then
    echo "Virtual environment not activated correctly"
    exit 1

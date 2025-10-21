@@ -25,7 +25,9 @@ jobs:
       run: |
         sudo apt-get update && sudo apt-get install -y \
         libudunits2-dev libgdal-dev gdal-bin libgeos-dev libproj-dev \
-        libssl-dev libcurl4-openssl-dev libxml2-dev cmake
+        libssl-dev libcurl4-openssl-dev libxml2-dev cmake \
+        libfontconfig1-dev libharfbuzz-dev libfribidi-dev \
+        libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
 
     - uses: r-lib/actions/setup-r@v2
       with:
@@ -40,7 +42,11 @@ jobs:
     - name: Initialize R environment
       working-directory: src/mban/quarto
       run: |
-        Rscript -e 'install.packages("renv"); renv::consent(TRUE); renv::restore()'
+        Rscript -e 'install.packages("renv"); renv::consent(TRUE)'
+        Rscript -e 'install.packages("units", type = "source")'
+        Rscript -e 'renv::restore()'
+      env:
+        QUARTO_PATH: ${{ env.QUARTO_ROOT }}/bin
 
     - uses: actions/setup-python@v5
       with:
