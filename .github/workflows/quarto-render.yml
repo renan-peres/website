@@ -35,17 +35,27 @@ jobs:
       with:
         r-version: '4.4.3'
 
-    - uses: actions/cache@v4
+    - name: Cache R packages
+      uses: actions/cache@v4
       with:
         path: ~/.local/share/renv
         key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
         restore-keys: ${{ runner.os }}-renv-
+    
+    - name: Cache system dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          /var/cache/apt
+          /var/lib/apt
+        key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/quarto-render.yml') }}
+        restore-keys: ${{ runner.os }}-apt-
 
     - name: Initialize R environment
       working-directory: src/mban/quarto
       run: |
-        Rscript -e 'install.packages("renv"); renv::consent(TRUE)'
-        Rscript -e 'install.packages("units", type = "source")'
+        Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv", repos = "https://cloud.r-project.org"); renv::consent(TRUE)'
+        Rscript -e 'if (!requireNamespace("units", quietly = TRUE)) install.packages("units", type = "source", repos = "https://cloud.r-project.org")'
         Rscript -e 'renv::restore()'
       env:
         QUARTO_PATH: ${{ env.QUARTO_ROOT }}/bin
@@ -53,19 +63,32 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: '3.12' 
-        cache: pip
+        cache: 'pip'
         cache-dependency-path: src/mban/quarto/requirements.txt
+    
+    - name: Cache Python virtual environment
+      uses: actions/cache@v4
+      with:
+        path: src/mban/quarto/venv
+        key: ${{ runner.os }}-venv-${{ hashFiles('src/mban/quarto/requirements.txt') }}
+        restore-keys: ${{ runner.os }}-venv-
 
     - name: Render Quarto documents
       working-directory: src/mban/quarto
-      run: ./quarto_render.sh
+      run: |
+        chmod +x quarto_render.sh
+        ./quarto_render.sh
 
     - name: Commit and push
       run: |
         git config user.email "github@renanperes.com"
         git config user.name "renan-peres"
         git add .
-        git commit -m "Render Quarto documents" || exit 0
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+          exit 0
+        fi
+        git commit -m "Render Quarto documents [skip ci]"
         git push
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
