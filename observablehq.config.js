@@ -6,6 +6,14 @@ const SOURCE_REPO = "https://github.com/renan-peres/website/blob/main/src";
 
 const navigationPages = [
   {
+    name: "Blog",
+    open: true,
+    pages: [
+      // {name: "Equity Research (GRMN)", path: "/mfin/investments/equity-research"},
+      // {name: "Financial Modeling (AAPL) ", path: "/mfin/cost-managerial-analysis/financial-model-apple"},
+    ]
+  }
+  ,{
     name: "Dev",
     open: false,
     pages: [

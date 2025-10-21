@@ -64,7 +64,9 @@ setwd(dirname(current_file))
 # Get base SOURCE_REPO and combine with current directory
 base_repo <- Sys.getenv("SOURCE_REPO")
 if (base_repo == "") {
-  stop("SOURCE_REPO environment variable is not set")
+  # Fallback to default value if not set
+  base_repo <- "https://github.com/renan-peres/website/blob/main/src"
+  message("SOURCE_REPO not set, using default: ", base_repo)
 }
 
 # Extract relative path from current directory
@@ -145,7 +147,7 @@ makeFullscreen = (iframeSrc) => {
 
 <!-- <a class="header-title-link" href="http://renanperes.com" aria-label="Go to homepage">Home💻</a> -->
 
-**Last Update:** `r format(lubridate::now('US/Eastern'), ' %B %d, %Y - %H:%M')`
+**Last Update:** `r format(lubridate::now('America/New_York'), ' %B %d, %Y - %H:%M')`
 
 This report presents the results of six broad dimensions of governance over 215 countries and territories between 1996-2021. 
 
@@ -504,8 +506,10 @@ top_3_plot <- df %>%
                        Indicator = indicator_name, 
                        Year = year, 
                        Score = value) %>%
-                mutate(Indicator = case_when(Indicator == "Government Effectiveness" ~ "Effectiveness",
-                                             T ~ Indicator)) %>% 
+                mutate(Country = as.character(Country),
+                       Indicator = case_when(Indicator == "Government Effectiveness" ~ "Effectiveness",
+                                             T ~ Indicator),
+                       Indicator = as.character(Indicator)) %>% 
                 ggplot(aes(x = Year, y = Score, color = Country)) +
                 geom_line(size = .7) +
                 geom_point(color = "black", size = .5) +
@@ -514,8 +518,8 @@ top_3_plot <- df %>%
                 scale_colour_brewer(palette = "Dark2") +
                 labs(title = "", 
                      color = "",
-                     y = element_blank(),
-                     x = element_blank()) +
+                     y = "",
+                     x = "") +
                 theme_bw() +
                 theme(legend.text = element_text(size = 10), 
                       # strip.background = element_rect(fill = "#bcdefc"),
