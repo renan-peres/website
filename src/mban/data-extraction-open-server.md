@@ -4,11 +4,11 @@ index: true
 toc: false
 keywords: duckdb, wasm
 sql:
-  account_dim: ./data/account_dim.csv
-  customer_details: ./data/customer_details.csv
-  holdings_current: ./data/holdings_current.csv
-  pricing_daily_new: ./data/pricing_daily_new.csv
-  security_masterlist: ./data/security_masterlist.csv
+  account_dim: ../assets/data/portfolio/account_dim.csv
+  customer_details: ../assets/data/portfolio/customer_details.csv
+  holdings_current: ../assets/data/portfolio/holdings_current.csv
+  pricing_daily_new: ../assets/data/portfolio/pricing_daily_new.csv
+  security_masterlist: ../assets/data/portfolio/security_masterlist.csv
 ---
 
 ```html
@@ -42,11 +42,11 @@ import {datetime} from "../assets/components/datetime.js";
 
 ```js
 // Load predefined tables
-const security_masterlist = FileAttachment("./data/security_masterlist.csv").csv({typed: true});
-const account_dim = FileAttachment("./data/account_dim.csv").csv({typed: true});
-const customer_details = FileAttachment("./data/customer_details.csv").csv({typed: true});
-const holdings_current = FileAttachment("./data/holdings_current.csv").csv({typed: true});
-const pricing_daily_new = FileAttachment("./data/pricing_daily_new.csv").csv({typed: true});
+const security_masterlist = FileAttachment("../assets/data/portfolio/security_masterlist.csv").csv({typed: true});
+const account_dim = FileAttachment("../assets/data/portfolio/account_dim.csv").csv({typed: true});
+const customer_details = FileAttachment("../assets/data/portfolio/customer_details.csv").csv({typed: true});
+const holdings_current = FileAttachment("../assets/data/portfolio/holdings_current.csv").csv({typed: true});
+const pricing_daily_new = FileAttachment("../assets/data/portfolio/pricing_daily_new.csv").csv({typed: true});
 
 // Initialize DuckDB with predefined tables
 const predefinedDb = DuckDBClient.of({

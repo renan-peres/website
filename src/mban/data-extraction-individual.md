@@ -4,11 +4,11 @@ index: true
 toc: false
 keywords: duckdb, wasm
 sql:
-  account_dim: ./data/account_dim.csv
-  customer_details: ./data/customer_details.csv
-  holdings_current: ./data/holdings_current.csv
-  pricing_daily_new: ./data/pricing_daily_new.csv
-  security_masterlist: ./data/security_masterlist.csv
+  account_dim: ../assets/data/portfolio/account_dim.csv
+  customer_details: ../assets/data/portfolio/customer_details.csv
+  holdings_current: ../assets/data/portfolio/holdings_current.csv
+  pricing_daily_new: ../assets/data/portfolio/pricing_daily_new.csv
+  security_masterlist: ../assets/data/portfolio/security_masterlist.csv
 ---
 
 ```html

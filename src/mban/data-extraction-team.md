@@ -4,21 +4,21 @@ index: true
 toc: false
 keywords: duckdb, wasm
 sql:
-  confirmed_country: ./data/Country/confirmed_country.csv
-  deaths_country: ./data/Country/deaths_country.csv
-  recovered_country: ./data/Country/recovered_country.csv
-  vaccination_country: ./data/Country/vaccination_country.csv
+  confirmed_country: ../assets/data/covid/Country/confirmed_country.csv
+  deaths_country: ../assets/data/covid/Country/deaths_country.csv
+  recovered_country: ../assets/data/covid/Country/recovered_country.csv
+  vaccination_country: ../assets/data/covid/Country/vaccination_country.csv
 
-  confirmed_province: ./data/Province/confirmed_province.csv
-  deaths_province: ./data/Province/deaths_province.csv
-  recovered_province: ./data/Province/recovered_province.csv
-  vaccination_province: ./data/Province/vaccination_province.csv
+  confirmed_province: ../assets/data/covid/Province/confirmed_province.csv
+  deaths_province: ../assets/data/covid/Province/deaths_province.csv
+  recovered_province: ../assets/data/covid/Province/recovered_province.csv
+  vaccination_province: ../assets/data/covid/Province/vaccination_province.csv
 
-  vaccination_total: ./data/vaccination_total.csv
-  vaccine_global: ./data/vaccine_global.csv
+  vaccination_total: ../assets/data/covid/vaccination_total.csv
+  vaccine_global: ../assets/data/covid/vaccine_global.csv
 
-  country_covid: ./data/Final/country_covid.csv
-  country_vaccination: ./data/Final/country_vaccination.csv
+  country_covid: ../assets/data/covid/Final/country_covid.csv
+  country_vaccination: ../assets/data/covid/Final/country_vaccination.csv
 ---
 
 <!-- ```html
@@ -52,21 +52,21 @@ import {datetime} from "../../assets/components/datetime.js";
 
 ```js
 // Load predefined tables
-const confirmed_country = FileAttachment("./data/Country/confirmed_country.csv").csv({typed: true});
-const deaths_country = FileAttachment("./data/Country/deaths_country.csv").csv({typed: true});
-const recovered_country = FileAttachment("./data/Country/recovered_country.csv").csv({typed: true});
-const vaccination_country = FileAttachment("./data/Country/vaccination_country.csv").csv({typed: true});
+const confirmed_country = FileAttachment("../assets/data/covid/Country/confirmed_country.csv").csv({typed: true});
+const deaths_country = FileAttachment("../assets/data/covid/Country/deaths_country.csv").csv({typed: true});
+const recovered_country = FileAttachment("../assets/data/covid/Country/recovered_country.csv").csv({typed: true});
+const vaccination_country = FileAttachment("../assets/data/covid/Country/vaccination_country.csv").csv({typed: true});
 
-const confirmed_province = FileAttachment("./data/Province/confirmed_province.csv").csv({typed: true});
-const deaths_province = FileAttachment("./data/Province/deaths_province.csv").csv({typed: true});
-const recovered_province = FileAttachment("./data/Province/recovered_province.csv").csv({typed: true});
-const vaccination_province = FileAttachment("./data/Province/vaccination_province.csv").csv({typed: true});
+const confirmed_province = FileAttachment("../assets/data/covid/Province/confirmed_province.csv").csv({typed: true});
+const deaths_province = FileAttachment("../assets/data/covid/Province/deaths_province.csv").csv({typed: true});
+const recovered_province = FileAttachment("../assets/data/covid/Province/recovered_province.csv").csv({typed: true});
+const vaccination_province = FileAttachment("../assets/data/covid/Province/vaccination_province.csv").csv({typed: true});
 
-const vaccination_total = FileAttachment("./data/vaccination_total.csv").csv({typed: true});
-const vaccine_global = FileAttachment("./data/vaccine_global.csv").csv({typed: true});
+const vaccination_total = FileAttachment("../assets/data/covid/vaccination_total.csv").csv({typed: true});
+const vaccine_global = FileAttachment("../assets/data/covid/vaccine_global.csv").csv({typed: true});
 
-const country_covid = FileAttachment("./data/Final/country_covid.csv").csv({typed: true});
-const country_vaccination = FileAttachment("./data/Final/country_vaccination.csv").csv({typed: true});
+const country_covid = FileAttachment("../assets/data/covid/Final/country_covid.csv").csv({typed: true});
+const country_vaccination = FileAttachment("../assets/data/covid/Final/country_vaccination.csv").csv({typed: true});
 
 // Initialize DuckDB with predefined tables
 const predefinedDb = DuckDBClient.of({

@@ -38,7 +38,7 @@ jobs:
         restore-keys: ${{ runner.os }}-renv-
 
     - name: Initialize R environment
-      working-directory: src/dev/quarto
+      working-directory: src/mban/quarto
       run: |
         Rscript -e 'install.packages("renv"); renv::consent(TRUE); renv::restore()'
 
@@ -49,7 +49,7 @@ jobs:
         cache-dependency-path: src/mban/quarto/requirements.txt
 
     - name: Render Quarto documents
-      working-directory: src/dev/quarto
+      working-directory: src/mban/quarto
       run: ./quarto_render.sh
 
     - name: Commit and push
