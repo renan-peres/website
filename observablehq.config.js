@@ -18,6 +18,7 @@ const navigationPages = [
     open: false,
     pages: [
       {name: "CodeSanbox", path: "/dev/wasm/code-sandbox"},
+      {name: "Spreadsheet Connector", path: "/dev/utils/spreadsheet-connector"},
       {name: "WebR", path: "/dev/wasm/webr/webr"},
       {name: "WebR: Shell", path: "/dev/wasm/webr/webr-shell"},
       {name: "Pyodide: Read Data", path: "/dev/wasm/pyodide/pyodide-read"},
