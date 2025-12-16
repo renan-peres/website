@@ -77,8 +77,8 @@ if ! . venv/bin/activate; then
    exit 1
 fi
 
-ACTIVE_PYTHON=$(which python3)
-if [[ "$ACTIVE_PYTHON" != *"venv"* ]]; then
+# Verify we're using the virtual environment by checking VIRTUAL_ENV variable
+if [ -z "$VIRTUAL_ENV" ]; then
    echo "Virtual environment not activated correctly"
    exit 1
 fi
