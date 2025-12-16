@@ -1,0 +1,203 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"Stock Explorer\"\n",
+        "format: \n",
+        "  dashboard:\n",
+        "    theme: [yeti, custom.scss]\n",
+        "    html-math-method: katex\n",
+        "    code-tools: true\n",
+        "    self-contained: true\n",
+        "    embed-resources: true\n",
+        "    page-layout: full\n",
+        "---"
+      ],
+      "id": "d3e30943"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "tags": [
+          "parameters"
+        ]
+      },
+      "source": [
+        "# to render w/ a different ticker parameter:\n",
+        "# quarto render dashboard.qmd -P ticker:GOOG\n",
+        "\n",
+        "tickers = [\"BA\", \"AAPL\", \"GOOG\"]"
+      ],
+      "id": "832d547e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import helpers\n",
+        "stocks = {ticker: helpers.get_stock(ticker) for ticker in tickers}\n",
+        "data = {ticker: helpers.get_data(stocks[ticker]) for ticker in tickers}"
+      ],
+      "id": "dbb80e8f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Row\n"
+      ],
+      "id": "90d97f0c"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "from IPython.display import Markdown\n",
+        "for ticker in tickers:\n",
+        "    stock = helpers.get_stock(ticker)\n",
+        "    data = helpers.get_data(stock)\n",
+        "    change = helpers.get_change(data)\n",
+        "    ohlc = helpers.make_OHLC_table(data)"
+      ],
+      "id": "54e4267c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Row\n"
+      ],
+      "id": "8454fe30"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "content": "valuebox",
+        "title": "Current Price"
+      },
+      "source": [
+        "dict(\n",
+        "    icon = \"currency-dollar\",\n",
+        "    color = \"secondary\",\n",
+        "    value = helpers.get_price(data)\n",
+        ")"
+      ],
+      "id": "ed0a5c17",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "content": "valuebox",
+        "title": "Change"
+      },
+      "source": [
+        "change = helpers.get_change(data)\n",
+        "dict(\n",
+        "    value = change['amount'],\n",
+        "    icon = change['icon'],\n",
+        "    color = change['color']\n",
+        ") "
+      ],
+      "id": "ebb70a40",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "content": "valuebox",
+        "title": "Percent Change"
+      },
+      "source": [
+        "dict(\n",
+        "    icon = \"percent\",\n",
+        "    color = \"light\",\n",
+        "    value = change['percent'],\n",
+        ") "
+      ],
+      "id": "8b28589f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Row\n",
+        "\n",
+        "### Column {width=75%}\n"
+      ],
+      "id": "067bf6d0"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "title": "Price History",
+        "padding": 0
+      },
+      "source": [
+        "helpers.make_candlestick_chart(data, ticker.upper())"
+      ],
+      "id": "3b4fb17f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Column {width=25%}\n"
+      ],
+      "id": "e859a7be"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "ohlc = helpers.make_OHLC_table(data)"
+      ],
+      "id": "75da3045",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "::: {.card}\n",
+        "\n",
+        "#### Last Close: `{python} ohlc['date']`\n",
+        "\n",
+        "| Close\t | `{python} ohlc['close']`  |\n",
+        "|:-------|--------------------------:|\n",
+        "| Open\t | `{python} ohlc['open']`   |\n",
+        "| High\t | `{python} ohlc['high']`   |\n",
+        "| Low\t | `{python} ohlc['low']`    |\n",
+        "| Volume | `{python} ohlc['volume']` |\n",
+        ": {.striped}"
+      ],
+      "id": "5275b125"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "/opt/hostedtoolcache/Python/3.12.12/x64/share/jupyter/kernels/python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
