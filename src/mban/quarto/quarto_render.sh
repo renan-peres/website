@@ -84,7 +84,7 @@ if [ -z "$VIRTUAL_ENV" ]; then
 fi
 
 if [ -f "requirements.txt" ]; then
-   if ! pip install -r requirements.txt; then
+   if ! python -m pip install --upgrade pip && python -m pip install -r requirements.txt; then
        echo "Failed to install requirements"
        exit 1
    fi
@@ -93,7 +93,7 @@ fi
 ## Quarto Setup ======================================================
 
 # Install required packages for Quarto
-pip install jupyter pyyaml
+python -m pip install jupyter pyyaml
 
 # Function to check Quarto version
 check_quarto_version() {
