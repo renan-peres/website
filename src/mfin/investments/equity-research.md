@@ -52,144 +52,32 @@ The analysis is based on official SEC filings from Garmin Ltd.:
 # DCF Model
 
 ```js
-// Helper function to determine if URL is SharePoint and format iframe URL if needed
-function processUrl(url) {
-  if (url.includes('sharepoint.com' | '1drv.ms')) {
-    // Add the necessary SharePoint embed parameters including download button
-    return `${url}&action=embedview&wdAllowInteractivity=True&wdHideGridlines=True&wdDownloadButton=True&wdInConfigurator=True&edesNext=false&resen=false`;
-  } else if (url.includes('docs.google.com')) {
-    const sheetId = url.match(/[-\w]{25,}/);
-    return sheetId 
-      ? `https://docs.google.com/spreadsheets/export?format=csv&id=${sheetId[0]}`
-      : url;
-  }
-  return url;
-}
+const iframeSrc = "https://1drv.ms/x/c/bde1a904e346bc6a/IQQuTns2LF_MQ6ZohtFYPhXGAQRKvMCl8r7gU-DlrvNVhrw?em=2&wdAllowInteractivity=False&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True";
 
-const spreadsheetUrl = view(Inputs.textarea({
-  // value: "https://hultstudents-my.sharepoint.com/:x:/g/personal/rperes_student_hult_edu/Ec_vSJKHErhLg-_2aAPnM_IBNU2FcRmVLvCDKy0Wp-COsw?e=6AXrNb",
-  value: "https://1drv.ms/x/c/bde1a904e346bc6a/IQQuTns2LF_MQ6ZohtFYPhXGAQRKvMCl8r7gU-DlrvNVhrw?em=2",
-  width: "100%",
-  rows: 1,
-  resize: "both",
-  style: { fontSize: "16px" },
-  display: false, // Key to Display the Model Corectly
-  disabled: true,
-  onKeyDown: e => {
-    if (e.ctrlKey && e.key === "Enter") e.target.dispatchEvent(new Event("input"));
-  }
-}));
-```
-
-```js
-// Display content based on URL type
-const url = processUrl(spreadsheetUrl);
-
-if (spreadsheetUrl.includes('sharepoint.com' | '1drv.ms')) {
-  // Create buttons container with flexbox
-  const buttonsContainer = html`
+display(html`
+  <div>
     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
       <button style="padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
         onclick=${(e) => {
-          const iframe = document.querySelector('iframe');
+          const iframe = e.target.closest('div').parentElement.querySelector('iframe');
           if (!document.fullscreenElement) {
             iframe.style.width = '100vw';
             iframe.style.height = '100vh';
-            if (iframe.requestFullscreen) {
-              iframe.requestFullscreen();
-            } else if (iframe.webkitRequestFullscreen) {
-              iframe.webkitRequestFullscreen();
-            } else if (iframe.msRequestFullscreen) {
-              iframe.msRequestFullscreen();
-            }
+            iframe.requestFullscreen?.() || iframe.webkitRequestFullscreen?.() || iframe.msRequestFullscreen?.();
             e.target.textContent = 'Exit Fullscreen';
           } else {
-            if (document.exitFullscreen) {
-              document.exitFullscreen();
-            } else if (document.webkitExitFullscreen) {
-              document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-              document.msExitFullscreen();
-            }
+            document.exitFullscreen?.() || document.webkitExitFullscreen?.() || document.msExitFullscreen?.();
             iframe.style.width = '100%';
             iframe.style.height = '1000px';
             e.target.textContent = 'Fullscreen';
           }
-        }}>
-        Fullscreen
-      </button>
-
+        }}>Fullscreen</button>
       <button style="padding: 8px 16px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer;"
-        onclick=${() => {
-          const iframe = document.querySelector('iframe');
-          try {
-            // Target the download button by its class or role
-            const downloadButton = iframe.contentWindow.document.querySelector('button[title="Download a copy"]') ||
-                                 iframe.contentWindow.document.querySelector('.DownloadButtonWrapper') ||
-                                 iframe.contentWindow.document.querySelector('[data-automation-id="download-button"]');
-            if (downloadButton) {
-              downloadButton.click();
-            } else {
-              // If we can't find the button directly, try simulating the keyboard shortcut
-              iframe.contentWindow.postMessage({ type: 'download' }, '*');
-            }
-          } catch (error) {
-            console.log('Could not access iframe content:', error);
-            // Fallback: Open the file in a new tab where user can download
-            window.open(url, '_blank');
-          }
-        }}>
-        View in Excel Web
-      </button>
-    </div>`;
-  
-  // Display buttons and iframe in a container
-  const container = html`
-    <div>
-      ${buttonsContainer}
-      <iframe 
-        width="100%" 
-        height="1000" 
-        frameborder="0" 
-        scrolling="yes" 
-        src="${url}">
-      </iframe>
-    </div>`;
-  
-  display(container);
-} else {
-  // Handle Google Sheets
-  const data = await d3.csv(url);
-  
-  display(Inputs.table(data, {
-    rows: 50,
-    layout: "fixed",
-    width: "100%",
-    maxHeight: 600,
-    style: {
-      table: { background: "#1a1a1a" },
-      thead: { position: "sticky", top: 0, background: "#1a1a1a", zIndex: 1 },
-      "tr:hover": { background: "#2a2a2a" }
-    }
-  }));
-  
-  // Add export functionality for CSV download
-  display(
-    Inputs.button(`Download data.csv`, {
-      reduce() {
-        const csvContent = "data:text/csv;charset=utf-8," 
-          + data.map(row => Object.values(row).join(",")).join("\n");
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "spreadsheet_data.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    })
-  );
-}
+        onclick=${() => window.open(iframeSrc, '_blank')}>View in Excel Web</button>
+    </div>
+    <iframe width="100%" height="800" frameborder="0" scrolling="yes" src="${iframeSrc}"></iframe>
+  </div>
+`);
 ```
 ---
 
@@ -202,7 +90,7 @@ display(html`
     src="${pdfUrl}" 
     type="application/pdf"
     width="100%" 
-    height="1200px"
+    height="1000px"
   />
 `);
 ```
