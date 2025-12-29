@@ -75,7 +75,7 @@ const navigationPages = [
       open: true,
       pages: [
         {name: "H1-B 2024 Lottery (Power BI)", path: "/mban/h1b-2024-analysis"},
-        {name: "Portfolio Analysis (Tableau & SQL)", path: "/mban/data-extraction-individual"},
+        {name: "Portfolio Analysis (Tableau & SQL)", path: "/mban/portfolio-analysis"},
         {name: "Portfolio Construction (Python)", path: "/mban/portfolio-construction"},
         {name: "CAPM Modern Portfolio Theory (Python)", path: "/mban/quarto/CAPM-modern-portfolio-theory/CAPM_modern_portfolio_theory"},
         {name: "Governance Indicators (R)", path: "/mban/quarto/world-gov-indicators/world-gov-indicators"},
