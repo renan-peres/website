@@ -14,7 +14,7 @@ const projects = [
   {
     title: "Portfolio Analysis (Tableau & SQL)",
     description: "SQL-powered portfolio analytics with Tableau visualizations",
-    link: "/mban/data-extraction-individual",
+    link: "/mban/portfolio-analysis",
   },
   {
     title: "Stock & Crypto Prices",
