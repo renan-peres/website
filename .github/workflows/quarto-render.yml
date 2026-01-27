@@ -41,6 +41,13 @@ jobs:
         path: ~/.local/share/renv
         key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
         restore-keys: ${{ runner.os }}-renv-
+    
+    - name: Cache Quarto freeze
+      uses: actions/cache@v4
+      with:
+        path: src/mban/quarto/_freeze
+        key: ${{ runner.os }}-quarto-freeze-${{ hashFiles('src/mban/quarto/**/*.qmd') }}
+        restore-keys: ${{ runner.os }}-quarto-freeze-
 
     - name: Initialize R environment
       working-directory: src/mban/quarto
