@@ -1,0 +1,13 @@
+project:
+  type: default
+  render:
+    - "**/*.qmd"
+  
+execute:
+  freeze: auto  # Only re-execute code when source changes
+  cache: true   # Enable computation caching
+  
+format:
+  html:
+    toc: true
+    code-fold: true
