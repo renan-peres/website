@@ -54,7 +54,7 @@ jobs:
       run: |
         Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv", repos = "https://cloud.r-project.org"); renv::consent(TRUE)'
         Rscript -e 'if (!requireNamespace("units", quietly = TRUE)) install.packages("units", type = "source", repos = "https://cloud.r-project.org")'
-        Rscript -e 'renv::restore(prompt = FALSE)'
+        Rscript -e 'renv::restore()'
       env:
         QUARTO_PATH: ${{ env.QUARTO_ROOT }}/bin
 

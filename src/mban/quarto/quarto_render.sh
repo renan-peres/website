@@ -2,6 +2,8 @@
 
 ## Simplified Quarto rendering script
 ## Dependencies (R, Python, Quarto) are set up in GitHub Actions workflow
+## Note: Python packages are installed here (not in workflow) because they need
+##       to be installed in the virtual environment created by this script
 
 set -e  # Exit on error
 
