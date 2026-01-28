@@ -32,16 +32,19 @@ if [ -z "$VIRTUAL_ENV" ]; then
    exit 1
 fi
 
+# Upgrade pip first
+python -m pip install --upgrade pip
+
 # Install Python dependencies if requirements.txt exists
 if [ -f "requirements.txt" ]; then
-   if ! python -m pip install --upgrade pip && python -m pip install -r requirements.txt; then
+   if ! python -m pip install -r requirements.txt; then
        echo "Failed to install requirements"
        exit 1
    fi
 fi
 
-# Install required packages for Quarto (jupyter is needed for .qmd with Python)
-python -m pip install jupyter pyyaml
+# Ensure jupyter-cache is installed (critical for Quarto freeze)
+python -m pip install jupyter-cache pyyaml
 
 ## Render Quarto documents ======================================================
 
