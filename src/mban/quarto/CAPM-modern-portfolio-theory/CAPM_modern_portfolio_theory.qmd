@@ -299,9 +299,11 @@ with zipfile.ZipFile(io.BytesIO(response.read())) as z:
 
 # Convert to numeric and process
 factors = (factors_raw
-  .apply(pd.to_numeric, errors='coerce')  # ← Use apply() with pd.to_numeric()
+  .apply(pd.to_numeric, errors='coerce')
+  .dropna()  # ← Drop rows that couldn't be converted (like "Annual Factors" headers)
   .divide(100)
   .reset_index(names="date")
+  .query("date.str.len() == 6")  # ← Keep only YYYYMM format dates (6 characters)
   .assign(date=lambda x: pd.to_datetime(x["date"], format="%Y%m"))
   .rename(str.lower, axis="columns")
   .rename(columns={"mkt-rf": "mkt_excess"})
