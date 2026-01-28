@@ -8,6 +8,8 @@ format:
     self-contained: true
     embed-resources: true
     page-layout: full
+execute:
+  cache: false   
 ---
 
 ```{python}
@@ -84,17 +86,27 @@ helpers.make_candlestick_chart(data, ticker.upper())
 ### Column {width=25%}
 
 ```{python}
+#| output: asis
+from IPython.display import Markdown
+
 ohlc = helpers.make_OHLC_table(data)
+
+markdown_table = f"""
+::: {{.card}}
+
+#### Last Close: {ohlc['date']}
+
+| Close  | {ohlc['close']}  |
+|:-------|----------------:|
+| Open   | {ohlc['open']}   |
+| High   | {ohlc['high']}   |
+| Low    | {ohlc['low']}    |
+| Volume | {ohlc['volume']} |
+
+: {{.striped}}
+
+:::
+"""
+
+Markdown(markdown_table)
 ```
-
-::: {.card}
-
-#### Last Close: `{python} ohlc['date']`
-
-| Close	 | `{python} ohlc['close']`  |
-|:-------|--------------------------:|
-| Open	 | `{python} ohlc['open']`   |
-| High	 | `{python} ohlc['high']`   |
-| Low	 | `{python} ohlc['low']`    |
-| Volume | `{python} ohlc['volume']` |
-: {.striped}
