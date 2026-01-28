@@ -31,6 +31,9 @@ import yfinance as yf
 from plotnine import *
 from mizani.formatters import percent_format
 from adjustText import adjust_text
+import urllib.request
+import zipfile
+import io
 ```
 
 ## Asset Returns & Volatilities
@@ -286,10 +289,6 @@ where $r_{i,t}$ and $r_{m,t}$ are the realized returns of the asset and market p
 Let's turn to estimating CAPM parameters using real market data. Instead of using our previously constructed tangency portfolio, we employ the Fama-French market excess returns, which provide a widely accepted proxy for the market portfolio. These returns are already adjusted to represent excess returns over the risk-free rate, simplifying our analysis.
 
 ```{python}
-import urllib.request
-import zipfile
-import io
-
 # Download directly from Kenneth French's data library
 url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip"
 response = urllib.request.urlopen(url)
@@ -298,8 +297,9 @@ with zipfile.ZipFile(io.BytesIO(response.read())) as z:
     with z.open(z.namelist()[0]) as f:
         factors_raw = pd.read_csv(f, skiprows=3, index_col=0)
 
-# Process as before
+# Convert to numeric and process
 factors = (factors_raw
+  .astype(float, errors='coerce')  # Convert to float, coerce errors to NaN
   .divide(100)
   .reset_index(names="date")
   .assign(date=lambda x: pd.to_datetime(x["date"], format="%Y%m"))
