@@ -2,14 +2,20 @@ name: Quarto Render
 
 on:
   schedule:
-    - cron: '0 10 * * 1-5'
+    - cron: '0 10 * * 1-5'  # Weekdays at 10 AM UTC
   workflow_dispatch:
   push:
     branches: [main]
 
+# Prevent multiple workflow runs from conflicting
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   render-quarto:
     runs-on: ubuntu-latest
+    timeout-minutes: 45  # Prevent hanging jobs
     permissions:
       contents: write
     env:
@@ -41,7 +47,7 @@ jobs:
         path: ~/.local/share/renv
         key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
         restore-keys: ${{ runner.os }}-renv-
-    
+
     - name: Cache Quarto freeze
       uses: actions/cache@v4
       with:
@@ -60,10 +66,8 @@ jobs:
 
     - uses: actions/setup-python@v5
       with:
-        python-version: '3.12' 
-        cache: 'pip'
-        cache-dependency-path: src/mban/quarto/requirements.txt
-    
+        python-version: '3.12'
+
     - name: Cache Python virtual environment
       uses: actions/cache@v4
       with:
@@ -71,22 +75,58 @@ jobs:
         key: ${{ runner.os }}-venv-${{ hashFiles('src/mban/quarto/requirements.txt') }}
         restore-keys: ${{ runner.os }}-venv-
 
+    - name: Set up Python virtual environment
+      working-directory: src/mban/quarto
+      run: |
+        echo "Setting up Python virtual environment..."
+        if [ ! -d "venv" ]; then
+          python3 -m venv venv
+          echo "✓ Virtual environment created"
+        else
+          echo "✓ Using cached virtual environment"
+        fi
+        source venv/bin/activate
+        python -m pip install --upgrade pip
+        echo "✓ pip upgraded"
+        if [ -f "requirements.txt" ]; then
+          python -m pip install -r requirements.txt
+          echo "✓ Requirements installed"
+        fi
+        python -m pip install jupyter-cache pyyaml
+        echo "✓ Additional dependencies installed"
+        echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV
+        echo "PATH=$VIRTUAL_ENV/bin:$PATH" >> $GITHUB_ENV
+
     - name: Render Quarto documents
       working-directory: src/mban/quarto
       run: |
-        chmod +x quarto_render.sh
-        ./quarto_render.sh
+        echo "Python virtual environment: $VIRTUAL_ENV"
+        echo "Python version: $(python --version)"
+        echo "Quarto version: $(quarto --version)"
+        echo "Starting Quarto render..."
+        quarto render
+        echo "✓ All Quarto documents rendered successfully"
 
     - name: Commit and push
       run: |
+        echo "Configuring git..."
         git config user.email "github@renanperes.com"
         git config user.name "renan-peres"
+
+        echo "Adding changes..."
         git add .
+
         if git diff --staged --quiet; then
-          echo "No changes to commit"
+          echo "✓ No changes to commit"
           exit 0
         fi
+
+        echo "Committing changes..."
         git commit -m "Render Quarto documents [skip ci]"
+
+        echo "Pushing changes..."
         git push
+
+        echo "✓ Changes committed and pushed successfully"
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
