@@ -78,6 +78,7 @@ jobs:
     - name: Set up Python virtual environment
       working-directory: src/mban/quarto
       run: |
+        set -e  # Exit on any error
         echo "Setting up Python virtual environment..."
         if [ ! -d "venv" ]; then
           python3 -m venv venv
@@ -86,14 +87,17 @@ jobs:
           echo "✓ Using cached virtual environment"
         fi
         source venv/bin/activate
+        # Verify virtual environment is active
+        if [ -z "$VIRTUAL_ENV" ]; then
+          echo "Error: Virtual environment not activated correctly"
+          exit 1
+        fi
         python -m pip install --upgrade pip
         echo "✓ pip upgraded"
         if [ -f "requirements.txt" ]; then
           python -m pip install -r requirements.txt
           echo "✓ Requirements installed"
         fi
-        python -m pip install jupyter-cache pyyaml
-        echo "✓ Additional dependencies installed"
         echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV
         echo "PATH=$VIRTUAL_ENV/bin:$PATH" >> $GITHUB_ENV
 
