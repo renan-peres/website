@@ -299,7 +299,7 @@ with zipfile.ZipFile(io.BytesIO(response.read())) as z:
 
 # Convert to numeric and process
 factors = (factors_raw
-  .astype(float, errors='coerce')  # Convert to float, coerce errors to NaN
+  .apply(pd.to_numeric, errors='coerce')  # ← Use apply() with pd.to_numeric()
   .divide(100)
   .reset_index(names="date")
   .assign(date=lambda x: pd.to_datetime(x["date"], format="%Y%m"))
