@@ -293,18 +293,19 @@ Let's turn to estimating CAPM parameters using real market data. Instead of usin
 url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip"
 response = urllib.request.urlopen(url)
 with zipfile.ZipFile(io.BytesIO(response.read())) as z:
-    # Extract and read the CSV
     with z.open(z.namelist()[0]) as f:
         factors_raw = pd.read_csv(f, skiprows=3, index_col=0)
+
+# Filter to only monthly data (index should be exactly 6 digits: YYYYMM)
+factors_raw = factors_raw[factors_raw.index.astype(str).str.strip().str.match(r'^\d{6}$')]
 
 # Convert to numeric and process
 factors = (factors_raw
   .apply(pd.to_numeric, errors='coerce')
-  .dropna()  # ← Drop rows that couldn't be converted (like "Annual Factors" headers)
+  .dropna()
   .divide(100)
   .reset_index(names="date")
-  .query("date.str.len() == 6")  # ← Keep only YYYYMM format dates (6 characters)
-  .assign(date=lambda x: pd.to_datetime(x["date"], format="%Y%m"))
+  .assign(date=lambda x: pd.to_datetime(x["date"].astype(str).str.strip(), format="%Y%m"))
   .rename(str.lower, axis="columns")
   .rename(columns={"mkt-rf": "mkt_excess"})
 )
