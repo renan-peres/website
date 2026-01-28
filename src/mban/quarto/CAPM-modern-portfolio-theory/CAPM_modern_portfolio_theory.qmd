@@ -70,7 +70,7 @@ prices_daily = (prices_daily
 prices_daily = (prices_daily
   .groupby("symbol")
   .apply(lambda x: x.assign(counts=x["adjusted"].dropna().count()))
-  .reset_index(drop=True)
+  .reset_index(drop=False)
   .query("counts == counts.max()")
 )
 

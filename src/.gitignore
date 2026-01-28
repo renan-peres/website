@@ -3,3 +3,4 @@ venv/
 secrets/
 renv/
 .Rprofile
+**__pycache__
