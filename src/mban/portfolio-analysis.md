@@ -102,7 +102,7 @@ This project presents a comprehensive portfolio analysis tool combining SQL-base
 - Automated data processing and handling
 - Real-time data extraction capabilities
 
-### [Part 1: Data Extraction (SQL)](#data-extraction-sql-1)
+### [Part 1: Data Extraction (SQL)](#data-extraction-sql)
 The SQL component integrates multiple data sources including account dimensions, customer details, holdings, and pricing information. It processes this data through a series of analytical queries:
 
 - **SQL View**: Creates a comprehensive view consolidating all client portfolio data with relevant dimensions and metrics
@@ -111,7 +111,7 @@ The SQL component integrates multiple data sources including account dimensions,
 - **Query 3**: Identifies potential investment opportunities by analyzing securities not currently in the portfolio
 - **Query 4**: Calculates risk-adjusted returns (Sharpe-like ratio) to determine optimal investment efficiency
 
-### [Part 2: Interactive Dashboard (Tableau)](#interactive-dashboard-tableau-1)
+### [Part 2: Interactive Dashboard (Tableau)](#interactive-dashboard-tableau)
 The Tableau dashboard provides an interactive visualization layer that transforms the SQL analysis into actionable insights:
 
 - Asset allocation breakdown and portfolio composition
