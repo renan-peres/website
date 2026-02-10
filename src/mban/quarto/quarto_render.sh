@@ -8,13 +8,15 @@
 set -e  # Exit on error
 
 # Get absolute path to Python
-PYTHON_PATH=$(which python3)
+PYTHON_PATH=$(command -v python3)
 
 # Prefer existing uv environment if present
 UV_PATH=$(command -v uv || true)
 VENV_DIR="venv"
+USE_UV="false"
 if [ -n "$UV_PATH" ] && [ -d ".venv" ]; then
    VENV_DIR=".venv"
+   USE_UV="true"
 fi
 
 ## Python Setup ======================================================
@@ -39,19 +41,36 @@ if [ -z "$VIRTUAL_ENV" ]; then
    exit 1
 fi
 
-# Upgrade pip first
-python -m pip install --upgrade pip
+# Use venv-local python for all installs
+VENV_PY="$VENV_DIR/bin/python"
+
+if [ "$USE_UV" = "true" ]; then
+   uv pip install --upgrade pip
+else
+   "$VENV_PY" -m pip install --upgrade pip
+fi
 
 # Install Python dependencies if requirements.txt exists
 if [ -f "requirements.txt" ]; then
-   if ! python -m pip install -r requirements.txt; then
-       echo "Failed to install requirements"
-       exit 1
+   if [ "$USE_UV" = "true" ]; then
+      if ! uv pip install -r requirements.txt; then
+         echo "Failed to install requirements"
+         exit 1
+      fi
+   else
+      if ! "$VENV_PY" -m pip install -r requirements.txt; then
+         echo "Failed to install requirements"
+         exit 1
+      fi
    fi
 fi
 
 # Ensure jupyter-cache is installed (critical for Quarto freeze)
-python -m pip install jupyter-cache pyyaml
+if [ "$USE_UV" = "true" ]; then
+   uv pip install jupyter-cache pyyaml
+else
+   "$VENV_PY" -m pip install jupyter-cache pyyaml
+fi
 
 ## Render Quarto documents ======================================================
 
