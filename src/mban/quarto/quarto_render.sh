@@ -10,18 +10,25 @@ set -e  # Exit on error
 # Get absolute path to Python
 PYTHON_PATH=$(which python3)
 
+# Prefer existing uv environment if present
+UV_PATH=$(command -v uv || true)
+VENV_DIR="venv"
+if [ -n "$UV_PATH" ] && [ -d ".venv" ]; then
+   VENV_DIR=".venv"
+fi
+
 ## Python Setup ======================================================
 
 # Create and activate virtual environment if needed
-if [ ! -d "venv" ]; then
-   if ! "$PYTHON_PATH" -m venv venv; then
+if [ ! -d "$VENV_DIR" ]; then
+   if ! "$PYTHON_PATH" -m venv "$VENV_DIR"; then
        echo "Failed to create virtual environment"
        exit 1
    fi
 fi
 
 # Activate virtual environment
-if ! . venv/bin/activate; then
+if ! . "$VENV_DIR"/bin/activate; then
    echo "Failed to activate virtual environment"
    exit 1
 fi
