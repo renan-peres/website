@@ -78,7 +78,9 @@ const navigationPages = [
         {name: "Portfolio Analysis (Tableau & SQL)", path: "/mban/portfolio-analysis"},
         {name: "Portfolio Construction (Python)", path: "/mban/portfolio-construction"},
         {name: "CAPM Modern Portfolio Theory (Python)", path: "/mban/quarto/CAPM-modern-portfolio-theory/CAPM_modern_portfolio_theory"},
-        {name: "Governance Indicators (R)", path: "/mban/quarto/world-gov-indicators/world-gov-indicators"},
+        {name: "Regression Modeling (Python)", path: "/mban/quarto/regression-modeling/regression_modeling_chefs_compass"},
+        {name: "Classification Modeling (Python)", path: "/mban/quarto/classification-modeling/classification_modeling_bank_marketing"},        
+        {name: "World Governance Indicators (R)", path: "/mban/quarto/world-gov-indicators/world-gov-indicators"},
         {name: "Stock Explorer (Python)", path: "/mban/quarto/stock-explorer-dashboard/stock_explorer_dashboard"},
         // // {name: "Data Extraction (Open Server)", path: "/Data-Extraction/Individual/data-extraction-sql"},
       // // {name: "Fall-24: Covid Analysis (DE&Viz)", path: "/Data-Extraction/Team/data-extraction-team"}

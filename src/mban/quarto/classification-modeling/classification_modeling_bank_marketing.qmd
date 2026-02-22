@@ -1,0 +1,1351 @@
+---
+format:
+    html:
+        theme: 
+            light: flatly
+            dark: darkly
+        highlight-style: github
+        code-fold: show
+        code-tools: 
+            source: true
+            toggle: true
+            # caption: none
+        code-copy: true
+        self-contained: true
+        html-math-method: katex
+        embed-resources: true
+        code-overflow: wrap
+        smooth-scroll: true       
+        page-layout: full
+      #   toc: true
+      #   toc-location: left
+        lightbox: true
+   #  ipynb: default
+   #  pdf: default
+---
+
+## Classification Modeling | Bank Marketing
+##### February 18, 2026
+#### DAT-5329 | Machine Learning & AI
+#### By: **Renan Peres** | <a href="https://github.com/renan-peres/">https://github.com/renan-peres/</a>
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+
+![Bank Marketing](https://res.cloudinary.com/dqtnflaeh/image/upload/c_fit,h_600/v1771347486/Gemini_Generated_Image_2b5aom2b5aom2b5a_xwtqaj.png)
+
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+
+
+<br>
+
+## **Executive Summary**
+
+---
+
+### Overview and Objective
+
+Marketing relies on delivering the right product, to the right customer, at the right time. Achieving this requires a process that relies on more than just intuition, it requires data driven decision making. In this project we are using machine learning to build a predictive classification model based on a dataset from the UCI Machine Learning Repository. The dataset originates from a Portuguese banking institution and focuses on direct marketing campaigns conducted via phone calls between May 2008 and November 2010.
+
+The primary business goal associated with this data is to develop a classification model to predict whether a client will subscribe to a specific financial product: a **bank term deposit (target variable y)**. It is noted that securing a subscription often required multiple contacts with the same client. Instead of contacting customers aimlessly, we identify those most likely to respond positively. By comparing classification models and improving performance through preprocessing, feature engineering and hyperparameter tuning, we develop a system that increases efficiency, reduces costs, and improves campaign effectiveness. This project shows how machine learning allows businesses to improve marketing efficiency by moving from broad segmentation to predictive, data driven targeting.
+
+### Dataset Characteristics
+
+- **Source:** Moro, S., Rita, P., & Cortez, P. (2014). Bank Marketing Dataset. [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/222/bank+marketing).
+- **Volume:** 45,211 instances (full dataset, `bank-full.csv`). A 10% subset (`bank.csv`, 4,521 instances) is available for computationally intensive testing.
+- **Data quality:** No missing attribute values.
+
+### Feature Summary
+
+The dataset contains 16 input features and 1 binary target (`y` → `has_subscribed`). Inputs fall into three groups:
+
+- **Client demographics:** age, job type, marital status, education level, credit default, average yearly balance, housing loan, and personal loan.
+- **Current campaign contacts:** communication type (telephone/cellular), day of month, month, and call duration.
+- **Campaign history:** total contacts this campaign, days since last contact from a prior campaign, number of prior contacts, and previous campaign outcome.
+
+### Model Selection
+
+We trained and compared five classifiers: Logistic Regression, Random Forest, XGBoost, Neural Network (MLP), and AdaBoost using **ROC-AUC** as the primary selection metric. ROC-AUC measures how well a model separates positive from negative cases across all probability thresholds, making it well-suited for imbalanced data.
+
+> **XGBoost** achieved the highest test ROC-AUC of **0.795** with a train–test gap of only **0.013**, well below the 0.05 overfitting threshold.
+
+<br>
+
+## **Imports**
+
+---
+
+### Libraries
+
+```{python}
+# data manipulation
+import numpy                   as np                                  # mathematical essentials
+import pandas                  as pd                                  # data science essentials
+
+# data visualization
+import matplotlib.pyplot       as plt                                 # data visualization
+import seaborn                 as sns                                 # enhanced visualization
+
+# data preprocessing
+from sklearn.preprocessing     import StandardScaler                  # data prep
+from sklearn.model_selection   import train_test_split                # train-test split
+from sklearn.model_selection   import RandomizedSearchCV              # hyperparameter tuning
+from sklearn.model_selection   import GridSearchCV                    # hyperparameter tuning
+
+# ML models
+import xgboost                 as xgb                                 # eXtreme Gradient Boosting
+from sklearn.base              import clone                           # clone estimator
+from sklearn.linear_model      import LogisticRegression              # logistic regression
+from sklearn.ensemble          import RandomForestClassifier          # random forest
+from sklearn.ensemble          import AdaBoostClassifier              # AdaBoost
+from sklearn.neural_network    import MLPClassifier                   # neural networks
+
+# metrics
+from sklearn.metrics           import confusion_matrix                # confusion matrix
+from sklearn.metrics           import roc_auc_score                   # auc score
+from sklearn.metrics           import accuracy_score                  # accuracy score
+from sklearn.metrics           import precision_score, recall_score   # precision and recall
+from sklearn.metrics           import f1_score                        # f1 score
+from sklearn.metrics           import average_precision_score         # avg precision score
+
+# setting pandas print options
+pd.set_option('display.max_rows'    , 500)
+pd.set_option('display.max_columns' , 500)
+pd.set_option('display.width'       , 1000)
+
+# suppressing warnings
+import warnings
+warnings.filterwarnings(action = 'ignore')
+```
+
+<br>
+
+<br>
+
+### UDFs (User-Defined Functions)
+
+#### `plot_feature_importances()`
+
+Plots a horizontal bar chart of non-zero feature importances from any tree-based model. Filtering out zero-importance features keeps the chart readable and highlights only the drivers that influence predictions.
+
+```{python}
+def plot_feature_importances(model, train, title=None, export=False, top_n=None):
+
+    importances = model.feature_importances_
+    cols        = np.array(train.columns)
+
+    # keep only features with non-zero importance
+    mask        = importances > 0
+    importances = importances[mask]
+    cols        = cols[mask]
+
+    # sort ascending for horizontal bar layout
+    order       = np.argsort(importances)
+    importances = importances[order]
+    cols        = cols[order]
+
+    if top_n is not None:
+        importances = importances[-top_n:]
+        cols        = cols[-top_n:]
+
+    fig, ax = plt.subplots(figsize=(10, 8))
+    ax.barh(range(len(cols)), importances, align="center")
+    ax.set_yticks(range(len(cols)))
+    ax.set_yticklabels(cols)
+    if title is not None:
+        ax.set_title(title)
+    ax.set_xlabel("Feature importance")
+
+    if export:
+        plt.savefig("./analysis_images/Tree_Visual.png", bbox_inches="tight")
+
+    plt.show()
+```
+
+<br>
+
+#### `evaluate_classification_model()`
+
+Evaluates a fitted classifier by computing ROC-AUC (train and test), PR-AUC, accuracy, precision, recall, and F1 on the test set. It also reports the train–test ROC-AUC gap, which we use to diagnose overfitting. An optional confusion-matrix heatmap can be toggled on for the winning model.
+
+```{python}
+def evaluate_classification_model(model, x_train, x_test, y_train, y_test,
+                                  model_name="Model", show_confusion_matrix=False):
+    """
+    PARAMETERS
+    ----------
+    model                  : fitted sklearn-compatible classifier
+    x_train                : training features
+    x_test                 : testing features
+    y_train                : training target
+    y_test                 : testing target
+    model_name             : string label for display
+    show_confusion_matrix  : bool, if True displays confusion matrix (default: False)
+
+    RETURNS
+    -------
+    results : dict with all computed metrics
+    """
+    # predictions (binary)
+    y_train_pred = model.predict(x_train)
+    y_test_pred  = model.predict(x_test)
+
+
+    # predicted probabilities for the positive class (needed for PR-AUC & ROC-AUC)
+    y_test_proba  = model.predict_proba(x_test)[:, 1]
+    y_train_proba = model.predict_proba(x_train)[:, 1]
+
+
+    # core metrics — PR-AUC and ROC-AUC use PROBABILITIES, not binary predictions
+    pr_auc        = average_precision_score(y_test, y_test_proba)
+    acc_train     = accuracy_score(y_train, y_train_pred)
+    acc_test      = accuracy_score(y_test,  y_test_pred)
+    roc_auc_train = roc_auc_score(y_true=y_train, y_score=y_train_proba)
+    roc_auc_test  = roc_auc_score(y_true=y_test,  y_score=y_test_proba)
+    prec          = precision_score(y_test, y_test_pred)
+    rec           = recall_score(y_test, y_test_pred)
+    f1            = f1_score(y_test, y_test_pred)
+
+
+    # print summary
+    print(f"{'='*45}")
+    print(f"  {model_name}")
+    print(f"{'='*45}")
+    print(f"  ROC-AUC Train  : {roc_auc_train:.3f}")
+    print(f"  ROC-AUC Test   : {roc_auc_test:.3f}")
+    print(f"  ROC-AUC Gap    : {abs(roc_auc_train - roc_auc_test):.3f}")
+    print(f"  PR-AUC         : {pr_auc:.3f}")
+    print(f"  Accuracy       : {acc_test:.3f}")
+    print(f"  Precision      : {prec:.3f}")
+    print(f"  Recall         : {rec:.3f}")
+    print(f"  F1 Score       : {f1:.3f}")
+    print(f"{'='*45}\n")
+
+
+    # confusion matrix (only if requested)
+    if show_confusion_matrix:
+        cm = confusion_matrix(y_test, y_test_pred)
+        plt.figure(figsize=(5, 4))
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+                    xticklabels=['No', 'Yes'],
+                    yticklabels=['No', 'Yes'])
+        plt.title(f'Confusion Matrix - {model_name}')
+        plt.ylabel('Actual')
+        plt.xlabel('Predicted')
+        plt.tight_layout()
+        plt.show()
+
+
+    return {
+        'model_name'    : model_name,
+        'roc_auc_train' : round(roc_auc_train, 3),
+        'roc_auc_test'  : round(roc_auc_test, 3),
+        'roc_auc_gap'   : round(abs(roc_auc_train - roc_auc_test), 3),
+        'PR-AUC'        : round(pr_auc, 3),
+        'accuracy'      : round(acc_test, 3),
+        'precision'     : round(prec, 3),
+        'recall'        : round(rec, 3),
+        'f1'            : round(f1, 3)
+    }
+```
+
+### Dataset
+
+```{python}
+# local file
+file = 'bank-full.csv'
+
+# reading the file into Python
+df      = pd.read_csv(filepath_or_buffer = file ,
+                      header             = 0    ,
+                      delimiter          = ';'    # semicolon delimited
+                      )
+```
+
+<br>
+
+## **Step 1: Exploratory Data Analysis (EDA)**
+
+Before modeling, we examine the dataset's structure, distributions, and class balance to inform preprocessing decisions.
+
+---
+
+### Dataset Shape
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 243}
+print("Shape:", df.shape)
+display(df.head(n = 5))
+```
+
+<br>
+
+### Data Types
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+print(f"""
+Data Types (Count):
+{df.dtypes.value_counts()}
+
+Data Types:
+{df.dtypes}
+""")
+```
+
+<br>
+
+### Missing Values
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+missing = df.isnull().sum().sort_values(ascending=False)
+zeros   = (df == 0).sum().sort_values(ascending=False)
+
+summary = pd.concat(
+    [missing.rename("Missing Values"),
+     zeros.rename("Zero Values")],
+    axis=1
+)
+
+print(summary)
+```
+
+<br>
+
+### Descriptive Statistics
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 269}
+round(df.describe().T, 2) \
+  .sort_values(by = 'std', ascending = False) # sorted by standard deviation in descending order
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+# skewness for numeric columns
+print(df.skew(numeric_only=True).round(2).sort_values(ascending=False))
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 405}
+# boxplot of key numeric features
+num_cols  = ['previous', 'balance', 'campaign', 'duration']
+
+fig, axes = plt.subplots(1, len(num_cols), figsize=(10, 4), sharey=False)
+
+for ax, col in zip(axes, num_cols):
+    ax.boxplot(df[col].dropna(), vert=True)
+    ax.set_title(col)
+    ax.set_ylabel(col)  # separate scale per subplot
+
+fig.suptitle('Boxplot of Numeric Features')
+plt.tight_layout()
+plt.show()
+```
+
+<br>
+
+### Target variable distribution
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 667}
+# Check class distribution
+print(f"""
+Target Variable Distribution:
+-----------------------------
+{df['y'].value_counts()}
+
+Class Proportions:
+------------------------------
+{df['y'].value_counts(normalize=True)}
+""")
+
+# Visualize class distribution
+plt.figure(figsize=(8, 4))
+df['y'].value_counts().plot(kind='bar', color=['skyblue', 'coral'])
+plt.title('Distribution of Target Variable (Subscription to Term Deposit)')
+plt.xlabel('Subscription')
+plt.ylabel('Count')
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
+```
+
+> The target is heavily imbalanced — "no" cases far outnumber "yes." This means raw accuracy would be misleading (a model predicting all "no" would score high). To address this, we both **downsample the majority class** in training and use **ROC-AUC** as the primary evaluation metric, which is robust to class imbalance.
+
+<br>
+
+## **Step 2: Data Preparation / Cleaning**
+
+This step prepares the raw data for modeling by improving column readability and addressing outliers that could distort model training.
+
+---
+
+### Column Renaming
+
+The original UCI column names are short abbreviations (e.g., `pdays`, `poutcome`). We rename them to descriptive labels (e.g., `contact_gap_days`, `previous_outcome`) so the code and feature-importance plots are easier to interpret.
+
+```{python}
+# Rename the columns for interpretability
+df.rename(columns = {'job'       : 'job_type'           ,
+                     'marital'   : 'marital_status'     ,
+                     'education' : 'education_level'    ,
+                     'default'   : 'has_default'        ,
+                     'balance'   : 'avg_yearly_balance' ,
+                     'housing'   : 'has_housing'        ,
+                     'loan'      : 'has_loan'           ,
+                     'contact'   : 'contact_type'       ,
+                     'duration'  : 'contact_duration'   ,
+                     'campaign'  : 'campaign_contacts'  ,
+                     'pdays'     : 'contact_gap_days'   ,
+                     'previous'  : 'previous_contacts'  ,
+                     'poutcome'  : 'previous_outcome'   ,
+                     'y'         : 'has_subscribed'
+                     },
+          inplace = True)
+
+# Lowercase and remove whitespace
+df.columns = df.columns.str.lower().str.strip()
+```
+
+<br>
+
+### Outlier Imputation
+
+We apply IQR-based outlier imputation to two numeric features: `avg_yearly_balance` and `campaign_contacts`, that showed heavy right-skew and extreme values in the EDA boxplots above. (`contact_duration` is excluded because it will be dropped as a leakage variable before modeling.)
+
+- **Detection:** Values below Q1 − 1.5 × IQR or above Q3 + 1.5 × IQR are flagged as outliers.
+- **Imputation:** Flagged values are replaced with the column **median**, which preserves central tendency without introducing artificial distributional assumptions.
+
+This reduces the influence of extreme observations (e.g., very high balances or excessive campaign contacts) on model training, particularly for distance-based and linear models.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 405}
+# Redefining with new column names (contact_duration excluded — it is dropped later as a leakage variable)
+num_cols = ['avg_yearly_balance', 'campaign_contacts']
+
+# Loop through numeric columns
+for col in num_cols:
+
+    # Define quartiles and IQR
+    Q1  = df[col].quantile(0.25)
+    Q3  = df[col].quantile(0.75)
+    IQR = Q3 - Q1
+
+    # Define outlier bounds (1.5 * IQR) and calculate median
+    lower  = Q1 - 1.5 * IQR
+    upper  = Q3 + 1.5 * IQR
+    median = df[col].median()
+
+    # Replace outliers with median
+    df.loc[df[col] < lower, col] = median
+    df.loc[df[col] > upper, col] = median
+
+# boxplot of key numeric features
+fig, axes = plt.subplots(1, len(num_cols), figsize=(10, 4), sharey=False)
+
+for ax, col in zip(axes, num_cols):
+    ax.boxplot(df[col].dropna(), vert=True)
+    ax.set_title(col)
+    ax.set_ylabel(col)  # separate scale per subplot
+
+fig.suptitle('Boxplot of Numeric Features (After Imputation)')
+plt.tight_layout()
+plt.show()
+```
+
+> The post-imputation boxplots confirm that extreme tails have been compressed. The distributions are not perfectly normal, but the most distorting outliers no longer skew the feature ranges.
+
+<br>
+
+## **Step 3: Feature Engineering**
+
+We created **18 engineered features** across six categories to give models richer signals about customer behavior, financial health, and campaign dynamics. Each category and its rationale are summarized below.
+
+---
+
+<br>
+
+### **Categorical Binning (3 features)**
+
+| # | Feature | Description |
+|---|---------|-------------|
+| 1 | `AGE_GROUP` | Age binned into six life-stage groups (<25, 25–35, …, 65+) |
+| 2 | `CAMPAIGN_INTENSITY_BIN` | Campaign contacts binned into four frequency levels |
+| 3 | `PREVIOUS_SUCCESS` | Binary flag: previous campaign outcome was "success" |
+
+> Binning continuous variables lets models detect non-linear threshold effects (e.g., retirees vs. mid-career) that raw numeric values may miss.
+
+<br>
+
+### **Customer Financial Profile (3 features)**
+
+| # | Feature | Description |
+|---|---------|-------------|
+| 4 | `FINANCIAL_STABILITY_SCORE` | Composite 0–1 score from balance, default, and debt status |
+| 5 | `BALANCE_PER_AGE` | Wealth accumulation rate (balance ÷ age) |
+| 6 | `DEBT_FREE_STATUS` | Binary: no housing loan, personal loan, or credit default |
+
+> Financially stable, debt-free customers with higher wealth-to-age ratios are more likely to have disposable income for term deposits.
+
+<br>
+
+### **Campaign Engagement (4 features)**
+
+| # | Feature | Description |
+|---|---------|-------------|
+| 7 | `PRIOR_CONTACT_FLAG` | Binary: customer was contacted in a prior campaign |
+| 8 | `CAMPAIGN_INTENSITY` | Ratio of current to previous campaign contacts |
+| 9 | `ENGAGEMENT_QUALITY_SCORE` | Composite 0–1 score weighting prior success (3×) and prior contact (2×) |
+| 10 | `CONTACT_RECENCY_SCORE` | Normalized 0–1 recency (recent contact = 1, never contacted = 0) |
+
+> Customers with prior successful interactions and recent contact are warmer leads. The intensity ratio captures how aggressively the current campaign targets each customer relative to past efforts.
+
+<br>
+
+### **Demographic Profile (3 features)**
+
+| # | Feature | Description |
+|---|---------|-------------|
+| 11 | `LIFE_STAGE_CATEGORY` | Four segments: young_single, middle_married, mature, other |
+| 12 | `EDUCATION_JOB_ALIGNMENT` | Binary: tertiary education paired with management/admin job |
+| 13 | `EMPLOYMENT_STABILITY_SCORE` | Ordinal 1–3 score by job stability |
+
+> Life stage and employment stability influence financial product adoption. Aligned education-job profiles tend to signal higher income potential.
+
+<br>
+
+### **Temporal Patterns (2 features)**
+
+| # | Feature | Description |
+|---|---------|-------------|
+| 14 | `PEAK_SEASON_FLAG` | Binary: contact made during May–August |
+| 15 | `MONTH_PERIOD_CATEGORY` | Month timing: early (1–10), mid (11–20), late (21–31) |
+
+> Conversion rates vary seasonally and within-month (e.g., post-salary-deposit timing).
+
+<br>
+
+### **Interaction Features (3 features)**
+
+| # | Feature | Description |
+|---|---------|-------------|
+| 16 | `CAMPAIGN_SUCCESS_INTERACTION` | campaign_contacts × previous success flag |
+| 17 | `AGE_BALANCE_INTERACTION` | age × balance (wealth-life-stage effect) |
+| 18 | `CAMPAIGN_CONTACT_INTERACTION` | campaign_contacts × cellular contact flag |
+
+> Interaction terms capture joint effects that individual features miss — for example, intensive follow-up on previously successful customers, or the combined wealth-age profile of prime deposit candidates.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+########################################
+# Categorical Binning Features
+########################################
+
+# 1. AGE_GROUP - Categorize age into meaningful groups
+df['AGE_GROUP'] = pd.cut(df['age'],
+                         bins=[0, 25, 35, 45, 55, 65, 100],
+                         labels=['<25', '25-35', '35-45', '45-55', '55-65', '65+'])
+
+# 2. CAMPAIGN_INTENSITY_BIN - Number of contacts in current campaign
+df['CAMPAIGN_INTENSITY_BIN'] = pd.cut(
+    df['campaign_contacts'],
+    bins=[0, 1, 2, 3, np.inf],
+    labels=['low', 'medium', 'high', 'very_high'],
+    include_lowest=True
+)
+
+# 3. PREVIOUS_SUCCESS - Whether previous campaign was successful
+df['PREVIOUS_SUCCESS'] = (df['previous_outcome'] == 'success').astype(int)
+
+
+########################################
+# Category I: Customer Financial Profile
+########################################
+
+# 4. FINANCIAL_STABILITY_SCORE (composite 0-1)
+df['FINANCIAL_STABILITY_SCORE'] = (
+    (df['avg_yearly_balance'] > df['avg_yearly_balance'].median()).astype(int) * 2 +
+    (df['has_default']  == 'no').astype(int) +
+    (df['has_housing']  == 'no').astype(int) +
+    (df['has_loan']     == 'no').astype(int)
+) / 5
+
+# 5. BALANCE_PER_AGE (wealth accumulation rate)
+df['BALANCE_PER_AGE'] = df['avg_yearly_balance'] / (df['age'] + 1)
+
+# 6. DEBT_FREE_STATUS (binary)
+df['DEBT_FREE_STATUS'] = (
+    (df['has_housing'] == 'no') &
+    (df['has_loan']    == 'no') &
+    (df['has_default'] == 'no')
+).astype(int)
+
+
+########################################
+# Category II: Campaign Engagement
+########################################
+
+# 7. PRIOR_CONTACT_FLAG (binary)
+df['PRIOR_CONTACT_FLAG'] = (df['contact_gap_days'] != -1).astype(int)
+
+# 8. CAMPAIGN_INTENSITY (ratio)
+df['CAMPAIGN_INTENSITY'] = df['campaign_contacts'] / (df['previous_contacts'] + 1)
+
+# 9. ENGAGEMENT_QUALITY_SCORE (composite 0-1)
+df['ENGAGEMENT_QUALITY_SCORE'] = (
+    (df['previous_outcome'] == 'success').astype(int) * 3 +
+    df['PRIOR_CONTACT_FLAG'] * 2
+) / 5
+
+# 10. CONTACT_RECENCY_SCORE (normalized 0-1)
+df['CONTACT_RECENCY_SCORE'] = 0
+contacted_mask = df['contact_gap_days'] != -1
+if contacted_mask.sum() > 0:
+    max_pdays = df.loc[contacted_mask, 'contact_gap_days'].max()
+    df.loc[contacted_mask, 'CONTACT_RECENCY_SCORE'] = (
+        1 - (df.loc[contacted_mask, 'contact_gap_days'] / max_pdays)
+    )
+
+
+########################################
+# Category III: Demographic Profile
+########################################
+
+# 11. LIFE_STAGE_CATEGORY (categorical)
+conditions = [
+    (df['age'] < 30)  & (df['marital_status'] == 'single'),
+    (df['age'].between(30, 50)) & (df['marital_status'] == 'married'),
+    (df['age'] > 50)  & (df['marital_status'].isin(['divorced', 'married']))
+]
+choices = ['young_single', 'middle_married', 'mature']
+df['LIFE_STAGE_CATEGORY'] = np.select(conditions, choices, default='other')
+
+# 12. EDUCATION_JOB_ALIGNMENT (binary)
+high_education_jobs = ['management', 'admin.']
+df['EDUCATION_JOB_ALIGNMENT'] = (
+    (df['education_level'] == 'tertiary') &
+    (df['job_type'].isin(high_education_jobs))
+).astype(int)
+
+# 13. EMPLOYMENT_STABILITY_SCORE (ordinal 1-3)
+high_stability_jobs   = ['retired', 'management', 'admin.']
+medium_stability_jobs = ['technician', 'services', 'blue-collar']
+df['EMPLOYMENT_STABILITY_SCORE'] = 1
+df.loc[df['job_type'].isin(medium_stability_jobs), 'EMPLOYMENT_STABILITY_SCORE'] = 2
+df.loc[df['job_type'].isin(high_stability_jobs),   'EMPLOYMENT_STABILITY_SCORE'] = 3
+
+
+########################################
+# Category IV: Temporal Patterns
+########################################
+
+# 14. PEAK_SEASON_FLAG (binary)
+peak_months = ['may', 'jun', 'jul', 'aug']
+df['PEAK_SEASON_FLAG'] = df['month'].isin(peak_months).astype(int)
+
+# 15. MONTH_PERIOD_CATEGORY (categorical)
+df['MONTH_PERIOD_CATEGORY'] = pd.cut(df['day'],
+                                      bins=[0, 10, 20, 32],
+                                      labels=['early', 'mid', 'late'],
+                                      include_lowest=True)
+
+
+########################################
+# Category V: Interaction Features
+########################################
+
+# 16. CAMPAIGN_SUCCESS_INTERACTION
+df['CAMPAIGN_SUCCESS_INTERACTION'] = (
+    df['campaign_contacts'] * (df['previous_outcome'] == 'success').astype(int)
+)
+
+# 17. AGE_BALANCE_INTERACTION
+df['AGE_BALANCE_INTERACTION'] = df['age'] * df['avg_yearly_balance']
+
+# 18. CAMPAIGN_CONTACT_INTERACTION
+df['CAMPAIGN_CONTACT_INTERACTION'] = (
+    df['campaign_contacts'] * (df['contact_type'] == 'cellular').astype(int)
+)
+
+
+########################################
+# Summary
+########################################
+print(f"Feature Engineering Complete: {df.shape[1] - 17} new features added.")
+print(f"Final shape: {df.shape}")
+```
+
+<br>
+
+## **Step 4: Data Preprocessing / Feature Selection**
+
+With features engineered, we now encode categoricals, select the final feature set, split into train and test sets, standardize scales (fitting only on training data), and downsample the training majority class.
+
+---
+
+<br>
+
+### One-Hot Encoding Categorical Variables
+
+Categorical columns (job type, marital status, education level, contact type, month, etc.) are one-hot encoded with `drop_first=True` to avoid multicollinearity. This converts each category into a binary indicator column that sklearn models can consume directly.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+# Printing the categorical variables
+print(df.select_dtypes(include=['object']).columns.tolist())
+
+# One-hot encode all categorical columns at once
+df = pd.get_dummies(df,
+                    columns=['job_type', 'marital_status', 'education_level',
+                            'has_default', 'has_housing', 'has_loan',
+                            'contact_type', 'month', 'previous_outcome',
+                            'LIFE_STAGE_CATEGORY', 'MONTH_PERIOD_CATEGORY',
+                            'AGE_GROUP', 'CAMPAIGN_INTENSITY_BIN'],
+                    drop_first=True,
+                    dtype=int)
+```
+
+<br>
+
+### Defining Feature Sets (x-variables, y-variable)
+
+We drop `contact_duration` from the feature set because it is a **leakage variable** — call duration is only known after a call ends and would not be available at prediction time in a real deployment. The remaining features are narrowed to a manually selected subset of **34 columns** (`x_selected`) chosen through iterative experimentation to maximize ROC-AUC.
+
+The target variable `has_subscribed` is mapped from "yes"/"no" to 1/0.
+
+```{python}
+# Contains all features (excluding target and leakage variable)
+x_all = df.drop(labels=['has_subscribed', 'contact_duration'], axis=1)
+
+selected_features = ['age', 'avg_yearly_balance', 'day', 'contact_gap_days', 'PREVIOUS_SUCCESS',
+ 'BALANCE_PER_AGE', 'DEBT_FREE_STATUS', 'CAMPAIGN_INTENSITY', 'CONTACT_RECENCY_SCORE', 'PEAK_SEASON_FLAG',
+ 'AGE_BALANCE_INTERACTION', 'CAMPAIGN_CONTACT_INTERACTION', 'job_type_blue-collar', 'job_type_unknown', 'marital_status_married',
+ 'education_level_tertiary', 'has_housing_yes', 'contact_type_telephone', 'contact_type_unknown', 'month_aug',
+ 'month_dec', 'month_feb', 'month_jan', 'month_jul', 'month_jun',
+ 'month_mar', 'month_may', 'month_nov', 'month_oct', 'month_sep',
+ 'previous_outcome_other', 'LIFE_STAGE_CATEGORY_other', 'LIFE_STAGE_CATEGORY_young_single', 'AGE_GROUP_25-35']
+
+x_selected = x_all[selected_features]
+
+# Convert target to numeric (yes=1, no=0)
+y_numeric = df['has_subscribed'].map({'yes': 1, 'no': 0})
+```
+
+<br>
+
+### Train–Test Split (80/20) and Standardization
+
+The data is first split into 80% training and 20% testing with `stratify=y_data`, which preserves the original class proportions in both sets.
+
+**After splitting**, all selected features are standardized using `StandardScaler` (mean = 0, std = 1), fitted on the training set only and applied to both sets. This prevents test-set statistics from leaking into the scaler. Standardization is especially important for Logistic Regression and the Neural Network, which are sensitive to feature scales. Tree-based models (Random Forest, XGBoost, AdaBoost) **are scale-invariant**, but a uniform scaling pipeline simplifies comparisons.
+
+```{python}
+# preparing x-data
+x_data = x_selected
+
+# preparing y-data
+y_data = y_numeric
+
+# 1. Split FIRST on the unscaled features (80/20, stratified)
+x_train_raw, x_test_raw, y_train, y_test = train_test_split(
+    x_data,
+    y_data,
+    test_size    = 0.20,
+    random_state = 42,
+    stratify     = y_data)
+
+# 2. Fit scaler on training data only, then transform both sets
+scaler  = StandardScaler()
+x_train = scaler.fit_transform(x_train_raw)
+x_test  = scaler.transform(x_test_raw)
+```
+
+<br>
+
+### Downsampling the Majority Class (Train Only)
+
+Because of the significant class imbalance (~88% "no" vs. ~12% "yes"), we downsample the majority class **in the training set only** to match the minority class count. The test set is left untouched so that evaluation metrics reflect real-world proportions.
+
+The procedure identifies majority and minority classes by their value counts, randomly samples the majority down to the minority size, and shuffles the combined balanced set. After downsampling, accuracy becomes a more meaningful metric alongside ROC-AUC, since neither class dominates the training signal.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+# Downsample TRAIN only
+
+# Build a temporary training dataframe so we can sample rows safely
+train_df = pd.DataFrame(x_train).copy()
+train_df["target"] = y_train.values if hasattr(y_train, "values") else y_train
+
+# Check counts before
+counts_before = train_df["target"].value_counts()
+
+# Identify majority/minority by counts (works even if labels aren't 0/1)
+majority_class = counts_before.idxmax()
+minority_class = counts_before.idxmin()
+
+df_majority = train_df[train_df["target"] == majority_class]
+df_minority = train_df[train_df["target"] == minority_class]
+
+# Downsample majority to minority size
+df_majority_down = df_majority.sample(n=len(df_minority), random_state=42)
+
+# Combine + shuffle
+train_balanced = pd.concat([df_majority_down, df_minority], axis=0)\
+                   .sample(frac=1, random_state=42)\
+                   .reset_index(drop=True)
+
+# Split back into X/y
+x_train_down = train_balanced.drop(columns=["target"]).to_numpy()
+y_train_down = train_balanced["target"].to_numpy()
+
+
+# Display
+print(f"""
+Before downsampling (train only):
+---------------------------------
+{counts_before}
+
+
+After downsampling (train only):
+---------------------------------
+{train_balanced["target"].value_counts()}
+""")
+```
+
+<br>
+
+## **Step 5: Model Construction**
+
+We train five classifiers on the downsampled training set and evaluate each with `evaluate_classification_model()`. Hyperparameters for every model were selected via cross-validated search (see **Appendix**) using `tune_stable_auc`, which picks the configuration with the **highest ROC-AUC** among all candidates whose train–test ROC-AUC gap stays ≤ 0.05.
+
+> **Note on the train–test gap metric:** Because models are trained on the balanced (50/50) downsampled set and evaluated on the imbalanced (~88/12) test set, the gap metric mixes distributions. ROC-AUC is threshold- and prevalence-independent, so the gap primarily reflects generalization rather than distribution shift.
+
+---
+
+<br>
+
+**Classification Models Selected:** We selected a diverse mix of algorithms to cover different bias-variance profiles
+
+- **Logistic Regression**: a linear baseline that is fast, interpretable, and effective when class boundaries are approximately linear.
+- **Neural Network (MLP)**: a non-linear model capable of learning complex feature interactions through hidden layers.
+- **XGBoost**: a gradient-boosted tree ensemble that sequentially corrects errors; widely regarded as a top performer on structured tabular data.
+- **Random Forest**: a bagging ensemble that reduces variance via random feature subsets; provides a strong non-linear baseline with inherent overfitting protection.
+- **AdaBoost**: an adaptive boosting ensemble that iteratively focuses on misclassified samples, complementing the gradient-based approach of XGBoost.
+
+<br>
+
+#### <u>**Logistic Regression**</u>
+
+A linear baseline. We use `solver='newton-cg'` and `C=0.2` (tuned via **GridSearchCV**). With balanced training data from downsampling, `class_weight` is left at `None`.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+# Logistic Regression (best params from GridSearchCV — see Appendix)
+lr_model = LogisticRegression(
+    solver='newton-cg',
+    C=0.2,
+    max_iter=1000,
+    random_state=42
+)
+
+lr_model_fit = lr_model.fit(x_train_down, y_train_down)
+
+lr_results = evaluate_classification_model(
+    model      = lr_model_fit,
+    x_train    = x_train_down,
+    x_test     = x_test,
+    y_train    = y_train_down,
+    y_test     = y_test,
+    model_name = "Logistic Regression"
+)
+```
+
+<br>
+
+#### <u>**Neural Networks (MLPClassifier)**</u>
+
+A single-hidden-layer MLP with 80 neurons, adaptive learning rate, and early stopping. The architecture and regularization parameters (`alpha`, `learning_rate_init`, `batch_size`) were tuned via **RandomizedSearchCV** to balance expressiveness with generalization.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+# Neural Network (best params from RandomizedSearchCV — see Appendix)
+nn_model = MLPClassifier(
+    hidden_layer_sizes=(80,),
+    activation="relu",
+    solver="adam",
+    learning_rate="adaptive",
+    learning_rate_init=0.007,
+    alpha=0.0005,
+    batch_size=64,
+    early_stopping=True,
+    validation_fraction=0.15,
+    n_iter_no_change=50,
+    tol=1e-5,
+    max_iter=2000,
+    random_state=42
+)
+
+nn_model.fit(x_train_down, y_train_down)
+
+nn_results = evaluate_classification_model(
+    model      = nn_model,
+    x_train    = x_train_down,
+    x_test     = x_test,
+    y_train    = y_train_down,
+    y_test     = y_test,
+    model_name = "Neural Network"
+)
+```
+
+<br>
+
+#### <u>**XGBoost**</u>
+
+Gradient-boosted trees with `max_depth=5`, `learning_rate=0.02`, and `subsample=0.8`. XGBoost's built-in regularization and sequential error correction make it well-suited for structured tabular data with mixed feature types.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+# XGBoost (best params from RandomizedSearchCV — see Appendix)
+xgb_model = xgb.XGBClassifier(
+    n_estimators=150,
+    max_depth=5,
+    learning_rate=0.02,
+    subsample=0.8,
+    random_state=42,
+    eval_metric='logloss',
+    n_jobs=-1
+)
+
+xgb_model.fit(x_train_down, y_train_down)
+
+xgb_results = evaluate_classification_model(
+    model      = xgb_model,
+    x_train    = x_train_down,
+    x_test     = x_test,
+    y_train    = y_train_down,
+    y_test     = y_test,
+    model_name = "XGBoost"
+)
+```
+
+<br>
+
+#### <u>**Random Forest**</u>
+
+An ensemble of 300 decision trees with `max_depth=5` and `max_features='log2'`. Random Forest reduces variance through bagging and random feature subsets, providing a strong non-linear baseline with inherent protection against overfitting.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+# Random Forest (best params from RandomizedSearchCV — see Appendix)
+rf_model = RandomForestClassifier(
+    n_estimators=300,
+    max_depth=5,
+    min_samples_leaf=4,
+    min_samples_split=2,
+    max_features='log2',
+    random_state=42,
+    n_jobs=-1
+)
+
+rf_model.fit(x_train_down, y_train_down)
+
+rf_results = evaluate_classification_model(
+    model      = rf_model,
+    x_train    = x_train_down,
+    x_test     = x_test,
+    y_train    = y_train_down,
+    y_test     = y_test,
+    model_name = "Random Forest"
+)
+```
+
+<br>
+
+### **<u>AdaBoost</u>**
+
+An adaptive boosting ensemble with 500 weak learners (`algorithm='SAMME'`). AdaBoost iteratively up-weights misclassified samples, focusing successive trees on the hardest cases.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+# AdaBoost (best params from RandomizedSearchCV — see Appendix)
+ada_model = AdaBoostClassifier(
+    n_estimators=500,
+    learning_rate=1.0,
+    random_state=42
+)
+
+ada_model.fit(x_train_down, y_train_down)
+
+ada_results = evaluate_classification_model(
+    model      = ada_model,
+    x_train    = x_train_down,
+    x_test     = x_test,
+    y_train    = y_train_down,
+    y_test     = y_test,
+    model_name = "AdaBoost"
+)
+```
+
+<br>
+
+## **Step 6: Model Selection / Evaluation**
+
+The summary table below ranks all five models by test ROC-AUC and reports the train–test gap alongside accuracy, precision, recall, and F1. A model is considered **stable** if its ROC-AUC gap is ≤ 0.05.
+
+---
+
+> **Why ROC-AUC?** ROC-AUC measures how well a model separates the two classes across all possible probability thresholds, summarizing the true-positive vs. false-positive trade-off into a single threshold-independent score. It is more reliable than accuracy for imbalanced datasets because it does not reward trivial majority-class predictions.
+
+> **PR-AUC** was tracked as a secondary metric but not used for selection. PR-AUC is more sensitive to the exact proportion of positives and can fluctuate substantially when the minority class is small, making cross-model comparisons less stable for this use case.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 206}
+# Compare all models
+results = {
+    "LogReg": lr_results,
+    "RF":     rf_results,
+    "Ada":    ada_results,
+    "XGB":    xgb_results,
+    "NN":     nn_results
+}
+
+df_result = pd.DataFrame(results).T.sort_values(by="roc_auc_test", ascending=False)
+df_result
+```
+
+<br>
+
+### Winning Model - `XGBoost`
+
+XGBoost achieved the highest test ROC-AUC among all stable models. Below are its detailed metrics and confusion matrix.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 633}
+# Winning model — detailed results with confusion matrix
+xgb_results = evaluate_classification_model(
+    model      = xgb_model,
+    x_train    = x_train_down,
+    x_test     = x_test,
+    y_train    = y_train_down,
+    y_test     = y_test,
+    model_name = "XGBoost",
+    show_confusion_matrix=True
+)
+```
+
+> The confusion matrix shows the model correctly identifies the majority of actual subscribers while also classifying most non-subscribers accurately. Some false positives and false negatives remain, but the balance is well-aligned with the marketing objective: it is more valuable to flag a potential subscriber (even at the cost of a few false positives) than to miss one entirely.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 656}
+plot_feature_importances(
+    model         = xgb_model,
+    train         = pd.DataFrame(x_train, columns=x_selected.columns),
+    title         = "Feature Importances - XGBoost",
+    export        = False,
+    top_n         = 10
+)
+```
+
+> The top-10 feature importance chart reveals that **`PREVIOUS_SUCCESS`** (engineered feature) is the strongest predictor, followed by `contact_type_unknown`, `DEBT_FREE_STATUS` (engineered feature), and several seasonal month indicators (July, August). This aligns with domain intuition: customers who converted in a prior campaign are the most promising targets for the next one.
+
+<br>
+
+## **Conclusion**
+
+---
+
+In this project, we built and compared five classification models (Logistic Regression, Random Forest, XGBoost, Neural Network, and AdaBoost) to predict whether a bank client would subscribe to a term deposit. The dataset contained over 45,000 observations with a pronounced class imbalance, roughly 88% "no" versus 12% "yes," making ROC-AUC the right primary evaluation metric.
+
+Our pipeline started with column renaming for readability and IQR-based outlier imputation on two skewed numeric features, followed by the creation of 18 engineered features covering financial stability, campaign engagement, demographic segments, temporal patterns, and interaction effects. After one-hot encoding, manual feature selection down to 34 features, a stratified 80/20 train-test split, `StandardScaler` normalization fitted on training data only, and majority-class downsampling on the training set, all five models were trained on the balanced data with hyperparameters tuned via `tune_stable_auc` to maximize ROC-AUC while keeping the train-test gap at or below 0.05.
+
+**XGBoost** came out as our best model, achieving the highest test ROC-AUC of **0.795** with a train-test gap of only **0.013**, well within the 0.05 overfitting threshold we set. Feature selection played a big role in getting there: The most influential feature by far was `PREVIOUS_SUCCESS` (engineered feature), followed by `contact_type_unknown` (raw feature), and `DEBT_FREE_STATUS` (engineered feature), along with some seasonal month indicators like July and August. This confirms that a client's prior conversion history and financial profile are the strongest predictors of future deposit subscription.
+
+From a business standpoint, this model can help the bank run more targeted outreach by prioritizing clients with a higher likelihood of converting, which reduces unnecessary contacts and improves campaign ROI.  
+
+Looking ahead, further improvements could come from testing alternative resampling strategies like SMOTE, incorporating additional external data sources, or deploying the model with a decision threshold calibrated to the bank's specific tolerance for false positives versus false negatives.
+
+<br>
+
+## **References**
+
+---
+
+Moro, S., Rita, P., & Cortez, P. (2014). Bank Marketing [Dataset]. UCI Machine Learning Repository. https://archive.ics.uci.edu/dataset/222/bank+marketing.
+
+
+<!-- [Chase Github: Script 06 - Classification Modeling with Unsupervised Data.ipynb](https://github.com/chase-kusterer/supervised-learning/blob/main/Classification%20Modeling/Script%2006%20-%20Classification%20Modeling%20with%20Unsupervised%20Data.ipynb)
+
+[Kaggle: Term Deposit Subscription Prediction (89.9% Acc)](https://www.kaggle.com/code/akmarinakhairunnisa/term-deposit-subscription-prediction-89-9-acc#Evaluation)
+
+
+International Telecommunication Union. (2025). ITU data collection and questionnaires. International Telecommunication Union. https://www.itu.int/en/ITU-D/Statistics/Pages/datacollection/default.aspx
+
+Kleck, G., & Roberts, A. (1998). Victimization surveys and the accuracy and reliability of official crime data in developing countries. Journal of Criminal Justice, 26(3), 181-195. https://doi.org/10.1016/S0047-2352(97)00033-0
+
+Solfrini, F. (2021, May 4). Network effects: Europe’s digital sovereignty in the Mediterranean. European Council on Foreign Relations. https://ecfr.eu/publication/network-effects-europes-digital-sovereignty-in-the-mediterranean/#internet-infrastructure-in-the-wider-mediterranean-neighbourhood
+
+Timothy, D. J. (2017). Monaco. In The SAGE international encyclopedia of travel and tourism (Chapter 310). SAGE Publications. https://doi.org/10.4135/9781483368924.n310
+
+UNDP, UNODC, & OHCHR. (2024). Global progress report on Sustainable Development Goal 16 indicators: At the crossroads – Breakdown or breakthrough for peace, justice and strong institutions. United Nations Development Programme.https://www.undp.org/sites/g/files/zskgke326/files/2024-07/undp-unhcr-unodc-global-progress-report-on-sdg16-indicators-v2.pdf
+
+World Bank Group. (2026, January). Individuals using the Internet (% of population) - Andorra, Cabo Verde, Gibraltar, Libya, Mauritania, Monaco. World Bank Open Data. https://data.worldbank.org/indicator/IT.NET.USER.ZS?locations=AD-CV-GI-LY-MR-MC
+
+World Bank Group. (2019). Tourism diagnostic toolkit. World Bank Group. https://documents1.worldbank.org/curated/en/240451562621614728/pdf/Tourism-Diagnostic-Toolkit.pdf
+ -->
+
+<br>
+
+## **Appendix**
+
+---
+
+### **Hyper Parameter Tuning**
+
+All hyperparameters used in Step 5 were selected through the `tune_stable_auc` function defined below. This wrapper runs either `RandomizedSearchCV` or `GridSearchCV`, ranks candidates by cross-validated ROC-AUC, filters for configurations where the train–test ROC-AUC gap ≤ 0.05, and refits the best stable configuration on the full training set. If no candidate meets the gap constraint, it falls back to the candidate with the smallest gap.
+
+#### Graphical Tuning – XGBoost `max_depth`
+
+The plot below sweeps `max_depth` values for XGBoost and shows train vs. test ROC-AUC. It confirms that moderate depths (4–6) provide the best trade-off between model capacity and generalization; deeper trees overfit.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 472}
+# Max depth graphical optimization
+depths = [1, 2, 4, 5, 6, 8]
+
+train_auc, test_auc = [], []
+
+for d in depths:
+    model = xgb.XGBClassifier(
+        max_depth=d,
+        n_estimators=200,
+        learning_rate=0.01,
+        subsample=0.8,
+        random_state=42,
+        eval_metric="logloss",
+        n_jobs=-1
+    )
+
+    model.fit(x_train_down, y_train_down)
+
+    train_auc.append(
+        roc_auc_score(y_train_down, model.predict_proba(x_train_down)[:,1])
+    )
+
+    test_auc.append(
+        roc_auc_score(y_test, model.predict_proba(x_test)[:,1])
+    )
+
+# Plot
+plt.figure()
+plt.plot(depths, train_auc, marker='o', label="Train AUC")
+plt.plot(depths, test_auc, marker='o', label="Test AUC")
+
+plt.xlabel("max_depth")
+plt.ylabel("ROC-AUC")
+plt.title("XGBoost: Train vs Test AUC vs Max Depth")
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+<br>
+
+#### `tune_stable_auc` Function and Per-Model Tuning Code
+
+The cells below contain the `tune_stable_auc` function and the tuning calls for all five models. The code is commented out for performance reasons — full execution takes approximately 30 minutes. If running in Google Colab, the T4-GPU runtime is recommended.
+
+```{python}
+# # Function to tune + enforce ROC-AUC gap <= 0.05 !!! USE T4 GPU FOR SPEED !!!
+# def tune_stable_auc(
+#     estimator, params, X_train, y_train, X_test, y_test,
+#     method="random", n_iter=30, cv=5, scoring="roc_auc",
+#     gap_max=0.05, random_state=42, n_jobs=-1, verbose=0
+# ):
+#     SearchCV = RandomizedSearchCV if method.lower().startswith("r") else GridSearchCV
+
+#     search_kwargs = {
+#         "estimator": estimator,
+#         "scoring": scoring,
+#         "cv": cv,
+#         "n_jobs": n_jobs,
+#         "return_train_score": True,
+#         "refit": False,
+#         "verbose": verbose
+#     }
+
+#     if SearchCV is RandomizedSearchCV:
+#         search_kwargs["param_distributions"] = params
+#         search_kwargs["n_iter"] = n_iter
+#         search_kwargs["random_state"] = random_state
+#     else: # GridSearchCV
+#         search_kwargs["param_grid"] = params
+
+#     search = SearchCV(**search_kwargs)
+#     search.fit(X_train, y_train)
+#     r = pd.DataFrame(search.cv_results_)
+#     r["gap"] = r["mean_train_score"] - r["mean_test_score"]
+
+#     stable = r[r["gap"] <= gap_max]
+#     pick = stable.loc[stable["mean_test_score"].idxmax()] if len(stable) else r.loc[r["gap"].abs().idxmin()]
+
+#     best_params = pick["params"]
+#     model = clone(estimator).set_params(**best_params)  # keeps your base estimator settings
+#     model.fit(X_train, y_train)
+
+#     p_tr = model.predict_proba(X_train)[:, 1]
+#     p_te = model.predict_proba(X_test)[:, 1]
+#     auc_tr = roc_auc_score(y_train, p_tr)
+#     auc_te = roc_auc_score(y_test, p_te)
+
+#     return {
+#         "model": model,
+#         "best_params": best_params,
+#         "cv_auc": float(pick["mean_test_score"]),
+#         "train_auc": float(auc_tr),
+#         "test_auc": float(auc_te),
+#         "gap": float(auc_tr - auc_te),
+#         "stable_found": int(len(stable)),
+#     }
+```
+
+```{python}
+# # Logistic Regression (used downsampled train) - 5 seconds - 20 seconds Run Time
+# lr = LogisticRegression(random_state=42, max_iter=2000)
+# lr_params = {"C": [0.05, 0.1, 0.2], "solver": ["newton-cg", "lbfgs"]}
+
+# lr_results = tune_stable_auc(
+#     lr, lr_params,
+#     x_train_down, y_train_down, x_test, y_test,
+#     method="grid", cv=5, scoring="roc_auc", gap_max=0.05
+# )
+```
+
+```{python}
+# # Random Forest (used downsampled train) - 6 minutes - 10 minutes Run Time
+# rf = RandomForestClassifier(random_state=42, n_jobs=-1)
+# rf_params = {
+#     "n_estimators": [300, 500],
+#     "max_depth": [5, 10, None],
+#     "min_samples_split": [2, 5, 10],
+#     "min_samples_leaf": [1, 2, 4],
+#     "max_features": ["sqrt", "log2"]
+# }
+
+# rf_results = tune_stable_auc(
+#     rf, rf_params,
+#     x_train_down, y_train_down, x_test, y_test,
+#     method="random", n_iter=30, cv=5, scoring="roc_auc", gap_max=0.05, random_state=42
+# )
+```
+
+```{python}
+# # AdaBoost (you used full train) - 5 Minute - 10 Minute Run Time
+# ada = AdaBoostClassifier(random_state=42)
+# ada_params = {
+#     "n_estimators": [200, 300, 400, 500],
+#     "learning_rate": [0.05, 0.1, 0.5, 1.0],
+#     "algorithm": ["SAMME", "SAMME.R"]
+# }
+
+# ada_results = tune_stable_auc(
+#     ada, ada_params,
+#     x_train, y_train, x_test, y_test,
+#     method="random", n_iter=25, cv=5, scoring="roc_auc", gap_max=0.05, random_state=42
+# )
+```
+
+```{python}
+# # Neural Net ) - !! 8 Minute - 15 Minute Run Time !!
+# nn_base = MLPClassifier(
+#     random_state=42,
+#     solver="adam",
+#     activation="relu",
+#     early_stopping=True
+# )
+
+# # centered around your best:
+# # (64,), lr_init=0.005, alpha=0.000215, batch=128, val_frac=0.15, n_no_change=50, tol=1e-5, max_iter=2000
+# nn_params = {
+#     "hidden_layer_sizes": [(48,), (64,), (80,), (64, 32)],
+#     "learning_rate": ["adaptive"],
+#     "learning_rate_init": [0.003, 0.005, 0.007],
+#     "alpha": [1e-4, 2.15e-4, 5e-4],
+#     "batch_size": [64, 128],
+#     "validation_fraction": [0.10, 0.15, 0.20],
+#     "n_iter_no_change": [25, 50],
+#     "tol": [1e-4, 1e-5],
+#     "max_iter": [2000]
+# }
+
+# nn_results = tune_stable_auc(
+#     nn_base, nn_params,
+#     x_train, y_train, x_test, y_test,
+#     method="random", n_iter=25, cv=5, scoring="roc_auc", gap_max=0.05, random_state=42
+# )
+```
+
+```{python}
+# # XGBoost (full train + scale_pos_weight on TRAIN only) - 2 Minute - 5 Minute Run Time
+# xgb_base = xgb.XGBClassifier(
+#     random_state=42,
+#     eval_metric="logloss",
+#     n_jobs=-1
+# )
+
+# xgb_params = {
+#     "n_estimators": [150, 200, 250],
+#     "max_depth": [4, 5, 6, 7],
+#     "learning_rate": [0.005, 0.01, 0.02],
+#     "subsample": [0.7, 0.8, 0.9]
+# }
+
+# xgb_results = tune_stable_auc(
+#     xgb_base, xgb_params,
+#     x_train_down, y_train_down, x_test, y_test,
+#     method="random", n_iter=25, cv=5, scoring="roc_auc", gap_max=0.05, random_state=42
+# )
+```
+
+```{python}
+# # ---- Collect best models (minimal)
+# all_results = {
+#     "LogReg": lr_results,
+#     "RF": rf_results,
+#     "Ada": ada_results,
+#     "XGB": xgb_results,
+#     "NN": nn_results
+# }
+```
+
+```{python}
+# summary_df = pd.DataFrame.from_dict(
+#     {
+#         k: {
+#             "CV_ROC_AUC": v["cv_auc"],
+#             "Train_ROC_AUC": v["train_auc"],
+#             "Test_ROC_AUC": v["test_auc"],
+#             "Gap": v["gap"],
+#             "Stable_Models": v["stable_found"]
+#         }
+#         for k, v in all_results.items()
+#     },
+#     orient="index"
+# ).round(4)
+
+# summary_df = summary_df.sort_values("Test_ROC_AUC", ascending=False)
+
+# summary_df
+```
+
+```{python}
+# # Print the best parameters for each model
+# for model in all_results:
+#     print(model)
+#     print(all_results[model]['best_params'])
+#     print()
+```
+

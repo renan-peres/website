@@ -64,16 +64,14 @@ prices_daily = (yf.download(
   ))
 
 prices_daily = (prices_daily
-  .stack()
+  .stack(future_stack=True)
   .reset_index(level=1, drop=False)
   .reset_index()
   .rename(columns={"Ticker": "symbol", "Date": "date", "Adj Close": "adjusted"})
 )
 
 prices_daily = (prices_daily
-  .groupby("symbol")
-  .apply(lambda x: x.assign(counts=x["adjusted"].dropna().count()))
-  .reset_index(drop=False)
+  .assign(counts=lambda df: df.groupby("symbol")["adjusted"].transform(lambda x: x.dropna().count()))
   .query("counts == counts.max()")
 )
 

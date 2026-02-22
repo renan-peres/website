@@ -1,0 +1,838 @@
+---
+format:
+    html:
+        theme: 
+            light: flatly
+            dark: darkly
+        highlight-style: github
+        code-fold: show
+        code-tools: 
+            source: true
+            toggle: true
+            # caption: none
+        code-copy: true
+        self-contained: true
+        html-math-method: katex
+        embed-resources: true
+        code-overflow: wrap
+        smooth-scroll: true       
+        page-layout: full
+      #   toc: true
+      #   toc-location: left
+        lightbox: true
+   #  ipynb: default
+   #  pdf: default
+---
+
+## Linear Modeling Case Study | Chef's Compass
+##### February 08, 2026
+#### DAT-5390 | Computational Data Analytics with Python
+##### By: **Renan Peres** | <a href="https://github.com/renan-peres/">https://github.com/renan-peres/</a>
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+
+![Chef's Compass](https://res.cloudinary.com/dqtnflaeh/image/upload/v1770141243/A1_Comp_Analytics_Chefs_Compass_gbsptg_c_pad_b_gen_fill_w_1200_h_675_ar_16_9_ujhv3o.png)
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+
+## **Executive Summary**
+
+Chef's Compass is a meal kit delivery service for busy professionals, offering daily-prepared gourmet meals (under 30 minutes to finish) with disposable cookware. Customers order via website or app and can subscribe to weekly plans (3 meals/week at 10% off, or 5 meals/week at 15% off). The dataset covers ~2,000 customers with consistent first-year ordering behavior.
+
+**This analysis predicts customer `REVENUE` using regression modeling.**
+
+> **Key Findings**: Of 14 model-target combinations (7 model types x 2 targets), the **Gradient Boosting model on `log_REVENUE`** performs best (Test R-squared ~0.82 with a train-test gap of 0.021). The engineered feature `ENGAGEMENT_X_MEALS` is the top predictor (~20% of total importance). Email domain type shows no relationship with REVENUE (ANOVA p = 0.80).
+
+> **Business Takeaway**: Focus retention on customers below 40 total meals (Reichheld & Sasser, 1990), invest in engagement content that drives composite engagement features (Kumar et al., 2010), and introduce loyalty tiers at 50/100/150 meals to incentivize progression up the value curve (Uncles et al., 2003).
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+
+## **Imports**
+
+### **Libraries/Functions**
+
+```{python}
+# data manipulation
+import pandas            as pd
+import numpy             as np
+
+# visualization
+import matplotlib.pyplot as plt
+import seaborn           as sns
+
+# modeling
+import sklearn.linear_model                                        # linear regression
+import statsmodels.api   as sm                                     # statistical modeling
+from scipy                     import stats                        # statistical testing
+from sklearn.model_selection   import train_test_split             # train-test split
+from sklearn.linear_model      import Lasso                        # L1 regularization
+from sklearn.linear_model      import Ridge                        # L2 regularization
+from sklearn.linear_model      import SGDRegressor                 # L1 + L2 (elastic net)
+from sklearn.neighbors         import KNeighborsRegressor          # k-nearest neighbors
+from sklearn.ensemble          import RandomForestRegressor        # random forest
+from sklearn.ensemble          import GradientBoostingRegressor    # gradient boosting
+from sklearn.preprocessing     import StandardScaler               # feature scaling
+from sklearn.base              import clone                        # model cloning
+
+
+# pandas display options
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
+
+
+# suppress warnings
+import warnings
+warnings.filterwarnings(action = 'ignore')
+```
+
+<br>
+
+### **Dataset**
+
+```{python}
+file = 'chefs_compass.xlsx'
+
+chef_df = pd.read_excel(io       = file,
+                        engine   = 'openpyxl',
+                        usecols  = lambda x: x != 'OBS')  # drop customer ID
+```
+
+<br>
+
+### **User-Defined Functions (UDFs)**
+
+```{python}
+########################################
+# impute_outliers_iqr
+########################################
+def impute_outliers_iqr(data, column):
+    """Replace values outside 1.5*IQR with the column median."""
+    Q1     = data[column].quantile(0.25)
+    Q3     = data[column].quantile(0.75)
+    IQR    = Q3 - Q1
+    lower  = Q1 - 1.5 * IQR
+    upper  = Q3 + 1.5 * IQR
+    median = data[column].median()
+
+    data[column] = data[column].apply(
+        lambda x: median if (x < lower or x > upper) else x
+    )
+    return data
+
+
+########################################
+# plot_feature_importances
+########################################
+def plot_feature_importances(model, train, title=None, export=False, top_n=None):
+    """Plot horizontal bar chart of non-zero feature importances from a tree-based model."""
+    importances = model.feature_importances_
+    cols        = np.array(train.columns)
+
+    # keep only features with non-zero importance
+    mask        = importances > 0
+    importances = importances[mask]
+    cols        = cols[mask]
+
+    # sort ascending for horizontal bar layout
+    order       = np.argsort(importances)
+    importances = importances[order]
+    cols        = cols[order]
+
+    if top_n is not None:
+        importances = importances[-top_n:]
+        cols        = cols[-top_n:]
+
+    fig, ax = plt.subplots(figsize=(10, 8))
+    ax.barh(range(len(cols)), importances, align="center")
+    ax.set_yticks(range(len(cols)))
+    ax.set_yticklabels(cols)
+    if title is not None:
+        ax.set_title(title)
+    ax.set_xlabel("Feature importance")
+
+    if export:
+        plt.savefig("./analysis_images/Tree_Visual.png", bbox_inches="tight")
+
+    plt.show()
+```
+
+<br>
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+
+## **Exploratory Data Analysis (EDA)**
+
+### **Dataset Shape**
+
+```{python}
+print("Shape:", chef_df.shape)
+display(chef_df.head(n = 5))
+```
+
+<br>
+
+### **Data Types**
+
+```{python}
+print(f"""
+Data Types (Count):
+{chef_df.dtypes.value_counts()}
+
+Data Types:
+{chef_df.dtypes}
+""")
+```
+
+<br>
+
+### **Missing Values**
+
+```{python}
+print(chef_df.isnull().sum())
+```
+
+<br>
+
+### **Descriptive Statistics**
+
+```{python}
+round(chef_df.describe().T, 2)
+```
+
+> The summary stats flag large max values in **`AVG_TIME_PER_SITE_VISIT`** (564.20) and **`AVG_PREP_VID_TIME`** (1645.60) relative to their means. A boxplot below examines the distribution and outliers.
+
+```{python}
+# boxplot of key numeric features
+num_cols = ['AVG_TIME_PER_SITE_VISIT', 'AVG_PREP_VID_TIME']
+
+plt.figure(figsize = (12, 6))
+chef_df[num_cols].boxplot()
+
+# title and layout
+plt.title(label = 'Boxplot of Numeric Features')
+plt.xticks(rotation = 45)
+plt.tight_layout()
+plt.show()
+```
+
+<br>
+
+#### **EDA Conclusion**
+
+> The dataset has 1,946 customers x 18 variables with no missing values. `TOTAL_MEALS_ORDERED` and `REVENUE` are right-skewed. Per the data dictionary, `LARGEST_ORDER_SIZE` actually represents average meals per order, so it should be renamed to `AVG_ORDER_SIZE`. The boxplot reveals extreme outliers in `AVG_PREP_VID_TIME` and `AVG_TIME_PER_SITE_VISIT`, which will be handled via IQR-based imputation.
+
+<br>
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+
+## **Data Preparation**
+
+### **Column Renaming**
+
+```{python}
+# rename per data dictionary (see EDA conclusion for rationale)
+chef_df.rename(columns = {'AVG_MEAN_RATING'    : 'AVG_MEAL_RATING',
+                          'LARGEST_ORDER_SIZE'  : 'AVG_ORDER_SIZE'},
+               inplace = True)
+```
+
+<br>
+
+### **Outlier Imputation - Median**
+
+> Values beyond 1.5*IQR are replaced with the column median (Tukey, 1977). This retains full sample size while neutralizing extreme observations to get the distribution as close as possible to a normally distributed.
+
+```{python}
+columns_to_impute = ['AVG_TIME_PER_SITE_VISIT',
+                     'AVG_PREP_VID_TIME']
+
+print("\n--- Before IQR Imputation ---")
+for col in columns_to_impute:
+    print(f"{col:30s} | Max: {chef_df[col].max():10.2f} | Mean: {chef_df[col].mean():10.2f} | Median: {chef_df[col].median():10.2f}")
+
+for col in columns_to_impute:
+    chef_df = impute_outliers_iqr(chef_df, col)
+
+print("\n--- After IQR Imputation ---")
+for col in columns_to_impute:
+    print(f"{col:30s} | Max: {chef_df[col].max():10.2f} | Mean: {chef_df[col].mean():10.2f} | Median: {chef_df[col].median():10.2f}")
+```
+
+```{python}
+# boxplot after imputation
+plt.figure(figsize = (12, 6))
+chef_df[columns_to_impute].boxplot()
+
+# title and layout
+plt.title(label = 'Boxplot After IQR Imputation')
+plt.xticks(rotation = 45)
+plt.tight_layout()
+plt.show()
+```
+
+> After imputation, both features show much tighter distributions. The outliers that were isolated point now fall more cloelly to the Quartile 3 and 1.
+
+<br>
+
+### **Email Domain Segmentation**
+
+> Domains grouped per the case study's marketing classification: **Professional** (corporate), **Personal** (consumer providers), **Junk** (low-deliverability domains).
+
+```{python}
+# extracting email domain from the EMAIL column
+chef_df['EMAIL_DOMAIN'] = chef_df['EMAIL'].str.extract(r'@(.+)$')[0]
+
+
+professional_domains = [
+    'mmm.com', 'amex.com', 'apple.com', 'boeing.com', 'caterpillar.com',
+    'chevron.com', 'cisco.com', 'cocacola.com', 'disney.com', 'dupont.com',
+    'exxon.com', 'ge.org', 'goldmansacs.com', 'homedepot.com', 'ibm.com',
+    'intel.com', 'jnj.com', 'jpmorgan.com', 'mcdonalds.com', 'merck.com',
+    'microsoft.com', 'nike.com', 'pfizer.com', 'pg.com', 'travelers.com',
+    'unitedtech.com', 'unitedhealth.com', 'verizon.com', 'visa.com', 'walmart.com'
+]
+
+personal_domains = ['gmail.com', 'sparkplug.com', '360.com', 'protonmail.com']
+
+junk_domains = ['me.com', 'aol.com', 'hotmail.com', 'live.com',
+                'msn.com', 'passport.com', 'yahoo.com']
+
+
+# categorizing each customer into one of three domain groups
+chef_df['DOMAIN_TYPE'] = chef_df['EMAIL_DOMAIN'].apply(
+    lambda domain: 'Personal' if domain in personal_domains
+    else ('Professional' if domain in professional_domains
+    else 'Junk'))
+```
+
+<br>
+
+## **Feature Engineering**
+
+```{python}
+# 1. INTERACTION TERMS
+# ENGAGEMENT INDEX - weighted composite normalized to 0-1
+chef_df['ENGAGEMENT_INDEX'] = (
+    (chef_df['AVG_TIME_PER_SITE_VISIT'] / chef_df['AVG_TIME_PER_SITE_VISIT'].max()) * 0.4 +
+    (chef_df['AVG_PREP_VID_TIME']       / chef_df['AVG_PREP_VID_TIME'].max())       * 0.3 +
+    (chef_df['TOTAL_PHOTOS_VIEWED']     / chef_df['TOTAL_PHOTOS_VIEWED'].max())     * 0.3
+)
+
+chef_df['TOTAL_LOGINS']       = chef_df['PC_LOGINS'] + chef_df['MOBILE_LOGINS']
+chef_df['ENGAGEMENT_X_MEALS'] = chef_df['ENGAGEMENT_INDEX'] * chef_df['TOTAL_MEALS_ORDERED']
+chef_df['MEALS_X_RATING']     = chef_df['TOTAL_MEALS_ORDERED'] * chef_df['AVG_MEAL_RATING']
+chef_df['SITE_X_RATING']      = chef_df['AVG_TIME_PER_SITE_VISIT'] * chef_df['AVG_MEAL_RATING']
+
+# 2. LOG TRANSFORMS - compress right-skewed features
+chef_df['LOG_AVG_VID_TIME'] = np.log1p(chef_df['AVG_PREP_VID_TIME'])
+chef_df['LOG_AVG_TIME']    = np.log1p(chef_df['AVG_TIME_PER_SITE_VISIT'])
+chef_df['LOG_TOTAL_MEALS'] = np.log1p(chef_df['TOTAL_MEALS_ORDERED'])
+
+# 3. RATIO FEATURES - normalize counts by activity level (+1 prevents div by zero)
+chef_df['UNIQUE_MEAL_RATIO']   = chef_df['UNIQUE_MEALS_PURCH']           / (chef_df['TOTAL_MEALS_ORDERED'] + 1)
+chef_df['MEALS_PER_LOGIN']     = chef_df['TOTAL_MEALS_ORDERED']          / (chef_df['TOTAL_LOGINS'] + 1)
+chef_df['LARGEST_ORDER_RATIO'] = chef_df['AVG_ORDER_SIZE']               / (chef_df['TOTAL_MEALS_ORDERED'] + 1)
+chef_df['SERVICE_RATIO']       = chef_df['CONTACTS_W_CUSTOMER_SERVICE']  / (chef_df['TOTAL_MEALS_ORDERED'] + 1)
+
+# 4. LOG-TRANSFORMED TARGET
+chef_df['log_REVENUE'] = np.log1p(chef_df['REVENUE'])
+```
+
+#### **Rationale**
+
+**Interaction Terms:**
+
+> **`ENGAGEMENT_INDEX`**: Weighted composite (site time 40%, prep video 30%, photos 30%) normalized to 0-1. Site time receives the highest weight (40%) because active browsing behavior, clicking through recipes, exploring meal options , indicates deliberate purchase intent and decision-making. Prep video watching (30%) captures learning engagement but is more passive; customers may watch videos without converting to orders. Photo viewing (30%) represents visual product engagement. All three components are normalized by their maximum values to prevent scale dominance, creating a balanced 0-1 index that captures overall digital engagement across multiple touchpoints.
+
+> **`TOTAL_LOGINS`**: Sum of PC and mobile logins, capturing total platform access frequency regardless of device. This provides a device-agnostic measure of customer activity and serves as a denominator for ratio features.
+
+> **`ENGAGEMENT_X_MEALS`**: Multiplicative interaction between `ENGAGEMENT_INDEX` and `TOTAL_MEALS_ORDERED`. This feature captures the synergy between digital engagement and purchasing behavior. A customer who browses heavily but rarely converts (high engagement, low meals) scores low; similarly, a customer who orders frequently but doesn't engage with content (low engagement, high meals) also scores low. Only customers who are *both* digitally active *and* frequent purchasers score high. 
+
+> **`MEALS_X_RATING`**: Interaction between `TOTAL_MEALS_ORDERED` and `AVG_MEAL_RATING`. Captures customers who both order frequently and rate highly, loyal, satisfied customers who demonstrate their approval through continued purchasing. A customer with 100 meals at 4.5 stars is fundamentally different from one with 20 meals at 4.5 stars, even though their ratings are identical.
+
+> **`SITE_X_RATING`**: Interaction between `AVG_TIME_PER_SITE_VISIT` and `AVG_MEAL_RATING`. Identifies customers who spend significant time researching *and* end up satisfied with their choices. This interaction isolates engaged browsers who convert successfully, distinguishing them from browsers with low satisfaction or high-satisfaction customers who don't engage deeply with content.
+
+**Log Transformations:**
+
+> **`LOG_AVG_VID_TIME`**, **`LOG_AVG_TIME`**, **`LOG_TOTAL_MEALS`**: Applied using `np.log1p()` (log of 1 + x) to compress right-skewed distributions. Log transformation pulls outliers closer to the center, reduces heteroscedasticity (non-constant variance), and makes relationships more linear. `log1p` is used instead of raw `log` to handle zero values safely (log(0) is undefined, but log(1 + 0) = 0). Tree-based models don't require this assumption, but including both raw and log versions gives the model flexibility to learn which scale is more predictive.
+
+**Ratio Features (Normalization by Activity Level):**
+
+> **`UNIQUE_MEAL_RATIO`**: `UNIQUE_MEALS_PURCH / (TOTAL_MEALS_ORDERED + 1)`. Measures recipe variety preference. A high ratio (close to 1) indicates a customer who tries many different recipes; a low ratio indicates repeat ordering of favorites. This captures purchase diversity, which may correlate with engagement or menu satisfaction. The `+1` prevents division by zero for edge cases.
+
+> **`MEALS_PER_LOGIN`**: `TOTAL_MEALS_ORDERED / (TOTAL_LOGINS + 1)`. Measures conversion efficiency. A high value means the customer orders multiple meals per login (efficient converter); a low value suggests browsing without conversion (window-shopping behavior). This ratio normalizes meal counts by platform access frequency, isolating purchase propensity independent of overall activity level.
+
+> **`LARGEST_ORDER_RATIO`**: `AVG_ORDER_SIZE / (TOTAL_MEALS_ORDERED + 1)`. Captures ordering behavior pattern. A high ratio indicates the customer orders in large batches (fewer, bigger orders); a low ratio indicates frequent small orders. This may correlate with subscription behavior (weekly plans encourage larger, regular orders) or household size. Normalizing by total meals prevents this from simply duplicating the `AVG_ORDER_SIZE` signal.
+
+> **`SERVICE_RATIO`**: `CONTACTS_W_CUSTOMER_SERVICE / (TOTAL_MEALS_ORDERED + 1)`. Measures support contact rate per meal ordered. A high ratio may indicate problematic delivery, quality issues, or high-maintenance customers.
+
+**Target Transformation:**
+
+> **`log_REVENUE`**: `np.log1p(REVENUE)` compresses the long right tail of the revenue distribution (raw REVENUE is heavily right-skewed). This transformation reframes the prediction task in percentage terms rather than absolute dollar terms, the model learns to predict multiplicative changes rather than additive ones. A customer moving from $1,000 to $2,000 (+100%) is treated similarly to a customer moving from $2,000 to $4,000 (+100%), even though the dollar increase differs. Both raw `REVENUE` and `log_REVENUE` are compared across all candidate models (14 model-target combinations total) so the final choice is data-driven rather than assumed. Predictions are converted back to dollars via `expm1()` (the inverse of `log1p()`) for interpretation.
+
+<br>
+
+### **Categorical Encoding**
+
+> This aims at enconding the categorical variables into separate numerical variables using the **pd.get_dummies()** function. In this case below, the `DOMAIN_TYPE` column (created from the `EMAIL_DOMAIN`) was used for making that transformation.
+
+```{python}
+# one-hot encode domain type
+domain_encoded = pd.get_dummies(chef_df[['DOMAIN_TYPE']],
+                                prefix = ['domain'],
+                                dtype  = int)
+
+chef_prep = chef_df.join(domain_encoded)
+
+# drop non-numeric / intermediate columns
+cols_to_drop = ['NAME', 'EMAIL', 'EMAIL_DOMAIN', 'DOMAIN_TYPE',
+                'TOTAL_LOGINS']
+
+chef_prep = chef_prep.drop(columns = cols_to_drop)
+```
+
+<br>
+
+### **Defining Feature Sets**
+
+```{python}
+# full feature set (everything except targets)
+x_all = chef_prep.drop(labels = ['REVENUE', 'log_REVENUE'], axis = 1)
+
+# behavioral features only
+x_behavioral = chef_prep[['TOTAL_MEALS_ORDERED', 'UNIQUE_MEALS_PURCH',
+                          'CONTACTS_W_CUSTOMER_SERVICE', 'AVG_TIME_PER_SITE_VISIT',
+                          'AVG_PREP_VID_TIME', 'TOTAL_PHOTOS_VIEWED']]
+
+# curated set: original + engineered features (excludes domain dummies)
+x_selected = chef_prep[[
+    'ENGAGEMENT_X_MEALS',
+    'CONTACTS_W_CUSTOMER_SERVICE',
+    'UNIQUE_MEALS_PURCH',
+    'AVG_TIME_PER_SITE_VISIT',
+    'AVG_MEAL_RATING',
+    'AVG_PREP_VID_TIME',
+    'TOTAL_MEALS_ORDERED',
+    'TOTAL_PHOTOS_VIEWED',
+    'ENGAGEMENT_INDEX',
+    'LOG_AVG_VID_TIME',
+    'LOG_AVG_TIME',
+    'UNIQUE_MEAL_RATIO',
+    'MEALS_X_RATING',
+    'MEALS_PER_LOGIN',
+    'LOG_TOTAL_MEALS',
+    'SITE_X_RATING',
+    'LARGEST_ORDER_RATIO',
+    'SERVICE_RATIO'
+]]
+
+# targets
+y_revenue     = chef_prep['REVENUE']
+y_log_revenue = chef_prep['log_REVENUE']
+```
+
+<br>
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+
+## **Task 1: Customer Segmentation Analysis**
+**Question:** What customer segments can be identified from email domains for targeted marketing?
+
+#### **Revenue by Domain Type**
+
+```{python}
+# distribution of domain types
+domain_dist = chef_df['DOMAIN_TYPE'].value_counts()
+print(domain_dist)
+```
+
+```{python}
+# define colors for each domain type
+domain_colors = {'Personal': '#66c2a5', 'Professional': '#fc8d62', 'Junk': '#8da0cb'}
+
+# create side-by-side box plot and bar chart
+fig, axes = plt.subplots(1, 2, figsize = (14, 5))
+
+# box plot
+sns.boxplot(data    = chef_df,
+            x       = 'DOMAIN_TYPE',
+            y       = 'REVENUE',
+            ax      = axes[0],
+            palette = domain_colors,
+            order   = ['Personal', 'Professional'])
+axes[0].set_xlabel('Domain Type')
+axes[0].set_ylabel('Revenue ($)')
+axes[0].set_title('Revenue Distribution by Domain Type',
+                  fontsize = 12, fontweight = 'bold')
+
+# avg revenue bar chart
+avg_revenue = chef_df.groupby('DOMAIN_TYPE')['REVENUE'].mean().sort_values(ascending = False)
+colors = [domain_colors[dt] for dt in avg_revenue.index]
+sns.barplot(x       = avg_revenue.index,
+            y       = avg_revenue.values,
+            ax      = axes[1],
+            palette = colors,
+            edgecolor = 'black',
+            linewidth = 1.5)
+axes[1].set_xlabel('Domain Type')
+axes[1].set_ylabel('Average Revenue ($)')
+axes[1].set_title('Average Revenue by Domain Type',
+                  fontsize = 12, fontweight = 'bold')
+
+for i, v in enumerate(avg_revenue.values):
+    axes[1].text(i, v + 30, f'${v:,.0f}',
+                 ha = 'center', fontsize = 10, fontweight = 'bold')
+
+plt.tight_layout()
+plt.show()
+```
+
+> The boxplot shows nearly identical revenue distributions across domain types - comparable medians (~$2,000) and similar IQRs. Average revenue differs by only $9 between Professional and Personal. Domain type is unlikely to improve model performance, and the ANOVA below formalizes this.
+
+<br>
+
+#### **Statistical Test (ANOVA): Revenue by Domain Type**
+
+```{python}
+# one-way ANOVA: revenue across domain types
+domain_groups = [chef_df[chef_df['DOMAIN_TYPE'] == domain]['REVENUE']
+                 for domain in ['Personal', 'Professional', 'Junk']]
+
+f_stat, p_value = stats.f_oneway(*domain_groups)
+
+print(f"""
+One-Way ANOVA: Revenue by Domain Type
+--------------------------------------
+F-statistic   : {f_stat:.4f}
+P-value       : {p_value:.4f}
+Result: {'NOT statistically significant (p > 0.05)' if p_value > 0.05 else 'Statistically significant (p <= 0.05)'}
+""")
+```
+
+> The ANOVA confirms no significant difference in revenue across domain types (p = 0.80). Domain classification may still matter for email deliverability, but it should not be used for revenue-based targeting. Behavioral segmentation based on ordering frequency and engagement is far more effective for identifying high-value customers (Kumar et al., 2010; Gupta & Zeithaml, 2006).
+
+<br>
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+
+## **Task 2: Linear Regression (Behavioral Factors)**
+**Question:** Which behavioral factor is the most important in predicting revenue?
+
+#### **Model Development**
+
+```{python}
+# behavioral features only (isolate individual drivers before adding engineered features)
+x_data = x_behavioral
+y_data = y_revenue
+
+# train-test split
+x_train, x_test, y_train, y_test = train_test_split(x_data,
+                                                     y_data,
+                                                     test_size    = 0.35,
+                                                     random_state = 702)
+
+# fit OLS
+behavioral_model = sklearn.linear_model.LinearRegression()
+behavioral_model_fit = behavioral_model.fit(x_train, y_train)
+
+train_score = round(behavioral_model.score(x_train, y_train), ndigits = 4)
+test_score  = round(behavioral_model.score(x_test , y_test) , ndigits = 4)
+gap         = round(abs(train_score - test_score)            , ndigits = 4)
+
+print(f"""
+Behavioral Features Linear Regression
+--------------------------------------
+Training R-squared : {train_score}
+Testing R-squared  : {test_score}
+Train-Test Gap     : {gap}
+""")
+```
+
+<br>
+
+#### **Coefficient Analysis with Statistical Significance**
+
+```{python}
+# statsmodels OLS for p-values and t-statistics (sklearn doesn't provide these)
+x_ols     = sm.add_constant(x_train)
+ols_model = sm.OLS(y_train, x_ols).fit()
+print(ols_model.summary())
+```
+
+> `TOTAL_MEALS_ORDERED` is the strongest behavioral predictor (+$8.29/meal, t = 18.73, p < 0.001). `CONTACTS_W_CUSTOMER_SERVICE` (+$88.16, p < 0.001) likely proxies for overall platform engagement rather than complaints alone. `AVG_TIME_PER_SITE_VISIT` (+$8.98, p < 0.001) and `UNIQUE_MEALS_PURCH` (+$47.55, p < 0.001) are also significant, browsing time and recipe variety both drive revenue.
+
+> `AVG_PREP_VID_TIME` is the only non-significant feature (+$0.25, p = 0.723), which suggests that prep videos don't directly drive spending on their own but may work better as part of composite engagement metrics.
+
+<br>
+
+#### **Feature Correlation Analysis**
+
+```{python}
+# correlation matrix: behavioral features + revenue
+corr_df = pd.concat([x_behavioral, y_revenue.rename("REVENUE")], axis=1).corr()
+
+# sort by correlation with REVENUE (descending)
+order = corr_df["REVENUE"].sort_values(ascending=False).index
+corr_df = corr_df.loc[order, order]
+
+# heatmap of correlations
+plt.figure(figsize=(12, 10))
+sns.heatmap(
+    data=corr_df,
+    annot=True,
+    fmt=".2f",
+    cmap="coolwarm",
+    square=True,
+    cbar_kws={"shrink": 0.8},
+    linewidths=0.5,
+)
+plt.title(
+    label="Correlation of Behavioral Features and Revenue",
+    fontsize=14,
+    fontweight="bold",
+)
+plt.tight_layout()
+plt.show()
+```
+
+> `TOTAL_MEALS_ORDERED` has the strongest correlation with revenue (r = 0.60), followed by `AVG_TIME_PER_SITE_VISIT` (r = 0.57). These two are moderately correlated with each other (r = 0.42), which introduces some multicollinearity, though both remain significant in the OLS model. `CONTACTS_W_CUSTOMER_SERVICE` and `UNIQUE_MEALS_PURCH` show weak correlations with revenue (~0.17 and 0.14), reinforcing that these are better suited as components of composite features than as standalone predictors.
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+
+## **Task 3: Final Model Selection**
+
+> Seven model types are evaluated on both raw `REVENUE` and `log(REVENUE + 1)` using the same 65/35 split (random_state = 702). 
+
+> Regularized models and KNN use `StandardScaler`; tree-based models and OLS use raw features. A model is considered stable if its train-test gap <= 0.05. The best model is the stable candidate with the highest Test R-squared.
+
+### **Train-Test Split and Scaling**
+
+```{python}
+# curated feature set for model comparison
+x_data = x_selected
+y_data = y_revenue
+
+# same split as Task 2 for comparability
+x_train, x_test, y_train, y_test = train_test_split(x_data,
+                                                     y_data,
+                                                     test_size    = 0.35,
+                                                     random_state = 702)
+
+# log targets from same split indices
+y_train_log = np.log1p(y_train)
+y_test_log  = np.log1p(y_test)
+
+# scale for regularized models and KNN
+scaler         = StandardScaler()
+x_train_scaled = scaler.fit_transform(x_train)
+x_test_scaled  = scaler.transform(x_test)
+```
+
+<br>
+
+### **Candidate Models (All Permitted Types)**
+
+> The dictionary `models` below represents all the 7 models appended together so I could compare the output of them at the end, and see which would give the highest r-squared (while preserving the < 0.05 train-test gap). The parameters used in each model was a combination of trial and error to see the ones that would result in the best outcome for each model.
+
+```{python}
+# candidate models - 'scaled' flag selects StandardScaler features automatically
+models = {
+    'OLS Linear Regression': {
+        'model': sklearn.linear_model.LinearRegression(),
+        'scaled': False
+    },
+    'Lasso Regression': {
+        'model': Lasso(alpha=230, random_state=702, max_iter=10000),
+        'scaled': True
+    },
+    'Ridge Regression': {
+        'model': Ridge(alpha=1950, random_state=702),
+        'scaled': True
+    },
+    'Elastic Net': {
+        'model': SGDRegressor(loss='squared_error', penalty='elasticnet',
+                              alpha=5.0, l1_ratio=0.7, random_state=702,
+                              max_iter=10000, tol=1e-3),
+        'scaled': True
+    },
+    'K-Nearest Neighbors': {
+        'model': KNeighborsRegressor(n_neighbors=17, weights='uniform'),
+        'scaled': True
+    },
+    'Random Forest': {
+        'model': RandomForestRegressor(n_estimators=300, min_samples_split=10,
+                                       min_samples_leaf=25, max_depth=10,
+                                       bootstrap=True, random_state=702, n_jobs=-1),
+        'scaled': False
+    },
+    'Gradient Boosting': {
+        'model': GradientBoostingRegressor(n_estimators=150, learning_rate=0.1,
+                                           max_depth=2, min_samples_leaf=60,
+                                           random_state=702),
+        'scaled': False
+    }
+}
+
+# targets to compare
+targets = {
+    'REVENUE':     {'train': y_train,     'test': y_test,     'is_log': False},
+    'log_REVENUE': {'train': y_train_log, 'test': y_test_log, 'is_log': True}
+}
+
+# train and evaluate all model-target combinations
+candidate_results = []
+fitted_models     = {}
+
+for target_name, t in targets.items():
+    for model_name, cfg in models.items():
+        m = clone(cfg['model'])
+
+        xt_train = x_train_scaled if cfg['scaled'] else x_train
+        xt_test  = x_test_scaled  if cfg['scaled'] else x_test
+
+        m.fit(xt_train, t['train'])
+
+        train_r2 = m.score(xt_train, t['train'])
+        test_r2  = m.score(xt_test,  t['test'])
+
+        candidate_results.append({
+            'Target'         : target_name,
+            'Model'          : model_name,
+            'Train R-squared': round(train_r2, 4),
+            'Test R-squared' : round(test_r2, 4)
+        })
+
+        fitted_models[(target_name, model_name)] = m
+```
+
+<br>
+
+#### **Model Comparison**
+
+```{python}
+# comparison table with stability flag (gap <= 0.05)
+model_comparison = pd.DataFrame(candidate_results)
+model_comparison['Gap']    = round(abs(model_comparison['Train R-squared'] - model_comparison['Test R-squared']), 4)
+model_comparison['Stable'] = model_comparison['Gap'].apply(lambda x: 'Yes' if x <= 0.05 else 'No')
+
+model_comparison = model_comparison.sort_values('Test R-squared', ascending = False)
+display(model_comparison.reset_index(drop = True))
+
+# best stable model
+stable_models = model_comparison[model_comparison['Stable'] == 'Yes']
+best_model    = stable_models.iloc[0]
+
+print(f"""
+Best Stable Model: {best_model['Model']} (Target: {best_model['Target']})
+--------------------------------------
+Training R-squared : {best_model['Train R-squared']:.4f}
+Testing R-squared  : {best_model['Test R-squared']:.4f}
+Train-Test Gap     : {best_model['Gap']:.4f}
+""")
+```
+
+> For Gradient Boosting, the log target achieves Test R-squared = 0.82 vs. 0.78 on raw `REVENUE`, with a tighter gap (0.021 vs. 0.028). The log compression helps the ensemble handle the right-skewed revenue distribution more effectively. Predictions are back-transformed to dollars via `expm1` for interpretation.
+
+<br>
+
+#### **Best Model Visualization**
+
+```{python}
+# predict on test set with best model
+best_key    = (best_model['Target'], best_model['Model'])
+best_fitted = fitted_models[best_key]
+best_cfg    = models[best_model['Model']]
+xt_test_v   = x_test_scaled if best_cfg['scaled'] else x_test
+
+# back-transform to dollars if log target was used
+if best_model['Target'] == 'log_REVENUE':
+    y_actual_test = np.expm1(y_test_log)
+    y_pred_test   = np.expm1(best_fitted.predict(xt_test_v))
+else:
+    y_actual_test = y_test
+    y_pred_test   = best_fitted.predict(xt_test_v)
+
+# predicted vs actual scatterplot
+fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+
+sns.regplot(x           = y_actual_test,
+            y           = y_pred_test,
+            ax          = ax,
+            ci          = None,
+            scatter_kws = {'alpha': 0.6, 's': 50, 'color': 'steelblue', 'label': 'Data'},
+            line_kws    = {'color': 'crimson', 'lw': 3, 'label': 'Fitted Line'})
+
+min_val = min(y_actual_test.min(), y_pred_test.min())
+max_val = max(y_actual_test.max(), y_pred_test.max())
+ax.plot([min_val, max_val], [min_val, max_val],
+        'k--', lw=2.5, alpha=0.8, label='Perfect Prediction')
+
+ax.set_xlabel('Actual Revenue ($)', fontsize=12)
+ax.set_ylabel('Predicted Revenue ($)', fontsize=12)
+ax.set_title(f'{best_model["Model"]} - Predicted vs. Actual (Test Set)',
+             fontsize=14, fontweight='bold')
+ax.legend(loc='upper left', frameon=True, fancybox=True,
+          shadow=True, fontsize=11)
+ax.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+```
+
+> Most points cluster tightly around the 45-degree perfect-prediction line, especially in the $1,000-$3,000 range where most customers fall. At higher revenue levels the model underestimates somewhat - a known artifact of log-target models, where the transformation compresses large values during training. Overall calibration is strong (Test R-squared ~0.82).
+
+<br>
+
+#### **Best Model Feature Importance**
+
+```{python}
+# top 10 features by importance
+plot_feature_importances(
+    model  = best_fitted,
+    train  = x_train,
+    title  = f"Feature Importances - {best_model['Model']} ({best_model['Target']})",
+    export = False,
+    top_n  = 10)
+```
+
+> `ENGAGEMENT_X_MEALS` leads at ~20% of total importance, confirming that the interaction of digital engagement and ordering behavior is the strongest signal. `CONTACTS_W_CUSTOMER_SERVICE` (~11%) and `LOG_TOTAL_MEALS` (~10%) follow. Importance is distributed fairly evenly across the top 10, meaning the model leverages a broad feature set rather than relying on a single driver.
+
+<br>
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+
+## **Conclusion**
+
+> The final model is a **Gradient Boosting Regressor** (150 estimators, learning rate 0.1, max depth 2, min samples leaf 60) trained on `log(REVENUE + 1)`. Selected from 14 model-target combinations, it achieves the highest stable Test R-squared (~0.82) with a gap of 0.021, well within the 0.05 threshold. The log target outperformed raw REVENUE (Test R-squared = 0.78, gap = 0.028). Predictions are converted back to dollars via `expm1`.
+
+> `ENGAGEMENT_X_MEALS` is the top predictor (~20% importance), followed by `CONTACTS_W_CUSTOMER_SERVICE` (11%) and `LOG_TOTAL_MEALS` (10%). This makes sense for Chef's Compass - the company sells a cooking experience, not just food, so customers who both engage with platform content and convert that into orders represent the highest-value segment (Kumar et al., 2010). The interaction term captures that dual behavior in a way neither metric alone could.
+
+> Email domain type has no predictive value for revenue (ANOVA p = 0.80). Among standalone behavioral features, `TOTAL_MEALS_ORDERED` is the strongest driver (+$8.29/meal, r = 0.66). `AVG_PREP_VID_TIME` is the only non-significant behavioral feature (p = 0.723), though it contributes when combined into composite engagement metrics. These behavioral metrics are far more predictive than demographic proxies like email domain (Gupta & Zeithaml, 2006).
+
+> **Recommendations**: Focus retention campaigns on customers below 40 total meals, where small increases in engagement can shift lifetime value substantially (Reichheld & Sasser, 1990). Invest in engagement content (prep videos, food photography) that feeds the top predictive features. Introduce loyalty tiers at 50/100/150 meals to incentivize progression from growth to premium segments (Uncles et al., 2003).
+
+<br>
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
+
+## **References**
+
+---
+
+<div style="padding-left: 36px; text-indent: -36px;">
+
+Gupta, S., & Zeithaml, V. (2006). Customer metrics and their impact on financial performance. <em>Marketing Science, 25</em>(6), 718-739. <a href="https://doi.org/10.1287/mksc.1060.0221">https://doi.org/10.1287/mksc.1060.0221</a>
+
+Kumar, V., Aksoy, L., Donkers, B., Venkatesan, R., Wiesel, T., & Tillmanns, S. (2010). Undervalued or overvalued customers: Capturing total customer engagement value. <em>Journal of Service Research, 13</em>(3), 297-310. <a href="https://doi.org/10.1177/1094670510375602">https://doi.org/10.1177/1094670510375602</a>
+
+Reichheld, F. F., & Sasser, W. E. (1990). Zero defections: Quality comes to services. <em>Harvard Business Review, 68</em>(5), 105-111.
+
+Tukey, J. W. (1977). <em>Exploratory data analysis</em>. Addison-Wesley.
+
+Uncles, M. D., Dowling, G. R., & Hammond, K. (2003). Customer loyalty and customer loyalty programs. <em>Journal of Consumer Marketing, 20</em>(4), 294-316. <a href="https://doi.org/10.1108/07363760310483676">https://doi.org/10.1108/07363760310483676</a>
+
+</div>
+
+<br>
+
+<hr style="height:.9px;border:none;color:#333;background-color:#333;" />
