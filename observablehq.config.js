@@ -74,10 +74,10 @@ const navigationPages = [
       name: "Analytics (MBAN)",
       open: true,
       pages: [
-        {name: "H1-B 2024 Lottery (Power BI)", path: "/mban/h1b-2024-analysis"},
-        {name: "Portfolio Analysis (Tableau & SQL)", path: "/mban/portfolio-analysis"},
         {name: "Portfolio Construction (Python)", path: "/mban/portfolio-construction"},
+        {name: "Portfolio Analysis (Tableau & SQL)", path: "/mban/portfolio-analysis"},
         {name: "CAPM Modern Portfolio Theory (Python)", path: "/mban/quarto/CAPM-modern-portfolio-theory/CAPM_modern_portfolio_theory"},
+        {name: "H1-B 2024 Lottery (Power BI)", path: "/mban/h1b-2024-analysis"},
         {name: "Regression Modeling (Python)", path: "/mban/quarto/regression-modeling/regression_modeling_chefs_compass"},
         {name: "Classification Modeling (Python)", path: "/mban/quarto/classification-modeling/classification_modeling_bank_marketing"},        
         {name: "World Governance Indicators (R)", path: "/mban/quarto/world-gov-indicators/world-gov-indicators"},
